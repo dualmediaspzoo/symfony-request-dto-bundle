@@ -2,9 +2,9 @@
 
 namespace DM\DtoRequestBundle\Annotations\Dto\Http;
 
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DM\DtoRequestBundle\Traits\Annotation\HttpActionTrait;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**

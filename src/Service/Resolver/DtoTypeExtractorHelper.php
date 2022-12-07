@@ -2,7 +2,6 @@
 
 namespace DM\DtoRequestBundle\Service\Resolver;
 
-use Doctrine\Common\Annotations\Reader;
 use DM\DtoRequestBundle\Annotations\Dto\Bag;
 use DM\DtoRequestBundle\Annotations\Dto\Type as TypeAnnotation;
 use DM\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
@@ -12,6 +11,7 @@ use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use DM\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
 use DM\DtoRequestBundle\Model\Type\Dto;
 use DM\DtoRequestBundle\Model\Type\Property;
+use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 

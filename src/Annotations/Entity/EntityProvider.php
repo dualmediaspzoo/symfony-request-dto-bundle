@@ -2,8 +2,8 @@
 
 namespace DM\DtoRequestBundle\Annotations\Entity;
 
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 
 /**
  * Allows setting which entity is provided by the provider

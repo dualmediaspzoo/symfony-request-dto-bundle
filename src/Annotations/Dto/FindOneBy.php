@@ -2,11 +2,11 @@
 
 namespace DM\DtoRequestBundle\Annotations\Dto;
 
-use Doctrine\Common\Annotations\Annotation\Target;
 use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
 use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DM\DtoRequestBundle\Traits\Annotation\FieldTrait;
 use DM\DtoRequestBundle\Traits\Annotation\ProviderTrait;
+use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * @Annotation

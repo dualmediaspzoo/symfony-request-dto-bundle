@@ -2,12 +2,12 @@
 
 namespace DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use DM\DtoRequestBundle\Annotations\Entity\EntityProvider;
 use DM\DtoRequestBundle\DtoBundle;
 use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\AnnotationMissingException;
 use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
 use DM\DtoRequestBundle\Service\Entity\EntityProviderService;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;

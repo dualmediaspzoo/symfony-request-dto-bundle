@@ -2,11 +2,11 @@
 
 namespace DM\DtoRequestBundle\Annotations\Dto;
 
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\Annotation\Target;
 use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use DM\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
+use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * This annotation should be put on {@link DtoInterface} objects, which wish to specify what groups they'll use

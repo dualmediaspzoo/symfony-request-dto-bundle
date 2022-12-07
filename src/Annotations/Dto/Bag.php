@@ -2,8 +2,8 @@
 
 namespace DM\DtoRequestBundle\Annotations\Dto;
 
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

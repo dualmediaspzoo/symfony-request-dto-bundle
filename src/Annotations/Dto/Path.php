@@ -2,11 +2,11 @@
 
 namespace DM\DtoRequestBundle\Annotations\Dto;
 
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
 use DM\DtoRequestBundle\Interfaces\Attribute\PathInterface;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use DM\DtoRequestBundle\Traits\Annotation\PathTrait;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 
 /**
  * By default, if this annotation does not exist on a property of {@link DtoInterface}, then a default object

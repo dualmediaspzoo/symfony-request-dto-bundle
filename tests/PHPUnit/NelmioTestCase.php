@@ -2,8 +2,8 @@
 
 namespace DM\DtoRequestBundle\Tests\PHPUnit;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use DM\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
+use Doctrine\Common\Annotations\AnnotationReader;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader;
 
