@@ -521,7 +521,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
     public function offsetSet(
         $offset,
         $value
-    ) {
+    ): void {
         $this->properties[$offset] = $value;
     }
 
@@ -530,7 +530,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetUnset(
         $offset
-    ) {
+    ): void {
         unset($this->properties[$offset]);
     }
 

@@ -58,7 +58,7 @@ jobs:
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
         with:
-          php_version: ${{ matrix.php-version }}
+          php-version: ${{ matrix.php-version }}
           ini-values: pcov.directory=.
           coverage: pcov
 
@@ -92,7 +92,7 @@ jobs:
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
         with:
-          php_version: ${{ matrix.php-version }}
+          php-version: ${{ matrix.php-version }}
           ini-values: pcov.directory=.
           coverage: pcov
 
@@ -125,7 +125,7 @@ jobs:
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
         with:
-          php_version: ${{ matrix.php-version }}
+          php-version: ${{ matrix.php-version }}
           ini-values: pcov.directory=.
           coverage: pcov
 

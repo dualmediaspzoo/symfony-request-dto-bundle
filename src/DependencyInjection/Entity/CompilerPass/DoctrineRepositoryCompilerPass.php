@@ -10,7 +10,7 @@ class DoctrineRepositoryCompilerPass implements CompilerPassInterface
 {
     public function process(
         ContainerBuilder $container
-    ) {
+    ): void {
         // @codeCoverageIgnoreStart
         if (!$container->hasDefinition(EntityProviderService::class)) {
             return;
