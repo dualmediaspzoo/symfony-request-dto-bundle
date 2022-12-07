@@ -32,7 +32,7 @@ class HttpDtoActionSubscriber implements EventSubscriberInterface
             throw new DtoHttpException(
                 $argument,
                 $action->getHttpStatusCode(),
-                $action->getMessage(),
+                $action->getMessage() ?? '',
                 null,
                 $action->getHeaders()
             );
