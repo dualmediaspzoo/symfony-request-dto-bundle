@@ -1,2 +1,5 @@
-# symfony-dto-request-bundle
-A Symfony 4/5 DTO request bundle to allow easier data input and validation on controllers
+# Symfony DTO Bundle
+
+This bundle aims to lower the burden of typechecking, casting, loading entities
+and related annoyances of using requests in your api.
+

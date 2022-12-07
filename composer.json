@@ -1,0 +1,69 @@
+{
+  "name": "dm/symfony-request-dto-bundle",
+  "type": "symfony-bundle",
+  "description": "Symfony bundle which provides DTO object functionality and resolving",
+  "keywords": [
+    "dto",
+    "symfony",
+    "request"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "pkly",
+      "homepage": "https://github.com/pkly",
+      "role": "Author"
+    }
+  ],
+  "require": {
+    "php": "^7.4|^8.1",
+    "doctrine/annotations": "^1.11",
+    "symfony/framework-bundle": "^4.4|^5.4",
+    "symfony/event-dispatcher": "^4.4|^5.4",
+    "symfony/property-info": "^4.4|^5.4",
+    "symfony/validator": "^4.4|^5.4",
+    "symfony/property-access": "^4.4|^5.4",
+    "myclabs/php-enum": "^1.7",
+    "symfony/polyfill-php80": "^1"
+  },
+  "require-dev": {
+    "ext-simplexml": "*",
+    "phpunit/phpunit": "^9.5",
+    "psalm/plugin-symfony": "^2.4",
+    "friendsofphp/php-cs-fixer": "^3",
+    "pedrotroller/php-cs-custom-fixer": "^2",
+    "vimeo/psalm": "^4.10",
+    "phpstan/phpstan": "^1",
+    "symfony/phpunit-bridge": "^4.4|^5.3",
+    "matthiasnoback/symfony-dependency-injection-test": "^4.3",
+    "nelmio/api-doc-bundle": "^4",
+    "symfony/stopwatch": "^4.4|^5.4",
+    "symfony/web-profiler-bundle": "^4.4|^5.4"
+  },
+  "conflict": {
+    "nelmio/api-doc-bundle": "<4"
+  },
+  "autoload": {
+    "psr-4": {
+      "DM\\DtoRequestBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DM\\DtoRequestBundle\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "lint": "php-cs-fixer fix",
+    "test": "phpunit"
+  },
+  "suggest": {
+    "nelmio/api-doc-bundle": "^4"
+  },
+  "extra": {
+    "symfony": {
+      "require": "5.4.*",
+      "allow-contrib": false
+    }
+  }
+}

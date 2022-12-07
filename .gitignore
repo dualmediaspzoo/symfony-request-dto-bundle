@@ -1,0 +1,11 @@
+composer.lock
+.php-cs-fixer.cache
+
+var/
+vendor/
+.idea
+
+.phpunit.result.cache
+
+artifacts/
+code-coverage-html/
