@@ -5,31 +5,51 @@ namespace DM\DtoRequestBundle\Annotations\Dto;
 use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
 use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DM\DtoRequestBundle\Traits\Annotation\FieldTrait;
+use DM\DtoRequestBundle\Traits\Annotation\LimitAndOffsetTrait;
 use DM\DtoRequestBundle\Traits\Annotation\ProviderTrait;
-use Doctrine\Common\Annotations\Annotation\Target;
+use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target("PROPERTY")
- */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class FindBy implements FindInterface, DtoAnnotationInterface
 {
     use FieldTrait;
     use ProviderTrait;
+    use LimitAndOffsetTrait;
 
     /**
-     * Result limit
+     * @param array<string, string> $fields
+     * @param array<string, string>|null $orderBy
+     * @param array<string, Constraint|list<Constraint>> $constraints
+     * @param array<string, Type> $types
+     * @param string|null $errorPath
+     * @param array<string, string> $descriptions
+     * @param string|null $provider
+     * @param int|null $limit
+     * @param int|null $offset
      *
-     * @var int|null
+     * @noinspection DuplicatedCode
      */
-    public ?int $limit = null;
-
-    /**
-     * Result offset
-     *
-     * @var int|null
-     */
-    public ?int $offset = null;
+    public function __construct(
+        array $fields = [],
+        array|null $orderBy = null,
+        array $constraints = [],
+        array $types = [],
+        string|null $errorPath = null,
+        array $descriptions = [],
+        string|null $provider = null,
+        int|null $limit = null,
+        int|null $offset = null
+    ) {
+        $this->fields = $fields;
+        $this->orderBy = $orderBy;
+        $this->constraints = $constraints;
+        $this->types = $types;
+        $this->errorPath = $errorPath;
+        $this->descriptions = $descriptions;
+        $this->provider = $provider;
+        $this->limit = $limit;
+        $this->offset = $offset;
+    }
 
     public function isCollection(): bool
     {

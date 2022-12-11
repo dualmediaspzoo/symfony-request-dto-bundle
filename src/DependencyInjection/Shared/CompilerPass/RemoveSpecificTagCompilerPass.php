@@ -7,15 +7,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class RemoveSpecificTagCompilerPass implements CompilerPassInterface
 {
-    private string $id;
-    private string $tag;
-
     public function __construct(
-        string $id,
-        string $tag
+        private readonly string $id,
+        private readonly string $tag
     ) {
-        $this->id = $id;
-        $this->tag = $tag;
     }
 
     public function process(

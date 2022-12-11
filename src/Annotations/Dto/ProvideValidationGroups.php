@@ -5,26 +5,17 @@ namespace DM\DtoRequestBundle\Annotations\Dto;
 use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use DM\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * This annotation should be put on {@link DtoInterface} objects, which wish to specify what groups they'll use
  *
  * Services that will determine this, must implement {@link GroupProviderInterface}
- *
- * @Annotation
- *
- * @Target({"CLASS"})
- * @NamedArgumentConstructor()
  */
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class ProvideValidationGroups implements DtoAnnotationInterface
 {
-    public string $provider;
-
     public function __construct(
-        string $provider
+        public readonly string $provider
     ) {
-        $this->provider = $provider;
     }
 }

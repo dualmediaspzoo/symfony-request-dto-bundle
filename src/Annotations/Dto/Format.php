@@ -11,17 +11,12 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
  * Used to create a {@link \DateTimeImmutable} object to be passed into the dto.
  *
  * @see https://www.php.net/manual/en/datetime.createfromformat.php Allowed date formats
- *
- * @Annotation
- * @NamedArgumentConstructor()
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Format implements DtoAnnotationInterface
 {
-    public ?string $format;
-
     public function __construct(
-        ?string $format = null
+        public readonly string|null $format = null
     ) {
-        $this->format = $format;
     }
 }

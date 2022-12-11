@@ -11,12 +11,9 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class DtoResolvedEvent extends Event
 {
-    private DtoInterface $dto;
-
     public function __construct(
-        DtoInterface $dto
+        private readonly DtoInterface $dto
     ) {
-        $this->dto = $dto;
     }
 
     public function getDto(): DtoInterface

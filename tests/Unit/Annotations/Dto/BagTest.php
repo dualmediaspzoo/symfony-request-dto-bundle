@@ -27,18 +27,7 @@ class BagTest extends TestCase
         );
         $this->assertEquals(
             $isHeader,
-            $annotation->isHeader()
+            $annotation->bag->isHeaders()
         );
-    }
-
-    public function testInvalidValue(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(sprintf(
-            "Invalid value %s, expected one of %s",
-            "invalid",
-            implode(", ", Bag::ALLOWED_VALUES)
-        ));
-        new Bag("invalid");
     }
 }

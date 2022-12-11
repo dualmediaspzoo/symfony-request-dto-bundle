@@ -7,7 +7,7 @@ use DM\DtoRequestBundle\Annotations\Entity\EntityProvider;
 /**
  * This interface may be implemented by classes that wish to provide entities to {@link DtoInterface} objects
  *
- * Add {@link EntityProvider} annotation on the class implementing
+ * Add {@link EntityProvider} annotation on the class implementing this interface
  *
  * @template T
  */

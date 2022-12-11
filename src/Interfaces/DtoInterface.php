@@ -157,7 +157,7 @@ interface DtoInterface
      */
     public function setParentDto(
         ?DtoInterface $parentDto
-    );
+    ): mixed;
 
     /**
      * @param HttpActionInterface|null $action

@@ -11,17 +11,14 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 /**
  * By default, if this annotation does not exist on a property of {@link DtoInterface}, then a default object
  * with the path as the property name is created with defaults
- *
- * @Annotation
- * @Target("PROPERTY")
- * @NamedArgumentConstructor()
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Path implements PathInterface, DtoAnnotationInterface
 {
     use PathTrait;
 
     public function __construct(
-        ?string $path = null
+        string|null $path = null
     ) {
         $this->path = $path;
     }

@@ -27,5 +27,5 @@ interface ResolverInterface
      */
     public function resolveParameter(
         string $name
-    );
+    ): mixed;
 }

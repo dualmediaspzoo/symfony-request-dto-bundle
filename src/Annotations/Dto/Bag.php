@@ -2,49 +2,17 @@
 
 namespace DM\DtoRequestBundle\Annotations\Dto;
 
+use DM\DtoRequestBundle\Enum\BagEnum;
 use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Annotation
- * @Target({"CLASS", "PROPERTY"})
- * @NamedArgumentConstructor()
- */
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_PROPERTY)]
 class Bag implements DtoAnnotationInterface
 {
-    public const ALLOWED_VALUES = [
-        "query",
-        "request",
-        "attributes",
-        "files",
-        "cookies",
-        "headers",
-    ];
-
     /**
-     * Which bag of {@link Request} the path is in
-     *
-     * @var string
-     * @Enum(Bag::ALLOWED_VALUES)
+     * @param BagEnum $bag Specifies in which part of the request to expect data for this dto
      */
-    public string $bag = "request";
-
     public function __construct(
-        string $bag = "request"
+        public readonly BagEnum $bag = BagEnum::Request
     ) {
-        if (!in_array($bag, self::ALLOWED_VALUES)) {
-            throw new \RuntimeException(sprintf(
-                "Invalid value %s, expected one of %s",
-                $bag,
-                implode(", ", self::ALLOWED_VALUES)
-            ));
-        }
-        $this->bag = $bag;
-    }
-
-    public function isHeader(): bool
-    {
-        return "headers" === $this->bag;
     }
 }

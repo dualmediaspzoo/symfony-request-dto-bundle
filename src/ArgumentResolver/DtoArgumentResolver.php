@@ -9,10 +9,10 @@ use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use DM\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-class DtoArgumentResolver implements ArgumentValueResolverInterface
+class DtoArgumentResolver implements ValueResolverInterface
 {
     private DtoResolverInterface $dtoResolver;
     private EventDispatcherInterface $eventDispatcher;
@@ -25,13 +25,6 @@ class DtoArgumentResolver implements ArgumentValueResolverInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function supports(
-        Request $request,
-        ArgumentMetadata $argument
-    ): bool {
-        return DtoInterface::class !== $argument->getType() &&
-            is_subclass_of($argument->getType(), DtoInterface::class);
-    }
 
     /**
      * @param Request $request
@@ -46,6 +39,11 @@ class DtoArgumentResolver implements ArgumentValueResolverInterface
         Request $request,
         ArgumentMetadata $argument
     ): iterable {
+        if (DtoInterface::class === $argument->getType() ||
+            !is_subclass_of($argument->getType(), DtoInterface::class)) {
+            return [];
+        }
+
         /** @var class-string<DtoInterface> $class */
         $class = $argument->getType();
         $this->eventDispatcher->dispatch(

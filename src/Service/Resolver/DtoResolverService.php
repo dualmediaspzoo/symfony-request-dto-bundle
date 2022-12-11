@@ -424,7 +424,7 @@ class DtoResolverService implements DtoResolverInterface
     private function attemptToSaveHttpAction(
         PropertyTypeModel $property,
         DtoInterface $dto,
-        $variable
+        mixed $variable
     ): void {
         if (null === ($action = $property->getHttpAction()) ||
             !$this->actionValidator->validate($action, $variable)) {
@@ -445,18 +445,18 @@ class DtoResolverService implements DtoResolverInterface
         Request $request,
         PropertyTypeModel $property,
         string $propertyPath
-    ) {
+    ): mixed {
         if ('' === $propertyPath) {
             return $request->{$property->getBag()->bag}->all();
         }
 
-        if ($property->getBag()->isHeader()) {
+        if ($property->getBag()->bag->isHeaders()) {
             $propertyPath = mb_strtolower($propertyPath);
         }
 
         $value = $this->propertyAccessor->getValue($request->{$property->getBag()->bag}->all(), $propertyPath);
 
-        if (!$property->getBag()->isHeader()) {
+        if (!$property->getBag()->bag->isHeaders()) {
             return $value;
         }
 

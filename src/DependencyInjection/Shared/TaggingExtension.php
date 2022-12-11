@@ -8,17 +8,11 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 class TaggingExtension extends Extension
 {
     /**
-     * @var array<string, string>
-     */
-    private array $map;
-
-    /**
      * @param array<string, string> $map
      */
     public function __construct(
-        array $map
+        private readonly array $map
     ) {
-        $this->map = $map;
     }
 
     /**

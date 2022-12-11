@@ -3,30 +3,15 @@
 namespace DM\DtoRequestBundle\Annotations\Dto;
 
 use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 
-/**
- * @Annotation
- * @NamedArgumentConstructor()
- */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class AllowEnum implements DtoAnnotationInterface
 {
     /**
-     * Allowed enum values
-     *
-     * Use enum keys
-     *
-     * @var array
-     * @psalm-var list<string>
-     */
-    public array $allowed = [];
-
-    /**
-     * @param list<string> $allowed
+     * @param list<\BackedEnum> $allowed
      */
     public function __construct(
-        array $allowed = []
+        public readonly array $allowed = []
     ) {
-        $this->allowed = $allowed;
     }
 }

@@ -11,8 +11,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class DtoHttpException extends HttpException
 {
-    private DtoInterface $dto;
-
     /**
      * @param DtoInterface $dto
      * @param int $statusCode
@@ -23,7 +21,7 @@ class DtoHttpException extends HttpException
      * @param int|null $code
      */
     public function __construct(
-        DtoInterface $dto,
+        private readonly DtoInterface $dto,
         int $statusCode,
         string $message = '',
         \Throwable $previous = null,
@@ -31,7 +29,6 @@ class DtoHttpException extends HttpException
         ?int $code = 0
     ) {
         parent::__construct($statusCode, $message, $previous, $headers, $code);
-        $this->dto = $dto;
     }
 
     public function getDto(): DtoInterface
