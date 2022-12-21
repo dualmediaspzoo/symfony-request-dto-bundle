@@ -113,7 +113,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
                 return 'string'; // keys are text only
             }
 
-            return is_subclass_of($this->getFqcn(), \IntBackedEnum::class) ? 'integer' : 'string';
+            return 'int' === $this->getEnumType() ? 'integer' : 'string';
         } elseif ($this->isDate()) {
             return 'string';
         }
@@ -292,6 +292,15 @@ class Property implements \ArrayAccess, \IteratorAggregate
     {
         return null !== $this->getFqcn() &&
             is_subclass_of($this->getFqcn(), \BackedEnum::class);
+    }
+
+    public function getEnumType(): ?string
+    {
+        if (!$this->isEnum()) {
+            return null;
+        }
+
+        return (string)(new \ReflectionEnum($this->getFqcn()))->getBackingType();
     }
 
     public function isDate(): bool
@@ -564,7 +573,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
             if ($this->hasDtoAttribute(FromKey::class)) {
                 $this->setSubType('string'); // keys are text only
             } else {
-                $this->setSubType(is_subclass_of($class, \IntBackedEnum::class) ? 'int' : 'string');
+                $this->setSubType($this->getEnumType());
             }
         }
 

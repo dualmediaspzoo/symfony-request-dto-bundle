@@ -18,7 +18,7 @@ class DtoHttpException extends HttpException
      * @param \Throwable|null $previous
      * @param array $headers
      * @psalm-param array<string, string> $headers
-     * @param int|null $code
+     * @param int $code
      */
     public function __construct(
         private readonly DtoInterface $dto,
@@ -26,7 +26,7 @@ class DtoHttpException extends HttpException
         string $message = '',
         \Throwable $previous = null,
         array $headers = [],
-        ?int $code = 0
+        int $code = 0
     ) {
         parent::__construct($statusCode, $message, $previous, $headers, $code);
     }

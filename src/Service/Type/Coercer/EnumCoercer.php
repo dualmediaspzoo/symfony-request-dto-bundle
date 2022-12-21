@@ -22,12 +22,17 @@ class EnumCoercer implements CoercerInterface
     use CoerceConstructWithValidatorTrait;
 
     private bool $fromKey = false;
-    private string $class;
+
+    /**
+     * @var list<\BackedEnum>
+     */
+    private array $cases;
 
     public function supports(
         Property $property
     ): bool {
-        return 'object' === $property->getType() && is_subclass_of($property->getFqcn(), Enum::class);
+        return 'object' === $property->getType() &&
+            is_subclass_of($property->getFqcn() ?? '', \BackedEnum::class);
     }
 
     public function coerce(
@@ -36,7 +41,8 @@ class EnumCoercer implements CoercerInterface
         $value
     ): CoerceResult {
         $this->fromKey = $property->hasDtoAttribute(FromKey::class);
-        $this->class = $property->getFqcn();
+
+        $this->cases = call_user_func([$property->getFqcn(), 'cases']); // @phpstan-ignore-line
         $constraints = [new Choice(['choices' => $property->getEnumChoices()])];
 
         if ($property->isCollection()) {
@@ -74,24 +80,21 @@ class EnumCoercer implements CoercerInterface
         );
     }
 
-    /**
-     * @param int|string|null $value
-     *
-     * @return Enum|null
-     */
     private function createEnum(
-        $value
-    ): ?Enum {
+        int|string|null $value
+    ): \BackedEnum|null {
         if (null === $value) {
             return null;
         }
 
-        if ($this->fromKey) {
-            // @phpstan-ignore-next-line
-            return call_user_func([$this->class, $value]);
+        foreach ($this->cases as $case) {
+            $compare = $this->fromKey ? $case->name : $case->value;
+
+            if ($value === $compare) {
+                return $case;
+            }
         }
 
-        // @phpstan-ignore-next-line
-        return call_user_func([$this->class, 'from'], $value);
+        return null;
     }
 }
