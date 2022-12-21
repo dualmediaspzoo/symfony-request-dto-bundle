@@ -2,12 +2,11 @@
 
 namespace DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
 
-use DM\DtoRequestBundle\Annotations\Entity\EntityProvider;
+use DM\DtoRequestBundle\Attributes\Entity\EntityProvider;
 use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\AnnotationMissingException;
+use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
 use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
 use DM\DtoRequestBundle\Service\Entity\EntityProviderService;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
@@ -17,7 +16,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
 {
     /**
      * @throws DuplicateDefaultProviderException
-     * @throws AnnotationMissingException
+     * @throws AttributeMissingException
      * @throws \ReflectionException
      */
     public function process(
@@ -29,7 +28,6 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
         }
         // @codeCoverageIgnoreEnd
 
-        $reader = new AnnotationReader();
         $service = $container->getDefinition(EntityProviderService::class);
 
         try {
@@ -48,27 +46,25 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
                 continue;
             }
 
+            /** @var \ReflectionClass $reflection */
             $reflection = $container->getReflectionClass($def->getClass());
-            /** @var EntityProvider[] $annotations */
-            $annotations = array_filter(
-                $reader->getClassAnnotations($reflection),
-                fn ($o) => $o instanceof EntityProvider
-            );
+            /** @var EntityProvider[] $attributes */
+            $attributes = $reflection->getAttributes(EntityProvider::class);
 
-            if (empty($annotations)) {
-                throw new AnnotationMissingException($def->getClass(), sprintf(
-                    "Service %s is not annotated with %s and cannot be used as a provider",
+            if (empty($attributes)) {
+                throw new AttributeMissingException($reflection->getName(), sprintf(
+                    "Service %s is not annotated with %s attribute and cannot be used as a provider",
                     $id,
                     EntityProvider::class
                 ));
             }
             $arg[$id] = [];
 
-            foreach ($annotations as $annotation) {
+            foreach ($attributes as $attribute) {
                 $arg[$id][] = [
                     new Reference($id),
-                    $annotation->fqcn,
-                    $annotation->default,
+                    $attribute->fqcn,
+                    $attribute->default,
                 ];
             }
         }

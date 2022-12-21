@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Annotations\Dto;
+namespace DM\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
+use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class AllowEnum implements DtoAnnotationInterface
+class AllowEnum implements DtoAttributeInterface
 {
     /**
      * @param list<\BackedEnum> $allowed

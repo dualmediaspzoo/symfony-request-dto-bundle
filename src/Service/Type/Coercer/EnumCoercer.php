@@ -2,20 +2,19 @@
 
 namespace DM\DtoRequestBundle\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Annotations\Dto\FromKey;
+use DM\DtoRequestBundle\Attributes\Dto\FromKey;
 use DM\DtoRequestBundle\Interfaces\Type\CoercerInterface;
 use DM\DtoRequestBundle\Model\Type\CoerceResult;
 use DM\DtoRequestBundle\Model\Type\Property;
 use DM\DtoRequestBundle\Traits\Type\CoerceConstructWithValidatorTrait;
 use DM\DtoRequestBundle\Traits\Type\CoercerResultTrait;
 use DM\DtoRequestBundle\Util;
-use MyCLabs\Enum\Enum;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
- * @implements CoercerInterface<Enum|null>
+ * @implements CoercerInterface<\BackedEnum|null>
  */
 class EnumCoercer implements CoercerInterface
 {
@@ -36,7 +35,7 @@ class EnumCoercer implements CoercerInterface
         Property $property,
         $value
     ): CoerceResult {
-        $this->fromKey = $property->hasDtoAnnotation(FromKey::class);
+        $this->fromKey = $property->hasDtoAttribute(FromKey::class);
         $this->class = $property->getFqcn();
         $constraints = [new Choice(['choices' => $property->getEnumChoices()])];
 

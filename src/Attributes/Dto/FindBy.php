@@ -1,18 +1,20 @@
 <?php
 
-namespace DM\DtoRequestBundle\Annotations\Dto;
+namespace DM\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
+use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DM\DtoRequestBundle\Traits\Annotation\FieldTrait;
+use DM\DtoRequestBundle\Traits\Annotation\LimitAndOffsetTrait;
 use DM\DtoRequestBundle\Traits\Annotation\ProviderTrait;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class FindOneBy implements FindInterface, DtoAnnotationInterface
+class FindBy implements FindInterface, DtoAttributeInterface
 {
     use FieldTrait;
     use ProviderTrait;
+    use LimitAndOffsetTrait;
 
     /**
      * @param array<string, string> $fields
@@ -22,6 +24,8 @@ class FindOneBy implements FindInterface, DtoAnnotationInterface
      * @param string|null $errorPath
      * @param array<string, string> $descriptions
      * @param string|null $provider
+     * @param int|null $limit
+     * @param int|null $offset
      *
      * @noinspection DuplicatedCode
      */
@@ -32,7 +36,9 @@ class FindOneBy implements FindInterface, DtoAnnotationInterface
         array $types = [],
         string|null $errorPath = null,
         array $descriptions = [],
-        string|null $provider = null
+        string|null $provider = null,
+        int|null $limit = null,
+        int|null $offset = null
     ) {
         $this->fields = $fields;
         $this->orderBy = $orderBy;
@@ -41,10 +47,12 @@ class FindOneBy implements FindInterface, DtoAnnotationInterface
         $this->errorPath = $errorPath;
         $this->descriptions = $descriptions;
         $this->provider = $provider;
+        $this->limit = $limit;
+        $this->offset = $offset;
     }
 
     public function isCollection(): bool
     {
-        return false;
+        return true;
     }
 }

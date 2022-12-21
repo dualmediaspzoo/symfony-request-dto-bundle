@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Profiler\Service\Resolver;
 
-use DM\DtoRequestBundle\Annotations\Dto\Bag;
+use DM\DtoRequestBundle\Attributes\Dto\Bag;
 use DM\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
 use DM\DtoRequestBundle\Model\Type\Dto;
 use DM\DtoRequestBundle\Profiler\AbstractWrapper;

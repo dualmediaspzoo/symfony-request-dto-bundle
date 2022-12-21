@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Annotations\Dto\Http;
+namespace DM\DtoRequestBundle\Attributes\Dto\Http;
 
 use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DM\DtoRequestBundle\Traits\Annotation\HttpActionTrait;

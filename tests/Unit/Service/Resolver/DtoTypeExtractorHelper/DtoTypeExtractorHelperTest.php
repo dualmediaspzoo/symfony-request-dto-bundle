@@ -80,7 +80,7 @@ class DtoTypeExtractorHelperTest extends KernelTestCase
         $this->assertFalse($model->isCollection());
         $this->assertEquals(DummyModel::class, $model->getFqcn());
 
-        $this->assertNotNull($find = $model->getFindAnnotation());
+        $this->assertNotNull($find = $model->getFindAttribute());
         $this->assertEquals([
             'id' => 'id',
             'custom' => '$customProp',

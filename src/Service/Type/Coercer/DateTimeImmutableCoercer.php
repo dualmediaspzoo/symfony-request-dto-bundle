@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Annotations\Dto\Format;
+use DM\DtoRequestBundle\Attributes\Dto\Format;
 use DM\DtoRequestBundle\Interfaces\Type\CoercerInterface;
 use DM\DtoRequestBundle\Model\Type\CoerceResult;
 use DM\DtoRequestBundle\Model\Type\Property;

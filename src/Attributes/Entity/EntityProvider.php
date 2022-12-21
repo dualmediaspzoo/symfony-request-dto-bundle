@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Annotations\Entity;
+namespace DM\DtoRequestBundle\Attributes\Entity;
 
 use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 

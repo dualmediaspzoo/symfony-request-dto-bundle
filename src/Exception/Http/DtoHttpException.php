@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Exception\Http;
 
-use DM\DtoRequestBundle\Annotations\Dto\Http\OnNull;
+use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Service\Resolver;
 
-use DM\DtoRequestBundle\Annotations\Dto\ProvideValidationGroups;
+use DM\DtoRequestBundle\Attributes\Dto\ProvideValidationGroups;
 use DM\DtoRequestBundle\Constraints as DtoAssert;
 use DM\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
 use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
@@ -96,7 +96,7 @@ class DtoResolverService implements DtoResolverInterface
                 $object,
                 array_map(
                     fn (ProvideValidationGroups $a) => $a->provider,
-                    $model->getDtoAnnotations(ProvideValidationGroups::class)
+                    $model->getDtoAttributes(ProvideValidationGroups::class)
                 )
             )
         );
@@ -194,7 +194,7 @@ class DtoResolverService implements DtoResolverInterface
                 $replacePath .= '.' . $property->getRealPath();
             }
 
-            if (null !== $property->getFindAnnotation()) {
+            if (null !== $property->getFindAttribute()) {
                 $this->processFind($request, $property, $object, $parentPath, $replaceParentPropertyPath);
             } elseif ($property instanceof DtoTypeModel) {
                 $this->processDto($request, $property, $object, $propertyPath, ltrim($replacePath, '.'));
@@ -312,7 +312,7 @@ class DtoResolverService implements DtoResolverInterface
         string $propertyPath,
         string $replacePath
     ): void {
-        $find = $property->getFindAnnotation();
+        $find = $property->getFindAttribute();
 
         // validate fields
         $visitedAnyRequestProps = false; // we cannot load the entity if there was no user input

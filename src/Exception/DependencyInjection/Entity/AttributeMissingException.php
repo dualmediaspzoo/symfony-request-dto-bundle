@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Exception\DependencyInjection\Entity;
 
-class AnnotationMissingException extends \Exception
+class AttributeMissingException extends \Exception
 {
     public function __construct(
         private readonly string $class,

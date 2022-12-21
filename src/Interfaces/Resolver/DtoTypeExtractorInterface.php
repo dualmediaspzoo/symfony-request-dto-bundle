@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Interfaces\Resolver;
 
-use DM\DtoRequestBundle\Annotations\Dto\Bag;
+use DM\DtoRequestBundle\Attributes\Dto\Bag;
 use DM\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
 use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;

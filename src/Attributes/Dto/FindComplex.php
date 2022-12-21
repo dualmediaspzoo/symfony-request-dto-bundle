@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Annotations\Dto;
+namespace DM\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
+use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 use DM\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
 use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
 use DM\DtoRequestBundle\Traits\Annotation\FieldTrait;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
  * @see ComplexLoaderInterface
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class FindComplex implements FindComplexInterface, DtoAnnotationInterface
+class FindComplex implements FindComplexInterface, DtoAttributeInterface
 {
     use FieldTrait;
     use ProviderTrait;

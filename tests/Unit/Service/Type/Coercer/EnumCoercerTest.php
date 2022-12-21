@@ -68,7 +68,7 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
         $enum = (new Property())
             ->setType('object')
             ->setFqcn(IntegerEnum::class)
-            ->addDtoAnnotation(new AllowEnum(['OTHER_KEY', 'LAST_KEY']));
+            ->addDtoAttribute(new AllowEnum(['OTHER_KEY', 'LAST_KEY']));
 
         $result = $this->service->coerce('something', $enum, 20);
         $this->assertEmpty($result->getViolations());
@@ -90,7 +90,7 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
         );
 
         // test the same but as keys
-        $enum->addDtoAnnotation(new FromKey());
+        $enum->addDtoAttribute(new FromKey());
 
         $result = $this->service->coerce('something', $enum, 'OTHER_KEY');
         $this->assertEmpty($result->getViolations());

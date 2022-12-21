@@ -1,9 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Annotations\Dto;
+namespace DM\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
+use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 
 /**
  * A date(-time) format annotation
@@ -13,7 +12,7 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
  * @see https://www.php.net/manual/en/datetime.createfromformat.php Allowed date formats
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class Format implements DtoAnnotationInterface
+class Format implements DtoAttributeInterface
 {
     public function __construct(
         public readonly string|null $format = null

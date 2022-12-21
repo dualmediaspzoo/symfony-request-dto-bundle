@@ -11,40 +11,23 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 class CoerceResult
 {
     /**
-     * @var T|array<int, T>
-     */
-    private $value;
-
-    /**
-     * @phpstan-ignore-next-line
-     */
-    private ConstraintViolationListInterface $violations;
-
-    /**
      * @param T|array<int, T> $value
-     * @phpstan-ignore-next-line
-     * @param ConstraintViolationListInterface|null $violations
+     * @param ConstraintViolationListInterface $violations
      */
     public function __construct(
-        $value,
-        ?ConstraintViolationListInterface $violations = null
+        private readonly mixed $value,
+        private readonly ConstraintViolationListInterface $violations = new ConstraintViolationList()
     ) {
-        $this->value = $value;
-        $this->violations = $violations ?? new ConstraintViolationList();
     }
 
     /**
      * @return T|array<int, T>
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
 
-    /**
-     * @phpstan-ignore-next-line
-     * @return ConstraintViolationListInterface
-     */
     public function getViolations(): ConstraintViolationListInterface
     {
         return $this->violations;

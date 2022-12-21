@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Annotations\Dto;
+namespace DM\DtoRequestBundle\Attributes\Dto;
 
 use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 

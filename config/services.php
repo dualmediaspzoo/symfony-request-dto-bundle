@@ -102,8 +102,7 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->alias(DtoTypeExtractorInterface::class, DtoTypeExtractorHelper::class);
     $services->set(DtoTypeExtractorHelper::class)
-        ->arg(0, new Reference('property_info'))
-        ->arg(1, new Reference('annotation_reader'));
+        ->arg(0, new Reference('property_info'));
 
     $services->alias(DtoResolverInterface::class, DtoResolverService::class);
     $services->set(DtoResolverService::class)

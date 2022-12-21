@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Traits\Annotation;
 
-use DM\DtoRequestBundle\Annotations\Dto\Type;
+use DM\DtoRequestBundle\Attributes\Dto\Type;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
 

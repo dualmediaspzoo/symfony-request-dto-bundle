@@ -322,7 +322,7 @@ class DtoOADescriber implements RouteDescriberInterface
                 $this->httpActions[] = $item->getHttpAction();
             }
 
-            if (null !== ($find = $item->getFindAnnotation())) {
+            if (null !== ($find = $item->getFindAttribute())) {
                 // only non-dynamic fields are visible here because of how the type extractor works
                 /** @var PropertyTypeModel $field */
                 foreach ($item as $key => $field) {
