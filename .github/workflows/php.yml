@@ -100,9 +100,10 @@ jobs:
 
   test:
     strategy:
-      include:
-        - symfony-version: 5.4
-          php-version: 8.1
+      matrix:
+        include:
+          - symfony-version: 5.4
+            php-version: 8.1
 
     runs-on: ubuntu-latest
     needs:
