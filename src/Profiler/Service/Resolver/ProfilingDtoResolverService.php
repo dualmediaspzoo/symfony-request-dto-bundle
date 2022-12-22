@@ -9,7 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
- * @extends AbstractWrapper<DtoInterface>
+ * @template T of DtoInterface
+ *
+ * @extends AbstractWrapper<T>
+ * @implements DtoResolverInterface<T>
  */
 class ProfilingDtoResolverService extends AbstractWrapper implements DtoResolverInterface
 {

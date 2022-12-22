@@ -37,7 +37,7 @@ class DynamicResolverService implements ResolverServiceInterface
 
     public function resolveParameter(
         string $name
-    ) {
+    ): mixed {
         foreach ($this->resolvers as $resolver) {
             if (in_array($name, $resolver->getSupportedParameters())) {
                 return $resolver->resolveParameter($name);

@@ -7,11 +7,12 @@ use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @template T of DtoInterface
+ */
 interface DtoResolverInterface
 {
     /**
-     * @template T of DtoInterface
-     *
      * @param Request $request
      * @param class-string<T> $class
      *

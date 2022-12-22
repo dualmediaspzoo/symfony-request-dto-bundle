@@ -7,6 +7,7 @@ use DM\DtoRequestBundle\Constraints as DtoAssert;
 use DM\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
 use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
 use DM\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
+use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use DM\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
 use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
@@ -28,6 +29,11 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template T of DtoInterface
+ *
+ * @implements DtoResolverInterface<T>
+ */
 class DtoResolverService implements DtoResolverInterface
 {
     private TypeValidationInterface $validationHelper;
@@ -67,12 +73,11 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
-     * @template T of DtoInterface
-     *
      * @param Request $request
      * @param class-string<T> $class
      *
      * @return T
+     *
      * @throws InvalidTypeCountException
      * @throws ParameterNotSupportedException
      *
@@ -158,8 +163,6 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
-     * @template T of DtoInterface
-     *
      * @param Request $request
      * @param class-string<T> $class
      * @param DtoTypeModel $model
@@ -168,6 +171,7 @@ class DtoResolverService implements DtoResolverInterface
      * @param DtoInterface|null $parent
      *
      * @return T
+     *
      * @throws InvalidTypeCountException
      * @throws ParameterNotSupportedException
      *
@@ -245,7 +249,7 @@ class DtoResolverService implements DtoResolverInterface
         string $propertyPath,
         string $replacePath
     ): void {
-        /** @var class-string<DtoInterface> $childClass */
+        /** @var class-string<T> $childClass */
         $childClass = $property->getFqcn();
 
         if ($property->isCollection()) {
@@ -263,7 +267,7 @@ class DtoResolverService implements DtoResolverInterface
 
                     return;
                 }
-                $count = count($tmp);
+                $count = count($tmp); // @phpstan-ignore-line
 
                 for ($i = 0; $i < $count; $i++) {
                     $child = $this->internalResolve(
@@ -312,6 +316,7 @@ class DtoResolverService implements DtoResolverInterface
         string $propertyPath,
         string $replacePath
     ): void {
+        /** @var FindInterface $find */
         $find = $property->getFindAttribute();
 
         // validate fields
@@ -366,7 +371,7 @@ class DtoResolverService implements DtoResolverInterface
         $finalConstraints = [];
 
         foreach ($inputPaths as $key => $path) {
-            $finalConstraints[$path] = $property[$key]->getConstraints();
+            $finalConstraints[$path] = $property[$key]?->getConstraints() ?? [];
         }
 
         if (!empty($finalConstraints)) {
@@ -460,6 +465,6 @@ class DtoResolverService implements DtoResolverInterface
             return $value;
         }
 
-        return $value[0] ?? null; // special header handling
+        return $value[0] ?? null; // special header handling @phpstan-ignore-line
     }
 }

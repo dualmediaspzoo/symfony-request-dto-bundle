@@ -53,7 +53,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 
         $dto = new Dto();
 
-        foreach ($this->propertyInfoExtractor->getProperties($fqcn) as $property) {
+        foreach ($this->propertyInfoExtractor->getProperties($fqcn) ?? [] as $property) {
             if (!$this->propertyInfoExtractor->isWritable($fqcn, $property)) { // we won't be able to do anything with this anyway
                 continue;
             }
@@ -69,7 +69,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 
             $types = $this->propertyInfoExtractor->getTypes($fqcn, $property);
 
-            if (1 !== count($types)) {
+            if (1 !== count($types ?? [])) {
                 throw new InvalidTypeCountException(sprintf(
                     "Cannot deduct types with multiple specified types for property %s in class %s",
                     $property,
@@ -79,7 +79,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 
             $propertyClass = $this->getClass($types[0]);
 
-            if (is_subclass_of($propertyClass, DtoInterface::class)) {
+            if (null !== $propertyClass && is_subclass_of($propertyClass, DtoInterface::class)) {
                 /** @noinspection PhpUnhandledExceptionInspection */
                 $model = $this->extract(new \ReflectionClass($propertyClass), $root);
             } else {
@@ -144,13 +144,14 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
     ): ?string {
         return !$type->isCollection() ?
             $type->getClassName() :
-            (null !== $type->getCollectionValueType() ? $type->getCollectionValueType()->getClassName() : null);
+            ($type->getCollectionValueTypes()[0] ?? null)?->getClassName() ?? null;
     }
 
     private function getType(
         Type $type
     ): ?string {
-        return !$type->isCollection() ? $type->getBuiltinType() :
-            (null !== $type->getCollectionValueType() ? $type->getCollectionValueType()->getBuiltinType() : null);
+        return !$type->isCollection() ?
+            $type->getBuiltinType() :
+            ($type->getCollectionValueTypes()[0] ?? null)?->getBuiltinType() ?? null;
     }
 }

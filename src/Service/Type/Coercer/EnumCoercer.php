@@ -60,7 +60,7 @@ class EnumCoercer implements CoercerInterface
 
         if (!$property->isCollection()) {
             return new CoerceResult(
-                0 === $violations->count() ? $this->createEnum($value) : null,
+                0 === $violations->count() ? $this->createEnum($value) : null, // @phpstan-ignore-line
                 $violations
             );
         }

@@ -57,7 +57,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
                 $value[$index] = $time;
             }
         } else {
-            if (null === $value || false === ($time = \DateTimeImmutable::createFromFormat($format, $value))) {
+            if (null === $value || false === ($time = \DateTimeImmutable::createFromFormat($format, $value))) { // @phpstan-ignore-line
                 $value = null;
             } else {
                 $value = $time;

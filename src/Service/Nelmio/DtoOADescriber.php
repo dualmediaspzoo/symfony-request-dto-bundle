@@ -61,7 +61,7 @@ class DtoOADescriber implements RouteDescriberInterface
     }
 
     /**
-     * @param \ReflectionParameter[] $parameters
+     * @param list<\ReflectionParameter> $parameters
      * @param OpenApi $api
      * @param Route $route
      * @param \ReflectionMethod $reflectionMethod
@@ -77,8 +77,9 @@ class DtoOADescriber implements RouteDescriberInterface
         $bags = [];
 
         foreach ($parameters as $parameter) {
+            // todo: some better error catching here would be nice
             $bags = DtoUtil::mergeRecursively($bags, $this->getClassBags(
-                $this->typeExtractorHelper->extract($parameter->getClass())
+                $this->typeExtractorHelper->extract(new \ReflectionClass($parameter->getType()->getName())) // @phpstan-ignore-line
             ));
         }
 
@@ -382,11 +383,11 @@ class DtoOADescriber implements RouteDescriberInterface
         string $path,
         PropertyTypeModel $model
     ): void {
-        if (!array_key_exists($model->getBag()->bag, $bags)) {
-            $bags[$model->getBag()->bag] = [];
+        if (!array_key_exists($model->getBag()->bag->value, $bags)) {
+            $bags[$model->getBag()->bag->value] = [];
         }
 
-        $selected = &$bags[$model->getBag()->bag];
+        $selected = &$bags[$model->getBag()->bag->value];
 
         foreach (explode('.', $path) as $index) {
             if (!array_key_exists($index, $selected)) {
@@ -424,7 +425,7 @@ class DtoOADescriber implements RouteDescriberInterface
     /**
      * @param \ReflectionMethod $reflectionMethod
      *
-     * @return \ReflectionParameter[]
+     * @return list<\ReflectionParameter>
      */
     private function getDtoParameters(
         \ReflectionMethod $reflectionMethod
