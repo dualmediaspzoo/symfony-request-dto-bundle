@@ -97,7 +97,7 @@ class TypeValidationHelperTest extends KernelTestCase
         $this->assertCount(1, $list);
         $this->assertArrayHasKey(0, $values['value']);
         $this->assertInstanceOf(IntegerEnum::class, $values['value'][0]);
-        $this->assertEquals(IntegerEnum::INTEGER_KEY, $values['value'][0]->getValue());
+        $this->assertEquals(IntegerEnum::INTEGER_KEY->value, $values['value'][0]->value);
     }
 
     public function testIndexRemovalForSubtypesWithNoCoercion(): void
@@ -129,6 +129,6 @@ class TypeValidationHelperTest extends KernelTestCase
         $this->assertArrayHasKey(2, $values['value']);
 
         $this->assertInstanceOf(StringEnum::class, $values['value'][2]);
-        $this->assertEquals(StringEnum::STRING_KEY, $values['value'][2]->value);
+        $this->assertEquals(StringEnum::STRING_KEY->value, $values['value'][2]->value);
     }
 }

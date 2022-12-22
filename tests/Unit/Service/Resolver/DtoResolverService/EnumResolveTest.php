@@ -38,8 +38,8 @@ class EnumResolveTest extends KernelTestCase
         );
 
         $this->assertTrue($resolved->isValid());
-        $this->assertEquals(15, $resolved->int->getValue());
-        $this->assertEquals('not_string_key', $resolved->string->getValue());
+        $this->assertEquals(15, $resolved->int->value);
+        $this->assertEquals('not_string_key', $resolved->string->value);
         $this->assertEquals(['int', 'string'], $resolved->getVisited());
         $this->assertTrue($resolved->visited('int'));
         $this->assertTrue($resolved->visited('string'));
@@ -59,8 +59,8 @@ class EnumResolveTest extends KernelTestCase
         );
 
         $this->assertTrue($resolved->isValid());
-        $this->assertEquals(15, $resolved->int->getValue());
-        $this->assertEquals('not_string_key', $resolved->string->getValue());
+        $this->assertEquals(15, $resolved->int?->value);
+        $this->assertEquals('not_string_key', $resolved->string?->value);
         $this->assertEquals(['int', 'string'], $resolved->getVisited());
         $this->assertTrue($resolved->visited('int'));
         $this->assertTrue($resolved->visited('string'));
@@ -79,7 +79,7 @@ class EnumResolveTest extends KernelTestCase
         );
 
         $this->assertTrue($resolved->isValid());
-        $this->assertEquals(15, $resolved->int->getValue());
+        $this->assertEquals(15, $resolved->int?->value);
         $this->assertEquals(['int'], $resolved->getVisited());
         $this->assertTrue($resolved->visited('int'));
     }
@@ -98,7 +98,7 @@ class EnumResolveTest extends KernelTestCase
 
         $this->assertTrue($resolved->isValid());
         $this->assertTrue($resolved->visited('int'));
-        $this->assertEquals(15, $resolved->int->getValue());
+        $this->assertEquals(15, $resolved->int->value);
         $this->assertEquals(['int'], $resolved->getVisited());
     }
 
@@ -134,7 +134,7 @@ class EnumResolveTest extends KernelTestCase
 
         $this->assertTrue($resolved->isValid());
         $this->assertTrue($resolved->visited('int'));
-        $this->assertEquals(15, $resolved->int->getValue());
+        $this->assertEquals(15, $resolved->int->value);
         $this->assertEquals(['int'], $resolved->getVisited());
     }
 

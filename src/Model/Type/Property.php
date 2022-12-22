@@ -79,6 +79,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
     public function setFqcn(
         ?string $fqcn
     ): static {
+        $this->fqcn = $fqcn; // temporarily set this so checks can be non-repeating
         $this->fqcn = $this->validateClassFqcn($fqcn);
 
         return $this;
@@ -333,7 +334,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
          */
         if (null !== ($allowed = $this->getDtoAttributes(AllowEnum::class)[0] ?? null) &&
             !empty($allowed->allowed)) {
-            $enums = array_values(array_intersect($enums, $allowed->allowed));
+            $enums = $allowed->allowed;
         }
 
         return $this->hasDtoAttribute(FromKey::class) ?
