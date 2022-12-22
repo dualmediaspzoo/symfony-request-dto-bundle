@@ -433,9 +433,10 @@ class DtoOADescriber implements RouteDescriberInterface
         $parameters = [];
 
         foreach ($reflectionMethod->getParameters() as $parameter) {
-            if (null === $parameter->getClass() ||
-                DtoInterface::class === $parameter->getClass()->getName() ||
-                !is_subclass_of($parameter->getClass()->getName(), DtoInterface::class)) {
+            if (null === $parameter->getType() ||
+                $parameter->getType()->isBuiltin() ||
+                DtoInterface::class === $parameter->getType()->getName() ||
+                !is_subclass_of($parameter->getType()->getName(), DtoInterface::class)) {
                 continue;
             }
 

@@ -2,9 +2,6 @@
 
 namespace DM\DtoRequestBundle\Tests\Fixtures\Enum;
 
-/**
- * @psalm-immutable
- */
 enum IntegerEnum: int
 {
     public const INTEGER_KEY = 15;

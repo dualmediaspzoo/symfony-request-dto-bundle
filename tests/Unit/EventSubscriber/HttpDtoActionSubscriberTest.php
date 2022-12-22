@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Tests\Unit\EventSubscriber;
 
-use DM\DtoRequestBundle\Annotations\Dto\Http\OnNull;
+use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
 use DM\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
 use DM\DtoRequestBundle\Exception\Http\DtoHttpException;
 use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;

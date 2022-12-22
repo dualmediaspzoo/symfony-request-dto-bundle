@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Tests\Unit\Service\Http;
 
-use DM\DtoRequestBundle\Annotations\Dto\Http\OnNull;
+use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
 use DM\DtoRequestBundle\Service\Http\OnNullActionValidator;
 use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\HttpFoundation\Response;

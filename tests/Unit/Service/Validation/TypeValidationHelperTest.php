@@ -129,6 +129,6 @@ class TypeValidationHelperTest extends KernelTestCase
         $this->assertArrayHasKey(2, $values['value']);
 
         $this->assertInstanceOf(StringEnum::class, $values['value'][2]);
-        $this->assertEquals(StringEnum::STRING_KEY, $values['value'][2]->getValue());
+        $this->assertEquals(StringEnum::STRING_KEY, $values['value'][2]->value);
     }
 }

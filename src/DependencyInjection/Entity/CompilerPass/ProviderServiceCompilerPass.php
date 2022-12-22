@@ -60,6 +60,11 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
             }
             $arg[$id] = [];
 
+            $attributes = array_map(
+                fn (\ReflectionAttribute $a) => $a->newInstance(),
+                $attributes
+            );
+
             foreach ($attributes as $attribute) {
                 $arg[$id][] = [
                     new Reference($id),

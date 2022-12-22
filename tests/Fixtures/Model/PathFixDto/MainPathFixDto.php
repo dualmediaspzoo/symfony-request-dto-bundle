@@ -2,16 +2,14 @@
 
 namespace DM\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto;
 
-use DM\DtoRequestBundle\Annotations\Dto\Path;
+use DM\DtoRequestBundle\Attributes\Dto\Path;
 use DM\DtoRequestBundle\Model\AbstractDto;
 
 class MainPathFixDto extends AbstractDto
 {
     public ?PathFixDto $fix = null;
 
-    /**
-     * @Path("other_fix_path")
-     */
+    #[Path('other_fix_path')]
     public ?PathFixDto $pathFix = null;
 
     /**
@@ -20,8 +18,8 @@ class MainPathFixDto extends AbstractDto
     public array $nonFixArray = [];
 
     /**
-     * @Path("some_fix_path_array")
      * @var PathFixDto[]
      */
+    #[Path("some_fix_path_array")]
     public array $fixArray = [];
 }

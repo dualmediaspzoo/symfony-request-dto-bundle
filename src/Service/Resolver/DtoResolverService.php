@@ -452,14 +452,14 @@ class DtoResolverService implements DtoResolverInterface
         string $propertyPath
     ): mixed {
         if ('' === $propertyPath) {
-            return $request->{$property->getBag()->bag}->all();
+            return $request->{$property->getBag()->bag->value}->all();
         }
 
         if ($property->getBag()->bag->isHeaders()) {
             $propertyPath = mb_strtolower($propertyPath);
         }
 
-        $value = $this->propertyAccessor->getValue($request->{$property->getBag()->bag}->all(), $propertyPath);
+        $value = $this->propertyAccessor->getValue($request->{$property->getBag()->bag->value}->all(), $propertyPath);
 
         if (!$property->getBag()->bag->isHeaders()) {
             return $value;

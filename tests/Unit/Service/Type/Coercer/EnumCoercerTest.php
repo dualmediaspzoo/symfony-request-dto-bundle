@@ -2,8 +2,8 @@
 
 namespace DM\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Annotations\Dto\AllowEnum;
-use DM\DtoRequestBundle\Annotations\Dto\FromKey;
+use DM\DtoRequestBundle\Attributes\Dto\AllowEnum;
+use DM\DtoRequestBundle\Attributes\Dto\FromKey;
 use DM\DtoRequestBundle\Model\Type\Property;
 use DM\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
 use DM\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
