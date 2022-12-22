@@ -118,7 +118,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
             return 'string';
         }
 
-        return $this->fixOAType($this->getSubType()) ?? $this->fixOAType($this->getType());
+        return $this->fixOAType($this->getSubType()) ?? $this->fixOAType($this->getType()) ?? 'string';
     }
 
     public function setType(
@@ -300,7 +300,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
             return null;
         }
 
-        return (string)(new \ReflectionEnum($this->getFqcn()))->getBackingType();
+        return (string)(new \ReflectionEnum($this->getFqcn()))->getBackingType(); // @phpstan-ignore-line
     }
 
     public function isDate(): bool

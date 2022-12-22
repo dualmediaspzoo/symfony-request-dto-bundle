@@ -33,7 +33,7 @@ class ComplexLoaderService implements ComplexLoaderServiceInterface
         string $fqcn,
         FindComplexInterface $find,
         array $input
-    ) {
+    ): mixed {
         if (!array_key_exists($find->getService(), $this->loaders)) {
             throw new ComplexLoaderNotFoundException(sprintf(
                 "Attempted to use loader with id %s",

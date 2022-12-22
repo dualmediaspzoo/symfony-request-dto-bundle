@@ -8,6 +8,9 @@ use DM\DtoRequestBundle\Model\Type\Dto;
 use DM\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 
+/**
+ * @extends AbstractWrapper<Dto>
+ */
 class ProfilingDtoTypeExtractorService extends AbstractWrapper implements DtoTypeExtractorInterface
 {
     private DtoTypeExtractorInterface $dtoTypeExtractor;

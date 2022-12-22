@@ -7,6 +7,9 @@ use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 use DM\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 
+/**
+ * @extends AbstractWrapper<ProviderInterface>
+ */
 class ProfilingEntityProviderService extends AbstractWrapper implements ProviderServiceInterface
 {
     private ProviderServiceInterface $providerService;

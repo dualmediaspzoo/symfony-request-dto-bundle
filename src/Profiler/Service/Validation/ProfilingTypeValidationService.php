@@ -7,6 +7,9 @@ use DM\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
+/**
+ * @extends AbstractWrapper<ConstraintViolationListInterface>
+ */
 class ProfilingTypeValidationService extends AbstractWrapper implements TypeValidationInterface
 {
     private TypeValidationInterface $validation;
