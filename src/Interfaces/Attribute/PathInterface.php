@@ -13,5 +13,5 @@ interface PathInterface
      *
      * @return string|null
      */
-    public function getPath(): ?string;
+    public function getPath(): string|null;
 }
