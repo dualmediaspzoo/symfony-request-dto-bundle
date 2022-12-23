@@ -433,11 +433,18 @@ class DtoOADescriber implements RouteDescriberInterface
         $parameters = [];
 
         foreach ($reflectionMethod->getParameters() as $parameter) {
-            if (null === $parameter->getType() ||
-                $parameter->getType()->isBuiltin() ||
-                DtoInterface::class === $parameter->getType()->getName() ||
-                !is_subclass_of($parameter->getType()->getName(), DtoInterface::class)) {
+            if (null === ($type = $parameter->getType())) {
                 continue;
+            }
+
+            if ($type instanceof \ReflectionNamedType) {
+                if ($type->isBuiltin() ||
+                    DtoInterface::class === $type->getName() ||
+                    !is_subclass_of($type->getName(), DtoInterface::class)) {
+                    continue;
+                }
+            } else {
+                throw new \RuntimeException('Invalid type'); // todo: add support for union types?
             }
 
             $parameters[] = $parameter;

@@ -48,7 +48,6 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
 
             /** @var \ReflectionClass $reflection */
             $reflection = $container->getReflectionClass($def->getClass());
-            /** @var EntityProvider[] $attributes */
             $attributes = $reflection->getAttributes(EntityProvider::class);
 
             if (empty($attributes)) {
@@ -60,6 +59,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
             }
             $arg[$id] = [];
 
+            /** @var list<EntityProvider> $attributes */
             $attributes = array_map(
                 fn (\ReflectionAttribute $a) => $a->newInstance(),
                 $attributes
