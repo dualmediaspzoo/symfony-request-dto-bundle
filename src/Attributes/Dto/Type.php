@@ -26,13 +26,14 @@ class Type
         if (null !== $format || in_array($type, ['date', 'datetime'])) { // fake-ish type
             $format ??= new Format();
 
-            $this->type = 'object';
-            $this->subType = 'string';
+            $type = 'object';
+            $subType = 'string';
         } else {
-            $this->type = in_array($type, ['int', 'string', 'float', 'bool']) ? $type : 'string';
-            $this->subType = $subType;
+            $type = in_array($type, ['int', 'string', 'float', 'bool']) ? $type : 'string';
         }
 
+        $this->type = $type;
+        $this->subType = $subType;
         $this->format = $format;
     }
 }
