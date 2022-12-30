@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver;
 
-use DM\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
-use DM\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
-use DM\DtoRequestBundle\Service\Resolver\DynamicResolverService;
-use DM\DtoRequestBundle\Tests\Model\ArrayIterator;
-use DM\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
+use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
+use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
+use DualMedia\DtoRequestBundle\Tests\Model\ArrayIterator;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class DynamicResolverServiceTest extends TestCase

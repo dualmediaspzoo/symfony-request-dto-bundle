@@ -1,14 +1,14 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Attributes\Dto\AllowEnum;
-use DM\DtoRequestBundle\Attributes\Dto\FromKey;
-use DM\DtoRequestBundle\Model\Type\Property;
-use DM\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
-use DM\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
-use DM\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
-use DM\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
+use DualMedia\DtoRequestBundle\Attributes\Dto\AllowEnum;
+use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
 use Symfony\Component\Validator\Constraints\Choice;
 
 class EnumCoercerTest extends AbstractMinimalCoercerTestCase

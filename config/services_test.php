@@ -1,22 +1,22 @@
 <?php
 
-use DM\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
-use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
-use DM\DtoRequestBundle\Service\Http\OnNullActionValidator;
-use DM\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
-use DM\DtoRequestBundle\Service\Resolver\DtoResolverService;
-use DM\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
-use DM\DtoRequestBundle\Service\Type\Coercer\BoolCoercer;
-use DM\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
-use DM\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
-use DM\DtoRequestBundle\Service\Type\Coercer\FloatCoercer;
-use DM\DtoRequestBundle\Service\Type\Coercer\IntCoercer;
-use DM\DtoRequestBundle\Service\Type\Coercer\StringCoercer;
-use DM\DtoRequestBundle\Service\Type\Coercer\UploadedFileCoercer;
-use DM\DtoRequestBundle\Service\Type\CoercerService;
-use DM\DtoRequestBundle\Service\Validation\TypeValidationHelper;
-use DM\DtoRequestBundle\Tests\Service\Entity\DummyModelProvider;
+use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
+use DualMedia\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
+use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
+use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\BoolCoercer;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\FloatCoercer;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\IntCoercer;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\StringCoercer;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\UploadedFileCoercer;
+use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
+use DualMedia\DtoRequestBundle\Service\Validation\TypeValidationHelper;
+use DualMedia\DtoRequestBundle\Tests\Service\Entity\DummyModelProvider;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 

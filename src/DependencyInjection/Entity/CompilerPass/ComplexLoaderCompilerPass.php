@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
+namespace DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
 
-use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\Service\Entity\ComplexLoaderService;
+use DualMedia\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;

@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Service\Type\Coercer\BoolCoercer;
-use DM\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractBasicCoercerTestCase;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\BoolCoercer;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractBasicCoercerTestCase;
 
 class BoolCoercerTest extends AbstractBasicCoercerTestCase
 {

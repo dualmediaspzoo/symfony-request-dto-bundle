@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Dynamic;
+namespace DualMedia\DtoRequestBundle\Interfaces\Dynamic;
 
-use DM\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
+use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
 
 /**
  * This interface should be implemented on objects which you wish to provide dynamically by the application

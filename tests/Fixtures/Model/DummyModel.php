@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Model;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model;
 
 class DummyModel
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces;
+namespace DualMedia\DtoRequestBundle\Interfaces;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
-use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 

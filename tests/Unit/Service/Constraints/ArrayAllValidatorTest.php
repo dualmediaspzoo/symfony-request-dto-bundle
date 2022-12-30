@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Constraints;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Constraints;
 
-use DM\DtoRequestBundle\Constraints\ArrayAll;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Constraints\ArrayAll;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

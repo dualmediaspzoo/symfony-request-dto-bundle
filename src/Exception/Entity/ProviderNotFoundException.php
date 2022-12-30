@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Exception\Entity;
+namespace DualMedia\DtoRequestBundle\Exception\Entity;
 
 abstract class ProviderNotFoundException extends \RuntimeException
 {

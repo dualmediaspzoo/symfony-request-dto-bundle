@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Enum;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Enum;
 
 enum IntegerEnum: int
 {

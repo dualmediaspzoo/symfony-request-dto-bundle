@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Exception\DependencyInjection\Entity;
+namespace DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity;
 
 class DuplicateDefaultProviderException extends \RuntimeException
 {

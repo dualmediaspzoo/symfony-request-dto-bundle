@@ -1,14 +1,14 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
 
-use DM\DtoRequestBundle\Service\Resolver\DtoResolverService;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumByKeysDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumQueryDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\LimitedEnumByKeyDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\LimitedEnumDto;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumByKeysDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumQueryDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\LimitedEnumByKeyDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\LimitedEnumDto;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

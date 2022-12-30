@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Entity;
+namespace DualMedia\DtoRequestBundle\Interfaces\Entity;
 
-use DM\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\ProviderNotFoundException;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\ProviderNotFoundException;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
 
 /**
  * Allows loading objects via {@link FindComplexInterface}

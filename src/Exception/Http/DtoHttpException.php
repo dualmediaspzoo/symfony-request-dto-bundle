@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Exception\Http;
+namespace DualMedia\DtoRequestBundle\Exception\Http;
 
-use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**

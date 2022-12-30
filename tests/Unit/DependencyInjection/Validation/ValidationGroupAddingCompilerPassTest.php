@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\DependencyInjection\Validation;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Validation;
 
-use DM\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
-use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
-use DM\DtoRequestBundle\Service\Validation\GroupProviderService;
-use DM\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
+use DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
+use DualMedia\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
+use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

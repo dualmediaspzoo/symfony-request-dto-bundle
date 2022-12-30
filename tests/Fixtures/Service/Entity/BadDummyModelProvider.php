@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Service\Entity;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity;
 
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 
 class BadDummyModelProvider implements ProviderInterface
 {

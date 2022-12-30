@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Exception\Entity;
+namespace DualMedia\DtoRequestBundle\Exception\Entity;
 
 /**
  * Thrown when the service id for the complex loader cannot be found

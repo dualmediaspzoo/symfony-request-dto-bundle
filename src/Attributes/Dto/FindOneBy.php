@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
-use DM\DtoRequestBundle\Traits\Annotation\FieldTrait;
-use DM\DtoRequestBundle\Traits\Annotation\ProviderTrait;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Traits\Annotation\FieldTrait;
+use DualMedia\DtoRequestBundle\Traits\Annotation\ProviderTrait;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]

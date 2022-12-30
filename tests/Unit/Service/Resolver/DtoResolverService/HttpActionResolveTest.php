@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
 
-use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
-use DM\DtoRequestBundle\Service\Resolver\DtoResolverService;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\FindOneOnNullDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\OnNullDto;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\FindOneOnNullDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\OnNullDto;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class HttpActionResolveTest extends KernelTestCase

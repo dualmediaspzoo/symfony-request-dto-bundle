@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto;
 
-use DM\DtoRequestBundle\Attributes\Dto\Path;
-use DM\DtoRequestBundle\Model\AbstractDto;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Path;
+use DualMedia\DtoRequestBundle\Model\AbstractDto;
 
 class RequestEdgeCaseDto extends AbstractDto
 {

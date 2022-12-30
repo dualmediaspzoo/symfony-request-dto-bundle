@@ -1,13 +1,13 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Entity;
+namespace DualMedia\DtoRequestBundle\Service\Entity;
 
-use DM\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 
 class ComplexLoaderService implements ComplexLoaderServiceInterface
 {

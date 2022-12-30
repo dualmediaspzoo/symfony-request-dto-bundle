@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\DependencyInjection\Shared;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Shared;
 
-use DM\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
-use DM\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
+use DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

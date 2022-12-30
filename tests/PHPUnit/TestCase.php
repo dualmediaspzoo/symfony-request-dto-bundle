@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\PHPUnit;
+namespace DualMedia\DtoRequestBundle\Tests\PHPUnit;
 
-use DM\DtoRequestBundle\Tests\Traits\Unit\BoundCallableTrait;
-use DM\DtoRequestBundle\Tests\Traits\Unit\MockWithCustomMethodsTrait;
+use DualMedia\DtoRequestBundle\Tests\Traits\Unit\BoundCallableTrait;
+use DualMedia\DtoRequestBundle\Tests\Traits\Unit\MockWithCustomMethodsTrait;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 class TestCase extends PHPUnitTestCase

@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Event;
+namespace DualMedia\DtoRequestBundle\Event;
 
-use DM\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**

@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\PHPUnit;
+namespace DualMedia\DtoRequestBundle\Tests\PHPUnit;
 
-use DM\DtoRequestBundle\Tests\Traits\Unit\BoundCallableTrait;
-use DM\DtoRequestBundle\Tests\Traits\Unit\KernelAccessTrait;
-use DM\DtoRequestBundle\Tests\Traits\Unit\MockWithCustomMethodsTrait;
+use DualMedia\DtoRequestBundle\Tests\Traits\Unit\BoundCallableTrait;
+use DualMedia\DtoRequestBundle\Tests\Traits\Unit\KernelAccessTrait;
+use DualMedia\DtoRequestBundle\Tests\Traits\Unit\MockWithCustomMethodsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as SymfonyTestCase;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

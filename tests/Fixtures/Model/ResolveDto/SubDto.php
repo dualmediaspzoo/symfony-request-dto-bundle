@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto;
 
-use DM\DtoRequestBundle\Attributes\Dto\Path;
-use DM\DtoRequestBundle\Model\AbstractDto;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Path;
+use DualMedia\DtoRequestBundle\Model\AbstractDto;
 
 class SubDto extends AbstractDto
 {

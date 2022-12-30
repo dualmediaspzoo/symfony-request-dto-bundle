@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Service\Entity;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity;
 
-use DM\DtoRequestBundle\Attributes\Entity\EntityProvider;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 /**
  * @see DummyModel

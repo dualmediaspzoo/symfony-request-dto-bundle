@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Traits\Annotation;
+namespace DualMedia\DtoRequestBundle\Traits\Annotation;
 
-use DM\DtoRequestBundle\Attributes\Dto\Type;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Type;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
 

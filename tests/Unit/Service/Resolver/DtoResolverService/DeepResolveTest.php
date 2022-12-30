@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
 
-use DM\DtoRequestBundle\Service\Resolver\DtoResolverService;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\DeepDto;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\DeepDto;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class DeepResolveTest extends KernelTestCase

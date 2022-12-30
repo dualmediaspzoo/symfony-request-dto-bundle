@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Nelmio;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Nelmio;
 
-use DM\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\MainPathFixDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\MainPathFixDto;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DescriptorTest

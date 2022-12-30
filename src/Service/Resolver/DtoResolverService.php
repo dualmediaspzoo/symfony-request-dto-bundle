@@ -1,24 +1,24 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Resolver;
+namespace DualMedia\DtoRequestBundle\Service\Resolver;
 
-use DM\DtoRequestBundle\Attributes\Dto\ProvideValidationGroups;
-use DM\DtoRequestBundle\Constraints as DtoAssert;
-use DM\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
-use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
-use DM\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
-use DM\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
-use DM\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
-use DM\DtoRequestBundle\Model\Type\Dto as DtoTypeModel;
-use DM\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
+use DualMedia\DtoRequestBundle\Attributes\Dto\ProvideValidationGroups;
+use DualMedia\DtoRequestBundle\Constraints as DtoAssert;
+use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
+use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Model\Type\Dto as DtoTypeModel;
+use DualMedia\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;

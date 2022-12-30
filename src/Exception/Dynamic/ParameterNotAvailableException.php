@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Exception\Dynamic;
+namespace DualMedia\DtoRequestBundle\Exception\Dynamic;
 
 /**
  * Thrown when a parameter is not currently available for access

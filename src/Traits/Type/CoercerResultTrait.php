@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Traits\Type;
+namespace DualMedia\DtoRequestBundle\Traits\Type;
 
-use DM\DtoRequestBundle\Model\Type\CoerceResult;
-use DM\DtoRequestBundle\Model\Type\Property;
-use DM\DtoRequestBundle\Util;
+use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\ConstraintViolationInterface;

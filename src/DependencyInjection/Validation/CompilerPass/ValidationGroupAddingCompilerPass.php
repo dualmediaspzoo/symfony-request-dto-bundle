@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\DependencyInjection\Validation\CompilerPass;
+namespace DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass;
 
-use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\Service\Validation\GroupProviderService;
+use DualMedia\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;

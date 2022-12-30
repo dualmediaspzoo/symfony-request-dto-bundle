@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Attribute;
+namespace DualMedia\DtoRequestBundle\Interfaces\Attribute;
 
-use DM\DtoRequestBundle\Attributes\Dto\Type;
-use DM\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Type;
+use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**

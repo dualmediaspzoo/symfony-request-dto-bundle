@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Model\HttpAction;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction;
 
-use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
-use DM\DtoRequestBundle\Model\AbstractDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Model\AbstractDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 use Symfony\Component\HttpFoundation\Response;
 
 class OnNullDto extends AbstractDto

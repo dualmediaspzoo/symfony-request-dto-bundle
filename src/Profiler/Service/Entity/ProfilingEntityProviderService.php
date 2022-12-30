@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Profiler\Service\Entity;
+namespace DualMedia\DtoRequestBundle\Profiler\Service\Entity;
 
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
-use DM\DtoRequestBundle\Profiler\AbstractWrapper;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**

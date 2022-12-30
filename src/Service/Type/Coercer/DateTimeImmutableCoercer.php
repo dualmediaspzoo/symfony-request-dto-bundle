@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Type\Coercer;
+namespace DualMedia\DtoRequestBundle\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Attributes\Dto\Format;
-use DM\DtoRequestBundle\Interfaces\Type\CoercerInterface;
-use DM\DtoRequestBundle\Model\Type\CoerceResult;
-use DM\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
+use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

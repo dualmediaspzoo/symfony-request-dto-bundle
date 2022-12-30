@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Validation;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Validation;
 
-use DM\DtoRequestBundle\Model\Type\Property;
-use DM\DtoRequestBundle\Service\Validation\TypeValidationHelper;
-use DM\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
-use DM\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Service\Validation\TypeValidationHelper;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 
 /**
  * @group type-validation

@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Attributes\Dto\Http;
+namespace DualMedia\DtoRequestBundle\Attributes\Dto\Http;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DM\DtoRequestBundle\Traits\Annotation\HttpActionTrait;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Traits\Annotation\HttpActionTrait;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Entity;
+namespace DualMedia\DtoRequestBundle\Interfaces\Entity;
 
-use DM\DtoRequestBundle\Attributes\Dto\FindComplex;
+use DualMedia\DtoRequestBundle\Attributes\Dto\FindComplex;
 
 /**
  * This interface must be implemented on services that later will be used with {@link FindComplex}

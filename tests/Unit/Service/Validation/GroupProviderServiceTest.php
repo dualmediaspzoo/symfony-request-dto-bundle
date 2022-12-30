@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Validation;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Validation;
 
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
-use DM\DtoRequestBundle\Service\Validation\GroupProviderService;
-use DM\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 

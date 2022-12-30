@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Http;
+namespace DualMedia\DtoRequestBundle\Interfaces\Http;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 
 /**
  * Checks if an action is supported and should be acted upon (if nothing else is found)

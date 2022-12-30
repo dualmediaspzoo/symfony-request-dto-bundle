@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 
 /**
  * This annotation provides a simple way of declaring type safety for {@link FindInterface} annotations

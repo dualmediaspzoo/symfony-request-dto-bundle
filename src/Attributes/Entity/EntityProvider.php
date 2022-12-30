@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Attributes\Entity;
+namespace DualMedia\DtoRequestBundle\Attributes\Entity;
 
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 
 /**
  * Allows setting which entity is provided by the provider

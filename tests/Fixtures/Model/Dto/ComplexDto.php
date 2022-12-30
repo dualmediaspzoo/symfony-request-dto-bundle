@@ -1,13 +1,13 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Model\Dto;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto;
 
-use DM\DtoRequestBundle\Attributes\Dto\FindOneBy;
-use DM\DtoRequestBundle\Attributes\Dto\Type;
-use DM\DtoRequestBundle\Model\AbstractDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
-use DM\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use DualMedia\DtoRequestBundle\Attributes\Dto\FindOneBy;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Type;
+use DualMedia\DtoRequestBundle\Model\AbstractDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 class ComplexDto extends AbstractDto
 {

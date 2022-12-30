@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Validation;
+namespace DualMedia\DtoRequestBundle\Service\Validation;
 
-use DM\DtoRequestBundle\Interfaces\Type\CoercionServiceInterface;
-use DM\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
-use DM\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
+use DualMedia\DtoRequestBundle\Interfaces\Type\CoercionServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 

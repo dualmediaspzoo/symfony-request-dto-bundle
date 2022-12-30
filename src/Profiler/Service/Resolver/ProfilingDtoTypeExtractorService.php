@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Profiler\Service\Resolver;
+namespace DualMedia\DtoRequestBundle\Profiler\Service\Resolver;
 
-use DM\DtoRequestBundle\Attributes\Dto\Bag;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
-use DM\DtoRequestBundle\Model\Type\Dto;
-use DM\DtoRequestBundle\Profiler\AbstractWrapper;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Model\Type\Dto;
+use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**

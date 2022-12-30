@@ -1,15 +1,15 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Entity;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Entity;
 
-use DM\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
-use DM\DtoRequestBundle\Service\Entity\ComplexLoaderService;
-use DM\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ComplexLoaderServiceTest extends TestCase

@@ -1,17 +1,17 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\DependencyInjection\Entity;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Entity;
 
-use DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderServiceCompilerPass;
-use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
-use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
-use DM\DtoRequestBundle\Service\Entity\EntityProviderService;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
-use DM\DtoRequestBundle\Tests\Fixtures\Service\Entity\BadDummyModelProvider;
-use DM\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
-use DM\DtoRequestBundle\Tests\Fixtures\Service\Entity\NonDefaultDummyModelProvider;
+use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderServiceCompilerPass;
+use DualMedia\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
+use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\BadDummyModelProvider;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\NonDefaultDummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

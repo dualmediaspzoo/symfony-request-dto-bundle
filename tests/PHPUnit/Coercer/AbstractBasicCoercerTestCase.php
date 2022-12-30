@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\PHPUnit\Coercer;
+namespace DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer;
 
 abstract class AbstractBasicCoercerTestCase extends AbstractCoercerTestCase
 {

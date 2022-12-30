@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Attribute;
+namespace DualMedia\DtoRequestBundle\Interfaces\Attribute;
 
 /**
  * Same as {@link FindInterface}, but has a callback method

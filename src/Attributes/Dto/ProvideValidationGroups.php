@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
 
 /**
  * This annotation should be put on {@link DtoInterface} objects, which wish to specify what groups they'll use
