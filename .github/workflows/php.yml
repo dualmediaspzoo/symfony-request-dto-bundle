@@ -17,22 +17,27 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+
+      - name: PHP Setup
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          ini-values: pcov.directory=.
+          coverage: pcov
+          tools: composer
 
       - name: Setup flex
-        uses: php-actions/composer@v6
-        with:
-          php_version: ${{ matrix.php-version }}
-          command: global require --no-progress --no-scripts --no-plugins symfony/flex
+        run: |
+          composer global require --no-progress --no-scripts --no-plugins symfony/flex && composer global config --no-plugins allow-plugins.symfony/flex true
 
-      - uses: php-actions/composer@v6
+      - name: Install
         env:
           SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
-        with:
-          php_version: ${{ matrix.php-version }}
-          command: install --no-interaction --no-scripts --ansi --no-progress --prefer-dist
+        run: |
+          composer install --no-interaction --no-scripts --ansi --no-progress --prefer-dist
 
   phpstan:
     strategy:
@@ -51,9 +56,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
 
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
@@ -61,6 +66,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           ini-values: pcov.directory=.
           coverage: pcov
+          tools: composer
 
       - name: PHPStan
         run: |
@@ -83,9 +89,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
 
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
@@ -93,6 +99,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           ini-values: pcov.directory=.
           coverage: pcov
+          tools: composer
 
       - name: PHP-CS-Fixer
         run: |
@@ -117,9 +124,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
 
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
@@ -127,6 +134,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           ini-values: pcov.directory=.
           coverage: pcov
+          tools: composer
 
       - name: PHPUnit
         run: |
