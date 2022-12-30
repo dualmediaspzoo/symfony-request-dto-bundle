@@ -2,7 +2,8 @@
 
 namespace DM\DtoRequestBundle\Tests\Unit\Annotations\Dto;
 
-use DM\DtoRequestBundle\Annotations\Dto\Bag;
+use DM\DtoRequestBundle\Attributes\Dto\Bag;
+use DM\DtoRequestBundle\Enum\BagEnum;
 use DM\DtoRequestBundle\Tests\PHPUnit\TestCase;
 
 class BagTest extends TestCase
@@ -19,26 +20,15 @@ class BagTest extends TestCase
         string $bag,
         bool $isHeader = false
     ): void {
-        $annotation = new Bag($bag);
+        $annotation = new Bag(BagEnum::from($bag));
 
         $this->assertEquals(
             $bag,
-            $annotation->bag
+            $annotation->bag->value
         );
         $this->assertEquals(
             $isHeader,
-            $annotation->isHeader()
+            $annotation->bag->isHeaders()
         );
-    }
-
-    public function testInvalidValue(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(sprintf(
-            "Invalid value %s, expected one of %s",
-            "invalid",
-            implode(", ", Bag::ALLOWED_VALUES)
-        ));
-        new Bag("invalid");
     }
 }

@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Interfaces\Attribute;
 
-interface HttpActionInterface extends DtoAnnotationInterface
+interface HttpActionInterface extends DtoAttributeInterface
 {
     /**
      * Gets the exception http status code

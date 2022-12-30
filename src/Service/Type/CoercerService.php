@@ -9,10 +9,14 @@ use DM\DtoRequestBundle\Model\Type\Property;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template T
+ * @implements CoercionServiceInterface<T>
+ */
 class CoercerService implements CoercionServiceInterface
 {
     /**
-     * @var CoercerInterface[]
+     * @var list<CoercerInterface<T>>
      */
     private array $coercers;
     private ValidatorInterface $validator;
@@ -48,6 +52,9 @@ class CoercerService implements CoercionServiceInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
      */
     public function coerce(
         string $propertyPath,
@@ -61,7 +68,7 @@ class CoercerService implements CoercionServiceInterface
                 ->getViolations();
 
             if (0 !== $violations->count()) {
-                return new CoerceResult(
+                return new CoerceResult( // @phpstan-ignore-line
                     null,
                     $violations
                 );
@@ -73,7 +80,7 @@ class CoercerService implements CoercionServiceInterface
                 ->getViolations();
 
             if (0 !== $violations->count()) {
-                return new CoerceResult(
+                return new CoerceResult( // @phpstan-ignore-line
                     [],
                     $violations
                 );

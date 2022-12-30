@@ -9,9 +9,9 @@ trait ProviderTrait
      *
      * Leave as null to use the default provider, otherwise specify the id or FQCN
      */
-    public ?string $provider = null;
+    public string|null $provider = null;
 
-    public function getProviderId(): ?string
+    public function getProviderId(): string|null
     {
         return $this->provider;
     }

@@ -61,7 +61,7 @@ class DtoOADescriber implements RouteDescriberInterface
     }
 
     /**
-     * @param \ReflectionParameter[] $parameters
+     * @param list<\ReflectionParameter> $parameters
      * @param OpenApi $api
      * @param Route $route
      * @param \ReflectionMethod $reflectionMethod
@@ -77,8 +77,9 @@ class DtoOADescriber implements RouteDescriberInterface
         $bags = [];
 
         foreach ($parameters as $parameter) {
+            // todo: some better error catching here would be nice
             $bags = DtoUtil::mergeRecursively($bags, $this->getClassBags(
-                $this->typeExtractorHelper->extract($parameter->getClass())
+                $this->typeExtractorHelper->extract(new \ReflectionClass($parameter->getType()->getName())) // @phpstan-ignore-line
             ));
         }
 
@@ -322,7 +323,7 @@ class DtoOADescriber implements RouteDescriberInterface
                 $this->httpActions[] = $item->getHttpAction();
             }
 
-            if (null !== ($find = $item->getFindAnnotation())) {
+            if (null !== ($find = $item->getFindAttribute())) {
                 // only non-dynamic fields are visible here because of how the type extractor works
                 /** @var PropertyTypeModel $field */
                 foreach ($item as $key => $field) {
@@ -382,11 +383,11 @@ class DtoOADescriber implements RouteDescriberInterface
         string $path,
         PropertyTypeModel $model
     ): void {
-        if (!array_key_exists($model->getBag()->bag, $bags)) {
-            $bags[$model->getBag()->bag] = [];
+        if (!array_key_exists($model->getBag()->bag->value, $bags)) {
+            $bags[$model->getBag()->bag->value] = [];
         }
 
-        $selected = &$bags[$model->getBag()->bag];
+        $selected = &$bags[$model->getBag()->bag->value];
 
         foreach (explode('.', $path) as $index) {
             if (!array_key_exists($index, $selected)) {
@@ -424,7 +425,7 @@ class DtoOADescriber implements RouteDescriberInterface
     /**
      * @param \ReflectionMethod $reflectionMethod
      *
-     * @return \ReflectionParameter[]
+     * @return list<\ReflectionParameter>
      */
     private function getDtoParameters(
         \ReflectionMethod $reflectionMethod
@@ -432,10 +433,18 @@ class DtoOADescriber implements RouteDescriberInterface
         $parameters = [];
 
         foreach ($reflectionMethod->getParameters() as $parameter) {
-            if (null === $parameter->getClass() ||
-                DtoInterface::class === $parameter->getClass()->getName() ||
-                !is_subclass_of($parameter->getClass()->getName(), DtoInterface::class)) {
+            if (null === ($type = $parameter->getType())) {
                 continue;
+            }
+
+            if ($type instanceof \ReflectionNamedType) {
+                if ($type->isBuiltin() ||
+                    DtoInterface::class === $type->getName() ||
+                    !is_subclass_of($type->getName(), DtoInterface::class)) {
+                    continue;
+                }
+            } else {
+                throw new \RuntimeException('Invalid type'); // todo: add support for union types?
             }
 
             $parameters[] = $parameter;

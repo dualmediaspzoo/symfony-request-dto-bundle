@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Service\Http;
 
-use DM\DtoRequestBundle\Annotations\Dto\Http\OnNull;
+use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
 use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DM\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
 

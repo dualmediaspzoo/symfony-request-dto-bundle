@@ -2,14 +2,13 @@
 
 namespace DM\DtoRequestBundle\Tests\Fixtures\Service\Entity;
 
-use DM\DtoRequestBundle\Annotations\Entity\EntityProvider;
+use DM\DtoRequestBundle\Attributes\Entity\EntityProvider;
 use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 /**
- * @EntityProvider(DummyModel::class)
- *
  * @see DummyModel
  */
+#[EntityProvider(DummyModel::class)]
 class NonDefaultDummyModelProvider extends DummyModelProvider
 {
 }

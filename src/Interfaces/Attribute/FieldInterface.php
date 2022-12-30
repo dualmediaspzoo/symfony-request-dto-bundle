@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Interfaces\Attribute;
 
-use DM\DtoRequestBundle\Annotations\Dto\Type;
+use DM\DtoRequestBundle\Attributes\Dto\Type;
 use DM\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
 use Symfony\Component\Validator\Constraint;
 

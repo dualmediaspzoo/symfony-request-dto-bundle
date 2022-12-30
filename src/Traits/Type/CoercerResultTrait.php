@@ -25,7 +25,7 @@ trait CoercerResultTrait
         ValidatorInterface $validator,
         string $propertyPath,
         Property $property,
-        $value,
+        mixed $value,
         array $constraints
     ): CoerceResult {
         if ($property->isCollection()) {

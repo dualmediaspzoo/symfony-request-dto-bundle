@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Exception\Http;
 
-use DM\DtoRequestBundle\Annotations\Dto\Http\OnNull;
+use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -11,8 +11,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class DtoHttpException extends HttpException
 {
-    private DtoInterface $dto;
-
     /**
      * @param DtoInterface $dto
      * @param int $statusCode
@@ -20,18 +18,17 @@ class DtoHttpException extends HttpException
      * @param \Throwable|null $previous
      * @param array $headers
      * @psalm-param array<string, string> $headers
-     * @param int|null $code
+     * @param int $code
      */
     public function __construct(
-        DtoInterface $dto,
+        private readonly DtoInterface $dto,
         int $statusCode,
         string $message = '',
         \Throwable $previous = null,
         array $headers = [],
-        ?int $code = 0
+        int $code = 0
     ) {
         parent::__construct($statusCode, $message, $previous, $headers, $code);
-        $this->dto = $dto;
     }
 
     public function getDto(): DtoInterface

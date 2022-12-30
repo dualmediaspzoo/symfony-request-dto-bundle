@@ -2,14 +2,13 @@
 
 namespace DM\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Annotations\Dto\AllowEnum;
-use DM\DtoRequestBundle\Annotations\Dto\FromKey;
+use DM\DtoRequestBundle\Attributes\Dto\AllowEnum;
+use DM\DtoRequestBundle\Attributes\Dto\FromKey;
 use DM\DtoRequestBundle\Model\Type\Property;
 use DM\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
 use DM\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
 use DM\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
 use DM\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
-use MyCLabs\Enum\Enum;
 use Symfony\Component\Validator\Constraints\Choice;
 
 class EnumCoercerTest extends AbstractMinimalCoercerTestCase
@@ -32,7 +31,7 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
         }
 
         yield [
-            $this->buildProperty('object', false, Enum::class),
+            $this->buildProperty('object', false, \BackedEnum::class),
             false,
         ];
     }
@@ -43,12 +42,12 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
             ->setType('object')
             ->setFqcn(StringEnum::class);
 
-        $result = $this->service->coerce('something', $enum, StringEnum::STRING_KEY);
+        $result = $this->service->coerce('something', $enum, StringEnum::STRING_KEY->value);
         $this->assertEmpty($result->getViolations());
 
         $this->assertEquals(
             StringEnum::STRING_KEY,
-            $result->getValue()->getValue()
+            $result->getValue()
         );
     }
 
@@ -68,14 +67,14 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
         $enum = (new Property())
             ->setType('object')
             ->setFqcn(IntegerEnum::class)
-            ->addDtoAnnotation(new AllowEnum(['OTHER_KEY', 'LAST_KEY']));
+            ->addDtoAttribute(new AllowEnum([IntegerEnum::OTHER_KEY, IntegerEnum::LAST_KEY]));
 
         $result = $this->service->coerce('something', $enum, 20);
         $this->assertEmpty($result->getViolations());
 
         $this->assertEquals(
             IntegerEnum::OTHER_KEY,
-            $result->getValue()->getValue()
+            $result->getValue()
         );
 
         $result = $this->service->coerce('something', $enum, 15);
@@ -90,14 +89,14 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
         );
 
         // test the same but as keys
-        $enum->addDtoAnnotation(new FromKey());
+        $enum->addDtoAttribute(new FromKey());
 
         $result = $this->service->coerce('something', $enum, 'OTHER_KEY');
         $this->assertEmpty($result->getViolations());
 
         $this->assertEquals(
             IntegerEnum::OTHER_KEY,
-            $result->getValue()->getValue()
+            $result->getValue()
         );
 
         $result = $this->service->coerce('something', $enum, 'INTEGER_KEY');

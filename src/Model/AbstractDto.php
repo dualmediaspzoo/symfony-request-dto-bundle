@@ -122,11 +122,7 @@ abstract class AbstractDto implements DtoInterface
 
     public function getHighestParentDto(): DtoInterface
     {
-        if (null !== $this->getParentDto()) {
-            return $this->getParentDto()->getHighestParentDto();
-        }
-
-        return $this;
+        return $this->getParentDto()?->getHighestParentDto() ?? $this;
     }
 
     public function setParentDto(

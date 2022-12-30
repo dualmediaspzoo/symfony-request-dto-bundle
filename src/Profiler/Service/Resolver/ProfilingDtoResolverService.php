@@ -8,6 +8,12 @@ use DM\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Stopwatch\Stopwatch;
 
+/**
+ * @template T of DtoInterface
+ *
+ * @extends AbstractWrapper<T>
+ * @implements DtoResolverInterface<T>
+ */
 class ProfilingDtoResolverService extends AbstractWrapper implements DtoResolverInterface
 {
     private DtoResolverInterface $resolver;

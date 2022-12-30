@@ -4,6 +4,9 @@ namespace DM\DtoRequestBundle\Profiler;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 
+/**
+ * @template T
+ */
 abstract class AbstractWrapper
 {
     private ?Stopwatch $stopwatch;
@@ -20,13 +23,14 @@ abstract class AbstractWrapper
      * @param string $name
      * @param callable $fn
      *
-     * @return mixed
+     * @return T
+     *
      * @throws \Throwable
      */
     public function wrap(
         string $name,
         callable $fn
-    ) {
+    ): mixed {
         if (null === $this->stopwatch) {
             return $fn();
         }

@@ -27,5 +27,5 @@ interface ComplexLoaderServiceInterface
         string $fqcn,
         FindComplexInterface $find,
         array $input
-    );
+    ): mixed;
 }

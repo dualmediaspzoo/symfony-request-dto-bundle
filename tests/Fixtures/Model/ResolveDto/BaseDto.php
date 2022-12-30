@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto;
 
-use DM\DtoRequestBundle\Annotations\Dto\Path;
+use DM\DtoRequestBundle\Attributes\Dto\Path;
 use DM\DtoRequestBundle\Model\AbstractDto;
 
 class BaseDto extends AbstractDto
@@ -12,14 +12,14 @@ class BaseDto extends AbstractDto
     public ?SubDto $subBase = null;
 
     /**
-     * @Path("array")
      * @var SubDto[]
      */
+    #[Path('array')]
     public array $subDtos = [];
 
     /**
-     * @Path("other")
      * @var SubDto[]
      */
+    #[Path('other')]
     public array $secondDtos = [];
 }

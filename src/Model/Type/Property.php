@@ -2,17 +2,15 @@
 
 namespace DM\DtoRequestBundle\Model\Type;
 
-use DM\DtoRequestBundle\Annotations\Dto\AllowEnum;
-use DM\DtoRequestBundle\Annotations\Dto\Bag;
-use DM\DtoRequestBundle\Annotations\Dto\Format;
-use DM\DtoRequestBundle\Annotations\Dto\FromKey;
+use DM\DtoRequestBundle\Attributes\Dto\AllowEnum;
+use DM\DtoRequestBundle\Attributes\Dto\Bag;
+use DM\DtoRequestBundle\Attributes\Dto\Format;
+use DM\DtoRequestBundle\Attributes\Dto\FromKey;
 use DM\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAnnotationInterface;
+use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DM\DtoRequestBundle\Interfaces\Attribute\PathInterface;
-use DM\DtoRequestBundle\Interfaces\Enum\IntegerBackedEnumInterface;
-use MyCLabs\Enum\Enum;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
 use Symfony\Component\PropertyAccess\Exception\OutOfBoundsException;
@@ -24,8 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Property model for dto type reading
  *
- * @todo: update self returns to static in php8
- *
  * @implements \ArrayAccess<string, Property>
  * @implements \IteratorAggregate<string, Property>
  */
@@ -36,15 +32,15 @@ class Property implements \ArrayAccess, \IteratorAggregate
     protected ?string $path = null;
 
     /**
-     * @var array<class-string<DtoAnnotationInterface>, list<DtoAnnotationInterface>>
+     * @var array<class-string<DtoAttributeInterface>, list<DtoAttributeInterface>>
      */
-    protected array $dtoAnnotations = [];
+    protected array $dtoAttributes = [];
 
     /**
      * @var list<Constraint>
      */
     protected array $constraints = [];
-    protected ?FindInterface $findAnnotation = null;
+    protected ?FindInterface $findAttribute = null;
     protected ?Property $parent = null;
     protected ?string $fqcn = null;
     protected string $type;
@@ -66,7 +62,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     public function setName(
         string $name
-    ): self {
+    ): static {
         $this->name = $name;
 
         return $this;
@@ -82,7 +78,8 @@ class Property implements \ArrayAccess, \IteratorAggregate
      */
     public function setFqcn(
         ?string $fqcn
-    ): self {
+    ): static {
+        $this->fqcn = $fqcn; // temporarily set this so checks can be non-repeating
         $this->fqcn = $this->validateClassFqcn($fqcn);
 
         return $this;
@@ -95,7 +92,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     public function setCollection(
         bool $collection
-    ): self {
+    ): static {
         $this->collection = $collection;
 
         return $this;
@@ -113,21 +110,21 @@ class Property implements \ArrayAccess, \IteratorAggregate
     public function getOAType(): string
     {
         if ($this->isEnum()) {
-            if ($this->hasDtoAnnotation(FromKey::class)) {
+            if ($this->hasDtoAttribute(FromKey::class)) {
                 return 'string'; // keys are text only
             }
 
-            return is_subclass_of($this->getFqcn(), IntegerBackedEnumInterface::class) ? 'integer' : 'string';
+            return 'int' === $this->getEnumType() ? 'integer' : 'string';
         } elseif ($this->isDate()) {
             return 'string';
         }
 
-        return $this->fixOAType($this->getSubType()) ?? $this->fixOAType($this->getType());
+        return $this->fixOAType($this->getSubType()) ?? $this->fixOAType($this->getType()) ?? 'string';
     }
 
     public function setType(
         string $type
-    ): self {
+    ): static {
         $this->type = $type;
 
         return $this;
@@ -153,7 +150,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     public function setBag(
         Bag $bag
-    ): self {
+    ): static {
         $this->bag = $bag;
 
         return $this;
@@ -166,7 +163,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     public function setPath(
         ?string $path
-    ): self {
+    ): static {
         $this->path = $path;
 
         return $this;
@@ -177,33 +174,33 @@ class Property implements \ArrayAccess, \IteratorAggregate
         return $this->getPath() ?? $this->getName();
     }
 
-    public function addDtoAnnotation(
-        DtoAnnotationInterface $annotation
-    ): self {
-        if ($annotation instanceof PathInterface) {
-            $this->setPath($annotation->getPath() ?? $this->getPath());
+    public function addDtoAttribute(
+        DtoAttributeInterface $attribute
+    ): static {
+        if ($attribute instanceof PathInterface) {
+            $this->setPath($attribute->getPath() ?? $this->getPath());
         }
 
-        if ($annotation instanceof Bag) {
-            $this->setBag($annotation);
-        } elseif ($annotation instanceof Format) {
-            $this->setFormat($annotation);
+        if ($attribute instanceof Bag) {
+            $this->setBag($attribute);
+        } elseif ($attribute instanceof Format) {
+            $this->setFormat($attribute);
             $this->setSubType('string');
-        } elseif ($annotation instanceof HttpActionInterface) {
-            $this->httpAction = $annotation;
+        } elseif ($attribute instanceof HttpActionInterface) {
+            $this->httpAction = $attribute;
         } else {
-            if (!array_key_exists($class = get_class($annotation), $this->dtoAnnotations)) {
-                $this->dtoAnnotations[$class] = [];
+            if (!array_key_exists($class = get_class($attribute), $this->dtoAttributes)) {
+                $this->dtoAttributes[$class] = [];
             }
 
-            $this->dtoAnnotations[$class][] = $annotation;
+            $this->dtoAttributes[$class][] = $attribute;
         }
 
         return $this;
     }
 
     /**
-     * @template T of DtoAnnotationInterface
+     * @template T of DtoAttributeInterface
      *
      * @param class-string<T> $class
      *
@@ -212,11 +209,11 @@ class Property implements \ArrayAccess, \IteratorAggregate
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress InvalidReturnType
      */
-    public function getDtoAnnotations(
+    public function getDtoAttributes(
         string $class
     ): array {
         // @phpstan-ignore-next-line
-        return $this->dtoAnnotations[$class] ?? [];
+        return $this->dtoAttributes[$class] ?? [];
     }
 
     public function getHttpAction(): ?HttpActionInterface
@@ -225,25 +222,25 @@ class Property implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
-     * @param class-string<DtoAnnotationInterface> $class
+     * @param class-string<DtoAttributeInterface> $class
      *
      * @return bool
      */
-    public function hasDtoAnnotation(
+    public function hasDtoAttribute(
         string $class
     ): bool {
-        return !empty($this->getDtoAnnotations($class));
+        return !empty($this->getDtoAttributes($class));
     }
 
-    public function getFindAnnotation(): ?FindInterface
+    public function getFindAttribute(): ?FindInterface
     {
-        return $this->findAnnotation;
+        return $this->findAttribute;
     }
 
-    public function setFindAnnotation(
-        ?FindInterface $findAnnotation
-    ): self {
-        $this->findAnnotation = $findAnnotation;
+    public function setFindAttribute(
+        ?FindInterface $findAttribute
+    ): static {
+        $this->findAttribute = $findAttribute;
 
         return $this;
     }
@@ -268,7 +265,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     public function setFormat(
         ?Format $format
-    ): self {
+    ): static {
         $this->format = $format;
 
         if (null !== $format) {
@@ -286,7 +283,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     public function setDescription(
         ?string $description
-    ): self {
+    ): static {
         $this->description = $description;
 
         return $this;
@@ -295,7 +292,16 @@ class Property implements \ArrayAccess, \IteratorAggregate
     public function isEnum(): bool
     {
         return null !== $this->getFqcn() &&
-            is_subclass_of($this->getFqcn(), Enum::class);
+            is_subclass_of($this->getFqcn(), \BackedEnum::class);
+    }
+
+    public function getEnumType(): ?string
+    {
+        if (!$this->isEnum()) {
+            return null;
+        }
+
+        return (string)(new \ReflectionEnum($this->getFqcn()))->getBackingType(); // @phpstan-ignore-line
     }
 
     public function isDate(): bool
@@ -316,24 +322,24 @@ class Property implements \ArrayAccess, \IteratorAggregate
         }
 
         /**
-         * @var array<string, Enum> $enums
+         * @var array<string, \BackedEnum> $enums
          * @phpstan-ignore-next-line
          */
-        $enums = call_user_func([$this->getFqcn(), 'values']);
+        $enums = call_user_func([$this->getFqcn(), 'cases']);
 
         /**
          * @phpstan-ignore-next-line
          * @var AllowEnum $allowed
          * @psalm-suppress NoInterfaceProperties
          */
-        if (null !== ($allowed = $this->getDtoAnnotations(AllowEnum::class)[0] ?? null) &&
+        if (null !== ($allowed = $this->getDtoAttributes(AllowEnum::class)[0] ?? null) &&
             !empty($allowed->allowed)) {
-            $enums = array_intersect_key($enums, array_flip($allowed->allowed));
+            $enums = $allowed->allowed;
         }
 
-        return $this->hasDtoAnnotation(FromKey::class) ?
-            array_keys($enums) :
-            array_values(array_map(fn (Enum $e) => $e->getValue(), $enums));
+        return $this->hasDtoAttribute(FromKey::class) ?
+            array_values(array_map(fn (\BackedEnum $e) => $e->name, $enums)) :
+            array_values(array_map(fn (\BackedEnum $e) => $e->value, $enums));
     }
 
     /**
@@ -431,18 +437,18 @@ class Property implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
-     * @param mixed[] $annotations
+     * @param mixed[] $attributes
      *
      * @return $this
      */
-    public function setPropertyAnnotations(
-        array $annotations
-    ): self {
-        foreach (array_filter($annotations, fn ($o) => $o instanceof DtoAnnotationInterface && !($o instanceof FindInterface)) as $item) {
-            $this->addDtoAnnotation($item);
+    public function setPropertyAttributes(
+        array $attributes
+    ): static {
+        foreach (array_filter($attributes, fn ($o) => $o instanceof DtoAttributeInterface && !($o instanceof FindInterface)) as $item) {
+            $this->addDtoAttribute($item);
         }
 
-        foreach (array_filter($annotations, fn ($o) => $o instanceof Constraint) as $item) {
+        foreach (array_filter($attributes, fn ($o) => $o instanceof Constraint) as $item) {
             $this->constraints[] = $item;
         }
 
@@ -469,11 +475,11 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
         try {
             $next = $propertyPath->getElement($jump);
-        } catch (OutOfBoundsException $e) {
+        } catch (OutOfBoundsException) {
             $next = null;
         }
 
-        if (null !== ($find = $this->getFindAnnotation())) {
+        if (null !== ($find = $this->getFindAttribute())) {
             $builder->replaceByProperty(
                 $index,
                 $find->getErrorPath() ?? $find->getFirstNonDynamicField() ?? $this->getName()
@@ -550,7 +556,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
     ): ?string {
         if (null === $class ||
             (!is_subclass_of($class, \DateTimeInterface::class) &&
-            !is_subclass_of($class, Enum::class))) {
+            !is_subclass_of($class, \BackedEnum::class))) {
             return $class;
         }
 
@@ -565,10 +571,10 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
             $this->setSubType('string');
         } else {
-            if ($this->hasDtoAnnotation(FromKey::class)) {
+            if ($this->hasDtoAttribute(FromKey::class)) {
                 $this->setSubType('string'); // keys are text only
             } else {
-                $this->setSubType(is_subclass_of($class, IntegerBackedEnumInterface::class) ? 'int' : 'string');
+                $this->setSubType($this->getEnumType());
             }
         }
 

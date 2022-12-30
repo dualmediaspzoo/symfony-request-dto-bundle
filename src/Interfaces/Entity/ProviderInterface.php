@@ -2,12 +2,12 @@
 
 namespace DM\DtoRequestBundle\Interfaces\Entity;
 
-use DM\DtoRequestBundle\Annotations\Entity\EntityProvider;
+use DM\DtoRequestBundle\Attributes\Entity\EntityProvider;
 
 /**
  * This interface may be implemented by classes that wish to provide entities to {@link DtoInterface} objects
  *
- * Add {@link EntityProvider} annotation on the class implementing
+ * Add {@link EntityProvider} annotation on the class implementing this interface
  *
  * @template T
  */

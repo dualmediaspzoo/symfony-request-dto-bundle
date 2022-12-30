@@ -2,14 +2,13 @@
 
 namespace DM\DtoRequestBundle\Tests\Fixtures\Model\HttpAction;
 
-use DM\DtoRequestBundle\Annotations\Dto\Http\OnNull;
+use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
 use DM\DtoRequestBundle\Model\AbstractDto;
 use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use Symfony\Component\HttpFoundation\Response;
 
 class OnNullDto extends AbstractDto
 {
-    /**
-     * @OnNull(404)
-     */
+    #[OnNull(Response::HTTP_NOT_FOUND)]
     public ?DummyModel $model = null;
 }

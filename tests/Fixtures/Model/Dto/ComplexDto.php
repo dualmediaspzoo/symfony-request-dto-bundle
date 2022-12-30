@@ -2,8 +2,8 @@
 
 namespace DM\DtoRequestBundle\Tests\Fixtures\Model\Dto;
 
-use DM\DtoRequestBundle\Annotations\Dto\FindOneBy;
-use DM\DtoRequestBundle\Annotations\Dto\Type;
+use DM\DtoRequestBundle\Attributes\Dto\FindOneBy;
+use DM\DtoRequestBundle\Attributes\Dto\Type;
 use DM\DtoRequestBundle\Model\AbstractDto;
 use DM\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
 use DM\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
@@ -20,9 +20,10 @@ class ComplexDto extends AbstractDto
      */
     public array $intArr = [];
 
-    /**
-     * @FindOneBy(fields={"id": "id", "custom": "$customProp", "date": "whatever"}, types={"id": @Type("int"), "date": @Type("datetime")})
-     */
+    #[FindOneBy(
+        fields: ['id' => 'id', 'custom' => '$customProp', 'date' => 'whatever'],
+        types: ['id' => new Type('int'), 'date' => new Type('datetime')]
+    )]
     public ?DummyModel $model = null;
 
     public ?SubDto $dto = null;

@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
 
-use DM\DtoRequestBundle\Annotations\Dto\Type;
+use DM\DtoRequestBundle\Attributes\Dto\Type;
 use DM\DtoRequestBundle\Model\Type\Dto;
 use DM\DtoRequestBundle\Model\Type\Property;
 use DM\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
@@ -80,7 +80,7 @@ class DtoTypeExtractorHelperTest extends KernelTestCase
         $this->assertFalse($model->isCollection());
         $this->assertEquals(DummyModel::class, $model->getFqcn());
 
-        $this->assertNotNull($find = $model->getFindAnnotation());
+        $this->assertNotNull($find = $model->getFindAttribute());
         $this->assertEquals([
             'id' => 'id',
             'custom' => '$customProp',

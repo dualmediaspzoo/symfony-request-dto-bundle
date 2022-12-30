@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Annotations\Dto\Format;
+use DM\DtoRequestBundle\Attributes\Dto\Format;
 use DM\DtoRequestBundle\Model\Type\Property;
 use DM\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
 use DM\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;

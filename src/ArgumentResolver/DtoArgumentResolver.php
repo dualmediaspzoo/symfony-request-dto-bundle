@@ -29,7 +29,7 @@ class DtoArgumentResolver implements ArgumentValueResolverInterface
         Request $request,
         ArgumentMetadata $argument
     ): bool {
-        return DtoInterface::class !== $argument->getType() &&
+        return null !== $argument->getType() &&
             is_subclass_of($argument->getType(), DtoInterface::class);
     }
 

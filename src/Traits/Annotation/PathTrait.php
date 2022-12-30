@@ -16,7 +16,7 @@ trait PathTrait
      * Value must be compatible with the {@link PropertyAccess} syntax for objects
      * Path must only take into account this object, as there might be a parent path inherited
      */
-    public ?string $path = null;
+    public readonly string|null $path;
 
     /**
      * {@inheritdoc}

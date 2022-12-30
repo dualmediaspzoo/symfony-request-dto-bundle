@@ -4,9 +4,7 @@ namespace DM\DtoRequestBundle\Constraints;
 
 use Symfony\Component\Validator\Constraints\Collection;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ObjectCollection extends Collection
 {
 }

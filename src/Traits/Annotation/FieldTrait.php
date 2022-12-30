@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Traits\Annotation;
 
-use DM\DtoRequestBundle\Annotations\Dto\Type;
+use DM\DtoRequestBundle\Attributes\Dto\Type;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
 
@@ -14,34 +14,30 @@ trait FieldTrait
     /**
      * These fields will be later used to load the entity
      *
-     * @var array
-     * @psalm-var array<string, string>
+     * @var array<string, string>
      */
     public array $fields = [];
 
     /**
      * Order of the results
      *
-     * @var array
-     * @psalm-var array<string, string>|null
+     * @var array<string, string>|null
      */
-    public ?array $orderBy = null;
+    public array|null $orderBy = null;
 
     /**
      * Constraints for fields used in the query so that validation can still happen
      *
      * List of constraints mapped to final names of fields used in the query
      *
-     * @var array
-     * @psalm-var array<string, Constraint|list<Constraint>>
+     * @var array<string, Constraint|list<Constraint>>
      */
     public array $constraints = [];
 
     /**
      * List of user specified type safety checks
      *
-     * @var array
-     * @psalm-var array<string, Type>
+     * @var array<string, Type>
      */
     public array $types = [];
 
@@ -51,13 +47,12 @@ trait FieldTrait
      *
      * If not set the system will take the first criteria field it finds in {@link $this::$fields}
      */
-    public ?string $errorPath = null;
+    public string|null $errorPath = null;
 
     /**
-     * List of descriptions for fields, mapped by field name
+     * List of descriptions for fields, mapped by field name, used in API docs
      *
-     * @var array
-     * @psalm-var array<string, string>
+     * @var array<string, string>
      */
     public array $descriptions = [];
 
@@ -83,12 +78,12 @@ trait FieldTrait
     /**
      * @return array<string, string>|null
      */
-    public function getOrderBy(): ?array
+    public function getOrderBy(): array|null
     {
         return $this->orderBy;
     }
 
-    public function getErrorPath(): ?string
+    public function getErrorPath(): string|null
     {
         return $this->errorPath;
     }

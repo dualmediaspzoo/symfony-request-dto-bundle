@@ -2,12 +2,7 @@
 
 namespace DM\DtoRequestBundle\Tests\Fixtures\Enum;
 
-use MyCLabs\Enum\Enum;
-
-/**
- * @psalm-immutable
- */
-class StringEnum extends Enum
+enum StringEnum: string
 {
-    public const STRING_KEY = 'not_string_key';
+    case STRING_KEY = 'not_string_key';
 }

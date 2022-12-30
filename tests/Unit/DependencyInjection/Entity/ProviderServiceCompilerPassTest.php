@@ -4,7 +4,7 @@ namespace DM\DtoRequestBundle\Tests\Unit\DependencyInjection\Entity;
 
 use DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderServiceCompilerPass;
 use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\AnnotationMissingException;
+use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
 use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
 use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 use DM\DtoRequestBundle\Service\Entity\EntityProviderService;
@@ -60,7 +60,7 @@ class ProviderServiceCompilerPassTest extends AbstractCompilerPassTestCase
 
         try {
             $this->compile();
-        } catch (AnnotationMissingException $e) {
+        } catch (AttributeMissingException $e) {
             $this->assertEquals(BadDummyModelProvider::class, $e->getClass());
         } catch (\Throwable $e) {
             $this->fail("Invalid exception caught - ".get_class($e));

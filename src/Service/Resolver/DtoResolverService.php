@@ -2,11 +2,12 @@
 
 namespace DM\DtoRequestBundle\Service\Resolver;
 
-use DM\DtoRequestBundle\Annotations\Dto\ProvideValidationGroups;
+use DM\DtoRequestBundle\Attributes\Dto\ProvideValidationGroups;
 use DM\DtoRequestBundle\Constraints as DtoAssert;
 use DM\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
 use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
 use DM\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
+use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DM\DtoRequestBundle\Interfaces\DtoInterface;
 use DM\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
 use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
@@ -28,6 +29,11 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template T of DtoInterface
+ *
+ * @implements DtoResolverInterface<T>
+ */
 class DtoResolverService implements DtoResolverInterface
 {
     private TypeValidationInterface $validationHelper;
@@ -67,12 +73,11 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
-     * @template T of DtoInterface
-     *
      * @param Request $request
      * @param class-string<T> $class
      *
      * @return T
+     *
      * @throws InvalidTypeCountException
      * @throws ParameterNotSupportedException
      *
@@ -96,7 +101,7 @@ class DtoResolverService implements DtoResolverInterface
                 $object,
                 array_map(
                     fn (ProvideValidationGroups $a) => $a->provider,
-                    $model->getDtoAnnotations(ProvideValidationGroups::class)
+                    $model->getDtoAttributes(ProvideValidationGroups::class)
                 )
             )
         );
@@ -158,8 +163,6 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
-     * @template T of DtoInterface
-     *
      * @param Request $request
      * @param class-string<T> $class
      * @param DtoTypeModel $model
@@ -168,6 +171,7 @@ class DtoResolverService implements DtoResolverInterface
      * @param DtoInterface|null $parent
      *
      * @return T
+     *
      * @throws InvalidTypeCountException
      * @throws ParameterNotSupportedException
      *
@@ -194,7 +198,7 @@ class DtoResolverService implements DtoResolverInterface
                 $replacePath .= '.' . $property->getRealPath();
             }
 
-            if (null !== $property->getFindAnnotation()) {
+            if (null !== $property->getFindAttribute()) {
                 $this->processFind($request, $property, $object, $parentPath, $replaceParentPropertyPath);
             } elseif ($property instanceof DtoTypeModel) {
                 $this->processDto($request, $property, $object, $propertyPath, ltrim($replacePath, '.'));
@@ -245,7 +249,7 @@ class DtoResolverService implements DtoResolverInterface
         string $propertyPath,
         string $replacePath
     ): void {
-        /** @var class-string<DtoInterface> $childClass */
+        /** @var class-string<T> $childClass */
         $childClass = $property->getFqcn();
 
         if ($property->isCollection()) {
@@ -263,7 +267,7 @@ class DtoResolverService implements DtoResolverInterface
 
                     return;
                 }
-                $count = count($tmp);
+                $count = count($tmp); // @phpstan-ignore-line
 
                 for ($i = 0; $i < $count; $i++) {
                     $child = $this->internalResolve(
@@ -312,7 +316,8 @@ class DtoResolverService implements DtoResolverInterface
         string $propertyPath,
         string $replacePath
     ): void {
-        $find = $property->getFindAnnotation();
+        /** @var FindInterface $find */
+        $find = $property->getFindAttribute();
 
         // validate fields
         $visitedAnyRequestProps = false; // we cannot load the entity if there was no user input
@@ -366,7 +371,7 @@ class DtoResolverService implements DtoResolverInterface
         $finalConstraints = [];
 
         foreach ($inputPaths as $key => $path) {
-            $finalConstraints[$path] = $property[$key]->getConstraints();
+            $finalConstraints[$path] = $property[$key]?->getConstraints() ?? [];
         }
 
         if (!empty($finalConstraints)) {
@@ -424,7 +429,7 @@ class DtoResolverService implements DtoResolverInterface
     private function attemptToSaveHttpAction(
         PropertyTypeModel $property,
         DtoInterface $dto,
-        $variable
+        mixed $variable
     ): void {
         if (null === ($action = $property->getHttpAction()) ||
             !$this->actionValidator->validate($action, $variable)) {
@@ -445,21 +450,21 @@ class DtoResolverService implements DtoResolverInterface
         Request $request,
         PropertyTypeModel $property,
         string $propertyPath
-    ) {
+    ): mixed {
         if ('' === $propertyPath) {
-            return $request->{$property->getBag()->bag}->all();
+            return $request->{$property->getBag()->bag->value}->all();
         }
 
-        if ($property->getBag()->isHeader()) {
+        if ($property->getBag()->bag->isHeaders()) {
             $propertyPath = mb_strtolower($propertyPath);
         }
 
-        $value = $this->propertyAccessor->getValue($request->{$property->getBag()->bag}->all(), $propertyPath);
+        $value = $this->propertyAccessor->getValue($request->{$property->getBag()->bag->value}->all(), $propertyPath);
 
-        if (!$property->getBag()->isHeader()) {
+        if (!$property->getBag()->bag->isHeaders()) {
             return $value;
         }
 
-        return $value[0] ?? null; // special header handling
+        return $value[0] ?? null; // special header handling @phpstan-ignore-line
     }
 }

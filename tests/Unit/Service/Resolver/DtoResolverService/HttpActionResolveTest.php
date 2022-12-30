@@ -2,7 +2,7 @@
 
 namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
 
-use DM\DtoRequestBundle\Annotations\Dto\Http\OnNull;
+use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
 use DM\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DM\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\FindOneOnNullDto;
 use DM\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\OnNullDto;
