@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Traits\Type;
+namespace DualMedia\DtoRequestBundle\Traits\Type;
 
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

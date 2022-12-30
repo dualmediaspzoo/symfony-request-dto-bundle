@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Resolver;
+namespace DualMedia\DtoRequestBundle\Interfaces\Resolver;
 
-use DM\DtoRequestBundle\Attributes\Dto\Bag;
-use DM\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
-use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Model\Type\Dto;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
+use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
+use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Model\Type\Dto;
 
 interface DtoTypeExtractorInterface
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Entity;
+namespace DualMedia\DtoRequestBundle\Service\Entity;
 
-use DM\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 
 class EntityProviderService implements ProviderServiceInterface
 {

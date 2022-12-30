@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\PHPUnit;
+namespace DualMedia\DtoRequestBundle\Tests\PHPUnit;
 
-use DM\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
 use Doctrine\Common\Annotations\AnnotationReader;
+use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader;
 

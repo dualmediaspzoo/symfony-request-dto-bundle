@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
+namespace DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
 
-use DM\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Type\Coercer;
+namespace DualMedia\DtoRequestBundle\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Attributes\Dto\FromKey;
-use DM\DtoRequestBundle\Interfaces\Type\CoercerInterface;
-use DM\DtoRequestBundle\Model\Type\CoerceResult;
-use DM\DtoRequestBundle\Model\Type\Property;
-use DM\DtoRequestBundle\Traits\Type\CoerceConstructWithValidatorTrait;
-use DM\DtoRequestBundle\Traits\Type\CoercerResultTrait;
-use DM\DtoRequestBundle\Util;
+use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Traits\Type\CoerceConstructWithValidatorTrait;
+use DualMedia\DtoRequestBundle\Traits\Type\CoercerResultTrait;
+use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintViolationInterface;

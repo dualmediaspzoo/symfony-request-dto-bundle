@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\DependencyInjection\Shared;
+namespace DualMedia\DtoRequestBundle\DependencyInjection\Shared;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;

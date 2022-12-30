@@ -1,13 +1,13 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Type;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type;
 
-use DM\DtoRequestBundle\Interfaces\Type\CoercerInterface;
-use DM\DtoRequestBundle\Model\Type\CoerceResult;
-use DM\DtoRequestBundle\Model\Type\Property;
-use DM\DtoRequestBundle\Service\Type\CoercerService;
-use DM\DtoRequestBundle\Tests\Model\ArrayIterator;
-use DM\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
+use DualMedia\DtoRequestBundle\Tests\Model\ArrayIterator;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CoercerServiceTest extends TestCase

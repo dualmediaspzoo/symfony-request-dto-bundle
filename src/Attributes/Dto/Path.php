@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DM\DtoRequestBundle\Interfaces\Attribute\PathInterface;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Traits\Annotation\PathTrait;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\PathInterface;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Traits\Annotation\PathTrait;
 
 /**
  * By default, if this annotation does not exist on a property of {@link DtoInterface}, then a default object

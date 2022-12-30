@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Profiler\Service\Resolver;
+namespace DualMedia\DtoRequestBundle\Profiler\Service\Resolver;
 
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
-use DM\DtoRequestBundle\Profiler\AbstractWrapper;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Stopwatch\Stopwatch;
 

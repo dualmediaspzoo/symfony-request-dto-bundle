@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Traits\Annotation;
+namespace DualMedia\DtoRequestBundle\Traits\Annotation;
 
 trait HttpActionTrait
 {

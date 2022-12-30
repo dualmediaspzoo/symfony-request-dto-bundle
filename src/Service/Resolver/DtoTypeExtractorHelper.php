@@ -1,16 +1,16 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Resolver;
+namespace DualMedia\DtoRequestBundle\Service\Resolver;
 
-use DM\DtoRequestBundle\Attributes\Dto\Bag;
-use DM\DtoRequestBundle\Attributes\Dto\Type as TypeAnnotation;
-use DM\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
-use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
-use DM\DtoRequestBundle\Model\Type\Dto;
-use DM\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Type as TypeAnnotation;
+use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
+use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Model\Type\Dto;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 

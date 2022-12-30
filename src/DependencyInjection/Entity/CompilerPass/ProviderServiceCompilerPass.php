@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
+namespace DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
 
-use DM\DtoRequestBundle\Attributes\Entity\EntityProvider;
-use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
-use DM\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
-use DM\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
+use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
+use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;

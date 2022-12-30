@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Model\Dto;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto;
 
-use DM\DtoRequestBundle\Attributes\Dto\AllowEnum;
-use DM\DtoRequestBundle\Model\AbstractDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
+use DualMedia\DtoRequestBundle\Attributes\Dto\AllowEnum;
+use DualMedia\DtoRequestBundle\Model\AbstractDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
 
 class LimitedEnumDto extends AbstractDto
 {

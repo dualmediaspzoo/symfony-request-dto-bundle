@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle;
+namespace DualMedia\DtoRequestBundle;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
 

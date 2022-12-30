@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 
 /**
  * A date(-time) format annotation

@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\DependencyInjection\Shared;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Shared;
 
-use DM\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
-use DM\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use DualMedia\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

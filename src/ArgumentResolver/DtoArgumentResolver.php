@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\ArgumentResolver;
+namespace DualMedia\DtoRequestBundle\ArgumentResolver;
 
-use DM\DtoRequestBundle\Event\DtoResolvedEvent;
-use DM\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
-use DM\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Event\DtoResolvedEvent;
+use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
+use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;

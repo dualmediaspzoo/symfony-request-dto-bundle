@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto;
 
-use DM\DtoRequestBundle\Attributes\Dto\FindBy;
-use DM\DtoRequestBundle\Attributes\Dto\FindOneBy;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use DualMedia\DtoRequestBundle\Attributes\Dto\FindBy;
+use DualMedia\DtoRequestBundle\Attributes\Dto\FindOneBy;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 class PathFindByFix
 {

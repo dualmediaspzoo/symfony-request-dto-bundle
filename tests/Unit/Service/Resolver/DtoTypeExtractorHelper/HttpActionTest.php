@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
 
-use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
-use DM\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\OnNullDto;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\OnNullDto;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 
 class HttpActionTest extends KernelTestCase
 {

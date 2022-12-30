@@ -1,15 +1,15 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
 
-use DM\DtoRequestBundle\Attributes\Dto\Type;
-use DM\DtoRequestBundle\Model\Type\Dto;
-use DM\DtoRequestBundle\Model\Type\Property;
-use DM\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\ComplexDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\SubDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Type;
+use DualMedia\DtoRequestBundle\Model\Type\Dto;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\ComplexDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\SubDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 
 // todo: add specific checks for only parts of items, create dummy classes
 class DtoTypeExtractorHelperTest extends KernelTestCase

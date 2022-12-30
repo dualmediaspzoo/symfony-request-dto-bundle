@@ -1,13 +1,13 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\EventSubscriber;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\EventSubscriber;
 
-use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
-use DM\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
-use DM\DtoRequestBundle\Exception\Http\DtoHttpException;
-use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
+use DualMedia\DtoRequestBundle\Exception\Http\DtoHttpException;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;

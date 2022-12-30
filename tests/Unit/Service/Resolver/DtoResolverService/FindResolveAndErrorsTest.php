@@ -1,15 +1,15 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
 
-use DM\DtoRequestBundle\Service\Resolver\DtoResolverService;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindWithSecondErrorDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindWithSomeSecondErrorDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\Dto\MultiFindDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
-use DM\DtoRequestBundle\Tests\Service\Entity\DummyModelProvider;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindWithSecondErrorDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindWithSomeSecondErrorDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\MultiFindDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Tests\Service\Entity\DummyModelProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 

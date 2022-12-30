@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Entity;
+namespace DualMedia\DtoRequestBundle\Interfaces\Entity;
 
-use DM\DtoRequestBundle\Attributes\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
 
 /**
  * This interface may be implemented by classes that wish to provide entities to {@link DtoInterface} objects

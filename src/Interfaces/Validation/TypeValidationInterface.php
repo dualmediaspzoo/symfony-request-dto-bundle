@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Validation;
+namespace DualMedia\DtoRequestBundle\Interfaces\Validation;
 
-use DM\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
+use DualMedia\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 interface TypeValidationInterface

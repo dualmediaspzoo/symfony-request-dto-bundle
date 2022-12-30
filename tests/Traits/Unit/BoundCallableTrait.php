@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Traits\Unit;
+namespace DualMedia\DtoRequestBundle\Tests\Traits\Unit;
 
-use DM\DtoRequestBundle\Tests\Model\BoundCallable;
+use DualMedia\DtoRequestBundle\Tests\Model\BoundCallable;
 
 trait BoundCallableTrait
 {

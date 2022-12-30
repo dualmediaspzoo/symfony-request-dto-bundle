@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Type;
+namespace DualMedia\DtoRequestBundle\Interfaces\Type;
 
-use DM\DtoRequestBundle\Model\Type\CoerceResult;
-use DM\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
 
 /**
  * Transforms an unsure value into another type, useful for GET type-fixing and such

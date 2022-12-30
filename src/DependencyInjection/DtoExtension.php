@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\DependencyInjection;
+namespace DualMedia\DtoRequestBundle\DependencyInjection;
 
-use DM\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
+use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

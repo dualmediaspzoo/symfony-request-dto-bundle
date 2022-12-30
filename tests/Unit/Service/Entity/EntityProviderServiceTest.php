@@ -1,13 +1,13 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Entity;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Entity;
 
-use DM\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DM\DtoRequestBundle\Service\Entity\EntityProviderService;
-use DM\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use DualMedia\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 
 class EntityProviderServiceTest extends TestCase
 {

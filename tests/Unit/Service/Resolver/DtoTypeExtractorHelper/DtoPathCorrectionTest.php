@@ -1,14 +1,14 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
 
-use DM\DtoRequestBundle\Model\Type\Dto;
-use DM\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\MainPathFixDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\PathFindByFix;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\PathFixDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\RequestEdgeCaseDto;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\Model\Type\Dto;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\MainPathFixDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\PathFindByFix;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\PathFixDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\RequestEdgeCaseDto;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**

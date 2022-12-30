@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Nelmio;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Nelmio;
 
-use DM\DtoRequestBundle\Tests\Fixtures\Nelmio\DescriptorTest;
-use DM\DtoRequestBundle\Tests\PHPUnit\NelmioTestCase;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Nelmio\DescriptorTest;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\NelmioTestCase;
 use OpenApi\Annotations\Post;
 use OpenApi\Annotations\RequestBody;
 

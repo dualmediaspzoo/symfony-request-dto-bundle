@@ -1,17 +1,17 @@
 <?php
 
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
-use DM\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
-use DM\DtoRequestBundle\Profiler\Service\Entity\ProfilingEntityProviderService;
-use DM\DtoRequestBundle\Profiler\Service\Resolver\ProfilingDtoResolverService;
-use DM\DtoRequestBundle\Profiler\Service\Resolver\ProfilingDtoTypeExtractorService;
-use DM\DtoRequestBundle\Profiler\Service\Validation\ProfilingTypeValidationService;
-use DM\DtoRequestBundle\Service\Entity\EntityProviderService;
-use DM\DtoRequestBundle\Service\Resolver\DtoResolverService;
-use DM\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
-use DM\DtoRequestBundle\Service\Validation\TypeValidationHelper;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Profiler\Service\Entity\ProfilingEntityProviderService;
+use DualMedia\DtoRequestBundle\Profiler\Service\Resolver\ProfilingDtoResolverService;
+use DualMedia\DtoRequestBundle\Profiler\Service\Resolver\ProfilingDtoTypeExtractorService;
+use DualMedia\DtoRequestBundle\Profiler\Service\Validation\ProfilingTypeValidationService;
+use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
+use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
+use DualMedia\DtoRequestBundle\Service\Validation\TypeValidationHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;

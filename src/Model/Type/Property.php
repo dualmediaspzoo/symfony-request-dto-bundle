@@ -1,16 +1,16 @@
 <?php
 
-namespace DM\DtoRequestBundle\Model\Type;
+namespace DualMedia\DtoRequestBundle\Model\Type;
 
-use DM\DtoRequestBundle\Attributes\Dto\AllowEnum;
-use DM\DtoRequestBundle\Attributes\Dto\Bag;
-use DM\DtoRequestBundle\Attributes\Dto\Format;
-use DM\DtoRequestBundle\Attributes\Dto\FromKey;
-use DM\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindInterface;
-use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DM\DtoRequestBundle\Interfaces\Attribute\PathInterface;
+use DualMedia\DtoRequestBundle\Attributes\Dto\AllowEnum;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
+use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\PathInterface;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
 use Symfony\Component\PropertyAccess\Exception\OutOfBoundsException;

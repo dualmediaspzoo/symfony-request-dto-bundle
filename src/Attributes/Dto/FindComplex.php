@@ -1,13 +1,13 @@
 <?php
 
-namespace DM\DtoRequestBundle\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Attributes\Dto;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DM\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
-use DM\DtoRequestBundle\Traits\Annotation\FieldTrait;
-use DM\DtoRequestBundle\Traits\Annotation\LimitAndOffsetTrait;
-use DM\DtoRequestBundle\Traits\Annotation\ProviderTrait;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Traits\Annotation\FieldTrait;
+use DualMedia\DtoRequestBundle\Traits\Annotation\LimitAndOffsetTrait;
+use DualMedia\DtoRequestBundle\Traits\Annotation\ProviderTrait;
 use Symfony\Component\Validator\Constraint;
 
 /**

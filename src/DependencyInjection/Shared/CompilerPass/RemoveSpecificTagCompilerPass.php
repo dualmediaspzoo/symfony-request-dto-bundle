@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\DependencyInjection\Shared\CompilerPass;
+namespace DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

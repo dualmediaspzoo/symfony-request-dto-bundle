@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Model\Type;
+namespace DualMedia\DtoRequestBundle\Model\Type;
 
 class Dto extends Property
 {

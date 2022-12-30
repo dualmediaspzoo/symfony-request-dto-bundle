@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Annotations\Dto;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Annotations\Dto;
 
-use DM\DtoRequestBundle\Attributes\Dto\Bag;
-use DM\DtoRequestBundle\Enum\BagEnum;
-use DM\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
+use DualMedia\DtoRequestBundle\Enum\BagEnum;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 
 class BagTest extends TestCase
 {

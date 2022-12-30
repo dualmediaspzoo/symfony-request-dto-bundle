@@ -1,5 +1,5 @@
 {
-  "name": "dm/symfony-request-dto-bundle",
+  "name": "dualmedia/symfony-request-dto-bundle",
   "type": "symfony-bundle",
   "description": "Symfony bundle which provides DTO object functionality and resolving",
   "keywords": [
@@ -42,12 +42,12 @@
   },
   "autoload": {
     "psr-4": {
-      "DM\\DtoRequestBundle\\": "src/"
+      "DualMedia\\DtoRequestBundle\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "DM\\DtoRequestBundle\\Tests\\": "tests/"
+      "DualMedia\\DtoRequestBundle\\Tests\\": "tests/"
     }
   },
   "scripts": {

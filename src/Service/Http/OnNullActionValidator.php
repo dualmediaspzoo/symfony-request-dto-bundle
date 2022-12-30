@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Http;
+namespace DualMedia\DtoRequestBundle\Service\Http;
 
-use DM\DtoRequestBundle\Attributes\Dto\Http\OnNull;
-use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DM\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
 
 /**
  * Checks if the variable is null after loading

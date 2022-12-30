@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests;
+namespace DualMedia\DtoRequestBundle\Tests;
 
-use DM\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\DtoBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;

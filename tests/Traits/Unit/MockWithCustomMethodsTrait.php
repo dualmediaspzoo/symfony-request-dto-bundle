@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Traits\Unit;
+namespace DualMedia\DtoRequestBundle\Tests\Traits\Unit;
 
 use PHPUnit\Framework\MockObject\MockObject;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Model;
+namespace DualMedia\DtoRequestBundle\Tests\Model;
 
 class ArrayIterator implements \IteratorAggregate
 {

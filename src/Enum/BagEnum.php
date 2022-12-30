@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Enum;
+namespace DualMedia\DtoRequestBundle\Enum;
 
 enum BagEnum: string
 {

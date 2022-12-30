@@ -1,12 +1,12 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\DependencyInjection\Entity;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Entity;
 
-use DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
-use DM\DtoRequestBundle\DtoBundle;
-use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
-use DM\DtoRequestBundle\Service\Entity\ComplexLoaderService;
-use DM\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
+use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
+use DualMedia\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

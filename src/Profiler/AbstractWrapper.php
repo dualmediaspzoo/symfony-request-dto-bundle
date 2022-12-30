@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Profiler;
+namespace DualMedia\DtoRequestBundle\Profiler;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\DependencyInjection;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection;
 
-use DM\DtoRequestBundle\DependencyInjection\DtoExtension;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\DependencyInjection\DtoExtension;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DtoExtensionTest extends KernelTestCase

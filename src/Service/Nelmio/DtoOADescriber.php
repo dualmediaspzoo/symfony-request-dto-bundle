@@ -1,13 +1,13 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Nelmio;
+namespace DualMedia\DtoRequestBundle\Service\Nelmio;
 
-use DM\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
-use DM\DtoRequestBundle\Model\Type\Dto as DtoTypeModel;
-use DM\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
-use DM\DtoRequestBundle\Util as DtoUtil;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Model\Type\Dto as DtoTypeModel;
+use DualMedia\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
+use DualMedia\DtoRequestBundle\Util as DtoUtil;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util as OAUtil;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use OpenApi\Annotations\Items;

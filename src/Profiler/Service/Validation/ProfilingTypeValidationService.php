@@ -1,9 +1,9 @@
 <?php
 
-namespace DM\DtoRequestBundle\Profiler\Service\Validation;
+namespace DualMedia\DtoRequestBundle\Profiler\Service\Validation;
 
-use DM\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
-use DM\DtoRequestBundle\Profiler\AbstractWrapper;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 

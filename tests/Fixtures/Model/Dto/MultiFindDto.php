@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Fixtures\Model\Dto;
+namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto;
 
-use DM\DtoRequestBundle\Attributes\Dto\FindBy;
-use DM\DtoRequestBundle\Attributes\Dto\Type;
-use DM\DtoRequestBundle\Model\AbstractDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
+use DualMedia\DtoRequestBundle\Attributes\Dto\FindBy;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Type;
+use DualMedia\DtoRequestBundle\Model\AbstractDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MultiFindDto extends AbstractDto

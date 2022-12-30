@@ -1,10 +1,10 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Entity;
+namespace DualMedia\DtoRequestBundle\Interfaces\Entity;
 
-use DM\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
-use DM\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
+use DualMedia\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
+use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
 
 /**
  * Allows fetching {@link ProviderInterface} objects from a global storage via FQCN and optionally {@link ProviderInterface} id

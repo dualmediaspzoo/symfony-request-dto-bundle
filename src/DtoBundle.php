@@ -1,21 +1,21 @@
 <?php
 
-namespace DM\DtoRequestBundle;
+namespace DualMedia\DtoRequestBundle;
 
-use DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
-use DM\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderServiceCompilerPass;
-use DM\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
-use DM\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
-use DM\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
-use DM\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
-use DM\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DM\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
-use DM\DtoRequestBundle\Interfaces\Type\CoercerInterface;
-use DM\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
-use DM\DtoRequestBundle\Service\Http\ActionValidatorService;
-use DM\DtoRequestBundle\Service\Resolver\DynamicResolverService;
-use DM\DtoRequestBundle\Service\Type\CoercerService;
+use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
+use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderServiceCompilerPass;
+use DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
+use DualMedia\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
+use DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
+use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
+use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
+use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

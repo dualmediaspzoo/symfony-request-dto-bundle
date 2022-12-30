@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Dynamic;
+namespace DualMedia\DtoRequestBundle\Interfaces\Dynamic;
 
 /**
  * Provides resolvers for use

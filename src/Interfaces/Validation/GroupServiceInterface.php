@@ -1,8 +1,8 @@
 <?php
 
-namespace DM\DtoRequestBundle\Interfaces\Validation;
+namespace DualMedia\DtoRequestBundle\Interfaces\Validation;
 
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

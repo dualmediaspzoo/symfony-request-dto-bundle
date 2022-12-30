@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DM\DtoRequestBundle\Attributes\Dto\Format;
-use DM\DtoRequestBundle\Model\Type\Property;
-use DM\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
-use DM\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
+use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
 use Symfony\Component\Validator\Constraints\DateTime as DateTimeConstraint;
 
 class DateTimeImmutableCoercerTest extends AbstractMinimalCoercerTestCase

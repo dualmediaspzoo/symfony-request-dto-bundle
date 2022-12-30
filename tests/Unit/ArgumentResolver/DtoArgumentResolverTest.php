@@ -1,13 +1,13 @@
 <?php
 
-namespace DM\DtoRequestBundle\Tests\Unit\ArgumentResolver;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\ArgumentResolver;
 
-use DM\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
-use DM\DtoRequestBundle\Event\DtoResolvedEvent;
-use DM\DtoRequestBundle\Interfaces\DtoInterface;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto\BaseDto;
-use DM\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto\SubDto;
-use DM\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
+use DualMedia\DtoRequestBundle\Event\DtoResolvedEvent;
+use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto\BaseDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto\SubDto;
+use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;

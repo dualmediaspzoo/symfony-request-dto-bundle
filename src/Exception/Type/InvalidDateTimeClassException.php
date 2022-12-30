@@ -1,6 +1,6 @@
 <?php
 
-namespace DM\DtoRequestBundle\Exception\Type;
+namespace DualMedia\DtoRequestBundle\Exception\Type;
 
 /**
  * Thrown if the specified class is not valid

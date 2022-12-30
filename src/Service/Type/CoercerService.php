@@ -1,11 +1,11 @@
 <?php
 
-namespace DM\DtoRequestBundle\Service\Type;
+namespace DualMedia\DtoRequestBundle\Service\Type;
 
-use DM\DtoRequestBundle\Interfaces\Type\CoercerInterface;
-use DM\DtoRequestBundle\Interfaces\Type\CoercionServiceInterface;
-use DM\DtoRequestBundle\Model\Type\CoerceResult;
-use DM\DtoRequestBundle\Model\Type\Property;
+use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Type\CoercionServiceInterface;
+use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
+use DualMedia\DtoRequestBundle\Model\Type\Property;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
