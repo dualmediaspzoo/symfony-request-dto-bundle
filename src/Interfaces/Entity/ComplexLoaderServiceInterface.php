@@ -13,7 +13,9 @@ use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
 interface ComplexLoaderServiceInterface
 {
     /**
-     * @param string $fqcn
+     * @template T of object
+     *
+     * @param class-string<T> $fqcn
      * @param FindComplexInterface $find
      * @param array<string, mixed> $input
      *

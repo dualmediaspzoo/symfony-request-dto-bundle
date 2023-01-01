@@ -35,7 +35,8 @@
     "nelmio/api-doc-bundle": "^4",
     "symfony/stopwatch": "^5.4",
     "symfony/web-profiler-bundle": "^5.4",
-    "doctrine/doctrine-bundle": "^2"
+    "doctrine/doctrine-bundle": "^2",
+    "doctrine/orm": "^2"
   },
   "conflict": {
     "nelmio/api-doc-bundle": "<4"
@@ -55,7 +56,9 @@
     "test": "phpunit"
   },
   "suggest": {
-    "nelmio/api-doc-bundle": "^4"
+    "nelmio/api-doc-bundle": "^4",
+    "doctrine/doctrine-bundle": "^2",
+    "doctrine/orm": "^2"
   },
   "extra": {
     "symfony": {

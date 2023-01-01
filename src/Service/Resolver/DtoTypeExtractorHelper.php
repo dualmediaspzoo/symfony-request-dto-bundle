@@ -63,7 +63,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
                     fn (\ReflectionAttribute $a) => $a->newInstance(),
                     (new \ReflectionProperty($fqcn, $property))->getAttributes()
                 );
-            } catch (\ReflectionException) { // todo: php8 remove $e param, leave try-catch
+            } catch (\ReflectionException) {
                 continue;
             }
 

@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
 
-use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -12,9 +12,13 @@ class DoctrineRepositoryCompilerPass implements CompilerPassInterface
         ContainerBuilder $container
     ): void {
         // @codeCoverageIgnoreStart
-        if (!$container->hasDefinition(EntityProviderService::class)) {
+        if (!$container->hasDefinition(TargetProviderService::class)) {
             return;
         }
         // @codeCoverageIgnoreEnd
+
+        if (!$container->hasDefinition('doctrine')) {
+            $container->removeDefinition(TargetProviderService::class);
+        }
     }
 }

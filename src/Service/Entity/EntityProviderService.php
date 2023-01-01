@@ -8,6 +8,9 @@ use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 
+/**
+ * @implements ProviderServiceInterface<object>
+ */
 class EntityProviderService implements ProviderServiceInterface
 {
     /**
@@ -24,7 +27,8 @@ class EntityProviderService implements ProviderServiceInterface
      * @param array<string, list<array{0: ProviderInterface, 1: class-string, 2: bool}>> $providers key is the service id, contains an array of ProviderInterface, FQCN and isDefault
      */
     public function __construct(
-        array $providers
+        array $providers,
+        private readonly TargetProviderService|null $targetService = null
     ) {
         foreach ($providers as $id => $fields) {
             foreach ($fields as $item) {
@@ -43,14 +47,15 @@ class EntityProviderService implements ProviderServiceInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProvider(
         string $fqcn,
         ?string $providerId = null
     ): ProviderInterface {
         if (!array_key_exists($fqcn, $this->providers)) {
+            if ($this->targetService?->setFqcn($fqcn)) {
+                return $this->targetService;
+            }
+
             throw new EntityHasNoProviderException(sprintf(
                 "No entity provider was found for model %s",
                 $fqcn
@@ -63,6 +68,10 @@ class EntityProviderService implements ProviderServiceInterface
 
         if (null === $provider) {
             if (null === $providerId) {
+                if ($this->targetService?->setFqcn($fqcn)) {
+                    return $this->targetService;
+                }
+
                 throw new DefaultProviderNotFoundException(sprintf(
                     "Default provider not found for model %s",
                     $fqcn
