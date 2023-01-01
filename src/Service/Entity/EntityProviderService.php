@@ -52,7 +52,7 @@ class EntityProviderService implements ProviderServiceInterface
         ?string $providerId = null
     ): ProviderInterface {
         if (!array_key_exists($fqcn, $this->providers)) {
-            if ($this->targetService?->setFqcn($fqcn)) {
+            if (null === $providerId && $this->targetService?->setFqcn($fqcn)) {
                 return $this->targetService;
             }
 
