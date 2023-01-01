@@ -5,6 +5,8 @@
 This bundle aims to lower the burden of typechecking, casting, loading entities
 and related annoyances of using requests in your api.
 
+Bundle will automatically hook into [Doctrine ORM Bundle](https://github.com/doctrine/DoctrineBundle) and [Nelmio API Docs Bundle](https://github.com/nelmio/NelmioApiDocBundle) so no additional configuration should be needed.
+
 ## Usage
 
 1. Create a DTO class for your request
@@ -40,8 +42,3 @@ class MyController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractCo
 ## Docs
 
 Currently no documentation is available, but will be added in the future. For the time being see [the DTO models for tests](tests/Fixtures/Model/Dto)
-
-## Missing features
-
-Currently, some setup is required. Doctrine will not automatically supply entities at this point
-and a custom CompilerPass is needed. This will be resolved with an update for the bundle in the future.

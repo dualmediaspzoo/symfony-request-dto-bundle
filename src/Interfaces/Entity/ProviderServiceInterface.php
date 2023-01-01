@@ -8,13 +8,13 @@ use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
 
 /**
  * Allows fetching {@link ProviderInterface} objects from a global storage via FQCN and optionally {@link ProviderInterface} id
+ *
+ * @template T of object
  */
 interface ProviderServiceInterface
 {
     /**
-     * @template T of string
-     *
-     * @param T $fqcn
+     * @param class-string<T> $fqcn
      * @param string|null $providerId
      *
      * @return ProviderInterface<T>

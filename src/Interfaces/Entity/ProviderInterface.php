@@ -9,7 +9,7 @@ use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
  *
  * Add {@link EntityProvider} annotation on the class implementing this interface
  *
- * @template T
+ * @template T of object
  */
 interface ProviderInterface
 {
@@ -26,8 +26,7 @@ interface ProviderInterface
      * @psalm-param callable(array $fields, array $orderBy, mixed ...$args) $fn $orderBy must be nullable, but psalm doesn't like that
      * @param array<string, string>|null $orderBy
      *
-     * @return T[]|T|null
-     * @psalm-return list<T>|T|null
+     * @return list<T>|T|null
      *
      * @see QueryBuilder
      */

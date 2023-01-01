@@ -1,11 +1,13 @@
 <?php
 
+use Doctrine\Persistence\ManagerRegistry;
 use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
 use DualMedia\DtoRequestBundle\DtoBundle as Bundle;
 use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
 use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\TargetProviderInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Type\CoercionServiceInterface;
@@ -13,6 +15,7 @@ use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
 use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
 use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
@@ -49,6 +52,10 @@ return static function (ContainerConfigurator $configurator) {
     $services->alias(GroupServiceInterface::class, GroupProviderService::class);
     $services->set(GroupProviderService::class)
         ->arg(0, new TaggedIteratorArgument(Bundle::GROUP_PROVIDER_TAG));
+
+    $services->alias(TargetProviderInterface::class, TargetProviderService::class);
+    $services->set(TargetProviderService::class)
+        ->arg(0, new Reference(ManagerRegistry::class));
 
     // coercion services
     $services->alias(CoercionServiceInterface::class, CoercerService::class);

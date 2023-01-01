@@ -3,6 +3,7 @@
 namespace DualMedia\DtoRequestBundle;
 
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
+use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\DoctrineRepositoryCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderServiceCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
@@ -43,6 +44,9 @@ class DtoBundle extends Bundle
             ComplexLoaderInterface::class => self::COMPLEX_LOADER_TAG,
             ActionValidatorInterface::class => self::HTTP_ACTION_VALIDATOR_TAG,
         ]));
+
+        // Doctrine autoconfigure
+        $container->addCompilerPass(new DoctrineRepositoryCompilerPass(), PassConfig::TYPE_OPTIMIZE, 99);
 
         // entity provider
         $container->addCompilerPass(new ProviderServiceCompilerPass(), PassConfig::TYPE_OPTIMIZE, 100);

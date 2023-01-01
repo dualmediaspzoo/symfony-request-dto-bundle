@@ -7,6 +7,8 @@ use DualMedia\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException
 use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Entity\TestEntity;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 
 class EntityProviderServiceTest extends TestCase
@@ -98,5 +100,63 @@ class EntityProviderServiceTest extends TestCase
             $mock,
             $service->getProvider($fqcn, $providerId)
         );
+    }
+
+    /**
+     * @testWith [true]
+     *           [false]
+     */
+    public function testHandleMissingKeyTargetProvider(
+        bool $result
+    ): void {
+        $mock = $this->createMock(TargetProviderService::class);
+        $mock->method('setFqcn')
+            ->with(TestEntity::class)
+            ->willReturn($result);
+
+        $service = new EntityProviderService([], $mock);
+
+        if ($result) {
+            $this->assertEquals($mock, $service->getProvider(TestEntity::class));
+        } else {
+            $this->expectException(EntityHasNoProviderException::class);
+            $this->expectExceptionMessage(sprintf(
+                "No entity provider was found for model %s",
+                TestEntity::class
+            ));
+            $service->getProvider(TestEntity::class);
+        }
+    }
+
+    /**
+     * @testWith [true]
+     *           [false]
+     */
+    public function testHandleNoDefaultTargetProvider(
+        bool $result
+    ): void {
+        $mock = $this->createMock(TargetProviderService::class);
+        $mock->method('setFqcn')
+            ->with(TestEntity::class)
+            ->willReturn($result);
+
+        $service = new EntityProviderService([
+            'dummy_service' => [[
+                $this->createMock(ProviderInterface::class),
+                TestEntity::class,
+                false,
+            ]],
+        ], $mock);
+
+        if ($result) {
+            $this->assertEquals($mock, $service->getProvider(TestEntity::class));
+        } else {
+            $this->expectException(DefaultProviderNotFoundException::class);
+            $this->expectExceptionMessage(sprintf(
+                "Default provider not found for model %s",
+                TestEntity::class
+            ));
+            $service->getProvider(TestEntity::class);
+        }
     }
 }

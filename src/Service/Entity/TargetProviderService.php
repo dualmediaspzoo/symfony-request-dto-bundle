@@ -1,0 +1,57 @@
+<?php
+
+namespace DualMedia\DtoRequestBundle\Service\Entity;
+
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\TargetProviderInterface;
+
+/**
+ * @implements TargetProviderInterface<object>
+ */
+class TargetProviderService implements TargetProviderInterface
+{
+    private EntityRepository|null $repository = null;
+
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
+    }
+
+    public function setFqcn(
+        string $fqcn
+    ): bool {
+        // This is kinda nasty, but Doctrine will be changing the interface in 3.0 anyway, so it should be fine?
+        return null !== (
+            $this->repository = $this->registry->getManagerForClass($fqcn)?->getRepository($fqcn) ?? null // @phpstan-ignore-line
+        );
+    }
+
+    public function findComplex(
+        callable $fn,
+        array $fields,
+        ?array $orderBy = null
+    ) {
+        if (null === $this->repository) {
+            return null;
+        }
+
+        return $fn($fields, $orderBy, $this->repository->createQueryBuilder('entity'));
+    }
+
+    public function findOneBy(
+        array $criteria,
+        ?array $orderBy = null
+    ) {
+        return $this->repository?->findOneBy($criteria, $orderBy) ?? null;
+    }
+
+    public function findBy(
+        array $criteria,
+        ?array $orderBy = null,
+        ?int $limit = null,
+        ?int $offset = null
+    ) {
+        return $this->repository?->findBy($criteria, $orderBy, $limit, $offset) ?? [];
+    }
+}

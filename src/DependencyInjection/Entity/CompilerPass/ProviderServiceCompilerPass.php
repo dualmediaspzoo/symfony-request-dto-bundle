@@ -6,9 +6,12 @@ use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
 use DualMedia\DtoRequestBundle\DtoBundle;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\TargetProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -33,7 +36,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
         try {
             /** @var array<string, list<array{0: Reference, 1: class-string, 2: bool}>> $arg */
             $arg = $service->getArgument(0);
-        } catch (OutOfBoundsException $e) {
+        } catch (OutOfBoundsException) {
             /** @var array<string, list<array{0: Reference, 1: class-string, 2: bool}>> $arg */
             $arg = [];
         }
@@ -49,6 +52,10 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
             /** @var \ReflectionClass $reflection */
             $reflection = $container->getReflectionClass($def->getClass());
             $attributes = $reflection->getAttributes(EntityProvider::class);
+
+            if (array_key_exists(TargetProviderInterface::class, $reflection->getInterfaces())) {
+                continue; // no need to do anything here
+            }
 
             if (empty($attributes)) {
                 throw new AttributeMissingException($reflection->getName(), sprintf(
@@ -119,6 +126,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
             ));
         }
 
-        $service->setArgument(0, $arg);
+        $service->setArgument(0, $arg)
+            ->setArgument(1, new Reference(TargetProviderService::class, ContainerInterface::NULL_ON_INVALID_REFERENCE));
     }
 }

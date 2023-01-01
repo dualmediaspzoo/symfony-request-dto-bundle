@@ -231,7 +231,7 @@ class DtoResolverService implements DtoResolverInterface
                 $dto->{$property->getName()} = $values[$replacePath];
                 $dto->preValidate($property->getName());
             }
-        } catch (AccessException $e) {
+        } catch (AccessException) {
             // noop
         } finally {
             $this->attemptToSaveHttpAction($property, $dto, $dto->{$property->getName()});
@@ -284,7 +284,7 @@ class DtoResolverService implements DtoResolverInterface
                 }
 
                 $dto->visit($property->getName());
-            } catch (AccessException $e) {
+            } catch (AccessException) {
                 // noop
             } finally {
                 $dto->preValidate($property->getName()); // allow full dto checks
@@ -341,7 +341,7 @@ class DtoResolverService implements DtoResolverInterface
 
                     $dto->visit($property->getName(), $key);
                     $visitedAnyRequestProps = true;
-                } catch (AccessException $e) { // todo: php8 remove $e
+                } catch (AccessException) {
                     // noop
                 } finally {
                     $fields[$key] = $tmp;
