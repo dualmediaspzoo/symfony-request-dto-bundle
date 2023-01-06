@@ -12,6 +12,16 @@ Bundle will automatically hook into [Doctrine ORM Bundle](https://github.com/doc
 
 Simply `composer require dualmedia/symfony-request-dto-bundle`, if applicable your Doctrine entity managers will be detected automatically and used as default providers for classes to be loaded with your requests if needed.
 
+Then add the bundle to your `config/bundles.php` file like so
+
+```php
+return [
+    Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
+    // other bundles ...
+    DualMedia\DtoRequestBundle\DtoBundle::class => ['all' => true],
+];
+```
+
 ## Usage
 
 1. Create a DTO class for your request

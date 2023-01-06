@@ -7,11 +7,11 @@ trait KernelAccessTrait
     /**
      * @param string $id
      *
-     * @return mixed
+     * @return object|null
      */
-    protected static function getService(
+    protected function getService(
         string $id
-    ) {
-        return static::$container->get($id);
+    ): ?object {
+        return $this->getContainer()->get($id);
     }
 }
