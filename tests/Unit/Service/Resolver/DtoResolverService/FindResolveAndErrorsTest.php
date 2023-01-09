@@ -24,7 +24,7 @@ class FindResolveAndErrorsTest extends KernelTestCase
     protected function setUp(): void
     {
         parent::bootKernel();
-        static::$container->set(DummyModelProvider::class, $this->provider = $this->createMock(DummyModelProvider::class));
+        $this->getContainer()->set(DummyModelProvider::class, $this->provider = $this->createMock(DummyModelProvider::class));
         $this->service = $this->getService(DtoResolverService::class);
     }
 

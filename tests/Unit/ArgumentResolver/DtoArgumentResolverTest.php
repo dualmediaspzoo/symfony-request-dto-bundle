@@ -23,7 +23,7 @@ class DtoArgumentResolverTest extends KernelTestCase
     {
         self::bootKernel();
         $this->eventMock = $this->createMock(EventDispatcherInterface::class);
-        self::$container->set('event_dispatcher', $this->eventMock);
+        $this->getContainer()->set('event_dispatcher', $this->eventMock);
         $this->service = $this->getService(DtoArgumentResolver::class);
     }
 
