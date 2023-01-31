@@ -472,7 +472,7 @@ class DtoOADescriber implements RouteDescriberInterface
      *
      * @psalm-suppress InvalidPropertyAssignmentValue
      */
-    public function applySchemaConstraints(
+    private function applySchemaConstraints(
         Schema $schema,
         PropertyTypeModel $property
     ): void {
