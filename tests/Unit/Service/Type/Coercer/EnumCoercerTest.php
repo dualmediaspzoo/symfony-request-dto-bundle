@@ -42,11 +42,11 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
             ->setType('object')
             ->setFqcn(StringEnum::class);
 
-        $result = $this->service->coerce('something', $enum, StringEnum::STRING_KEY->value);
+        $result = $this->service->coerce('something', $enum, StringEnum::StringKey->value);
         $this->assertEmpty($result->getViolations());
 
         $this->assertEquals(
-            StringEnum::STRING_KEY,
+            StringEnum::StringKey,
             $result->getValue()
         );
     }
@@ -67,13 +67,13 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
         $enum = (new Property())
             ->setType('object')
             ->setFqcn(IntegerEnum::class)
-            ->addDtoAttribute(new AllowEnum([IntegerEnum::OTHER_KEY, IntegerEnum::LAST_KEY]));
+            ->addDtoAttribute(new AllowEnum([IntegerEnum::OtherKey, IntegerEnum::LastKey]));
 
         $result = $this->service->coerce('something', $enum, 20);
         $this->assertEmpty($result->getViolations());
 
         $this->assertEquals(
-            IntegerEnum::OTHER_KEY,
+            IntegerEnum::OtherKey,
             $result->getValue()
         );
 
@@ -91,15 +91,15 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
         // test the same but as keys
         $enum->addDtoAttribute(new FromKey());
 
-        $result = $this->service->coerce('something', $enum, 'OTHER_KEY');
+        $result = $this->service->coerce('something', $enum, 'OtherKey');
         $this->assertEmpty($result->getViolations());
 
         $this->assertEquals(
-            IntegerEnum::OTHER_KEY,
+            IntegerEnum::OtherKey,
             $result->getValue()
         );
 
-        $result = $this->service->coerce('something', $enum, 'INTEGER_KEY');
+        $result = $this->service->coerce('something', $enum, 'IntegerKey');
         $this->assertCount(1, $result->getViolations());
 
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($result->getViolations());

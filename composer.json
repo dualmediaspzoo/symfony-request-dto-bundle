@@ -39,7 +39,8 @@
     "doctrine/orm": "^2"
   },
   "conflict": {
-    "nelmio/api-doc-bundle": "<4"
+    "nelmio/api-doc-bundle": "<4",
+    "doctrine/doctrine-bundle": "<2"
   },
   "autoload": {
     "psr-4": {
@@ -56,9 +57,8 @@
     "test": "phpunit"
   },
   "suggest": {
-    "nelmio/api-doc-bundle": "^4",
-    "doctrine/doctrine-bundle": "^2",
-    "doctrine/orm": "^2"
+    "nelmio/api-doc-bundle": "Adds api docs for endpoints",
+    "doctrine/doctrine-bundle": "Symfony's ORM of choice"
   },
   "extra": {
     "symfony": {

@@ -12,13 +12,10 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ProfilingTypeValidationService extends AbstractWrapper implements TypeValidationInterface
 {
-    private TypeValidationInterface $validation;
-
     public function __construct(
-        TypeValidationInterface $validation,
-        ?Stopwatch $stopwatch = null
+        private readonly TypeValidationInterface $validation,
+        Stopwatch|null $stopwatch = null
     ) {
-        $this->validation = $validation;
         parent::__construct($stopwatch);
     }
 

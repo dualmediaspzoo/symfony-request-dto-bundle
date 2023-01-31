@@ -12,13 +12,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class ProfilingEntityProviderService extends AbstractWrapper implements ProviderServiceInterface
 {
-    private ProviderServiceInterface $providerService;
-
     public function __construct(
-        ProviderServiceInterface $providerService,
-        ?Stopwatch $stopwatch = null
+        private readonly ProviderServiceInterface $providerService,
+        Stopwatch|null $stopwatch = null
     ) {
-        $this->providerService = $providerService;
         parent::__construct($stopwatch);
     }
 

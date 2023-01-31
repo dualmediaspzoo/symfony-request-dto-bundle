@@ -8,6 +8,6 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
 
 class LimitedEnumDto extends AbstractDto
 {
-    #[AllowEnum([IntegerEnum::INTEGER_KEY])]
+    #[AllowEnum([IntegerEnum::IntegerKey])]
     public ?IntegerEnum $int = null;
 }

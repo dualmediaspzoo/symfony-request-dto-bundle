@@ -16,13 +16,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class ProfilingDtoResolverService extends AbstractWrapper implements DtoResolverInterface
 {
-    private DtoResolverInterface $resolver;
-
     public function __construct(
-        DtoResolverInterface $resolver,
-        ?Stopwatch $stopwatch = null
+        private readonly DtoResolverInterface $resolver,
+        Stopwatch|null $stopwatch = null
     ) {
-        $this->resolver = $resolver;
         parent::__construct($stopwatch);
     }
 

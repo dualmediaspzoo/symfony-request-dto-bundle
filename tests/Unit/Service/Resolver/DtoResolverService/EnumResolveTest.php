@@ -3,6 +3,7 @@
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
 
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumByKeysDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumQueryDto;
@@ -48,8 +49,8 @@ class EnumResolveTest extends KernelTestCase
     public function testEnumResolveKey(): void
     {
         $request = new Request([], [
-            'int' => 'INTEGER_KEY',
-            'string' => 'STRING_KEY',
+            'int' => 'IntegerKey',
+            'string' => 'StringKey',
         ]);
 
         /** @var EnumByKeysDto $resolved */
@@ -123,7 +124,7 @@ class EnumResolveTest extends KernelTestCase
     public function testLimitedKeyResolve(): void
     {
         $request = new Request([], [
-            'int' => 'INTEGER_KEY',
+            'int' => 'IntegerKey',
         ]);
 
         /** @var LimitedEnumByKeyDto $resolved */
@@ -141,7 +142,7 @@ class EnumResolveTest extends KernelTestCase
     public function testBadKeyResolve(): void
     {
         $request = new Request([], [
-            'int' => 'OTHER_KEY',
+            'int' => 'OtherKey',
         ]);
 
         /** @var LimitedEnumByKeyDto $resolved */
@@ -154,5 +155,23 @@ class EnumResolveTest extends KernelTestCase
         $this->assertTrue($resolved->visited('int'));
         $this->assertNull($resolved->int);
         $this->assertEquals(['int'], $resolved->getVisited());
+    }
+
+    public function testLimitedKeyResolveWithNormalizer(): void
+    {
+        $request = new Request([], [
+            'string' => 'STRING_KEY',
+        ]);
+
+        /** @var LimitedEnumByKeyDto $resolved */
+        $resolved = $this->service->resolve(
+            $request,
+            LimitedEnumByKeyDto::class
+        );
+
+        $this->assertTrue($resolved->isValid());
+        $this->assertTrue($resolved->visited('string'));
+        $this->assertEquals(StringEnum::StringKey->value, $resolved->string->value);
+        $this->assertEquals(['string'], $resolved->getVisited());
     }
 }

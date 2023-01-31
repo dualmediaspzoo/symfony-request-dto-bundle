@@ -4,12 +4,14 @@ namespace DualMedia\DtoRequestBundle;
 
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\DoctrineRepositoryCompilerPass;
+use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\LabelProcessorCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderServiceCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
 use DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
 use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
@@ -33,6 +35,8 @@ class DtoBundle extends Bundle
     public const COMPLEX_LOADER_TAG = 'dto_bundle.complex_loader';
     public const GROUP_PROVIDER_TAG = 'dto_bundle.validation_group_provider';
 
+    public const LABEL_PROCESSOR_TAB = 'dto_bundle.label_processor';
+
     public function build(
         ContainerBuilder $container
     ): void {
@@ -43,6 +47,7 @@ class DtoBundle extends Bundle
             ResolverInterface::class => self::DYNAMIC_RESOLVER_TAG,
             ComplexLoaderInterface::class => self::COMPLEX_LOADER_TAG,
             ActionValidatorInterface::class => self::HTTP_ACTION_VALIDATOR_TAG,
+            LabelProcessorInterface::class => self::LABEL_PROCESSOR_TAB,
         ]));
 
         // Doctrine autoconfigure
@@ -74,5 +79,8 @@ class DtoBundle extends Bundle
 
         // complex loaders
         $container->addCompilerPass(new ComplexLoaderCompilerPass());
+
+        // label processors
+        $container->addCompilerPass(new LabelProcessorCompilerPass());
     }
 }

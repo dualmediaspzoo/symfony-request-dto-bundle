@@ -6,6 +6,7 @@ use DualMedia\DtoRequestBundle\DtoBundle as Bundle;
 use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
 use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\TargetProviderInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
@@ -15,6 +16,9 @@ use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
+use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\DefaultProcessor;
+use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\PascalCaseProcessor;
+use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessorService;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
 use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
@@ -77,6 +81,7 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->set(EnumCoercer::class)
         ->arg(0, new Reference('validator'))
+        ->arg(1, new Reference(LabelProcessorServiceInterface::class))
         ->tag(Bundle::COERCER_TAG);
 
     $services->set(DateTimeImmutableCoercer::class)
@@ -95,6 +100,16 @@ return static function (ContainerConfigurator $configurator) {
     $services->alias(ResolverServiceInterface::class, DynamicResolverService::class);
     $services->set(DynamicResolverService::class)
         ->arg(0, new TaggedIteratorArgument(Bundle::DYNAMIC_RESOLVER_TAG));
+
+    $services->alias(LabelProcessorServiceInterface::class, LabelProcessorService::class);
+    $services->set(LabelProcessorService::class)
+        ->arg(0, []);
+
+    $services->set(DefaultProcessor::class)
+        ->tag(Bundle::LABEL_PROCESSOR_TAB);
+
+    $services->set(PascalCaseProcessor::class)
+        ->tag(Bundle::LABEL_PROCESSOR_TAB);
 
     $services->alias(ComplexLoaderServiceInterface::class, ComplexLoaderService::class);
     $services->set(ComplexLoaderService::class)
@@ -129,6 +144,7 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->set(DtoOADescriber::class)
         ->arg(0, new Reference(DtoTypeExtractorInterface::class))
+        ->arg(1, new Reference(LabelProcessorServiceInterface::class))
         ->tag('nelmio_api_doc.route_describer');
 
     // Subscribers

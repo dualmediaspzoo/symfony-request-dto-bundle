@@ -311,18 +311,18 @@ class Property implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
-     * These choices are mapped respectively as their values OR keys
+     * These choices are mapped respectively as their cases
      *
-     * @return list<string|int>
+     * @return list<\BackedEnum>
      */
-    public function getEnumChoices(): array
+    public function getEnumCases(): array
     {
         if (!$this->isEnum()) {
             return [];
         }
 
         /**
-         * @var array<string, \BackedEnum> $enums
+         * @var list<\BackedEnum> $enums
          * @phpstan-ignore-next-line
          */
         $enums = call_user_func([$this->getFqcn(), 'cases']);
@@ -337,9 +337,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
             $enums = $allowed->allowed;
         }
 
-        return $this->hasDtoAttribute(FromKey::class) ?
-            array_values(array_map(fn (\BackedEnum $e) => $e->name, $enums)) :
-            array_values(array_map(fn (\BackedEnum $e) => $e->value, $enums));
+        return $enums;
     }
 
     /**
@@ -361,65 +359,6 @@ class Property implements \ArrayAccess, \IteratorAggregate
         }
 
         return !$constraint->allowNull;
-    }
-
-    /**
-     * Based on {@link \Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader::processPropertyAnnotations()}
-     *
-     * @psalm-suppress InvalidPropertyAssignmentValue
-     */
-    public function applySchemaConstraints(
-        Schema $schema
-    ): void {
-        if (null !== ($length = $this->findConstraint(Assert\Length::class))) {
-            if (isset($length->min)) {
-                $schema->minLength = (int)$length->min;
-            }
-
-            if (isset($length->max)) {
-                $schema->maxLength = (int)$length->max;
-            }
-        }
-
-        if ($this->isEnum()) {
-            $schema->enum = $this->getEnumChoices();
-        }
-
-        if (null !== ($regex = $this->findConstraint(Assert\Regex::class)) && null !== $regex->getHtmlPattern()) {
-            if (Generator::UNDEFINED !== $schema->pattern) {
-                $schema->pattern = sprintf('%s, %s', $schema->pattern, $regex->getHtmlPattern());
-            } else {
-                $schema->pattern = $regex->getHtmlPattern();
-            }
-        }
-
-        if (null !== ($range = $this->findConstraint(Assert\Range::class))) {
-            if (isset($range->min)) {
-                $schema->minimum = (int)$range->min;
-            }
-
-            if (isset($range->max)) {
-                $schema->maximum = (int)$range->max;
-            }
-        }
-
-        if (null !== ($lessThan = $this->findConstraint(Assert\LessThan::class))) {
-            $schema->exclusiveMaximum = true;
-            $schema->maximum = (int)$lessThan->value;
-        }
-
-        if (null !== ($lessThanEq = $this->findConstraint(Assert\LessThanOrEqual::class))) {
-            $schema->maximum = (int)$lessThanEq->value;
-        }
-
-        if (null !== ($greaterThan = $this->findConstraint(Assert\GreaterThan::class))) {
-            $schema->exclusiveMinimum = true;
-            $schema->minimum = (int)$greaterThan->value;
-        }
-
-        if (null !== ($greaterThanEq = $this->findConstraint(Assert\GreaterThanOrEqual::class))) {
-            $schema->minimum = (int)$greaterThanEq->value;
-        }
     }
 
     public function applyCollectionConstraints(
@@ -549,6 +488,38 @@ class Property implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
+     * @template T of Constraint
+     *
+     * @param class-string<T> $class
+     *
+     * @return T|null
+     */
+    public function findConstraint(
+        string $class,
+        bool $firstAll = false
+    ): ?Constraint {
+        $all = null;
+
+        foreach ($this->constraints as $constraint) {
+            if (!($constraint instanceof Assert\All)) {
+                continue;
+            }
+
+            if (null !== ($all = $this->findFromArray($constraint->constraints, $class))) {
+                break;
+            }
+        }
+
+        $any = $this->findFromArray($this->constraints, $class);
+
+        if ($firstAll) {
+            return $all ?? $any;
+        }
+
+        return $any ?? $all;
+    }
+
+    /**
      * @throws InvalidDateTimeClassException
      */
     private function validateClassFqcn(
@@ -579,38 +550,6 @@ class Property implements \ArrayAccess, \IteratorAggregate
         }
 
         return $class;
-    }
-
-    /**
-     * @template T of Constraint
-     *
-     * @param class-string<T> $class
-     *
-     * @return T|null
-     */
-    private function findConstraint(
-        string $class,
-        bool $firstAll = false
-    ): ?Constraint {
-        $all = null;
-
-        foreach ($this->constraints as $constraint) {
-            if (!($constraint instanceof Assert\All)) {
-                continue;
-            }
-
-            if (null !== ($all = $this->findFromArray($constraint->constraints, $class))) {
-                break;
-            }
-        }
-
-        $any = $this->findFromArray($this->constraints, $class);
-
-        if ($firstAll) {
-            return $all ?? $any;
-        }
-
-        return $any ?? $all;
     }
 
     /**
