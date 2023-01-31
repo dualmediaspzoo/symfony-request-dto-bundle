@@ -40,7 +40,7 @@
   },
   "conflict": {
     "nelmio/api-doc-bundle": "<4",
-    "doctrine/doctrine-bundle": "<2.8",
+    "doctrine/doctrine-bundle": "<2",
     "doctrine/annotations": "^2"
   },
   "autoload": {
