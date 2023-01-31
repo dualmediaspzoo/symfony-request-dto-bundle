@@ -12,7 +12,6 @@ use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\PathInterface;
 use OpenApi\Annotations\Schema;
-use OpenApi\Generator;
 use Symfony\Component\PropertyAccess\Exception\OutOfBoundsException;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyPathBuilder;

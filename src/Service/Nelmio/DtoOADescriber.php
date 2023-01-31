@@ -22,7 +22,6 @@ use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
-use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -116,7 +115,7 @@ class DtoOADescriber implements RouteDescriberInterface
                     }
 
                     // @phpstan-ignore-next-line
-                    if (Generator::UNDEFINED === $operation->parameters) {
+                    if ($this->getUndefined() === $operation->parameters) {
                         $operation->parameters = [];
                     }
 
@@ -124,7 +123,7 @@ class DtoOADescriber implements RouteDescriberInterface
                         'name' => explode('.', $key)[0],
                         'in' => self::OA_BAG_MAP[$type] ?? $type,
                         'schema' => $schema,
-                        'description' => $model->getDescription() ?? Generator::UNDEFINED,
+                        'description' => $model->getDescription() ?? $this->getUndefined(),
                         'required' => $model->isRequired(),
                         '_context' => $context,
                     ]);
@@ -146,7 +145,7 @@ class DtoOADescriber implements RouteDescriberInterface
             }
 
             // @phpstan-ignore-next-line
-            if (Generator::UNDEFINED === $operation->responses) {
+            if ($this->getUndefined() === $operation->responses) {
                 $operation->responses = [];
             }
 
@@ -252,7 +251,7 @@ class DtoOADescriber implements RouteDescriberInterface
                 } else {
                     $property->type = $model->getOAType();
                 }
-                $property->description = $model->getDescription() ?? Generator::UNDEFINED;
+                $property->description = $model->getDescription() ?? $this->getUndefined();
 
                 // extra work for files
                 if ('files' === $model->getBag()->bag) {
@@ -509,7 +508,7 @@ class DtoOADescriber implements RouteDescriberInterface
         }
 
         if (null !== ($regex = $property->findConstraint(Assert\Regex::class)) && null !== $regex->getHtmlPattern()) {
-            if (Generator::UNDEFINED !== $schema->pattern) {
+            if ($this->getUndefined() !== $schema->pattern) {
                 $schema->pattern = sprintf('%s, %s', $schema->pattern, $regex->getHtmlPattern());
             } else {
                 $schema->pattern = $regex->getHtmlPattern();
@@ -543,5 +542,18 @@ class DtoOADescriber implements RouteDescriberInterface
         if (null !== ($greaterThanEq = $property->findConstraint(Assert\GreaterThanOrEqual::class))) {
             $schema->minimum = (int)$greaterThanEq->value;
         }
+    }
+
+    private function getUndefined(): ?string
+    {
+        if (defined('OpenApi\UNDEFINED')) {
+            return constant('OpenApi\UNDEFINED'); // @phpstan-ignore-line
+        }
+
+        if (class_exists('OpenApi\Generator')) {
+            return constant('OpenApi\Generator::UNDEFINED'); // @phpstan-ignore-line
+        }
+
+        return null;
     }
 }
