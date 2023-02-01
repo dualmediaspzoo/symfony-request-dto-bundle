@@ -57,7 +57,7 @@
     "test": "phpunit"
   },
   "suggest": {
-    "nelmio/api-doc-bundle": "Adds api docs for endpoints",
+    "nelmio/api-doc-bundle": "Adds api docs for endpoints for your DTOs",
     "doctrine/doctrine-bundle": "Symfony's ORM of choice"
   },
   "extra": {
