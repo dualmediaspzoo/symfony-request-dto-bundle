@@ -9,14 +9,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 abstract class AbstractWrapper
 {
-    private ?Stopwatch $stopwatch;
-
     private int $counter = 0;
 
     public function __construct(
-        ?Stopwatch $stopwatch = null
+        private readonly Stopwatch|null $stopwatch = null
     ) {
-        $this->stopwatch = $stopwatch;
     }
 
     /**

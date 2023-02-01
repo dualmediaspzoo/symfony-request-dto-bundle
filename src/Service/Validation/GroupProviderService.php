@@ -13,17 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 class GroupProviderService implements GroupServiceInterface
 {
     /**
-     * @var array<string, GroupProviderInterface>
-     */
-    private array $providers;
-
-    /**
      * @param array<string, GroupProviderInterface> $providers
      */
     public function __construct(
-        array $providers
+        private readonly array $providers
     ) {
-        $this->providers = $providers;
     }
 
     public function provideGroups(

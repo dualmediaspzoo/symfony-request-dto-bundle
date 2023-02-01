@@ -2,7 +2,6 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\PHPUnit;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader;
@@ -16,9 +15,7 @@ class NelmioTestCase extends KernelTestCase
     {
         self::bootKernel();
         $this->service = $this->getService(DtoOADescriber::class);
-        $this->loader = new AnnotatedRouteControllerLoader(
-            new AnnotationReader()
-        );
+        $this->loader = new AnnotatedRouteControllerLoader();
     }
 
     protected function describe(

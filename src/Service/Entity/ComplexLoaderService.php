@@ -12,21 +12,13 @@ use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 class ComplexLoaderService implements ComplexLoaderServiceInterface
 {
     /**
-     * @var array<string, ComplexLoaderInterface>
-     */
-    private array $loaders;
-    private ProviderServiceInterface $providerService;
-
-    /**
      * @param array<string, ComplexLoaderInterface> $loaders
      * @param ProviderServiceInterface $providerService
      */
     public function __construct(
-        array $loaders,
-        ProviderServiceInterface $providerService
+        private readonly array $loaders,
+        private readonly ProviderServiceInterface $providerService
     ) {
-        $this->loaders = $loaders;
-        $this->providerService = $providerService;
     }
 
     public function loadComplex(

@@ -36,10 +36,11 @@
     "symfony/stopwatch": "^5.4|^6.2",
     "symfony/web-profiler-bundle": "^5.4|^6.2",
     "doctrine/doctrine-bundle": "^2",
-    "doctrine/orm": "^2"
+    "doctrine/orm": "^2|^3"
   },
   "conflict": {
-    "nelmio/api-doc-bundle": "<4"
+    "nelmio/api-doc-bundle": "<4",
+    "doctrine/doctrine-bundle": "<2.4"
   },
   "autoload": {
     "psr-4": {
@@ -56,9 +57,8 @@
     "test": "phpunit"
   },
   "suggest": {
-    "nelmio/api-doc-bundle": "^4",
-    "doctrine/doctrine-bundle": "^2",
-    "doctrine/orm": "^2"
+    "nelmio/api-doc-bundle": "Adds api docs for endpoints for your DTOs",
+    "doctrine/doctrine-bundle": "Symfony's ORM of choice"
   },
   "extra": {
     "symfony": {

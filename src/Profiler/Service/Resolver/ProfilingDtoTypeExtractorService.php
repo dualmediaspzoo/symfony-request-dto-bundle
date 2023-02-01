@@ -13,13 +13,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class ProfilingDtoTypeExtractorService extends AbstractWrapper implements DtoTypeExtractorInterface
 {
-    private DtoTypeExtractorInterface $dtoTypeExtractor;
-
     public function __construct(
-        DtoTypeExtractorInterface $dtoTypeExtractor,
-        ?Stopwatch $stopwatch = null
+        private readonly DtoTypeExtractorInterface $dtoTypeExtractor,
+        Stopwatch|null $stopwatch = null
     ) {
-        $this->dtoTypeExtractor = $dtoTypeExtractor;
         parent::__construct($stopwatch);
     }
 

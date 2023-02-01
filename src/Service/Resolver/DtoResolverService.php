@@ -36,36 +36,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DtoResolverService implements DtoResolverInterface
 {
-    private TypeValidationInterface $validationHelper;
-    private DtoTypeExtractorInterface $typeExtractor;
-    private ProviderServiceInterface $providerService;
-    private GroupServiceInterface $groupService;
-    private ComplexLoaderServiceInterface $complexLoaderService;
-    private ResolverServiceInterface $resolverService;
-    private ActionValidatorInterface $actionValidator;
-    private ValidatorInterface $validator;
-
     private PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(
-        TypeValidationInterface $validationHelper,
-        DtoTypeExtractorInterface $typeExtractor,
-        ProviderServiceInterface $providerService,
-        GroupServiceInterface $groupService,
-        ComplexLoaderServiceInterface $complexLoaderService,
-        ResolverServiceInterface $resolverService,
-        ActionValidatorInterface $actionValidator,
-        ValidatorInterface $validator
+        private readonly TypeValidationInterface $validationHelper,
+        private readonly DtoTypeExtractorInterface $typeExtractor,
+        private readonly ProviderServiceInterface $providerService,
+        private readonly GroupServiceInterface $groupService,
+        private readonly ComplexLoaderServiceInterface $complexLoaderService,
+        private readonly ResolverServiceInterface $resolverService,
+        private readonly ActionValidatorInterface $actionValidator,
+        private readonly ValidatorInterface $validator
     ) {
-        $this->validationHelper = $validationHelper;
-        $this->typeExtractor = $typeExtractor;
-        $this->providerService = $providerService;
-        $this->groupService = $groupService;
-        $this->complexLoaderService = $complexLoaderService;
-        $this->resolverService = $resolverService;
-        $this->actionValidator = $actionValidator;
-        $this->validator = $validator;
-
         $this->propertyAccessor = (new PropertyAccessorBuilder())
             ->enableExceptionOnInvalidPropertyPath()
             ->enableExceptionOnInvalidIndex()

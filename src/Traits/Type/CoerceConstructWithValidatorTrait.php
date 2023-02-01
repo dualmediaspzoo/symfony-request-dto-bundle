@@ -6,11 +6,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 trait CoerceConstructWithValidatorTrait
 {
-    private ValidatorInterface $validator;
-
     public function __construct(
-        ValidatorInterface $validator
+        private readonly ValidatorInterface $validator
     ) {
-        $this->validator = $validator;
     }
 }

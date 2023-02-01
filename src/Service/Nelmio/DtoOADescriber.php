@@ -2,8 +2,10 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Nelmio;
 
+use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Dto as DtoTypeModel;
 use DualMedia\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
@@ -20,8 +22,8 @@ use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
-use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class DtoOADescriber implements RouteDescriberInterface
 {
@@ -38,12 +40,10 @@ class DtoOADescriber implements RouteDescriberInterface
      */
     private array $httpActions = [];
 
-    private DtoTypeExtractorInterface $typeExtractorHelper;
-
     public function __construct(
-        DtoTypeExtractorInterface $typeExtractorHelper
+        private readonly DtoTypeExtractorInterface $typeExtractorHelper,
+        private readonly LabelProcessorServiceInterface $labelProcessorService
     ) {
-        $this->typeExtractorHelper = $typeExtractorHelper;
     }
 
     public function describe(
@@ -109,13 +109,13 @@ class DtoOADescriber implements RouteDescriberInterface
                         $schema->items = new Items([
                             'type' => $model->getOAType(),
                         ]);
-                        $model->applySchemaConstraints($schema->items);
+                        $this->applySchemaConstraints($schema->items, $model);
                     } else {
-                        $model->applySchemaConstraints($schema);
+                        $this->applySchemaConstraints($schema, $model);
                     }
 
                     // @phpstan-ignore-next-line
-                    if (Generator::UNDEFINED === $operation->parameters) {
+                    if ($this->getUndefined() === $operation->parameters) {
                         $operation->parameters = [];
                     }
 
@@ -123,7 +123,7 @@ class DtoOADescriber implements RouteDescriberInterface
                         'name' => explode('.', $key)[0],
                         'in' => self::OA_BAG_MAP[$type] ?? $type,
                         'schema' => $schema,
-                        'description' => $model->getDescription() ?? Generator::UNDEFINED,
+                        'description' => $model->getDescription() ?? $this->getUndefined(),
                         'required' => $model->isRequired(),
                         '_context' => $context,
                     ]);
@@ -145,7 +145,7 @@ class DtoOADescriber implements RouteDescriberInterface
             }
 
             // @phpstan-ignore-next-line
-            if (Generator::UNDEFINED === $operation->responses) {
+            if ($this->getUndefined() === $operation->responses) {
                 $operation->responses = [];
             }
 
@@ -251,7 +251,7 @@ class DtoOADescriber implements RouteDescriberInterface
                 } else {
                     $property->type = $model->getOAType();
                 }
-                $property->description = $model->getDescription() ?? Generator::UNDEFINED;
+                $property->description = $model->getDescription() ?? $this->getUndefined();
 
                 // extra work for files
                 if ('files' === $model->getBag()->bag) {
@@ -266,7 +266,7 @@ class DtoOADescriber implements RouteDescriberInterface
                     $property->example = $model->isCollection() ? [self::FILE_EXAMPLE_BASE64] : self::FILE_EXAMPLE_BASE64;
                 }
 
-                $model->applySchemaConstraints($assignTo);
+                $this->applySchemaConstraints($assignTo, $model);
             }
 
             $final[] = $property;
@@ -465,5 +465,95 @@ class DtoOADescriber implements RouteDescriberInterface
         $methods = array_map('strtolower', $route->getMethods());
 
         return array_intersect($methods ?: $allMethods, $allMethods);
+    }
+
+    /**
+     * Based on {@link \Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader::processPropertyAnnotations()}
+     *
+     * @psalm-suppress InvalidPropertyAssignmentValue
+     */
+    private function applySchemaConstraints(
+        Schema $schema,
+        PropertyTypeModel $property
+    ): void {
+        if (null !== ($length = $property->findConstraint(Assert\Length::class))) {
+            if (isset($length->min)) {
+                $schema->minLength = (int)$length->min;
+            }
+
+            if (isset($length->max)) {
+                $schema->maxLength = (int)$length->max;
+            }
+        }
+
+        if ($property->isEnum()) {
+            $choices = $property->getEnumCases();
+
+            if (null !== ($fromKey = ($property->getDtoAttributes(FromKey::class)[0] ?? null))) {
+                /** @var FromKey $fromKey */
+                $processor = $this->labelProcessorService->getProcessor($fromKey->normalizer);
+
+                $choices = array_map(
+                    fn (\BackedEnum $e) => $processor->normalize($e->name),
+                    $choices
+                );
+            } else {
+                $choices = array_map(
+                    fn (\BackedEnum $e) => $e->value,
+                    $choices
+                );
+            }
+
+            $schema->enum = $choices;
+        }
+
+        if (null !== ($regex = $property->findConstraint(Assert\Regex::class)) && null !== $regex->getHtmlPattern()) {
+            if ($this->getUndefined() !== $schema->pattern) {
+                $schema->pattern = sprintf('%s, %s', $schema->pattern, $regex->getHtmlPattern());
+            } else {
+                $schema->pattern = $regex->getHtmlPattern();
+            }
+        }
+
+        if (null !== ($range = $property->findConstraint(Assert\Range::class))) {
+            if (isset($range->min)) {
+                $schema->minimum = (int)$range->min;
+            }
+
+            if (isset($range->max)) {
+                $schema->maximum = (int)$range->max;
+            }
+        }
+
+        if (null !== ($lessThan = $property->findConstraint(Assert\LessThan::class))) {
+            $schema->exclusiveMaximum = true;
+            $schema->maximum = (int)$lessThan->value;
+        }
+
+        if (null !== ($lessThanEq = $property->findConstraint(Assert\LessThanOrEqual::class))) {
+            $schema->maximum = (int)$lessThanEq->value;
+        }
+
+        if (null !== ($greaterThan = $property->findConstraint(Assert\GreaterThan::class))) {
+            $schema->exclusiveMinimum = true;
+            $schema->minimum = (int)$greaterThan->value;
+        }
+
+        if (null !== ($greaterThanEq = $property->findConstraint(Assert\GreaterThanOrEqual::class))) {
+            $schema->minimum = (int)$greaterThanEq->value;
+        }
+    }
+
+    private function getUndefined(): ?string
+    {
+        if (defined('OpenApi\UNDEFINED')) {
+            return constant('OpenApi\UNDEFINED'); // @phpstan-ignore-line
+        }
+
+        if (class_exists('OpenApi\Generator')) {
+            return constant('OpenApi\Generator::UNDEFINED'); // @phpstan-ignore-line
+        }
+
+        return null;
     }
 }

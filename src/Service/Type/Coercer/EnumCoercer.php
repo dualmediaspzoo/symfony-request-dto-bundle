@@ -3,15 +3,16 @@
 namespace DualMedia\DtoRequestBundle\Service\Type\Coercer;
 
 use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
-use DualMedia\DtoRequestBundle\Traits\Type\CoerceConstructWithValidatorTrait;
 use DualMedia\DtoRequestBundle\Traits\Type\CoercerResultTrait;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @implements CoercerInterface<\BackedEnum|null>
@@ -19,14 +20,19 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 class EnumCoercer implements CoercerInterface
 {
     use CoercerResultTrait;
-    use CoerceConstructWithValidatorTrait;
 
-    private bool $fromKey = false;
+    private FromKey|null $fromKey;
 
     /**
      * @var list<\BackedEnum>
      */
     private array $cases;
+
+    public function __construct(
+        private readonly ValidatorInterface $validator,
+        private readonly LabelProcessorServiceInterface $labelProcessorService
+    ) {
+    }
 
     public function supports(
         Property $property
@@ -40,10 +46,10 @@ class EnumCoercer implements CoercerInterface
         Property $property,
         $value
     ): CoerceResult {
-        $this->fromKey = $property->hasDtoAttribute(FromKey::class);
+        $this->fromKey = $property->getDtoAttributes(FromKey::class)[0] ?? null;
 
         $this->cases = call_user_func([$property->getFqcn(), 'cases']); // @phpstan-ignore-line
-        $constraints = [new Choice(['choices' => $property->getEnumChoices()])];
+        $constraints = [$this->getChoiceConstraint($property)];
 
         if ($property->isCollection()) {
             $constraints = [
@@ -87,8 +93,14 @@ class EnumCoercer implements CoercerInterface
             return null;
         }
 
+        // since the incoming labels might be in a different format we need to read the value
+        // and turn it into a "real" label
+        if (null !== $this->fromKey) {
+            $value = $this->labelProcessorService->getProcessor($this->fromKey->normalizer)->denormalize((string)$value);
+        }
+
         foreach ($this->cases as $case) {
-            $compare = $this->fromKey ? $case->name : $case->value;
+            $compare = null !== $this->fromKey ? $case->name : $case->value;
 
             if ($value === $compare) {
                 return $case;
@@ -96,5 +108,28 @@ class EnumCoercer implements CoercerInterface
         }
 
         return null;
+    }
+
+    private function getChoiceConstraint(
+        Property $property
+    ): Choice {
+        $choices = $property->getEnumCases();
+
+        if (null !== ($fromKey = ($property->getDtoAttributes(FromKey::class)[0] ?? null))) {
+            /** @var FromKey $fromKey */
+            $processor = $this->labelProcessorService->getProcessor($fromKey->normalizer);
+
+            $choices = array_map(
+                fn (\BackedEnum $e) => $processor->normalize($e->name),
+                $choices
+            );
+        } else {
+            $choices = array_map(
+                fn (\BackedEnum $e) => $e->value,
+                $choices
+            );
+        }
+
+        return new Choice(['choices' => $choices]);
     }
 }

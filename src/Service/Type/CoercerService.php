@@ -19,7 +19,6 @@ class CoercerService implements CoercionServiceInterface
      * @var list<CoercerInterface<T>>
      */
     private array $coercers;
-    private ValidatorInterface $validator;
 
     /**
      * @param \IteratorAggregate<array-key, CoercerInterface> $iterator
@@ -29,10 +28,9 @@ class CoercerService implements CoercionServiceInterface
      */
     public function __construct(
         \IteratorAggregate $iterator,
-        ValidatorInterface $validator
+        private readonly ValidatorInterface $validator
     ) {
         $this->coercers = iterator_to_array($iterator->getIterator());
-        $this->validator = $validator;
     }
 
     /**

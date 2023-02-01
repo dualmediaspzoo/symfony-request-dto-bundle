@@ -16,12 +16,9 @@ use Symfony\Component\PropertyInfo\Type;
 
 class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 {
-    private PropertyInfoExtractorInterface $propertyInfoExtractor;
-
     public function __construct(
-        PropertyInfoExtractorInterface $propertyInfoExtractor
+        private readonly PropertyInfoExtractorInterface $propertyInfoExtractor
     ) {
-        $this->propertyInfoExtractor = $propertyInfoExtractor;
     }
 
     /**
