@@ -26,6 +26,7 @@ class FindBy implements FindInterface, DtoAttributeInterface
      * @param string|null $provider
      * @param int|null $limit
      * @param int|null $offset
+     * @param array<string, mixed> $static
      *
      * @noinspection DuplicatedCode
      */
@@ -38,7 +39,8 @@ class FindBy implements FindInterface, DtoAttributeInterface
         array $descriptions = [],
         string|null $provider = null,
         int|null $limit = null,
-        int|null $offset = null
+        int|null $offset = null,
+        array $static = []
     ) {
         $this->fields = $fields;
         $this->orderBy = $orderBy;
@@ -49,6 +51,7 @@ class FindBy implements FindInterface, DtoAttributeInterface
         $this->provider = $provider;
         $this->limit = $limit;
         $this->offset = $offset;
+        $this->static = $static;
     }
 
     public function isCollection(): bool

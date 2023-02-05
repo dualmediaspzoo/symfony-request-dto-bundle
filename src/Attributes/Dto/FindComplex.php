@@ -56,6 +56,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
      * @param string|null $fn
      * @param string|null $service
      * @param bool $collection
+     * @param array<string, mixed> $static
      *
      * @noinspection DuplicatedCode
      */
@@ -71,7 +72,8 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
         int|null $offset = null,
         string|null $fn = null,
         string|null $service = null,
-        bool $collection = false
+        bool $collection = false,
+        array $static = []
     ) {
         $this->fields = $fields;
         $this->orderBy = $orderBy;
@@ -85,6 +87,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
         $this->fn = $fn;
         $this->service = $service;
         $this->collection = $collection;
+        $this->static = $static;
     }
 
     public function getFn(): string

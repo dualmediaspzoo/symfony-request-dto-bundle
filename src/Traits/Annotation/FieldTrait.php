@@ -19,6 +19,13 @@ trait FieldTrait
     public array $fields = [];
 
     /**
+     * This data will not change between requests and will be used to load the entity
+     *
+     * @var array<string, mixed>
+     */
+    public array $static = [];
+
+    /**
      * Order of the results
      *
      * @var array<string, string>|null
@@ -73,6 +80,11 @@ trait FieldTrait
         }
 
         return null;
+    }
+
+    public function getStatic(): array
+    {
+        return $this->static;
     }
 
     /**

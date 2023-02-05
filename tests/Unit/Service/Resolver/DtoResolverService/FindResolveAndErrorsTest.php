@@ -7,6 +7,7 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindWithSecondErrorDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\FindWithSomeSecondErrorDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\MultiFindDto;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\StaticDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use DualMedia\DtoRequestBundle\Tests\Service\Entity\DummyModelProvider;
@@ -143,5 +144,45 @@ class FindResolveAndErrorsTest extends KernelTestCase
         );
 
         $this->assertFalse($resolved->isValid());
+    }
+
+    public function testStaticData(): void
+    {
+        $find = $this->deferCallable(function (
+            array $criteria,
+            ?array $orderBy = null
+        ) {
+            $this->assertNull($orderBy);
+            $this->assertArrayHasKey('id', $criteria);
+            $this->assertEquals(15, $criteria['id']);
+            $this->assertArrayHasKey('second', $criteria);
+            $this->assertEquals('yeet', $criteria['second']);
+            $this->assertArrayHasKey('static', $criteria);
+            $this->assertEquals(1551, $criteria['static']);
+        });
+
+        $this->provider->expects($this->once())
+            ->method('findOneBy')
+            ->willReturnCallback(function (...$args) use ($find) {
+                $find->set($args);
+
+                return new DummyModel();
+            });
+
+        $request = new Request([], [
+            'something_id' => 15,
+            'something_second' => 'yeet',
+        ]);
+
+        /** @var StaticDto $resolved */
+        $resolved = $this->service->resolve(
+            $request,
+            StaticDto::class
+        );
+
+        $this->assertTrue($resolved->isValid());
+        $this->assertTrue($resolved->visited('model'));
+        $this->assertTrue($resolved->visitedVirtualProperty('model', 'id'));
+        $this->assertTrue($resolved->visitedVirtualProperty('model', 'second'));
     }
 }

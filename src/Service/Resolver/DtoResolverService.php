@@ -375,7 +375,7 @@ class DtoResolverService implements DtoResolverInterface
         foreach ($fields as $key => $v) {
             $fields[$key] = $mapped[$inputPaths[$key]];
         }
-        $criteria = array_merge($fields, $dynamic);
+        $criteria = array_merge($find->getStatic(), $fields, $dynamic);
 
         /** @var class-string $class */
         $class = $property->getFqcn();

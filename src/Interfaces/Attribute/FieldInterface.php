@@ -26,6 +26,15 @@ interface FieldInterface
     public function getFirstNonDynamicField(): ?string;
 
     /**
+     * Returns the static fields, these will not be changing between requests and are a shortcut
+     * to specifying data instead of using the dynamic fields, if it's an uncommon scenario
+     * or data is always known
+     *
+     * @return array<string, mixed>
+     */
+    public function getStatic(): array;
+
+    /**
      * Should be a key -> DESC/ASC array or null if no sorting was specified
      *
      * @return array<string, string>|null
