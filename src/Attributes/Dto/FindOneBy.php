@@ -22,6 +22,7 @@ class FindOneBy implements FindInterface, DtoAttributeInterface
      * @param string|null $errorPath
      * @param array<string, string> $descriptions
      * @param string|null $provider
+     * @param array<string, mixed> $static
      *
      * @noinspection DuplicatedCode
      */
@@ -32,7 +33,8 @@ class FindOneBy implements FindInterface, DtoAttributeInterface
         array $types = [],
         string|null $errorPath = null,
         array $descriptions = [],
-        string|null $provider = null
+        string|null $provider = null,
+        array $static = []
     ) {
         $this->fields = $fields;
         $this->orderBy = $orderBy;
@@ -41,6 +43,7 @@ class FindOneBy implements FindInterface, DtoAttributeInterface
         $this->errorPath = $errorPath;
         $this->descriptions = $descriptions;
         $this->provider = $provider;
+        $this->static = $static;
     }
 
     public function isCollection(): bool
