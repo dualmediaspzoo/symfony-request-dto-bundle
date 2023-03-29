@@ -326,6 +326,10 @@ class DtoResolverService implements DtoResolverInterface
                 } catch (AccessException) {
                     // noop
                 } finally {
+                    if ($property->isCollection()) {
+                        $tmp ??= [];
+                    }
+
                     $fields[$key] = $tmp;
                 }
             }
