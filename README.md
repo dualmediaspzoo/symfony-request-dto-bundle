@@ -1,7 +1,7 @@
 # Symfony DTO Bundle
 
 ![Code Coverage](https://camo.githubusercontent.com/ffe54b3b9a48d4d6bd374e2630b48e088c99858500db95ebed37184e8c1a6a3b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f436f6465253230436f7665726167652d38342532352d737563636573733f7374796c653d666c6174)
-![Packagist Downloads](https://img.shields.io/packagist/dt/dualmedia/symfony-request-dto-bundle)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/dualmedia/symfony-request-dto-bundle)](https://packagist.org/packages/dualmedia/symfony-request-dto-bundle)
 
 This bundle aims to lower the burden of typechecking, casting, loading entities
 and related annoyances of using requests in your api.
