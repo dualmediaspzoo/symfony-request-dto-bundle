@@ -230,9 +230,16 @@ class DtoOADescriber implements RouteDescriberInterface
             ]);
 
             if (is_array($model)) {
-                $property->properties = $this->resolveProperties($model);
-                $property->type = 'object';
-                $property->required = $this->resolveRequiredProperties($model);
+                if (is_array($model[''] ?? null)) {
+                    $property->type = "array";
+                    $property->items = new Items([]);
+                    $property->items->properties = $this->resolveProperties($model['']);
+                    $property->items->required = $this->resolveRequiredProperties($model['']);
+                } else {
+                    $property->type = 'object';
+                    $property->properties = $this->resolveProperties($model);
+                    $property->required = $this->resolveRequiredProperties($model);
+                }
             } else {
                 $assignTo = $property;
 
@@ -338,6 +345,9 @@ class DtoOADescriber implements RouteDescriberInterface
             }
 
             if ($item instanceof DtoTypeModel) {
+                if ($item->isCollection()) {
+                    $propertyPath .= '.';
+                }
                 $bags = DtoUtil::mergeRecursively($bags, $this->getClassBags($item, $propertyPath));
 
                 continue;
