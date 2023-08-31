@@ -230,6 +230,7 @@ class DtoOADescriber implements RouteDescriberInterface
             ]);
 
             if (is_array($model)) {
+                // checking whether there is an empty index by which you can distinguish whether the model is a collection of objects or a flat object
                 if (is_array($model[''] ?? null)) {
                     $property->type = "array";
                     $property->items = new Items([]);
@@ -345,7 +346,7 @@ class DtoOADescriber implements RouteDescriberInterface
             }
 
             if ($item instanceof DtoTypeModel) {
-                if ($item->isCollection()) {
+                if ($item->isCollection()) { // forces an empty index to make it easier to check whether an element is an array
                     $propertyPath .= '.';
                 }
                 $bags = DtoUtil::mergeRecursively($bags, $this->getClassBags($item, $propertyPath));
