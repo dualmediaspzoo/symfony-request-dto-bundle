@@ -42,6 +42,7 @@ class TypeValidationHelper implements TypeValidationInterface
         }
 
         $list = new ConstraintViolationList();
+
         // coerce and copy sub-values
         foreach ($subValues as $key => $value) {
             if (null === ($result = $this->coercionService->coerce($key, $subProperties[$key], $value))) {
