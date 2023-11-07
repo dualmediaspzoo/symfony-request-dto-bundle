@@ -29,14 +29,14 @@ class DateTimeImmutableCoercer implements CoercerInterface
     public function supports(
         Property $property
     ): bool {
-        return 'object' === $property->getType() &&
-            in_array($property->getFqcn(), [\DateTimeInterface::class, \DateTimeImmutable::class]);
+        return 'object' === $property->getType()
+            && in_array($property->getFqcn(), [\DateTimeInterface::class, \DateTimeImmutable::class]);
     }
 
     public function coerce(
         string $propertyPath,
         Property $property,
-        $value
+        mixed $value
     ): CoerceResult {
         // php8
         $format = ($property->getFormat() ?? new Format())->format ?? $this->defaultDateFormat;

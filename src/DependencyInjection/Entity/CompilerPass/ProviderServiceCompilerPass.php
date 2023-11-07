@@ -59,7 +59,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
 
             if (empty($attributes)) {
                 throw new AttributeMissingException($reflection->getName(), sprintf(
-                    "Service %s is not annotated with %s attribute and cannot be used as a provider",
+                    'Service %s is not annotated with %s attribute and cannot be used as a provider',
                     $id,
                     EntityProvider::class
                 ));
@@ -114,15 +114,15 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
 
             foreach ($repeats as $fqcn => $services) {
                 $strings[] = sprintf(
-                    "%s with %s",
+                    '%s with %s',
                     $fqcn,
-                    implode(" and ", $services)
+                    implode(' and ', $services)
                 );
             }
 
             throw new DuplicateDefaultProviderException($repeats, sprintf(
-                "One or more providers have duplicated defaults: %s",
-                implode(", ", $strings)
+                'One or more providers have duplicated defaults: %s',
+                implode(', ', $strings)
             ));
         }
 

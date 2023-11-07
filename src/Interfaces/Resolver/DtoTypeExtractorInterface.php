@@ -12,15 +12,12 @@ interface DtoTypeExtractorInterface
 {
     /**
      * @param \ReflectionClass<DtoInterface> $class
-     * @param Bag|null $root
-     *
-     * @return Dto
      *
      * @throws InvalidTypeCountException
      * @throws InvalidDateTimeClassException
      */
     public function extract(
         \ReflectionClass $class,
-        ?Bag $root = null
+        Bag|null $root = null
     ): Dto;
 }

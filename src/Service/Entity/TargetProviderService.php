@@ -30,7 +30,7 @@ class TargetProviderService implements TargetProviderInterface
     public function findComplex(
         callable $fn,
         array $fields,
-        ?array $orderBy = null
+        array|null $orderBy = null
     ) {
         if (null === $this->repository) {
             return null;
@@ -41,16 +41,16 @@ class TargetProviderService implements TargetProviderInterface
 
     public function findOneBy(
         array $criteria,
-        ?array $orderBy = null
+        array|null $orderBy = null
     ) {
         return $this->repository?->findOneBy($criteria, $orderBy) ?? null;
     }
 
     public function findBy(
         array $criteria,
-        ?array $orderBy = null,
-        ?int $limit = null,
-        ?int $offset = null
+        array|null $orderBy = null,
+        int|null $limit = null,
+        int|null $offset = null
     ) {
         return $this->repository?->findBy($criteria, $orderBy, $limit, $offset) ?? [];
     }

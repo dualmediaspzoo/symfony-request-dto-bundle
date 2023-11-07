@@ -5,7 +5,7 @@ namespace DualMedia\DtoRequestBundle\Attributes\Entity;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 
 /**
- * Allows setting which entity is provided by the provider
+ * Allows setting which entity is provided by the provider.
  *
  * Use together with implementing {@link ProviderInterface}
  */

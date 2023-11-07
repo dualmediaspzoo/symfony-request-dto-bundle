@@ -7,8 +7,8 @@ use DualMedia\DtoRequestBundle\Model\AbstractDto;
 
 class SubDto extends AbstractDto
 {
-    public ?int $value = null;
+    public int|null $value = null;
 
     #[Path('floaty_boy')]
-    public ?float $floatVal = null;
+    public float|null $floatVal = null;
 }

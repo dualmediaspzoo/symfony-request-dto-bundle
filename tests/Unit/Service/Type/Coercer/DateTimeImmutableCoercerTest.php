@@ -14,7 +14,7 @@ class DateTimeImmutableCoercerTest extends AbstractMinimalCoercerTestCase
 
     public function supportsProvider(): iterable
     {
-        foreach ([\DateTimeImmutable::class, \DateTimeInterface::class,] as $c) {
+        foreach ([\DateTimeImmutable::class, \DateTimeInterface::class] as $c) {
             foreach ([true, false] as $bool) {
                 yield [
                     $this->buildProperty('object', $bool, $c),

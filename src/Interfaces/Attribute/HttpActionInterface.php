@@ -5,28 +5,22 @@ namespace DualMedia\DtoRequestBundle\Interfaces\Attribute;
 interface HttpActionInterface extends DtoAttributeInterface
 {
     /**
-     * Gets the exception http status code
-     *
-     * @return int
+     * Gets the exception http status code.
      */
     public function getHttpStatusCode(): int;
 
     /**
-     * Gets a message passed to the exception
-     *
-     * @return string|null
+     * Gets a message passed to the exception.
      */
-    public function getMessage(): ?string;
+    public function getMessage(): string|null;
 
     /**
-     * Used for documentation
-     *
-     * @return string|null
+     * Used for documentation.
      */
-    public function getDescription(): ?string;
+    public function getDescription(): string|null;
 
     /**
-     * Gets http exception headers
+     * Gets http exception headers.
      *
      * @return array<string, string>
      */

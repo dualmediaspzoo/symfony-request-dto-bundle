@@ -8,6 +8,6 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
 
 class EnumDto extends AbstractDto
 {
-    public ?IntegerEnum $int = null;
-    public ?StringEnum $string = null;
+    public IntegerEnum|null $int = null;
+    public StringEnum|null $string = null;
 }

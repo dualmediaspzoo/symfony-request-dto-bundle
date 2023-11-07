@@ -37,14 +37,14 @@ class EnumCoercer implements CoercerInterface
     public function supports(
         Property $property
     ): bool {
-        return 'object' === $property->getType() &&
-            is_subclass_of($property->getFqcn() ?? '', \BackedEnum::class);
+        return 'object' === $property->getType()
+            && is_subclass_of($property->getFqcn() ?? '', \BackedEnum::class);
     }
 
     public function coerce(
         string $propertyPath,
         Property $property,
-        $value
+        mixed $value
     ): CoerceResult {
         $this->fromKey = $property->getDtoAttributes(FromKey::class)[0] ?? null;
 

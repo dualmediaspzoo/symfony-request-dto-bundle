@@ -95,6 +95,7 @@ class DtoArgumentResolverTest extends KernelTestCase
 
         /**
          * @var SubDto $dto
+         *
          * @psalm-suppress InvalidArgument
          */
         $dto = iterator_to_array($this->service->resolve($request, $mock))[0];

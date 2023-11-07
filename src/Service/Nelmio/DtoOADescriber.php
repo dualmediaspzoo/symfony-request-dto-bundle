@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DtoOADescriber implements RouteDescriberInterface
 {
-    private const FILE_EXAMPLE_BASE64 = "data:image/jpeg;base64,aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ==";
+    private const FILE_EXAMPLE_BASE64 = 'data:image/jpeg;base64,aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ==';
 
     private const OA_BAG_MAP = [
         'attributes' => 'path',
@@ -62,11 +62,6 @@ class DtoOADescriber implements RouteDescriberInterface
 
     /**
      * @param list<\ReflectionParameter> $parameters
-     * @param OpenApi $api
-     * @param Route $route
-     * @param \ReflectionMethod $reflectionMethod
-     *
-     * @return void
      */
     private function describeDTO(
         array $parameters,
@@ -156,7 +151,7 @@ class DtoOADescriber implements RouteDescriberInterface
 
                 $operation->responses[] = new Response([
                     'response' => $action->getHttpStatusCode(),
-                    'description' => $action->getDescription() ?? "No description set",
+                    'description' => $action->getDescription() ?? 'No description set',
                     '_context' => $context,
                 ]);
             }
@@ -165,9 +160,6 @@ class DtoOADescriber implements RouteDescriberInterface
 
     /**
      * @param Response[] $responses
-     * @param int $statusCode
-     *
-     * @return bool
      */
     private function hasHttpResponse(
         array $responses,
@@ -184,11 +176,6 @@ class DtoOADescriber implements RouteDescriberInterface
 
     /**
      * @phpstan-ignore-next-line
-     *
-     * @param array $fields
-     * @param Context $context
-     *
-     * @return Schema
      */
     private function resolveSchema(
         array $fields,
@@ -215,7 +202,6 @@ class DtoOADescriber implements RouteDescriberInterface
 
     /**
      * @phpstan-ignore-next-line
-     * @param array $fields
      *
      * @return Property[]
      */
@@ -232,7 +218,7 @@ class DtoOADescriber implements RouteDescriberInterface
             if (is_array($model)) {
                 // checking whether there is an empty index by which you can distinguish whether the model is a collection of objects or a flat object
                 if (is_array($model[''] ?? null)) {
-                    $property->type = "array";
+                    $property->type = 'array';
                     $property->items = new Items([]);
                     $property->items->properties = $this->resolveProperties($model['']);
                     $property->items->required = $this->resolveRequiredProperties($model['']);
@@ -245,7 +231,7 @@ class DtoOADescriber implements RouteDescriberInterface
                 $assignTo = $property;
 
                 if ($model->isCollection()) {
-                    $property->type = "array";
+                    $property->type = 'array';
 
                     if ('array' === ($expected = $model->getOAType())) { // array-array?
                         $expected = 'string';
@@ -264,12 +250,12 @@ class DtoOADescriber implements RouteDescriberInterface
                 // extra work for files
                 if ('files' === $model->getBag()->bag) {
                     if (mb_strlen($property->description)) {
-                        $property->description .= "<br>";
+                        $property->description .= '<br>';
                     } else {
-                        $property->description = "";
+                        $property->description = '';
                     }
-                    $property->description .= "This field is a file and can be passed as a http upload by using the same path,
-                    or by encoding as base64 in the body";
+                    $property->description .= 'This field is a file and can be passed as a http upload by using the same path,
+                    or by encoding as base64 in the body';
 
                     $property->example = $model->isCollection() ? [self::FILE_EXAMPLE_BASE64] : self::FILE_EXAMPLE_BASE64;
                 }
@@ -307,16 +293,13 @@ class DtoOADescriber implements RouteDescriberInterface
     }
 
     /**
-     * Converts a model into fields and merges them into appropriate bags
-     *
-     * @param DtoTypeModel $dto
-     * @param string|null $parentPath
+     * Converts a model into fields and merges them into appropriate bags.
      *
      * @return array<string, PropertyTypeModel|array<string, PropertyTypeModel>>
      */
     private function getClassBags(
         DtoTypeModel $dto,
-        ?string $parentPath = null
+        string|null $parentPath = null
     ): array {
         $bags = [];
 
@@ -362,7 +345,6 @@ class DtoOADescriber implements RouteDescriberInterface
 
     /**
      * @param array<string, PropertyTypeModel|array<string, PropertyTypeModel>> $bag
-     * @param string $previous
      *
      * @return array<string, PropertyTypeModel>
      */
@@ -385,9 +367,6 @@ class DtoOADescriber implements RouteDescriberInterface
 
     /**
      * @phpstan-ignore-next-line
-     * @param array $bags
-     * @param string $path
-     * @param PropertyTypeModel $model
      */
     private function insertIntoBags(
         array &$bags,
@@ -412,11 +391,6 @@ class DtoOADescriber implements RouteDescriberInterface
     }
 
     /**
-     * @param PathItem $path
-     * @param \ReflectionMethod $reflectionMethod
-     *
-     * @return Context
-     *
      * @psalm-suppress UndefinedPropertyAssignment
      */
     private function getContext(
@@ -434,8 +408,6 @@ class DtoOADescriber implements RouteDescriberInterface
     }
 
     /**
-     * @param \ReflectionMethod $reflectionMethod
-     *
      * @return list<\ReflectionParameter>
      */
     private function getDtoParameters(
@@ -449,9 +421,9 @@ class DtoOADescriber implements RouteDescriberInterface
             }
 
             if ($type instanceof \ReflectionNamedType) {
-                if ($type->isBuiltin() ||
-                    DtoInterface::class === $type->getName() ||
-                    !is_subclass_of($type->getName(), DtoInterface::class)) {
+                if ($type->isBuiltin()
+                    || DtoInterface::class === $type->getName()
+                    || !is_subclass_of($type->getName(), DtoInterface::class)) {
                     continue;
                 }
             } else {
@@ -465,8 +437,6 @@ class DtoOADescriber implements RouteDescriberInterface
     }
 
     /**
-     * @param Route $route
-     *
      * @return string[]
      */
     private function getSupportedHttpMethods(
@@ -479,7 +449,7 @@ class DtoOADescriber implements RouteDescriberInterface
     }
 
     /**
-     * Based on {@link \Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader::processPropertyAnnotations()}
+     * Based on {@link \Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader::processPropertyAnnotations()}.
      *
      * @psalm-suppress InvalidPropertyAssignmentValue
      */
@@ -555,7 +525,7 @@ class DtoOADescriber implements RouteDescriberInterface
         }
     }
 
-    private function getUndefined(): ?string
+    private function getUndefined(): string|null
     {
         if (defined('OpenApi\UNDEFINED')) {
             return constant('OpenApi\UNDEFINED'); // @phpstan-ignore-line

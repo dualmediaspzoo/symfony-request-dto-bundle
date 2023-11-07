@@ -12,6 +12,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
  * @template T of DtoInterface
  *
  * @extends AbstractWrapper<T>
+ *
  * @implements DtoResolverInterface<T>
  */
 class ProfilingDtoResolverService extends AbstractWrapper implements DtoResolverInterface

@@ -49,7 +49,7 @@ class EntityProviderService implements ProviderServiceInterface
 
     public function getProvider(
         string $fqcn,
-        ?string $providerId = null
+        string|null $providerId = null
     ): ProviderInterface {
         if (!array_key_exists($fqcn, $this->providers)) {
             if (null === $providerId && $this->targetService?->setFqcn($fqcn)) {
@@ -57,7 +57,7 @@ class EntityProviderService implements ProviderServiceInterface
             }
 
             throw new EntityHasNoProviderException(sprintf(
-                "No entity provider was found for model %s",
+                'No entity provider was found for model %s',
                 $fqcn
             ));
         }
@@ -73,13 +73,13 @@ class EntityProviderService implements ProviderServiceInterface
                 }
 
                 throw new DefaultProviderNotFoundException(sprintf(
-                    "Default provider not found for model %s",
+                    'Default provider not found for model %s',
                     $fqcn
                 ));
             }
 
             throw new CustomProviderNotFoundException(sprintf(
-                "Custom provider with id %s not found for model %s",
+                'Custom provider with id %s not found for model %s',
                 $providerId,
                 $fqcn
             ));

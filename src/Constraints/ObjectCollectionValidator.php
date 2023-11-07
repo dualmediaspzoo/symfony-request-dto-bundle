@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 /**
- * Based on {@link Collection} but we need to specify the fields slightly differently
+ * Based on {@link Collection} but we need to specify the fields slightly differently.
  */
 class ObjectCollectionValidator extends ConstraintValidator
 {

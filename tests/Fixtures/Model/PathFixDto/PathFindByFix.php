@@ -9,10 +9,10 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 class PathFindByFix
 {
     #[FindOneBy(fields: ['dynamic' => '$dynamic', 'id' => 'whatever'])]
-    public ?DummyModel $dummy = null;
+    public DummyModel|null $dummy = null;
 
     #[FindOneBy(fields: ['dynamic' => '$dynamic', 'id' => 'whatever'], errorPath: 'overrideError')]
-    public ?DummyModel $dummy2 = null;
+    public DummyModel|null $dummy2 = null;
 
     /**
      * @var DummyModel[]

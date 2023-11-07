@@ -9,10 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PathFixDto extends AbstractDto
 {
     #[Assert\NotNull]
-    public ?int $integer = null;
+    public int|null $integer = null;
 
     #[Path('other_string_path')]
     #[Assert\NotBlank]
     #[Assert\Length(min: 10, max: 200)]
-    public ?string $string = null;
+    public string|null $string = null;
 }

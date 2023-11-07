@@ -17,9 +17,6 @@ abstract class AbstractWrapper
     }
 
     /**
-     * @param string $name
-     * @param callable $fn
-     *
      * @return T
      *
      * @throws \Throwable

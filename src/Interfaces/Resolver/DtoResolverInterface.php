@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 interface DtoResolverInterface
 {
     /**
-     * @param Request $request
      * @param class-string<T> $class
      *
      * @return T

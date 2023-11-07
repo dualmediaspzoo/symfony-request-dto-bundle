@@ -25,7 +25,7 @@ class ActionValidatorService implements ActionValidatorInterface
 
     public function supports(
         HttpActionInterface $action,
-        $variable
+        mixed $variable
     ): bool {
         foreach ($this->validators as $validator) {
             if ($validator->supports($action, $variable)) {
@@ -38,7 +38,7 @@ class ActionValidatorService implements ActionValidatorInterface
 
     public function validate(
         HttpActionInterface $action,
-        $variable
+        mixed $variable
     ): bool {
         foreach ($this->validators as $validator) {
             if ($validator->supports($action, $variable)) {

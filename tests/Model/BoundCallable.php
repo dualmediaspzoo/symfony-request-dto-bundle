@@ -3,7 +3,7 @@
 namespace DualMedia\DtoRequestBundle\Tests\Model;
 
 /**
- * Helper callable to allow saving parameters for callables
+ * Helper callable to allow saving parameters for callables.
  */
 class BoundCallable
 {

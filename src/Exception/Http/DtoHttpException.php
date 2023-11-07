@@ -7,18 +7,12 @@ use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
- * Thrown when a DTO property marked with {@link OnNull} is null
+ * Thrown when a DTO property marked with {@link OnNull} is null.
  */
 class DtoHttpException extends HttpException
 {
     /**
-     * @param DtoInterface $dto
-     * @param int $statusCode
-     * @param string $message
-     * @param \Throwable|null $previous
-     * @param array $headers
      * @psalm-param array<string, string> $headers
-     * @param int $code
      */
     public function __construct(
         private readonly DtoInterface $dto,

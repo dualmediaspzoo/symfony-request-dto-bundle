@@ -10,35 +10,26 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 interface DtoInterface
 {
     /**
-     * The constructor for Dto models must not have any required arguments
+     * The constructor for Dto models must not have any required arguments.
      */
     public function __construct();
 
     /**
-     * Returns list of non-virtual visited properties
+     * Returns list of non-virtual visited properties.
      *
      * @return list<string>
      */
     public function getVisited(): array;
 
     /**
-     * Returns true if a field was accessed during initialization
-     *
-     * @param string $property
-     *
-     * @return bool
+     * Returns true if a field was accessed during initialization.
      */
     public function visited(
         string $property
     ): bool;
 
     /**
-     * Returns true if a virtual field was visited during load (only via {@link FindInterface})
-     *
-     * @param string $property
-     * @param string $field
-     *
-     * @return bool
+     * Returns true if a virtual field was visited during load (only via {@link FindInterface}).
      */
     public function visitedVirtualProperty(
         string $property,
@@ -46,44 +37,29 @@ interface DtoInterface
     ): bool;
 
     /**
-     * Mark property as visited
-     *
-     * @param string $property
-     * @param string|null $virtual
-     *
-     * @return void
+     * Mark property as visited.
      */
     public function visit(
         string $property,
-        ?string $virtual = null
+        string|null $virtual = null
     ): void;
 
     /**
-     * Returns true if the dto object was an argument that was optional (nullable) or not the only type
-     *
-     * @return bool
+     * Returns true if the dto object was an argument that was optional (nullable) or not the only type.
      */
     public function isOptional(): bool;
 
     /**
-     * Sets the optional state
-     *
-     * @param bool $optional
-     *
-     * @return void
+     * Sets the optional state.
      */
     public function setOptional(
         bool $optional
     ): void;
 
     /**
-     * Marks the property as pre-validated by the dto resolver
+     * Marks the property as pre-validated by the dto resolver.
      *
      * Allows use of {@link AfterLoad} constraint on property
-     *
-     * @param string $property
-     *
-     * @return void
      *
      * @internal
      */
@@ -92,13 +68,9 @@ interface DtoInterface
     ): void;
 
     /**
-     * Checks if the property was pre-validated by the dto resolver
+     * Checks if the property was pre-validated by the dto resolver.
      *
      * Will trigger any {@link AfterLoad} constraints
-     *
-     * @param string $property
-     *
-     * @return bool
      *
      * @internal
      */
@@ -106,70 +78,46 @@ interface DtoInterface
         string $property
     ): bool;
 
-    /**
-     * @param ConstraintViolationInterface $violation
-     *
-     * @return void
-     */
     public function addConstraintViolation(
         ConstraintViolationInterface $violation
     ): void;
 
     /**
      * @phpstan-ignore-next-line
-     * @return ConstraintViolationListInterface
      */
     public function getConstraintViolationList(): ConstraintViolationListInterface;
 
     /**
-     * Checks if the DTO is valid
+     * Checks if the DTO is valid.
      *
      * Should return true only if the constraint list has been set and no issues have been found
-     *
-     * @return bool
      */
     public function isValid(): bool;
 
     /**
-     * Get the parent dto
+     * Get the parent dto.
      *
      * Null is returned if there is no parent
-     *
-     * @return DtoInterface|null
      */
-    public function getParentDto(): ?DtoInterface;
+    public function getParentDto(): DtoInterface|null;
 
     /**
-     * Get the highest dto (usually for error adding)
+     * Get the highest dto (usually for error adding).
      *
      * Method always returns either parents, or this object
-     *
-     * @return DtoInterface
      */
     public function getHighestParentDto(): DtoInterface;
 
     /**
-     * Set parent dto
-     *
-     * @param DtoInterface|null $parentDto
-     *
-     * @return mixed
+     * Set parent dto.
      */
     public function setParentDto(
-        ?DtoInterface $parentDto
+        DtoInterface|null $parentDto
     ): mixed;
 
-    /**
-     * @param HttpActionInterface|null $action
-     *
-     * @return void
-     */
     public function setHttpAction(
-        ?HttpActionInterface $action
+        HttpActionInterface|null $action
     ): void;
 
-    /**
-     * @return HttpActionInterface|null
-     */
-    public function getHttpAction(): ?HttpActionInterface;
+    public function getHttpAction(): HttpActionInterface|null;
 }

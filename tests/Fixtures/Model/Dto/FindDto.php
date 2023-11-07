@@ -13,5 +13,5 @@ class FindDto extends AbstractDto
         fields: ['id' => 'id', 'date' => 'whatever'],
         types: ['id' => new Type('int'), 'date' => new Type('datetime')]
     )]
-    public ?DummyModel $model = null;
+    public DummyModel|null $model = null;
 }

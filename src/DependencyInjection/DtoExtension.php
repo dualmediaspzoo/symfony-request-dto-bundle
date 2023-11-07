@@ -12,11 +12,8 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 class DtoExtension extends Extension
 {
     /**
-     * @param array $configs
-     * @param ContainerBuilder $container
-     *
-     * @return void
      * @phpstan-ignore-next-line
+     *
      * @throws \Exception
      */
     public function load(

@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @template T
+ *
  * @implements CoercionServiceInterface<T>
  */
 class CoercerService implements CoercionServiceInterface
@@ -22,7 +23,6 @@ class CoercerService implements CoercionServiceInterface
 
     /**
      * @param \IteratorAggregate<array-key, CoercerInterface> $iterator
-     * @param ValidatorInterface $validator
      *
      * @noinspection PhpDocMissingThrowsInspection
      */
@@ -33,9 +33,6 @@ class CoercerService implements CoercionServiceInterface
         $this->coercers = iterator_to_array($iterator->getIterator());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(
         Property $property
     ): bool {
@@ -49,16 +46,14 @@ class CoercerService implements CoercionServiceInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @psalm-suppress InvalidReturnType
      * @psalm-suppress InvalidReturnStatement
      */
     public function coerce(
         string $propertyPath,
         Property $property,
-        $value
-    ): ?CoerceResult {
+        mixed $value
+    ): CoerceResult|null {
         if (null === $value && !empty($property->getConstraints())) {
             $violations = $this->validator->startContext()
                 ->atPath($propertyPath)

@@ -12,5 +12,5 @@ class FindOneOnNullDto extends AbstractDto
 {
     #[OnNull(Response::HTTP_NOT_FOUND)]
     #[FindOneBy(fields: ['id' => 'something'])]
-    public ?DummyModel $model = null;
+    public DummyModel|null $model = null;
 }

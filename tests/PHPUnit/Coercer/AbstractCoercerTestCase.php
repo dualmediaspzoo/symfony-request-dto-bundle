@@ -7,10 +7,6 @@ use DualMedia\DtoRequestBundle\Model\Type\Property;
 abstract class AbstractCoercerTestCase extends AbstractMinimalCoercerTestCase
 {
     /**
-     * @param Property $property
-     * @param mixed $input
-     * @param mixed $expected
-     *
      * @dataProvider coerceProvider
      */
     public function testCoerce(

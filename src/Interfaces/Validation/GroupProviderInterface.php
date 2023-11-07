@@ -6,15 +6,12 @@ use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Allows custom validation groups to be used with a dto
+ * Allows custom validation groups to be used with a dto.
  */
 interface GroupProviderInterface
 {
     /**
-     * Must provide validation groups based on some sort of input
-     *
-     * @param Request $request
-     * @param DtoInterface $dto
+     * Must provide validation groups based on some sort of input.
      *
      * @return list<string>
      */

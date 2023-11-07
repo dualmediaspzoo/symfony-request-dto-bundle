@@ -22,7 +22,7 @@ class ProfilingDtoTypeExtractorService extends AbstractWrapper implements DtoTyp
 
     public function extract(
         \ReflectionClass $class,
-        ?Bag $root = null
+        Bag|null $root = null
     ): Dto {
         return $this->wrap(
             'extract:%d:'.$class->getName(),

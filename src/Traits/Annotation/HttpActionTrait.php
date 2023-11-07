@@ -5,11 +5,7 @@ namespace DualMedia\DtoRequestBundle\Traits\Annotation;
 trait HttpActionTrait
 {
     /**
-     * @param int $statusCode
-     * @param string|null $message
-     * @param array $headers
      * @psalm-param array<string, string> $headers
-     * @param string|null $description
      */
     public function __construct(
         public int $statusCode,
@@ -24,12 +20,12 @@ trait HttpActionTrait
         return $this->statusCode;
     }
 
-    public function getMessage(): ?string
+    public function getMessage(): string|null
     {
         return $this->message;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string|null
     {
         return $this->description;
     }

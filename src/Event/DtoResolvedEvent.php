@@ -7,7 +7,7 @@ use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * When the DTO objects are resolved by {@link DtoArgumentResolver} this event is fired
+ * When the DTO objects are resolved by {@link DtoArgumentResolver} this event is fired.
  */
 class DtoResolvedEvent extends Event
 {

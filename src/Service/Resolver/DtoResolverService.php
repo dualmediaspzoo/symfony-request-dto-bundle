@@ -55,7 +55,6 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
-     * @param Request $request
      * @param class-string<T> $class
      *
      * @return T
@@ -94,11 +93,6 @@ class DtoResolverService implements DtoResolverInterface
 
     /**
      * @phpstan-ignore-next-line
-     * @param DtoInterface $dto
-     * @param ConstraintViolationListInterface $list
-     * @param DtoTypeModel $model
-     *
-     * @return void
      */
     private function fixAndAddConstraintPaths(
         DtoInterface $dto,
@@ -145,12 +139,7 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
-     * @param Request $request
      * @param class-string<T> $class
-     * @param DtoTypeModel $model
-     * @param string $parentPath
-     * @param string $replaceParentPropertyPath
-     * @param DtoInterface|null $parent
      *
      * @return T
      *
@@ -165,7 +154,7 @@ class DtoResolverService implements DtoResolverInterface
         DtoTypeModel $model,
         string $parentPath = '',
         string $replaceParentPropertyPath = '',
-        ?DtoInterface $parent = null
+        DtoInterface|null $parent = null
     ): DtoInterface {
         $object = new $class();
         $object->setParentDto($parent);
@@ -176,8 +165,8 @@ class DtoResolverService implements DtoResolverInterface
             $replacePath = $replaceParentPropertyPath;
 
             if (mb_strlen($property->getRealPath())) {
-                $propertyPath .= '[' . str_replace('.', '][', $property->getRealPath()) . ']'; // fixes custom deep paths
-                $replacePath .= '.' . $property->getRealPath();
+                $propertyPath .= '['.str_replace('.', '][', $property->getRealPath()).']'; // fixes custom deep paths
+                $replacePath .= '.'.$property->getRealPath();
             }
 
             if (null !== $property->getFindAttribute()) {
@@ -407,18 +396,13 @@ class DtoResolverService implements DtoResolverInterface
         $this->attemptToSaveHttpAction($property, $dto, $dto->{$property->getName()});
     }
 
-    /**
-     * @param PropertyTypeModel $property
-     * @param DtoInterface $dto
-     * @param mixed $variable
-     */
     private function attemptToSaveHttpAction(
         PropertyTypeModel $property,
         DtoInterface $dto,
         mixed $variable
     ): void {
-        if (null === ($action = $property->getHttpAction()) ||
-            !$this->actionValidator->validate($action, $variable)) {
+        if (null === ($action = $property->getHttpAction())
+            || !$this->actionValidator->validate($action, $variable)) {
             return;
         }
 
@@ -426,10 +410,6 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
-     * @param Request $request
-     * @param PropertyTypeModel $property
-     * @param string $propertyPath
-     *
      * @return mixed|null
      */
     private function safeGetPath(

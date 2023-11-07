@@ -8,5 +8,5 @@ use DualMedia\DtoRequestBundle\Model\AbstractDto;
 class DeepDto extends AbstractDto
 {
     #[Path('something.deep')]
-    public ?string $pathed = null;
+    public string|null $pathed = null;
 }

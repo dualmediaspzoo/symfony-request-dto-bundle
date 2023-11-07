@@ -45,7 +45,7 @@ class DynamicResolverService implements ResolverServiceInterface
         }
 
         throw new ParameterNotSupportedException(sprintf(
-            "Parameter %s is not supported by any of the provided resolvers",
+            'Parameter %s is not supported by any of the provided resolvers',
             $name
         ));
     }

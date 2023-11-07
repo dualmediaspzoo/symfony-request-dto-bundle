@@ -8,7 +8,7 @@ use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Allows for loading validation groups for dto objects
+ * Allows for loading validation groups for dto objects.
  */
 class GroupProviderService implements GroupServiceInterface
 {

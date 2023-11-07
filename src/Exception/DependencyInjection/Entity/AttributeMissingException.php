@@ -6,7 +6,7 @@ class AttributeMissingException extends \Exception
 {
     public function __construct(
         private readonly string $class,
-        string $message = "",
+        string $message = '',
         int $code = 0,
         \Throwable $previous = null
     ) {

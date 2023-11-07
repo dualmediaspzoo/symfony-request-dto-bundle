@@ -7,7 +7,7 @@ use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
 
 /**
- * This annotation should be put on {@link DtoInterface} objects, which wish to specify what groups they'll use
+ * This annotation should be put on {@link DtoInterface} objects, which wish to specify what groups they'll use.
  *
  * Services that will determine this, must implement {@link GroupProviderInterface}
  */

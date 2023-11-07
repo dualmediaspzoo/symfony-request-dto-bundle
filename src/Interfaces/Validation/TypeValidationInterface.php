@@ -12,7 +12,6 @@ interface TypeValidationInterface
      * @param array<string, PropertyTypeModel> $properties
      *
      * @phpstan-ignore-next-line
-     * @return ConstraintViolationListInterface
      */
     public function validateType(
         array &$values,

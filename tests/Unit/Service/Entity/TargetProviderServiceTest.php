@@ -94,8 +94,8 @@ class TargetProviderServiceTest extends TestCase
     public function testFindBy(
         array $fields,
         array|null $orderBy = null,
-        ?int $limit = null,
-        ?int $offset = null
+        int|null $limit = null,
+        int|null $offset = null
     ): void {
         $repo = $this->createMock(EntityRepository::class);
         $mock = $this->createMock(TestEntity::class);

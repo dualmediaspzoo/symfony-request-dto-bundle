@@ -5,7 +5,7 @@ namespace DualMedia\DtoRequestBundle\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Makes sure all elements are an array
+ * Makes sure all elements are an array.
  */
 #[\Attribute]
 class ArrayAll extends Constraint

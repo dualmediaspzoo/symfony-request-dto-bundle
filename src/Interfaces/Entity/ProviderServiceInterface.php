@@ -7,7 +7,7 @@ use DualMedia\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException
 use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
 
 /**
- * Allows fetching {@link ProviderInterface} objects from a global storage via FQCN and optionally {@link ProviderInterface} id
+ * Allows fetching {@link ProviderInterface} objects from a global storage via FQCN and optionally {@link ProviderInterface} id.
  *
  * @template T of object
  */
@@ -15,7 +15,6 @@ interface ProviderServiceInterface
 {
     /**
      * @param class-string<T> $fqcn
-     * @param string|null $providerId
      *
      * @return ProviderInterface<T>
      *
@@ -25,6 +24,6 @@ interface ProviderServiceInterface
      */
     public function getProvider(
         string $fqcn,
-        ?string $providerId = null
+        string|null $providerId = null
     ): ProviderInterface;
 }

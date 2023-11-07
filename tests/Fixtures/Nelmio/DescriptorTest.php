@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DescriptorTest
 {
-    #[Route("/some-path", methods: ['POST'], name: 'testMethod')]
+    #[Route('/some-path', methods: ['POST'], name: 'testMethod')]
     public function testMethod(
         MainPathFixDto $dto
     ): void {

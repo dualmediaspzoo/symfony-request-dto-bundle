@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Property model for dto type reading
+ * Property model for dto type reading.
  *
  * @implements \ArrayAccess<string, Property>
  * @implements \IteratorAggregate<string, Property>
@@ -28,7 +28,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
 {
     protected string $name;
     protected Bag $bag;
-    protected ?string $path = null;
+    protected string|null $path = null;
 
     /**
      * @var array<class-string<DtoAttributeInterface>, list<DtoAttributeInterface>>
@@ -39,20 +39,20 @@ class Property implements \ArrayAccess, \IteratorAggregate
      * @var list<Constraint>
      */
     protected array $constraints = [];
-    protected ?FindInterface $findAttribute = null;
-    protected ?Property $parent = null;
-    protected ?string $fqcn = null;
+    protected FindInterface|null $findAttribute = null;
+    protected Property|null $parent = null;
+    protected string|null $fqcn = null;
     protected string $type;
-    protected ?string $subType = null;
+    protected string|null $subType = null;
     protected bool $collection = false;
-    protected ?Format $format = null;
-    protected ?string $description = null;
+    protected Format|null $format = null;
+    protected string|null $description = null;
 
     /**
      * @var array<string, Property>
      */
     protected array $properties = [];
-    protected ?HttpActionInterface $httpAction = null;
+    protected HttpActionInterface|null $httpAction = null;
 
     public function getName(): string
     {
@@ -67,7 +67,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
         return $this;
     }
 
-    public function getFqcn(): ?string
+    public function getFqcn(): string|null
     {
         return $this->fqcn;
     }
@@ -76,7 +76,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
      * @throws InvalidDateTimeClassException
      */
     public function setFqcn(
-        ?string $fqcn
+        string|null $fqcn
     ): static {
         $this->fqcn = $fqcn; // temporarily set this so checks can be non-repeating
         $this->fqcn = $this->validateClassFqcn($fqcn);
@@ -129,13 +129,13 @@ class Property implements \ArrayAccess, \IteratorAggregate
         return $this;
     }
 
-    public function getSubType(): ?string
+    public function getSubType(): string|null
     {
         return $this->subType;
     }
 
     public function setSubType(
-        ?string $subType
+        string|null $subType
     ): Property {
         $this->subType = $subType;
 
@@ -155,13 +155,13 @@ class Property implements \ArrayAccess, \IteratorAggregate
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string|null
     {
         return $this->path;
     }
 
     public function setPath(
-        ?string $path
+        string|null $path
     ): static {
         $this->path = $path;
 
@@ -215,15 +215,13 @@ class Property implements \ArrayAccess, \IteratorAggregate
         return $this->dtoAttributes[$class] ?? [];
     }
 
-    public function getHttpAction(): ?HttpActionInterface
+    public function getHttpAction(): HttpActionInterface|null
     {
         return $this->httpAction;
     }
 
     /**
      * @param class-string<DtoAttributeInterface> $class
-     *
-     * @return bool
      */
     public function hasDtoAttribute(
         string $class
@@ -231,39 +229,39 @@ class Property implements \ArrayAccess, \IteratorAggregate
         return !empty($this->getDtoAttributes($class));
     }
 
-    public function getFindAttribute(): ?FindInterface
+    public function getFindAttribute(): FindInterface|null
     {
         return $this->findAttribute;
     }
 
     public function setFindAttribute(
-        ?FindInterface $findAttribute
+        FindInterface|null $findAttribute
     ): static {
         $this->findAttribute = $findAttribute;
 
         return $this;
     }
 
-    public function getParent(): ?Property
+    public function getParent(): Property|null
     {
         return $this->parent;
     }
 
     public function setParent(
-        ?Property $parent
+        Property|null $parent
     ): Property {
         $this->parent = $parent;
 
         return $this;
     }
 
-    public function getFormat(): ?Format
+    public function getFormat(): Format|null
     {
         return $this->format;
     }
 
     public function setFormat(
-        ?Format $format
+        Format|null $format
     ): static {
         $this->format = $format;
 
@@ -275,13 +273,13 @@ class Property implements \ArrayAccess, \IteratorAggregate
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string|null
     {
         return $this->description;
     }
 
     public function setDescription(
-        ?string $description
+        string|null $description
     ): static {
         $this->description = $description;
 
@@ -290,11 +288,11 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     public function isEnum(): bool
     {
-        return null !== $this->getFqcn() &&
-            is_subclass_of($this->getFqcn(), \BackedEnum::class);
+        return null !== $this->getFqcn()
+            && is_subclass_of($this->getFqcn(), \BackedEnum::class);
     }
 
-    public function getEnumType(): ?string
+    public function getEnumType(): string|null
     {
         if (!$this->isEnum()) {
             return null;
@@ -305,12 +303,12 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     public function isDate(): bool
     {
-        return null !== $this->getFqcn() &&
-            is_subclass_of($this->getFqcn(), \DateTimeInterface::class);
+        return null !== $this->getFqcn()
+            && is_subclass_of($this->getFqcn(), \DateTimeInterface::class);
     }
 
     /**
-     * These choices are mapped respectively as their cases
+     * These choices are mapped respectively as their cases.
      *
      * @return list<\BackedEnum>
      */
@@ -322,17 +320,20 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
         /**
          * @var list<\BackedEnum> $enums
+         *
          * @phpstan-ignore-next-line
          */
         $enums = call_user_func([$this->getFqcn(), 'cases']);
 
         /**
          * @phpstan-ignore-next-line
+         *
          * @var AllowEnum $allowed
+         *
          * @psalm-suppress NoInterfaceProperties
          */
-        if (null !== ($allowed = $this->getDtoAttributes(AllowEnum::class)[0] ?? null) &&
-            !empty($allowed->allowed)) {
+        if (null !== ($allowed = $this->getDtoAttributes(AllowEnum::class)[0] ?? null)
+            && !empty($allowed->allowed)) {
             $enums = $allowed->allowed;
         }
 
@@ -394,18 +395,13 @@ class Property implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
-     * The builder specified here must always adhere to the model schema
+     * The builder specified here must always adhere to the model schema.
      *
      * @phpstan-ignore-next-line
-     * @param PropertyPath $propertyPath
-     * @param PropertyPathBuilder|null $builder
-     * @param int $index
-     *
-     * @return string
      */
     public function fixPropertyPath(
         PropertyPath $propertyPath,
-        ?PropertyPathBuilder $builder = null,
+        PropertyPathBuilder|null $builder = null,
         int $index = 0
     ): string {
         $builder ??= new PropertyPathBuilder($propertyPath);
@@ -438,8 +434,6 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     /**
      * @param string $offset
-     *
-     * @return bool
      */
     public function offsetExists(
         $offset
@@ -449,12 +443,10 @@ class Property implements \ArrayAccess, \IteratorAggregate
 
     /**
      * @param string $offset
-     *
-     * @return Property|null
      */
     public function offsetGet(
         $offset
-    ): ?Property {
+    ): Property|null {
         return $this->properties[$offset] ?? null;
     }
 
@@ -496,7 +488,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
     public function findConstraint(
         string $class,
         bool $firstAll = false
-    ): ?Constraint {
+    ): Constraint|null {
         $all = null;
 
         foreach ($this->constraints as $constraint) {
@@ -522,11 +514,11 @@ class Property implements \ArrayAccess, \IteratorAggregate
      * @throws InvalidDateTimeClassException
      */
     private function validateClassFqcn(
-        ?string $class
-    ): ?string {
-        if (null === $class ||
-            (!is_subclass_of($class, \DateTimeInterface::class) &&
-            !is_subclass_of($class, \BackedEnum::class))) {
+        string|null $class
+    ): string|null {
+        if (null === $class
+            || (!is_subclass_of($class, \DateTimeInterface::class)
+            && !is_subclass_of($class, \BackedEnum::class))) {
             return $class;
         }
 
@@ -562,7 +554,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
     private function findFromArray(
         array $constraints,
         string $class
-    ): ?Constraint {
+    ): Constraint|null {
         foreach ($constraints as $constraint) {
             if (is_a($constraint, $class)) {
                 return $constraint;
@@ -573,8 +565,8 @@ class Property implements \ArrayAccess, \IteratorAggregate
     }
 
     private function fixOAType(
-        ?string $type
-    ): ?string {
+        string|null $type
+    ): string|null {
         if (null === $type) {
             return null;
         }

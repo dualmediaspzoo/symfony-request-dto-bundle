@@ -9,13 +9,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 /**
- * Checks if all dto objects are an array
+ * Checks if all dto objects are an array.
  */
 class ArrayAllValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritdoc}
-     */
     public function validate(
         $value,
         Constraint $constraint

@@ -47,7 +47,7 @@ class ProviderServiceCompilerPassTest extends AbstractCompilerPassTestCase
                 ],
             ], $e->getDuplicates());
         } catch (\Throwable $e) {
-            $this->fail("Invalid exception caught - ".get_class($e));
+            $this->fail('Invalid exception caught - '.get_class($e));
         }
     }
 
@@ -63,7 +63,7 @@ class ProviderServiceCompilerPassTest extends AbstractCompilerPassTestCase
         } catch (AttributeMissingException $e) {
             $this->assertEquals(BadDummyModelProvider::class, $e->getClass());
         } catch (\Throwable $e) {
-            $this->fail("Invalid exception caught - ".get_class($e));
+            $this->fail('Invalid exception caught - '.get_class($e));
         }
     }
 

@@ -52,7 +52,7 @@ abstract class AbstractMinimalCoercerTestCase extends KernelTestCase
     protected function buildProperty(
         string $type,
         bool $isCollection = false,
-        ?string $class = null
+        string|null $class = null
     ): Property {
         return (new Property())
             ->setType($type)
