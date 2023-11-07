@@ -7,9 +7,9 @@ use DualMedia\DtoRequestBundle\Model\AbstractDto;
 
 class BaseDto extends AbstractDto
 {
-    public ?string $field = "";
+    public string|null $field = '';
 
-    public ?SubDto $subBase = null;
+    public SubDto|null $subBase = null;
 
     /**
      * @var SubDto[]

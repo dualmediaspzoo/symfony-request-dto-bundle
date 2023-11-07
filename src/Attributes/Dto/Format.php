@@ -5,7 +5,7 @@ namespace DualMedia\DtoRequestBundle\Attributes\Dto;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 
 /**
- * A date(-time) format annotation
+ * A date(-time) format annotation.
  *
  * Used to create a {@link \DateTimeImmutable} object to be passed into the dto.
  *

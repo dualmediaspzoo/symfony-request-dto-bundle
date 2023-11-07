@@ -16,10 +16,6 @@ class TaggingExtension extends Extension
     }
 
     /**
-     * @param array $configs
-     * @param ContainerBuilder $container
-     *
-     * @return void
      * @phpstan-ignore-next-line
      */
     public function load(

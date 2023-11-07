@@ -4,14 +4,9 @@ namespace DualMedia\DtoRequestBundle\Tests\Traits\Unit;
 
 trait KernelAccessTrait
 {
-    /**
-     * @param string $id
-     *
-     * @return object|null
-     */
     protected function getService(
         string $id
-    ): ?object {
+    ): object|null {
         return $this->getContainer()->get($id);
     }
 }

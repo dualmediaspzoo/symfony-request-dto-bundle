@@ -5,12 +5,12 @@ namespace DualMedia\DtoRequestBundle\Traits\Annotation;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * Implements shared path fields
+ * Implements shared path fields.
  */
 trait PathTrait
 {
     /**
-     * Path for the item
+     * Path for the item.
      *
      * Default means just the object property name
      * Value must be compatible with the {@link PropertyAccess} syntax for objects
@@ -18,10 +18,7 @@ trait PathTrait
      */
     public readonly string|null $path;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPath(): ?string
+    public function getPath(): string|null
     {
         return $this->path;
     }

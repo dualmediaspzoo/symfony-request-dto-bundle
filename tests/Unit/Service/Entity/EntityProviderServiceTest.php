@@ -17,8 +17,8 @@ class EntityProviderServiceTest extends TestCase
     {
         $this->expectException(EntityHasNoProviderException::class);
         $this->expectExceptionMessage(sprintf(
-            "No entity provider was found for model %s",
-            "invalidFqcn"
+            'No entity provider was found for model %s',
+            'invalidFqcn'
         ));
 
         /** @psalm-suppress InvalidArgument */
@@ -37,8 +37,8 @@ class EntityProviderServiceTest extends TestCase
     {
         $this->expectException(DefaultProviderNotFoundException::class);
         $this->expectExceptionMessage(sprintf(
-            "Default provider not found for model %s",
-            "invalidFqcn"
+            'Default provider not found for model %s',
+            'invalidFqcn'
         ));
 
         /** @psalm-suppress InvalidArgument */
@@ -57,7 +57,7 @@ class EntityProviderServiceTest extends TestCase
     {
         $this->expectException(CustomProviderNotFoundException::class);
         $this->expectExceptionMessage(sprintf(
-            "Custom provider with id %s not found for model %s",
+            'Custom provider with id %s not found for model %s',
             'different_service_id',
             'invalidFqcn'
         ));
@@ -82,7 +82,7 @@ class EntityProviderServiceTest extends TestCase
     public function testGetProvider(
         string $serviceId,
         string $fqcn,
-        ?string $providerId = null,
+        string|null $providerId = null,
         bool $default = true
     ): void {
         $mock = $this->createMock(ProviderInterface::class);
@@ -121,7 +121,7 @@ class EntityProviderServiceTest extends TestCase
         } else {
             $this->expectException(EntityHasNoProviderException::class);
             $this->expectExceptionMessage(sprintf(
-                "No entity provider was found for model %s",
+                'No entity provider was found for model %s',
                 TestEntity::class
             ));
             $service->getProvider(TestEntity::class);
@@ -153,7 +153,7 @@ class EntityProviderServiceTest extends TestCase
         } else {
             $this->expectException(DefaultProviderNotFoundException::class);
             $this->expectExceptionMessage(sprintf(
-                "Default provider not found for model %s",
+                'Default provider not found for model %s',
                 TestEntity::class
             ));
             $service->getProvider(TestEntity::class);

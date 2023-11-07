@@ -5,7 +5,7 @@ namespace DualMedia\DtoRequestBundle\Interfaces\Entity;
 use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
 
 /**
- * This interface may be implemented by classes that wish to provide entities to {@link DtoInterface} objects
+ * This interface may be implemented by classes that wish to provide entities to {@link DtoInterface} objects.
  *
  * Add {@link EntityProvider} annotation on the class implementing this interface
  *
@@ -14,16 +14,17 @@ use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
 interface ProviderInterface
 {
     /**
-     * Load one or more objects through a callable
+     * Load one or more objects through a callable.
      *
      * Input and output to the callable may change depending on the provider and may not adhere
      * to the basic implementation suggested in this interface
      *
      * Proper arguments should be passed depending on the type of provider
      *
-     * @param callable $fn
      * @param array<string, mixed> $fields
+     *
      * @psalm-param callable(array $fields, array $orderBy, mixed ...$args) $fn $orderBy must be nullable, but psalm doesn't like that
+     *
      * @param array<string, string>|null $orderBy
      *
      * @return list<T>|T|null
@@ -33,11 +34,11 @@ interface ProviderInterface
     public function findComplex(
         callable $fn,
         array $fields,
-        ?array $orderBy = null
+        array|null $orderBy = null
     );
 
     /**
-     * Find one or no entities, must be compatible with Doctrine's EntityRepository::findOneBy
+     * Find one or no entities, must be compatible with Doctrine's EntityRepository::findOneBy.
      *
      * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
@@ -46,24 +47,23 @@ interface ProviderInterface
      */
     public function findOneBy(
         array $criteria,
-        ?array $orderBy = null
+        array|null $orderBy = null
     );
 
     /**
-     * Find one or more entities, must be compatible with Doctrine's EntityRepository::findBy
+     * Find one or more entities, must be compatible with Doctrine's EntityRepository::findBy.
      *
      * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
-     * @param int|null $limit
-     * @param int|null $offset
      *
      * @return list<T>
+     *
      * @noinspection PhpMissingReturnTypeInspection
      */
     public function findBy(
         array $criteria,
-        ?array $orderBy = null,
-        ?int $limit = null,
-        ?int $offset = null
+        array|null $orderBy = null,
+        int|null $limit = null,
+        int|null $offset = null
     );
 }

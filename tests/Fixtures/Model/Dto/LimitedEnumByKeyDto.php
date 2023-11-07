@@ -13,9 +13,9 @@ class LimitedEnumByKeyDto extends AbstractDto
 {
     #[FromKey]
     #[AllowEnum([IntegerEnum::IntegerKey])]
-    public ?IntegerEnum $int = null;
+    public IntegerEnum|null $int = null;
 
     #[FromKey(PascalCaseProcessor::class)]
     #[AllowEnum([StringEnum::StringKey])]
-    public ?StringEnum $string = null;
+    public StringEnum|null $string = null;
 }

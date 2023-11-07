@@ -22,8 +22,6 @@ class KernelTestCase extends SymfonyTestCase
     }
 
     /**
-     * @param ConstraintViolationListInterface $list
-     *
      * @return array<string, list<ConstraintViolationInterface>>
      */
     protected function getConstraintViolationsMappedToPropertyPaths(

@@ -21,7 +21,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
     use LimitAndOffsetTrait;
 
     /**
-     * This string map to a method on a service listed in {@link FindComplex::$service}
+     * This string map to a method on a service listed in {@link FindComplex::$service}.
      *
      * ```php
      * callable(array $fields, ?array $orderBy, ...mixed $args): T[]|T|null
@@ -30,16 +30,14 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
     public string|null $fn = null;
 
     /**
-     * Service id from which the method will be called
+     * Service id from which the method will be called.
      *
      * The service must implement {@link ComplexLoaderInterface} to be available
      */
     public string|null $service = null;
 
     /**
-     * Whether the complex result is expected to be a collection or not
-     *
-     * @var bool
+     * Whether the complex result is expected to be a collection or not.
      */
     public bool $collection = false;
 
@@ -48,14 +46,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
      * @param array<string, string>|null $orderBy
      * @param array<string, Constraint|list<Constraint>> $constraints
      * @param array<string, Type> $types
-     * @param string|null $errorPath
      * @param array<string, string> $descriptions
-     * @param string|null $provider
-     * @param int|null $limit
-     * @param int|null $offset
-     * @param string|null $fn
-     * @param string|null $service
-     * @param bool $collection
      * @param array<string, mixed> $static
      *
      * @noinspection DuplicatedCode
@@ -93,7 +84,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
     public function getFn(): string
     {
         if (null === $this->fn) {
-            throw new \RuntimeException("No function set for callable");
+            throw new \RuntimeException('No function set for callable');
         }
 
         return $this->fn;
@@ -102,7 +93,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
     public function getService(): string
     {
         if (null === $this->service) {
-            throw new \RuntimeException("No service set for callable");
+            throw new \RuntimeException('No service set for callable');
         }
 
         return $this->service;

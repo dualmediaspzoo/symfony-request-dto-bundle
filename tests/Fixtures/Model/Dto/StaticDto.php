@@ -14,5 +14,5 @@ class StaticDto extends AbstractDto
         types: ['id' => new Type('int')],
         static: ['static' => 1551]
     )]
-    public ?DummyModel $model = null;
+    public DummyModel|null $model = null;
 }

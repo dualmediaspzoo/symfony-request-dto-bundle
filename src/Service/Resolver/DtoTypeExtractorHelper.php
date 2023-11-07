@@ -6,6 +6,7 @@ use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
 use DualMedia\DtoRequestBundle\Attributes\Dto\Type as TypeAnnotation;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
+use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
@@ -23,9 +24,6 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 
     /**
      * @param \ReflectionClass<DtoInterface> $class
-     * @param Bag|null $root
-     *
-     * @return Dto
      *
      * @throws InvalidTypeCountException
      * @throws InvalidDateTimeClassException
@@ -34,7 +32,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
      */
     public function extract(
         \ReflectionClass $class,
-        ?Bag $root = null
+        Bag|null $root = null
     ): Dto {
         $fqcn = $class->getName();
 
@@ -49,6 +47,12 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
         }
 
         $dto = new Dto();
+
+        foreach ($class->getAttributes() as $attribute) {
+            if (is_a($attribute->getName(), DtoAttributeInterface::class, true)) {
+                $dto->addDtoAttribute($attribute->newInstance());
+            }
+        }
 
         foreach ($this->propertyInfoExtractor->getProperties($fqcn) ?? [] as $property) {
             if (!$this->propertyInfoExtractor->isWritable($fqcn, $property)) { // we won't be able to do anything with this anyway
@@ -68,7 +72,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 
             if (1 !== count($types ?? [])) {
                 throw new InvalidTypeCountException(sprintf(
-                    "Cannot deduct types with multiple specified types for property %s in class %s",
+                    'Cannot deduct types with multiple specified types for property %s in class %s',
                     $property,
                     $fqcn
                 ));
@@ -138,7 +142,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 
     private function getClass(
         Type $type
-    ): ?string {
+    ): string|null {
         return !$type->isCollection() ?
             $type->getClassName() :
             ($type->getCollectionValueTypes()[0] ?? null)?->getClassName() ?? null;
@@ -146,7 +150,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 
     private function getType(
         Type $type
-    ): ?string {
+    ): string|null {
         return !$type->isCollection() ?
             $type->getBuiltinType() :
             ($type->getCollectionValueTypes()[0] ?? null)?->getBuiltinType() ?? null;

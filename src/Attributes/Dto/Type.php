@@ -5,21 +5,21 @@ namespace DualMedia\DtoRequestBundle\Attributes\Dto;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 
 /**
- * This annotation provides a simple way of declaring type safety for {@link FindInterface} annotations
+ * This annotation provides a simple way of declaring type safety for {@link FindInterface} annotations.
  */
 #[\Attribute]
 class Type
 {
     public readonly string $type;
-    public readonly ?string $subType;
+    public readonly string|null $subType;
 
-    public readonly ?Format $format;
+    public readonly Format|null $format;
 
     public function __construct(
         string $type = 'string',
         public readonly bool $collection = false,
-        ?string $subType = null,
-        ?Format $format = null
+        string|null $subType = null,
+        Format|null $format = null
     ) {
         $type = mb_strtolower($type);
 

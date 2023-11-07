@@ -10,7 +10,7 @@ use DualMedia\DtoRequestBundle\Traits\Type\CoercerResultTrait;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * This class is a fake-ish coercer
+ * This class is a fake-ish coercer.
  *
  * Since all GET inputs are treated as strings, this will <i>only</i> apply to pre-processed
  * values which should be simply validated for proper type requirements

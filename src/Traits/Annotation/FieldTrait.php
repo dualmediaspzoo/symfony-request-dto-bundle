@@ -7,33 +7,33 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Implements shared field/path/order fields and getters
+ * Implements shared field/path/order fields and getters.
  */
 trait FieldTrait
 {
     /**
-     * These fields will be later used to load the entity
+     * These fields will be later used to load the entity.
      *
      * @var array<string, string>
      */
     public array $fields = [];
 
     /**
-     * This data will not change between requests and will be used to load the entity
+     * This data will not change between requests and will be used to load the entity.
      *
      * @var array<string, mixed>
      */
     public array $static = [];
 
     /**
-     * Order of the results
+     * Order of the results.
      *
      * @var array<string, string>|null
      */
     public array|null $orderBy = null;
 
     /**
-     * Constraints for fields used in the query so that validation can still happen
+     * Constraints for fields used in the query so that validation can still happen.
      *
      * List of constraints mapped to final names of fields used in the query
      *
@@ -42,7 +42,7 @@ trait FieldTrait
     public array $constraints = [];
 
     /**
-     * List of user specified type safety checks
+     * List of user specified type safety checks.
      *
      * @var array<string, Type>
      */
@@ -50,14 +50,14 @@ trait FieldTrait
 
     /**
      * Set to specify in which criteria field you want to display your error
-     * Field must be specified in a {@link PropertyAccess} valid format
+     * Field must be specified in a {@link PropertyAccess} valid format.
      *
      * If not set the system will take the first criteria field it finds in {@link $this::$fields}
      */
     public string|null $errorPath = null;
 
     /**
-     * List of descriptions for fields, mapped by field name, used in API docs
+     * List of descriptions for fields, mapped by field name, used in API docs.
      *
      * @var array<string, string>
      */
@@ -71,7 +71,7 @@ trait FieldTrait
         return $this->fields;
     }
 
-    public function getFirstNonDynamicField(): ?string
+    public function getFirstNonDynamicField(): string|null
     {
         foreach ($this->fields as $key => $field) {
             if (!str_starts_with($field, '$')) {

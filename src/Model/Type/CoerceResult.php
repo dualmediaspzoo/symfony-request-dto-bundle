@@ -12,7 +12,6 @@ class CoerceResult
 {
     /**
      * @param T|array<int, T> $value
-     * @param ConstraintViolationListInterface $violations
      */
     public function __construct(
         private readonly mixed $value,

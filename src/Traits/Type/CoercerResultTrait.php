@@ -13,13 +13,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 trait CoercerResultTrait
 {
     /**
-     * @param ValidatorInterface $validator
-     * @param string $propertyPath
-     * @param Property $property
-     * @param mixed $value
      * @param Constraint[] $constraints
-     *
-     * @return CoerceResult
      */
     private function buildResult(
         ValidatorInterface $validator,

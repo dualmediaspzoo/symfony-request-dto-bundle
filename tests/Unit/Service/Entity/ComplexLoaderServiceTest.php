@@ -79,8 +79,8 @@ class ComplexLoaderServiceTest extends TestCase
         string $fn,
         $output,
         array $input,
-        ?string $providerId = null,
-        ?array $orderBy = null
+        string|null $providerId = null,
+        array|null $orderBy = null
     ): void {
         // this test does not mock actually calling these objects
         $loader = $this->createMockWithMethods(ComplexLoaderInterface::class, [$fn]);
@@ -110,7 +110,7 @@ class ComplexLoaderServiceTest extends TestCase
             ->willReturn($orderBy);
 
         $providerMock = $this->createMock(ProviderInterface::class);
-        $getProviderCheck = $this->deferCallable(function (string $in, ?string $provIdIn) use ($fqcn, $providerId) {
+        $getProviderCheck = $this->deferCallable(function (string $in, string|null $provIdIn) use ($fqcn, $providerId) {
             $this->assertEquals($fqcn, $in);
             $this->assertEquals($providerId, $provIdIn);
         });
@@ -123,7 +123,7 @@ class ComplexLoaderServiceTest extends TestCase
                 return $providerMock;
             });
 
-        $findComplexCheck = $this->deferCallable(function (callable $c, array $in, ?array $ordIn) use ($input, $orderBy) {
+        $findComplexCheck = $this->deferCallable(function (callable $c, array $in, array|null $ordIn) use ($input, $orderBy) {
             $this->assertEquals($input, $in);
             $this->assertEquals($orderBy, $ordIn);
         });

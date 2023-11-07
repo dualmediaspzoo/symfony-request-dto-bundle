@@ -21,7 +21,7 @@ class ProfilingEntityProviderService extends AbstractWrapper implements Provider
 
     public function getProvider(
         string $fqcn,
-        ?string $providerId = null
+        string|null $providerId = null
     ): ProviderInterface {
         return $this->wrap(
             'provide:%d:'.$fqcn,

@@ -21,11 +21,7 @@ class FindBy implements FindInterface, DtoAttributeInterface
      * @param array<string, string>|null $orderBy
      * @param array<string, Constraint|list<Constraint>> $constraints
      * @param array<string, Type> $types
-     * @param string|null $errorPath
      * @param array<string, string> $descriptions
-     * @param string|null $provider
-     * @param int|null $limit
-     * @param int|null $offset
      * @param array<string, mixed> $static
      *
      * @noinspection DuplicatedCode

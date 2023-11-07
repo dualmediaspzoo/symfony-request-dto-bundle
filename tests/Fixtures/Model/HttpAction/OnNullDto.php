@@ -10,5 +10,5 @@ use Symfony\Component\HttpFoundation\Response;
 class OnNullDto extends AbstractDto
 {
     #[OnNull(Response::HTTP_NOT_FOUND)]
-    public ?DummyModel $model = null;
+    public DummyModel|null $model = null;
 }

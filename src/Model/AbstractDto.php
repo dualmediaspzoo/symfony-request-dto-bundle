@@ -30,9 +30,9 @@ abstract class AbstractDto implements DtoInterface
      */
     private array $_preValidated = [];
 
-    private ?DtoInterface $_parentDto = null;
+    private DtoInterface|null $_parentDto = null;
     private bool $_optional = true;
-    private ?HttpActionInterface $_httpAction = null;
+    private HttpActionInterface|null $_httpAction = null;
 
     public function __construct()
     {
@@ -54,13 +54,13 @@ abstract class AbstractDto implements DtoInterface
         string $property,
         string $field
     ): bool {
-        return array_key_exists($property, $this->_visitedVirtual) &&
-            in_array($field, $this->_visitedVirtual[$property], true);
+        return array_key_exists($property, $this->_visitedVirtual)
+            && in_array($field, $this->_visitedVirtual[$property], true);
     }
 
     public function visit(
         string $property,
-        ?string $virtual = null
+        string|null $virtual = null
     ): void {
         if (null !== $virtual) {
             if (!array_key_exists($property, $this->_visitedVirtual)) {
@@ -115,7 +115,7 @@ abstract class AbstractDto implements DtoInterface
         return 0 === $this->_constraintList->count();
     }
 
-    public function getParentDto(): ?DtoInterface
+    public function getParentDto(): DtoInterface|null
     {
         return $this->_parentDto;
     }
@@ -126,20 +126,20 @@ abstract class AbstractDto implements DtoInterface
     }
 
     public function setParentDto(
-        ?DtoInterface $parentDto
+        DtoInterface|null $parentDto
     ): AbstractDto {
         $this->_parentDto = $parentDto;
 
         return $this;
     }
 
-    public function getHttpAction(): ?HttpActionInterface
+    public function getHttpAction(): HttpActionInterface|null
     {
         return $this->_httpAction;
     }
 
     public function setHttpAction(
-        ?HttpActionInterface $action
+        HttpActionInterface|null $action
     ): void {
         $this->_httpAction = $action;
     }

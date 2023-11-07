@@ -15,5 +15,5 @@ class FindWithSecondErrorDto extends AbstractDto
         constraints: ['id' => new Assert\NotBlank()],
         types: ['id' => new Type('int')]
     )]
-    public ?DummyModel $model = null;
+    public DummyModel|null $model = null;
 }

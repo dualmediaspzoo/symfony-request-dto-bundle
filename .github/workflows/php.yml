@@ -19,9 +19,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.lock') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
           restore-keys: |
-            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.lock') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
 
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
@@ -58,9 +58,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.lock') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
           restore-keys: |
-            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.lock') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
 
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
@@ -91,9 +91,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.lock') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
           restore-keys: |
-            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.lock') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
 
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
@@ -128,9 +128,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+          key: ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.lock') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
           restore-keys: |
-            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.json') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-s-${{ hashFiles('**/composer.lock') }}-${{ matrix.symfony-version }}-${{ matrix.php-version }}
 
       - name: PHP Setup
         uses: shivammathur/setup-php@v2

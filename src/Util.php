@@ -23,10 +23,10 @@ class Util
      *     => array('key' => array('new value'));
      *
      * @phpstan-ignore-next-line
+     *
      * @param array ...$arrays
      *
      * @phpstan-ignore-next-line
-     * @return array
      *
      * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
      * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
@@ -38,11 +38,6 @@ class Util
     ): array {
         $merge =
             /**
-             * @param array $array1
-             * @param array $array2
-             *
-             * @return array
-             *
              * @psalm-return array<array|mixed>
              */
             function (array $array1, array $array2): array {
@@ -71,10 +66,6 @@ class Util
 
     /**
      * @param mixed[] $array
-     * @param string $propertyPath
-     * @param ConstraintViolationInterface $violation
-     *
-     * @return void
      */
     public static function removeIndexByConstraintViolation(
         array &$array,

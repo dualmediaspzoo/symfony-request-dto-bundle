@@ -29,7 +29,7 @@ class HttpDtoActionSubscriberTest extends KernelTestCase
     public function testHandle(
         bool $hasDto,
         bool $valid = false,
-        ?HttpActionInterface $action = null
+        HttpActionInterface|null $action = null
     ): void {
         $params = [];
 

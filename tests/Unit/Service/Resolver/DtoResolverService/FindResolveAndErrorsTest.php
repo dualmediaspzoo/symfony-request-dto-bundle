@@ -33,7 +33,7 @@ class FindResolveAndErrorsTest extends KernelTestCase
     {
         $find = $this->deferCallable(function (
             array $criteria,
-            ?array $orderBy = null
+            array|null $orderBy = null
         ) {
             $this->assertNull($orderBy);
             $this->assertArrayHasKey('id', $criteria);
@@ -150,7 +150,7 @@ class FindResolveAndErrorsTest extends KernelTestCase
     {
         $find = $this->deferCallable(function (
             array $criteria,
-            ?array $orderBy = null
+            array|null $orderBy = null
         ) {
             $this->assertNull($orderBy);
             $this->assertArrayHasKey('id', $criteria);

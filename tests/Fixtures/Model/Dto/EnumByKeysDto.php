@@ -10,8 +10,8 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
 class EnumByKeysDto extends AbstractDto
 {
     #[FromKey]
-    public ?IntegerEnum $int = null;
+    public IntegerEnum|null $int = null;
 
     #[FromKey]
-    public ?StringEnum $string = null;
+    public StringEnum|null $string = null;
 }

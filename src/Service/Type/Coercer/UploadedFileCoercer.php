@@ -22,8 +22,8 @@ class UploadedFileCoercer implements CoercerInterface
         Property $property
     ): bool {
         return 'object' === $property->getType() && (
-            is_a($property->getFqcn(), UploadedFile::class, true) || // @phpstan-ignore-line
-            is_subclass_of($property->getFqcn(), UploadedFile::class) // @phpstan-ignore-line
+            is_a($property->getFqcn(), UploadedFile::class, true) // @phpstan-ignore-line
+            || is_subclass_of($property->getFqcn(), UploadedFile::class) // @phpstan-ignore-line
         );
     }
 

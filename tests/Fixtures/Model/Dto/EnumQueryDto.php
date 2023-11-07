@@ -10,5 +10,5 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
 #[Bag(BagEnum::Query)]
 class EnumQueryDto extends AbstractDto
 {
-    public ?IntegerEnum $int = null;
+    public IntegerEnum|null $int = null;
 }

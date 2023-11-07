@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 
 /**
- * Throws {@link DtoHttpException}s when needed
+ * Throws {@link DtoHttpException}s when needed.
  */
 class HttpDtoActionSubscriber implements EventSubscriberInterface
 {
@@ -23,9 +23,9 @@ class HttpDtoActionSubscriber implements EventSubscriberInterface
         ControllerArgumentsEvent $event
     ): void {
         foreach ($event->getArguments() as $argument) {
-            if (!($argument instanceof DtoInterface) ||
-                !$argument->isValid() ||
-                null === ($action = $argument->getHttpAction())) {
+            if (!($argument instanceof DtoInterface)
+                || !$argument->isValid()
+                || null === ($action = $argument->getHttpAction())) {
                 continue;
             }
 

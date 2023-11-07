@@ -11,9 +11,9 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 class ComplexDto extends AbstractDto
 {
-    public ?int $myInt = null;
+    public int|null $myInt = null;
 
-    public ?string $myString = null;
+    public string|null $myString = null;
 
     /**
      * @var int[]
@@ -24,13 +24,13 @@ class ComplexDto extends AbstractDto
         fields: ['id' => 'id', 'custom' => '$customProp', 'date' => 'whatever'],
         types: ['id' => new Type('int'), 'date' => new Type('datetime')]
     )]
-    public ?DummyModel $model = null;
+    public DummyModel|null $model = null;
 
-    public ?SubDto $dto = null;
+    public SubDto|null $dto = null;
 
-    public ?\DateTimeImmutable $date = null;
+    public \DateTimeImmutable|null $date = null;
 
-    public ?IntegerEnum $intEnum = null;
+    public IntegerEnum|null $intEnum = null;
 
-    public ?StringEnum $stringEnum = null;
+    public StringEnum|null $stringEnum = null;
 }

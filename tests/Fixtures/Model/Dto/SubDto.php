@@ -6,9 +6,9 @@ use DualMedia\DtoRequestBundle\Model\AbstractDto;
 
 class SubDto extends AbstractDto
 {
-    public ?int $subDtoInt = null;
+    public int|null $subDtoInt = null;
 
-    public ?float $subDtoFloat = null;
+    public float|null $subDtoFloat = null;
 
     public bool $subDtoBool = false;
 }
