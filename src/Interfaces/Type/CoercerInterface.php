@@ -29,6 +29,6 @@ interface CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        $value
+        mixed $value
     ): CoerceResult;
 }

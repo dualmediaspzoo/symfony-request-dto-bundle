@@ -13,7 +13,7 @@ class OnNullActionValidator implements ActionValidatorInterface
 {
     public function supports(
         HttpActionInterface $action,
-        $variable
+        mixed $variable
     ): bool {
         /** @noinspection PhpConditionAlreadyCheckedInspection */
         return $action instanceof OnNull;
@@ -21,7 +21,7 @@ class OnNullActionValidator implements ActionValidatorInterface
 
     public function validate(
         HttpActionInterface $action,
-        $variable
+        mixed $variable
     ): bool {
         return null === $variable;
     }

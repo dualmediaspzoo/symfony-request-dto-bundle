@@ -36,7 +36,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        $value
+        mixed $value
     ): CoerceResult {
         // php8
         $format = ($property->getFormat() ?? new Format())->format ?? $this->defaultDateFormat;

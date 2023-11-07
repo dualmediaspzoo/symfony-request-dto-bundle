@@ -44,7 +44,7 @@ class EnumCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        $value
+        mixed $value
     ): CoerceResult {
         $this->fromKey = $property->getDtoAttributes(FromKey::class)[0] ?? null;
 

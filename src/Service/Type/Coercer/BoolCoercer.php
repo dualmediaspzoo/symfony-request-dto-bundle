@@ -26,7 +26,7 @@ class BoolCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        $value
+        mixed $value
     ): CoerceResult {
         if (!is_array($value)) {
             $value = [$value];

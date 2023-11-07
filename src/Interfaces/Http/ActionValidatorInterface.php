@@ -11,11 +11,11 @@ interface ActionValidatorInterface
 {
     public function supports(
         HttpActionInterface $action,
-        $variable
+        mixed $variable
     ): bool;
 
     public function validate(
         HttpActionInterface $action,
-        $variable
+        mixed $variable
     ): bool;
 }
