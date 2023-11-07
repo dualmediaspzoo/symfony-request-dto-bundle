@@ -50,6 +50,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
 
         foreach ($class->getAttributes() as $attribute) {
             if (is_a($attribute->getName(), DtoAttributeInterface::class, true)) {
+                /** @phpstan-ignore-next-line */
                 $dto->addDtoAttribute($attribute->newInstance());
             }
         }
