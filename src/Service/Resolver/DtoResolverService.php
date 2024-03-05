@@ -105,22 +105,26 @@ class DtoResolverService implements DtoResolverInterface
 
         /** @var ConstraintViolationInterface $violation */
         foreach ($list as $violation) {
-            $propPath = new PropertyPath($violation->getPropertyPath());
+            if ('' !== $violation->getPropertyPath()) {
+                $propPath = new PropertyPath($violation->getPropertyPath());
 
-            // no replacement is needed, object was pre-fixed
-            if (!isset($model[$propPath->getElement(0)])) {
-                $dto->getConstraintViolationList()->add($violation);
+                // no replacement is needed, object was pre-fixed
+                if (!isset($model[$propPath->getElement(0)])) {
+                    $dto->getConstraintViolationList()->add($violation);
 
-                continue;
-            }
+                    continue;
+                }
 
-            $path = $model[$propPath->getElement(0)]->fixPropertyPath($propPath);
+                $path = $model[$propPath->getElement(0)]->fixPropertyPath($propPath);
 
-            // no replacement is needed
-            if ($path === $violation->getPropertyPath()) {
-                $dto->getConstraintViolationList()->add($violation);
+                // no replacement is needed
+                if ($path === $violation->getPropertyPath()) {
+                    $dto->getConstraintViolationList()->add($violation);
 
-                continue;
+                    continue;
+                }
+            } else {
+                $path = 'root'; // special case
             }
 
             $dto->getConstraintViolationList()->add(new ConstraintViolation(
@@ -335,7 +339,7 @@ class DtoResolverService implements DtoResolverInterface
             $models[$inputPaths[$key]] = $property[$key];
         }
         /** @var array<string, PropertyTypeModel> $models */
-        $list = $this->validationHelper->validateType($mapped, $models);
+        $list = $this->validationHelper->validateType($mapped, $models, true);
         $violated = false;
 
         if ($list->count()) {

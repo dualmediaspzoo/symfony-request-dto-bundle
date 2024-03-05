@@ -22,6 +22,10 @@ return [
 ];
 ```
 
+## Upgrades
+
+See [CHANGES.md](CHANGES.md)
+
 ## Usage
 
 1. Create a DTO class for your request
@@ -54,6 +58,77 @@ class MyController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractCo
 }
 ```
 
+## Application wide handling of DTO issues
+
+If you wish to automatically return a 4XX response code when a dto has failed validation you may use something like the following:
+
+```yaml
+# config/services.yaml
+App\EventSubscriber\ErrorSubscriber:
+  decorates: exception_listener
+  arguments:
+    - '@App\EventSubscriber\ErrorSubscriber.inner'
+```
+
+```php
+class ErrorSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
+{
+    public function __construct(
+        private readonly ErrorListener $decorated
+    ) {
+    }
+
+    public static function getSubscribedEvents(){
+        return [
+            \Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent::class => 'onControllerArguments',
+        ];
+    }
+    
+    public function onControllerArguments(
+        ControllerArgumentsEvent $event
+    ): void {
+        $this->decorated->onControllerArguments($event);
+
+        $violationList = new ConstraintViolationList();
+
+        foreach ($event->getArguments() as $argument) {
+            if ($argument instanceof DtoInterface
+                && !$argument->isOptional()
+                && !$argument->isValid()) {
+                $violationList->addAll($argument->getConstraintViolationList());
+            }
+        }
+
+        if (0 !== $violationList->count()) {
+            throw new ValidatorException($violationList); // handle and display, or just do whatever really
+        }
+    }
+}
+```
+
+If you want to map a class-wide assert to a path without having to directly modify the constraint itself you may wrap it in MappedToPath
+
+```php
+
+use \DualMedia\DtoRequestBundle\Constraints\MappedToPath;
+use \DualMedia\DtoRequestBundle\Model\AbstractDto;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[MappedToPath(
+    'property',
+    new Assert\Expression(
+        'this.property != null',
+        message: 'This property cannot be null'
+    )
+)]
+class MyDto extends AbstractDto
+{
+    public int|null $property = null;
+}
+
+```
+
 ## Docs
+
 
 Currently no documentation is available, but will be added in the future. For the time being see [the DTO models for tests](tests/Fixtures/Model/Dto)

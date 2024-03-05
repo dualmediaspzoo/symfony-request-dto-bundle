@@ -20,7 +20,8 @@ trait CoercerResultTrait
         string $propertyPath,
         Property $property,
         mixed $value,
-        array $constraints
+        array $constraints,
+        bool $validatePropertyConstraints = false
     ): CoerceResult {
         if ($property->isCollection()) {
             $constraints = [
@@ -29,7 +30,10 @@ trait CoercerResultTrait
                 ]),
             ];
         }
-        $constraints = array_merge($constraints, $property->getConstraints());
+        if ($validatePropertyConstraints) {
+            $constraints = array_merge($constraints, $property->getConstraints());
+        }
+
         $violations = $validator->startContext()
             ->atPath($propertyPath)
             ->validate($value, $constraints)

@@ -31,14 +31,16 @@ class StringCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value
+        mixed $value,
+        bool $validatePropertyConstraints = false
     ): CoerceResult {
         return $this->buildResult(
             $this->validator,
             $propertyPath,
             $property,
             $value,
-            [new Type(['type' => 'string'])]
+            [new Type(['type' => 'string'])],
+            $validatePropertyConstraints
         );
     }
 }

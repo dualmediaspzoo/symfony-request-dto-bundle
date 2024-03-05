@@ -24,11 +24,12 @@ interface CoercerInterface
      *
      * A result object will be returned with the constraint list if needed
      *
-     * @return CoerceResult<T>
+     * @return T
      */
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value
-    ): CoerceResult;
+        mixed $value,
+        bool $validatePropertyConstraints = false
+    ): mixed;
 }

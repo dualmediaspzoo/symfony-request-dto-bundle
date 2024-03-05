@@ -23,7 +23,8 @@ class TypeValidationHelper implements TypeValidationInterface
      */
     public function validateType(
         array &$values,
-        array $properties
+        array $properties,
+        bool $validateConstraints = false
     ): ConstraintViolationListInterface {
         $subValues = [];
         $subProperties = [];
