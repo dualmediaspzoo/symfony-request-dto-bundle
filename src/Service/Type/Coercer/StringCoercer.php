@@ -37,12 +37,11 @@ class StringCoercer implements CoercerInterface
         mixed $value,
         bool $validatePropertyConstraints = false
     ): CoerceResult {
-        /** @phpstan-ignore-next-line */
         return $this->buildResult(
             $this->validator,
             $propertyPath,
             $property,
-            $value,
+            $value, /** @phpstan-ignore-line */
             [new Type(['type' => 'string'])],
             $validatePropertyConstraints
         );
