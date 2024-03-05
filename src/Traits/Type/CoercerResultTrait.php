@@ -10,10 +10,15 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template T
+ */
 trait CoercerResultTrait
 {
     /**
      * @param Constraint[] $constraints
+     *
+     * @return CoerceResult<T>
      */
     private function buildResult(
         ValidatorInterface $validator,

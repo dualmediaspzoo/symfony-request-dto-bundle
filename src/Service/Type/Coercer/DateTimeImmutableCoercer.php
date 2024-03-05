@@ -15,15 +15,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DateTimeImmutableCoercer implements CoercerInterface
 {
-    private string $defaultDateFormat;
-    private ValidatorInterface $validator;
-
     public function __construct(
-        string $defaultDateFormat,
-        ValidatorInterface $validator
+        private readonly string $defaultDateFormat,
+        private readonly ValidatorInterface $validator
     ) {
-        $this->defaultDateFormat = $defaultDateFormat;
-        $this->validator = $validator;
     }
 
     public function supports(

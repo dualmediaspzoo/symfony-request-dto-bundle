@@ -19,6 +19,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class StringCoercer implements CoercerInterface
 {
+    /**
+     * @use CoercerResultTrait<string|null>
+     */
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 

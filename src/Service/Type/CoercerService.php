@@ -10,14 +10,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template T
- *
- * @implements CoercionServiceInterface<T>
+ * @implements CoercionServiceInterface<mixed>
  */
 class CoercerService implements CoercionServiceInterface
 {
     /**
-     * @var list<CoercerInterface<T>>
+     * @var list<CoercerInterface<mixed>>
      */
     private array $coercers;
 
@@ -45,10 +43,6 @@ class CoercerService implements CoercionServiceInterface
         return false;
     }
 
-    /**
-     * @psalm-suppress InvalidReturnType
-     * @psalm-suppress InvalidReturnStatement
-     */
     public function coerce(
         string $propertyPath,
         Property $property,

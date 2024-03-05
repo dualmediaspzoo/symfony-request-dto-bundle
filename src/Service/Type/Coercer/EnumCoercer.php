@@ -19,6 +19,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EnumCoercer implements CoercerInterface
 {
+    /**
+     * @use CoercerResultTrait<\BackedEnum|null>
+     */
     use CoercerResultTrait;
 
     private FromKey|null $fromKey;

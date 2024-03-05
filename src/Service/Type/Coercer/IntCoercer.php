@@ -14,6 +14,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class IntCoercer implements CoercerInterface
 {
+    /**
+     * @use CoercerResultTrait<int|null>
+     */
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 

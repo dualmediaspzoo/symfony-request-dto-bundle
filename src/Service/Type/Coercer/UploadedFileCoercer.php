@@ -15,6 +15,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class UploadedFileCoercer implements CoercerInterface
 {
+    /**
+     * @use CoercerResultTrait<UploadedFile|null>
+     */
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 
