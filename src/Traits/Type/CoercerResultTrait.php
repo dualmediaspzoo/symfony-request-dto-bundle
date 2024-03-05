@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 trait CoercerResultTrait
 {
     /**
+     * @param T|list<T> $value
      * @param Constraint[] $constraints
      *
      * @return CoerceResult<T>
