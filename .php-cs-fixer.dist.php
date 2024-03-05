@@ -1,18 +1,11 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
+$finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
-    ->exclude('assets')
+    ->exclude('var')
     ->exclude('bin')
-    ->exclude('config')
-    ->exclude('docker')
-    ->exclude('files')
     ->exclude('public')
     ->exclude('scripts')
-    ->exclude('templates')
-    ->exclude('tools')
-    ->exclude('translations')
-    ->exclude('var')
     ->exclude('vendor');
 
 return (new PhpCsFixer\Config())
