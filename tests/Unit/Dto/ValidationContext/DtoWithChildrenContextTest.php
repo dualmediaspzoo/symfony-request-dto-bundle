@@ -7,7 +7,6 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\ValidationContext\MainDt
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use DualMedia\DtoRequestBundle\Tests\Traits\Unit\ConstraintValidationTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
  * @group new-validation

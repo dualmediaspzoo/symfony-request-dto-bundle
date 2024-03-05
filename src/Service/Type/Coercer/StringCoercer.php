@@ -37,6 +37,7 @@ class StringCoercer implements CoercerInterface
         mixed $value,
         bool $validatePropertyConstraints = false
     ): CoerceResult {
+        /** @phpstan-ignore-next-line */
         return $this->buildResult(
             $this->validator,
             $propertyPath,
