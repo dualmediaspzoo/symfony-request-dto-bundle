@@ -33,10 +33,10 @@ use \DualMedia\DtoRequestBundle\Model\AbstractDto;
 
 class MyDto extends AbstractDto
 {
-    public ?int $myVar = null;
+    public int|null $myVar = null;
     
     #[Path("custom_path")]
-    public ?string $myString = null;
+    public string|null $myString = null;
 }
 
 ```
