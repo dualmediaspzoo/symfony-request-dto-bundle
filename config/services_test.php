@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 
 return static function (ContainerConfigurator $configurator) {
-    $fn = include __DIR__ . '/services_dev.php';
+    $fn = include __DIR__.'/services_dev.php';
 
     $fn($configurator);
 

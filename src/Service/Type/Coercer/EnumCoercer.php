@@ -19,6 +19,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EnumCoercer implements CoercerInterface
 {
+    /**
+     * @use CoercerResultTrait<\BackedEnum|null>
+     */
     use CoercerResultTrait;
 
     private FromKey|null $fromKey;
@@ -44,7 +47,8 @@ class EnumCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value
+        mixed $value,
+        bool $validatePropertyConstraints = false
     ): CoerceResult {
         $this->fromKey = $property->getDtoAttributes(FromKey::class)[0] ?? null;
 
@@ -58,7 +62,11 @@ class EnumCoercer implements CoercerInterface
                 ]),
             ];
         }
-        $constraints = array_merge($constraints, $property->getConstraints());
+
+        if ($validatePropertyConstraints) {
+            $constraints = array_merge($constraints, $property->getConstraints());
+        }
+
         $violations = $this->validator->startContext()
             ->atPath($propertyPath)
             ->validate($value, $constraints)

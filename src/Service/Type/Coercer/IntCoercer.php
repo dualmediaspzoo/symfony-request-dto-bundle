@@ -14,6 +14,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class IntCoercer implements CoercerInterface
 {
+    /**
+     * @use CoercerResultTrait<int|null>
+     */
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 
@@ -26,7 +29,8 @@ class IntCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value
+        mixed $value,
+        bool $validatePropertyConstraints = false
     ): CoerceResult {
         if (!is_array($value)) {
             $value = [$value];
@@ -43,7 +47,8 @@ class IntCoercer implements CoercerInterface
             $propertyPath,
             $property,
             $property->isCollection() ? $value : $value[0],
-            [new Type(['type' => 'int'])]
+            [new Type(['type' => 'int'])],
+            $validatePropertyConstraints
         );
     }
 }

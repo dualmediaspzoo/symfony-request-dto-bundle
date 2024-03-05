@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\DependencyInjection\Reference;
 
 return static function (ContainerConfigurator $configurator) {
-    $fn = include __DIR__ . '/services.php';
+    $fn = include __DIR__.'/services.php';
 
     $fn($configurator);
 

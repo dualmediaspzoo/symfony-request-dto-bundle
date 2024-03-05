@@ -24,12 +24,13 @@ class ProfilingTypeValidationService extends AbstractWrapper implements TypeVali
      */
     public function validateType(
         array &$values,
-        array $properties
+        array $properties,
+        bool $validateConstraints = false
     ): ConstraintViolationListInterface {
         return $this->wrap(
             'validate.%d',
-            function () use (&$values, $properties) {
-                return $this->validation->validateType($values, $properties);
+            function () use (&$values, $properties, $validateConstraints) {
+                return $this->validation->validateType($values, $properties, $validateConstraints);
             }
         );
     }

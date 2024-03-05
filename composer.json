@@ -34,6 +34,7 @@
     "matthiasnoback/symfony-dependency-injection-test": "^4.3",
     "nelmio/api-doc-bundle": "^4",
     "symfony/stopwatch": "^5.4|^6.2",
+    "symfony/expression-language": "^5.4|^6.2",
     "symfony/web-profiler-bundle": "^5.4|^6.2",
     "doctrine/doctrine-bundle": "^2",
     "doctrine/orm": "^2|^3"

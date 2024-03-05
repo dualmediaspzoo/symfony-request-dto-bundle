@@ -15,6 +15,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class UploadedFileCoercer implements CoercerInterface
 {
+    /**
+     * @use CoercerResultTrait<UploadedFile|null>
+     */
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 
@@ -30,7 +33,8 @@ class UploadedFileCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value
+        mixed $value,
+        bool $validatePropertyConstraints = false
     ): CoerceResult {
         if (!is_array($value)) {
             $value = [$value];
@@ -41,7 +45,8 @@ class UploadedFileCoercer implements CoercerInterface
             $propertyPath,
             $property,
             $property->isCollection() ? $value : $value[0] ?? null,
-            [new Type(['type' => UploadedFile::class])]
+            [new Type(['type' => UploadedFile::class])],
+            $validatePropertyConstraints
         );
     }
 }

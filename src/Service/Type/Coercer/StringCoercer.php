@@ -19,6 +19,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class StringCoercer implements CoercerInterface
 {
+    /**
+     * @use CoercerResultTrait<string|null>
+     */
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 
@@ -31,14 +34,16 @@ class StringCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value
+        mixed $value,
+        bool $validatePropertyConstraints = false
     ): CoerceResult {
         return $this->buildResult(
             $this->validator,
             $propertyPath,
             $property,
-            $value,
-            [new Type(['type' => 'string'])]
+            $value, /** @phpstan-ignore-line */
+            [new Type(['type' => 'string'])],
+            $validatePropertyConstraints
         );
     }
 }

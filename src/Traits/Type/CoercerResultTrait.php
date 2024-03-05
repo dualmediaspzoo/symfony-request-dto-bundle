@@ -10,17 +10,24 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template T
+ */
 trait CoercerResultTrait
 {
     /**
+     * @param T|list<T> $value
      * @param Constraint[] $constraints
+     *
+     * @return CoerceResult<T>
      */
     private function buildResult(
         ValidatorInterface $validator,
         string $propertyPath,
         Property $property,
         mixed $value,
-        array $constraints
+        array $constraints,
+        bool $validatePropertyConstraints = false
     ): CoerceResult {
         if ($property->isCollection()) {
             $constraints = [
@@ -29,7 +36,11 @@ trait CoercerResultTrait
                 ]),
             ];
         }
-        $constraints = array_merge($constraints, $property->getConstraints());
+
+        if ($validatePropertyConstraints) {
+            $constraints = array_merge($constraints, $property->getConstraints());
+        }
+
         $violations = $validator->startContext()
             ->atPath($propertyPath)
             ->validate($value, $constraints)
