@@ -15,8 +15,8 @@ trait ConstraintValidationTrait
         array $constraints = []
     ): void {
         $this->assertCount($count, $list);
-
         $counter = 0;
+
         foreach ($constraints as $property => $message) {
             $violation = $list->get($counter++);
 

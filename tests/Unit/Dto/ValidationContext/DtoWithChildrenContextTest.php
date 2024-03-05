@@ -61,7 +61,7 @@ class DtoWithChildrenContextTest extends KernelTestCase
                 'intVal' => 'This value should be greater than or equal to 15.',
                 'dto[0]' => 'Value must not be null',
                 'dto[0].something' => 'Subpathed value',
-                'dto[0].value' => 'This value should not be blank.'
+                'dto[0].value' => 'This value should not be blank.',
             ]
         );
     }

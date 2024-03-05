@@ -117,7 +117,7 @@ class DtoOADescriber implements RouteDescriberInterface
                     $name = explode('.', $key)[0];
 
                     $operation->parameters[] = new Parameter([
-                        'name' => $name . ($type === 'query' && $model->isCollection() ? '[]' : ''), // if we're in the query bag automatically add [] to param name
+                        'name' => $name.($type === 'query' && $model->isCollection() ? '[]' : ''), // if we're in the query bag automatically add [] to param name
                         'in' => self::OA_BAG_MAP[$type] ?? $type,
                         'schema' => $schema,
                         'description' => $model->getDescription() ?? $this->getUndefined(),

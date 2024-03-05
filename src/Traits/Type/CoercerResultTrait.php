@@ -36,6 +36,7 @@ trait CoercerResultTrait
                 ]),
             ];
         }
+
         if ($validatePropertyConstraints) {
             $constraints = array_merge($constraints, $property->getConstraints());
         }

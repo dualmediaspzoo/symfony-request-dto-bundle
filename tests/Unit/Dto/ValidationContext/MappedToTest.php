@@ -8,7 +8,7 @@ use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * This tests checks if the validation is being performed as expected on Symfony objects
+ * This tests checks if the validation is being performed as expected on Symfony objects.
  *
  * @group new-validation
  */
