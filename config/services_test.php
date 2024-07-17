@@ -17,6 +17,7 @@ use DualMedia\DtoRequestBundle\Service\Type\Coercer\UploadedFileCoercer;
 use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
 use DualMedia\DtoRequestBundle\Service\Validation\TypeValidationHelper;
 use DualMedia\DtoRequestBundle\Tests\Service\Entity\DummyModelProvider;
+use DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 
@@ -49,7 +50,7 @@ return static function (ContainerConfigurator $configurator) {
 
         DtoOADescriber::class,
 
-        DtoArgumentResolver::class,
+        interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class) ? DtoValueResolver::class : DtoArgumentResolver::class,
 
         OnNullActionValidator::class,
         HttpDtoActionSubscriber::class,

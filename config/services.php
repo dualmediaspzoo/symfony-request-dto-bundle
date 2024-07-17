@@ -36,6 +36,7 @@ use DualMedia\DtoRequestBundle\Service\Type\Coercer\UploadedFileCoercer;
 use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
 use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
 use DualMedia\DtoRequestBundle\Service\Validation\TypeValidationHelper;
+use DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -137,7 +138,7 @@ return static function (ContainerConfigurator $configurator) {
         ->arg(6, new Reference(ActionValidatorService::class))
         ->arg(7, new Reference('validator'));
 
-    $services->set(DtoArgumentResolver::class)
+    $services->set(interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class) ? DtoValueResolver::class : DtoArgumentResolver::class)
         ->arg(0, new Reference(DtoResolverInterface::class))
         ->arg(1, new Reference('event_dispatcher'))
         ->tag('controller.argument_value_resolver');
