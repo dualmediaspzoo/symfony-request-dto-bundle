@@ -1,9 +1,6 @@
 name: Validate push
 on: [pull_request]
 
-permissions:
-  pull-requests: write
-
 jobs:
   install:
     strategy:
@@ -149,6 +146,7 @@ jobs:
 
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
+        if: github.repository == 'dualmediaspzoo/symfony-request-dto-bundle'
         with:
           filename: artifacts/code-coverage-cobertura.xml
           badge: true
