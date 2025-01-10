@@ -43,7 +43,6 @@ class StringCoercer implements CoercerInterface
             $property,
             $value, /** @phpstan-ignore-line */
             [new Type(['type' => 'string'])],
-            $validatePropertyConstraints
         );
     }
 }

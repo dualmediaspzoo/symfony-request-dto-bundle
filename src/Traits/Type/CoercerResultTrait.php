@@ -27,7 +27,6 @@ trait CoercerResultTrait
         Property $property,
         mixed $value,
         array $constraints,
-        bool $validatePropertyConstraints = false
     ): CoerceResult {
         if ($property->isCollection()) {
             $constraints = [
@@ -35,10 +34,6 @@ trait CoercerResultTrait
                     'constraints' => $constraints,
                 ]),
             ];
-        }
-
-        if ($validatePropertyConstraints) {
-            $constraints = array_merge($constraints, $property->getConstraints());
         }
 
         $violations = $validator->startContext()
