@@ -33,8 +33,7 @@ class UploadedFileCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value,
-        bool $validatePropertyConstraints = false
+        mixed $value
     ): CoerceResult {
         if (!is_array($value)) {
             $value = [$value];
@@ -46,7 +45,6 @@ class UploadedFileCoercer implements CoercerInterface
             $property,
             $property->isCollection() ? $value : $value[0] ?? null,
             [new Type(['type' => UploadedFile::class])],
-            $validatePropertyConstraints
         );
     }
 }

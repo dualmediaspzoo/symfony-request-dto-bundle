@@ -29,8 +29,7 @@ class FloatCoercer implements CoercerInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value,
-        bool $validatePropertyConstraints = false
+        mixed $value
     ): CoerceResult {
         if (!is_array($value)) {
             $value = [$value];
@@ -48,7 +47,6 @@ class FloatCoercer implements CoercerInterface
             $property,
             $property->isCollection() ? $value : $value[0],
             [new Type(['type' => 'float'])],
-            $validatePropertyConstraints
         );
     }
 }

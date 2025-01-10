@@ -46,22 +46,9 @@ class CoercerService implements CoercionServiceInterface
     public function coerce(
         string $propertyPath,
         Property $property,
-        mixed $value,
-        bool $validatePropertyConstraints = false
+        mixed $value
     ): CoerceResult|null {
-        if (null === $value && !empty($property->getConstraints())) {
-            $violations = $this->validator->startContext()
-                ->atPath($propertyPath)
-                ->validate($value, $property->getConstraints())
-                ->getViolations();
-
-            if (0 !== $violations->count()) {
-                return new CoerceResult( // @phpstan-ignore-line
-                    null,
-                    $violations
-                );
-            }
-        } elseif ($property->isCollection()) {
+        if ($property->isCollection()) {
             $violations = $this->validator->startContext()
                 ->atPath($propertyPath)
                 ->validate($value, new Assert\Type(['type' => 'array']))

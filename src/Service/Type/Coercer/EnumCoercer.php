@@ -48,7 +48,6 @@ class EnumCoercer implements CoercerInterface
         string $propertyPath,
         Property $property,
         mixed $value,
-        bool $validatePropertyConstraints = false
     ): CoerceResult {
         $this->fromKey = $property->getDtoAttributes(FromKey::class)[0] ?? null;
 
@@ -61,10 +60,6 @@ class EnumCoercer implements CoercerInterface
                     'constraints' => $constraints,
                 ]),
             ];
-        }
-
-        if ($validatePropertyConstraints) {
-            $constraints = array_merge($constraints, $property->getConstraints());
         }
 
         $violations = $this->validator->startContext()

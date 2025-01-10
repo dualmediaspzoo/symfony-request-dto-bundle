@@ -30,7 +30,6 @@ class BoolCoercer implements CoercerInterface
         string $propertyPath,
         Property $property,
         mixed $value,
-        bool $validatePropertyConstraints = false
     ): CoerceResult {
         if (!is_array($value)) {
             $value = [$value];
@@ -50,7 +49,6 @@ class BoolCoercer implements CoercerInterface
             $property,
             $property->isCollection() ? $value : $value[0],
             [new Type(['type' => 'bool'])],
-            $validatePropertyConstraints
         );
     }
 }
