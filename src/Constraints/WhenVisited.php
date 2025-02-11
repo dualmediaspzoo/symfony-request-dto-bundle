@@ -9,12 +9,25 @@ use Symfony\Component\Validator\Constraints\Composite;
 class WhenVisited extends Composite
 {
     /**
-     * @param list<Constraint> $constraints
+     * @param list<Constraint>|Constraint $constraints
+     * @param list<string>|null $groups
+     * @param array<string,mixed> $options
      */
     public function __construct(
-        public array $constraints = [],
+        public array|Constraint $constraints = [],
+        array|null $groups = null,
+        array $options = []
     ) {
         $options['constraints'] = $constraints;
+
+        if (!\is_array($options['constraints'])) {
+            $options['constraints'] = [$options['constraints']];
+        }
+
+        if (null !== $groups) {
+            $options['groups'] = $groups;
+        }
+
         parent::__construct($options);
     }
 

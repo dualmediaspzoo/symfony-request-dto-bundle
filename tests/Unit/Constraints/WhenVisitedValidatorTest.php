@@ -33,6 +33,7 @@ class WhenVisitedValidatorTest extends TestCase
     public static function validateDataProvider(): \Generator
     {
         yield ['test', 'test', [new NotNull()]];
+        yield ['test', 'test', new NotNull()];
         yield [null, 'test', [new NotNull()]];
         yield [123, 'price', [new NotNull(), new NotBlank()]];
         yield ['test', 'test', [new NotNull()], false];
@@ -42,14 +43,14 @@ class WhenVisitedValidatorTest extends TestCase
     }
 
     /**
-     * @param list<Constraint> $constraints
+     * @param list<Constraint>|Constraint $constraints
      *
      * @dataProvider validateDataProvider
      */
     public function testValidate(
         string|int|null $value,
         string $propertyName,
-        array $constraints,
+        array|Constraint $constraints,
         bool $visited = true,
         bool $hasObject = true,
         bool $hasPropertyName = true
