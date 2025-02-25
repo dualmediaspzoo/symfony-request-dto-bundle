@@ -36,6 +36,10 @@ class BoolCoercer implements CoercerInterface
         }
 
         foreach ($value as $index => $val) {
+            if ('null' === $val) {
+                $value[$index] = null;
+            }
+
             if (in_array($val, ['0', '1'], false)) { // cast from int
                 $value[$index] = (bool)((int)$val);
             } elseif (in_array($val, ['true', 'false'])) { // cast from text
