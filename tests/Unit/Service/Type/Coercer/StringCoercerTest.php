@@ -13,6 +13,7 @@ class StringCoercerTest extends AbstractBasicCoercerTestCase
     protected function getCoerceExpected(): iterable
     {
         return [
+            ['null', null],
             ['something', 'something'],
         ];
     }

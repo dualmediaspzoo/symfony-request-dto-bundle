@@ -36,6 +36,10 @@ class FloatCoercer implements CoercerInterface
         }
 
         foreach ($value as $index => $val) {
+            if ('null' === $val) {
+                $value[$index] = null;
+            }
+
             if (is_numeric($val)) {
                 $value[$index] = (float)$val;
             }

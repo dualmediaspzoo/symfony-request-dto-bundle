@@ -13,6 +13,7 @@ class BoolCoercerTest extends AbstractBasicCoercerTestCase
     protected function getCoerceExpected(): iterable
     {
         return [
+            ['null', null],
             ['0', false],
             ['1', true],
             [0, false],

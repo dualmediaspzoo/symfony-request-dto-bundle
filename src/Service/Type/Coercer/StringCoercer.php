@@ -37,11 +37,21 @@ class StringCoercer implements CoercerInterface
         mixed $value,
         bool $validatePropertyConstraints = false
     ): CoerceResult {
+        if (!is_array($value)) {
+            $value = [$value];
+        }
+
+        foreach ($value as &$item) {
+            if ('null' === $item) {
+                $item = null;
+            }
+        }
+
         return $this->buildResult(
             $this->validator,
             $propertyPath,
             $property,
-            $value, /** @phpstan-ignore-line */
+            $property->isCollection() ? $value : $value[0],
             [new Type(['type' => 'string'])],
         );
     }

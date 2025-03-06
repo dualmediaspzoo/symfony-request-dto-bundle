@@ -13,6 +13,7 @@ class FloatCoercerTest extends AbstractBasicCoercerTestCase
     protected function getCoerceExpected(): iterable
     {
         return [
+            ['null', null],
             ['0', 0.0],
             ['1', 1.0],
             [0, 0.0],
