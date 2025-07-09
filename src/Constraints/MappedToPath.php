@@ -17,9 +17,9 @@ class MappedToPath extends Constraint
     public function __construct(
         public string $path,
         public array|Constraint $constraints = [],
-        $options = null,
-        array $groups = null,
-        $payload = null
+        mixed $options = null,
+        array|null $groups = null,
+        mixed $payload = null
     ) {
         parent::__construct($options, $groups, $payload);
     }
