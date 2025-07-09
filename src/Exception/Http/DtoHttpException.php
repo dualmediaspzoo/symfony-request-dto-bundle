@@ -18,7 +18,7 @@ class DtoHttpException extends HttpException
         private readonly DtoInterface $dto,
         int $statusCode,
         string $message = '',
-        \Throwable $previous = null,
+        \Throwable|null $previous = null,
         array $headers = [],
         int $code = 0
     ) {

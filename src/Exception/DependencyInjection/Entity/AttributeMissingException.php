@@ -8,7 +8,7 @@ class AttributeMissingException extends \Exception
         private readonly string $class,
         string $message = '',
         int $code = 0,
-        \Throwable $previous = null
+        \Throwable|null $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }
