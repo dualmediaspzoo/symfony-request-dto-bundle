@@ -332,7 +332,7 @@ class DtoOADescriber implements RouteDescriberInterface
 
             if ($item instanceof DtoTypeModel) {
                 if ($item->isCollection()) { // forces an empty index to make it easier to check whether an element is an array
-                    $propertyPath .= '.';
+                    $propertyPath .= null;
                 }
                 $bags = DtoUtil::mergeRecursively($bags, $this->getClassBags($item, $propertyPath));
 
