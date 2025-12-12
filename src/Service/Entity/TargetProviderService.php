@@ -35,7 +35,8 @@ class TargetProviderService implements TargetProviderInterface
     public function findComplex(
         callable $fn,
         array $fields,
-        array|null $orderBy = null
+        array|null $orderBy = null,
+        array $metadata = []
     ) {
         if (null === $this->repository) {
             return null;
@@ -47,8 +48,9 @@ class TargetProviderService implements TargetProviderInterface
     #[\Override]
     public function findOneBy(
         array $criteria,
-        array|null $orderBy = null
-    ) {
+        array|null $orderBy = null,
+        array $metadata = []
+    ): mixed {
         return $this->repository?->findOneBy($criteria, $orderBy) ?? null;
     }
 
@@ -57,7 +59,8 @@ class TargetProviderService implements TargetProviderInterface
         array $criteria,
         array|null $orderBy = null,
         int|null $limit = null,
-        int|null $offset = null
+        int|null $offset = null,
+        array $metadata = []
     ) {
         return $this->repository?->findBy($criteria, $orderBy, $limit, $offset) ?? []; // @phpstan-ignore-line
     }

@@ -17,15 +17,17 @@ class DummyModelProvider implements ProviderInterface
     public function findComplex(
         callable $fn,
         array $fields,
-        array|null $orderBy = null
+        array|null $orderBy = null,
+        array $metadata = []
     ) {
         // TODO: Implement findComplex() method.
     }
 
     public function findOneBy(
         array $criteria,
-        array|null $orderBy = null
-    ) {
+        array|null $orderBy = null,
+        array $metadata = []
+    ): mixed {
         // TODO: Implement findOneBy() method.
     }
 
@@ -33,7 +35,8 @@ class DummyModelProvider implements ProviderInterface
         array $criteria,
         array|null $orderBy = null,
         int|null $limit = null,
-        int|null $offset = null
+        int|null $offset = null,
+        array $metadata = []
     ): array {
         // TODO: Implement findBy() method.
     }

@@ -3,6 +3,7 @@
 namespace DualMedia\DtoRequestBundle\Interface\Entity;
 
 use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoFindMetaAttributeInterface;
 
 /**
  * This interface may be implemented by classes that wish to provide entities to {@link DtoInterface} objects.
@@ -24,6 +25,7 @@ interface ProviderInterface
      * @param callable(array<string, mixed>, array<string, string>|null, mixed): mixed $fn
      * @param array<string, mixed> $fields
      * @param array<string, string>|null $orderBy
+     * @param list<DtoFindMetaAttributeInterface> $metadata
      *
      * @return list<T>|T|null
      *
@@ -32,27 +34,31 @@ interface ProviderInterface
     public function findComplex(
         callable $fn,
         array $fields,
-        array|null $orderBy = null
+        array|null $orderBy = null,
+        array $metadata = []
     );
 
     /**
-     * Find one or no entities, must be compatible with Doctrine's EntityRepository::findOneBy.
+     * Find one or no entities.
      *
      * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
+     * @param list<DtoFindMetaAttributeInterface> $metadata
      *
      * @return T|null
      */
     public function findOneBy(
         array $criteria,
-        array|null $orderBy = null
-    );
+        array|null $orderBy = null,
+        array $metadata = []
+    ): mixed;
 
     /**
-     * Find one or more entities, must be compatible with Doctrine's EntityRepository::findBy.
+     * Find one or more entities.
      *
      * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
+     * @param list<DtoFindMetaAttributeInterface> $metadata
      *
      * @return list<T>
      *
@@ -62,6 +68,7 @@ interface ProviderInterface
         array $criteria,
         array|null $orderBy = null,
         int|null $limit = null,
-        int|null $offset = null
+        int|null $offset = null,
+        array $metadata = []
     );
 }

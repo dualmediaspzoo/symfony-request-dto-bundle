@@ -8,6 +8,7 @@ use DualMedia\DtoRequestBundle\Attribute\Dto\Format;
 use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
 use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoFindMetaAttributeInterface;
 use DualMedia\DtoRequestBundle\Interface\Attribute\FindInterface;
 use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
 use DualMedia\DtoRequestBundle\Interface\Attribute\PathInterface;
@@ -213,6 +214,24 @@ class Property implements \ArrayAccess, \IteratorAggregate
     ): array {
         // @phpstan-ignore-next-line
         return $this->dtoAttributes[$class] ?? [];
+    }
+
+    /**
+     * @return list<DtoFindMetaAttributeInterface>
+     */
+    public function getMetaAttributes(): array
+    {
+        $attributes = [];
+
+        foreach ($this->dtoAttributes as $class => $list) {
+            if (!($class instanceof DtoFindMetaAttributeInterface)) {
+                continue;
+            }
+
+            $attributes[] = $list;
+        }
+
+        return array_merge(...$attributes);
     }
 
     public function getHttpAction(): HttpActionInterface|null
@@ -446,7 +465,6 @@ class Property implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
-     * @param string $offset
      * @param Property $value
      */
     #[\Override]
