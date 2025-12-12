@@ -325,13 +325,6 @@ class Property implements \ArrayAccess, \IteratorAggregate
          */
         $enums = call_user_func([$this->getFqcn(), 'cases']);
 
-        /**
-         * @phpstan-ignore-next-line
-         *
-         * @var AllowEnum $allowed
-         *
-         * @psalm-suppress NoInterfaceProperties
-         */
         if (null !== ($allowed = $this->getDtoAttributes(AllowEnum::class)[0] ?? null)
             && !empty($allowed->allowed)) {
             $enums = $allowed->allowed;

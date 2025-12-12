@@ -38,7 +38,7 @@ class TargetProviderService implements TargetProviderInterface
             return null;
         }
 
-        return $fn($fields, $orderBy, $this->repository->createQueryBuilder('entity'));
+        return $fn($fields, $orderBy, $this->repository->createQueryBuilder('entity')); // @phpstan-ignore-line
     }
 
     #[\Override]
@@ -56,6 +56,6 @@ class TargetProviderService implements TargetProviderInterface
         int|null $limit = null,
         int|null $offset = null
     ) {
-        return $this->repository?->findBy($criteria, $orderBy, $limit, $offset) ?? [];
+        return $this->repository?->findBy($criteria, $orderBy, $limit, $offset) ?? []; // @phpstan-ignore-line
     }
 }

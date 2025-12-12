@@ -8,10 +8,13 @@ use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
- * @extends AbstractWrapper<ProviderInterface>
+ * @extends AbstractWrapper<ProviderInterface<object>>
  */
 class ProfilingEntityProviderService extends AbstractWrapper implements ProviderServiceInterface
 {
+    /**
+     * @param ProviderServiceInterface<object> $providerService
+     */
     public function __construct(
         private readonly ProviderServiceInterface $providerService,
         Stopwatch|null $stopwatch = null

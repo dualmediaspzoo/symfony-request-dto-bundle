@@ -23,13 +23,13 @@ class Type
     ) {
         $type = mb_strtolower($type);
 
-        if (null !== $format || in_array($type, ['date', 'datetime'])) { // fake-ish type
+        if (null !== $format || in_array($type, ['date', 'datetime'], true)) { // fake-ish type
             $format ??= new Format();
 
             $type = 'object';
             $subType = 'string';
         } else {
-            $type = in_array($type, ['int', 'string', 'float', 'bool']) ? $type : 'string';
+            $type = in_array($type, ['int', 'string', 'float', 'bool'], true) ? $type : 'string';
         }
 
         $this->type = $type;

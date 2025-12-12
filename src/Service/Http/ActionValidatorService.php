@@ -8,9 +8,9 @@ use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
 class ActionValidatorService implements ActionValidatorInterface
 {
     /**
-     * @var list<ActionValidatorInterface>
+     * @var iterable<ActionValidatorInterface>
      */
-    private array $validators;
+    private iterable $validators;
 
     /**
      * @param \IteratorAggregate<array-key, ActionValidatorInterface> $iterator

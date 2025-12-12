@@ -30,14 +30,15 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template T of DtoInterface
- *
- * @implements DtoResolverInterface<T>
+ * @implements DtoResolverInterface<DtoInterface>
  */
 class DtoResolverService implements DtoResolverInterface
 {
     private PropertyAccessorInterface $propertyAccessor;
 
+    /**
+     * @param ProviderServiceInterface<object> $providerService
+     */
     public function __construct(
         private readonly TypeValidationInterface $validationHelper,
         private readonly DtoTypeExtractorInterface $typeExtractor,
@@ -55,6 +56,8 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
+     * @template T of DtoInterface
+     *
      * @param class-string<T> $class
      *
      * @return T

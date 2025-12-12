@@ -92,6 +92,9 @@ class DtoBundle extends AbstractBundle
         $container->addCompilerPass(new LabelProcessorCompilerPass());
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     #[\Override]
     public function loadExtension(
         array $config,
@@ -104,7 +107,7 @@ class DtoBundle extends AbstractBundle
         );
 
         /** @psalm-suppress UndefinedDocblockClass */
-        if ($container->getParameter('kernel.debug')) {
+        if ($builder->getParameter('kernel.debug')) {
             $loader->load('services_dev.php');
         } else {
             $loader->load('services.php');
@@ -113,7 +116,7 @@ class DtoBundle extends AbstractBundle
         // @codeCoverageIgnoreStart
         if (!interface_exists(RouteDescriberInterface::class)) {
             // remove the describer if Nelmio is unavailable
-            $container->removeDefinition(DtoOADescriber::class);
+            $builder->removeDefinition(DtoOADescriber::class);
         }
         // @codeCoverageIgnoreEnd
     }

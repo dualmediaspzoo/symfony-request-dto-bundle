@@ -101,7 +101,7 @@ abstract class AbstractDto implements DtoInterface
     public function isPreValidated(
         string $property
     ): bool {
-        return in_array($property, $this->_preValidated);
+        return in_array($property, $this->_preValidated, true);
     }
 
     #[\Override]

@@ -14,7 +14,7 @@ use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 class EntityProviderService implements ProviderServiceInterface
 {
     /**
-     * @var array<class-string, array<string, ProviderInterface>>
+     * @var array<class-string, array<string, ProviderInterface<object>>>
      */
     private array $providers = [];
 
@@ -24,7 +24,7 @@ class EntityProviderService implements ProviderServiceInterface
     private array $defaultProviders = [];
 
     /**
-     * @param array<string, list<array{0: ProviderInterface, 1: class-string, 2: bool}>> $providers key is the service id, contains an array of ProviderInterface, FQCN and isDefault
+     * @param array<string, list<array{0: ProviderInterface<object>, 1: class-string, 2: bool}>> $providers key is the service id, contains an array of ProviderInterface, FQCN and isDefault
      */
     public function __construct(
         array $providers,

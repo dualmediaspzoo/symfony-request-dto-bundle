@@ -51,7 +51,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
             }
 
             /** @var \ReflectionClass $reflection */
-            $reflection = $container->getReflectionClass($def->getClass());
+            $reflection = $container->getReflectionClass($def->getClass()); // @phpstan-ignore-line
             $attributes = $reflection->getAttributes(EntityProvider::class);
 
             if (array_key_exists(TargetProviderInterface::class, $reflection->getInterfaces())) {

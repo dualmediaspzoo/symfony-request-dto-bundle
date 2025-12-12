@@ -21,7 +21,7 @@ interface ProviderInterface
      *
      * Proper arguments should be passed depending on the type of provider
      *
-     * @param callable(array, array, mixed): mixed $fn
+     * @param callable(array<string, mixed>, array<string, string>|null, mixed): mixed $fn
      * @param array<string, mixed> $fields
      * @param array<string, string>|null $orderBy
      *

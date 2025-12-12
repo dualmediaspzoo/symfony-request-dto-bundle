@@ -13,6 +13,7 @@ class ComplexLoaderService implements ComplexLoaderServiceInterface
 {
     /**
      * @param array<string, ComplexLoaderInterface> $loaders
+     * @param ProviderServiceInterface<object> $providerService
      */
     public function __construct(
         private readonly array $loaders,
