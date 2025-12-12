@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Profiler\Service\Validation;
 
-use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\TypeValidationInterface;
 use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

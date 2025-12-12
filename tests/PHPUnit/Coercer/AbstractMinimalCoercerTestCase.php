@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer;
 
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;

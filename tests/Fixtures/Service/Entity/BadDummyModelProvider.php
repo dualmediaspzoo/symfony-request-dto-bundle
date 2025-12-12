@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity;
 
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
 
 class BadDummyModelProvider implements ProviderInterface
 {

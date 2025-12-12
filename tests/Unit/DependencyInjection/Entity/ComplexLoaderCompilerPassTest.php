@@ -4,7 +4,7 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Entity;
 
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
 use DualMedia\DtoRequestBundle\DtoBundle;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;

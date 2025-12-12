@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\DefaultProcessor;
 
 /**

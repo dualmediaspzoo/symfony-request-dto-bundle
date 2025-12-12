@@ -4,10 +4,10 @@ namespace DualMedia\DtoRequestBundle\Service\Entity;
 
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
 
 class ComplexLoaderService implements ComplexLoaderServiceInterface
 {

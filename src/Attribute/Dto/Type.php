@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindInterface;
 
 /**
  * This annotation provides a simple way of declaring type safety for {@link FindInterface} annotations.

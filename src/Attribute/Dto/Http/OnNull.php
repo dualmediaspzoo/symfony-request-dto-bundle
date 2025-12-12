@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Attribute\Dto\Http;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
 use DualMedia\DtoRequestBundle\Traits\Annotation\HttpActionTrait;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

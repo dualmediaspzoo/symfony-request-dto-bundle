@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindInterface;
 use DualMedia\DtoRequestBundle\Traits\Annotation\FieldTrait;
 use DualMedia\DtoRequestBundle\Traits\Annotation\ProviderTrait;
 use Symfony\Component\Validator\Constraint;

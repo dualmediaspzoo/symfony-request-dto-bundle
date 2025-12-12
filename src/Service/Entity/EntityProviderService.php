@@ -5,8 +5,8 @@ namespace DualMedia\DtoRequestBundle\Service\Entity;
 use DualMedia\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
 
 /**
  * @implements ProviderServiceInterface<object>

@@ -6,7 +6,7 @@ use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
 use DualMedia\DtoRequestBundle\DtoBundle;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\TargetProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\TargetProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

@@ -1,9 +1,9 @@
 <?php
 
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\TypeValidationInterface;
 use DualMedia\DtoRequestBundle\Profiler\Service\Entity\ProfilingEntityProviderService;
 use DualMedia\DtoRequestBundle\Profiler\Service\Resolver\ProfilingDtoResolverService;
 use DualMedia\DtoRequestBundle\Profiler\Service\Resolver\ProfilingDtoTypeExtractorService;
@@ -17,10 +17,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\DependencyInjection\Reference;
 
 return static function (ContainerConfigurator $configurator) {
-    $fn = include __DIR__.'/services.php';
-
-    $fn($configurator);
-
     $services = $configurator->services()
         ->defaults()
         ->private();

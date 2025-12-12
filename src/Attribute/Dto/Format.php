@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
 
 /**
  * A date(-time) format annotation.

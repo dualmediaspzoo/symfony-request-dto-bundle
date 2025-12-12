@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Validation;
 
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercionServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercionServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\TypeValidationInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

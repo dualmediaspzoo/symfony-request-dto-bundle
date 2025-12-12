@@ -9,13 +9,13 @@ use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderS
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
 use DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
-use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Http\ActionValidatorInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
 use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
 use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
@@ -106,11 +106,11 @@ class DtoBundle extends AbstractBundle
             new FileLocator(__DIR__.'/../config')
         );
 
+        $loader->load('services.php');
+
         /** @psalm-suppress UndefinedDocblockClass */
         if ($builder->getParameter('kernel.debug')) {
             $loader->load('services_dev.php');
-        } else {
-            $loader->load('services.php');
         }
 
         // @codeCoverageIgnoreStart

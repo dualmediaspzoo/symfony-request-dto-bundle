@@ -3,8 +3,8 @@
 namespace DualMedia\DtoRequestBundle\Service\Resolver;
 
 use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
-use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverServiceInterface;
 
 class DynamicResolverService implements ResolverServiceInterface
 {

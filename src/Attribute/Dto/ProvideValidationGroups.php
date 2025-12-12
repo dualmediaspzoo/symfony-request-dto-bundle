@@ -2,9 +2,9 @@
 
 namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupProviderInterface;
 
 /**
  * This annotation should be put on {@link DtoInterface} objects, which wish to specify what groups they'll use.

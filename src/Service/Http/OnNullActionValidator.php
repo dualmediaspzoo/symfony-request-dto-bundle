@@ -3,8 +3,8 @@
 namespace DualMedia\DtoRequestBundle\Service\Http;
 
 use DualMedia\DtoRequestBundle\Attribute\Dto\Http\OnNull;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interface\Http\ActionValidatorInterface;
 
 /**
  * Checks if the variable is null after loading.

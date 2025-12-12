@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Profiler\Service\Resolver;
 
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
 use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Stopwatch\Stopwatch;

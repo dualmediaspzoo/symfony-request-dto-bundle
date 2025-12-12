@@ -2,9 +2,9 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Validation;
 
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Model;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

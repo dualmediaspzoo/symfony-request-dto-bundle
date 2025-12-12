@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Event;
 
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
 use DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver;
 use Symfony\Contracts\EventDispatcher\Event;
 

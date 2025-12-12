@@ -3,8 +3,8 @@
 namespace DualMedia\DtoRequestBundle\Service\Entity;
 
 use DualMedia\DtoRequestBundle\Exception\Entity\LabelProcessorNotFoundException;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorServiceInterface;
 
 class LabelProcessorService implements LabelProcessorServiceInterface
 {

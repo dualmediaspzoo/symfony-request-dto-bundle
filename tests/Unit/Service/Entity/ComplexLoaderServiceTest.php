@@ -4,10 +4,10 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Entity;
 
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use PHPUnit\Framework\Attributes\Group;

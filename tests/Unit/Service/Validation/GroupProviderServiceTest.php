@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Validation;
 
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;

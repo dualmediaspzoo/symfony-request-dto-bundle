@@ -6,7 +6,7 @@ use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderS
 use DualMedia\DtoRequestBundle\DtoBundle;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\BadDummyModelProvider;

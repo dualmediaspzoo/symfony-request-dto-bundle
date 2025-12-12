@@ -2,9 +2,9 @@
 
 namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
 use DualMedia\DtoRequestBundle\Traits\Annotation\FieldTrait;
 use DualMedia\DtoRequestBundle\Traits\Annotation\LimitAndOffsetTrait;
 use DualMedia\DtoRequestBundle\Traits\Annotation\ProviderTrait;

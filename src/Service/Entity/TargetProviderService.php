@@ -4,7 +4,7 @@ namespace DualMedia\DtoRequestBundle\Service\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\TargetProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\TargetProviderInterface;
 
 /**
  * @implements TargetProviderInterface<object>

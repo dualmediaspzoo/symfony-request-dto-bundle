@@ -3,8 +3,8 @@
 namespace DualMedia\DtoRequestBundle\ValueResolver;
 
 use DualMedia\DtoRequestBundle\Event\DtoResolvedEvent;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;

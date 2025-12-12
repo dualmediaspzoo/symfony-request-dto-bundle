@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor;
 
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorInterface;
 
 class PascalCaseProcessor implements LabelProcessorInterface
 {

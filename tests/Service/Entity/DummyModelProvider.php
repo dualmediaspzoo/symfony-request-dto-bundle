@@ -3,7 +3,7 @@
 namespace DualMedia\DtoRequestBundle\Tests\Service\Entity;
 
 use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 /**

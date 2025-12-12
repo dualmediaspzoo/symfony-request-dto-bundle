@@ -3,8 +3,8 @@
 namespace DualMedia\DtoRequestBundle\Service\Type\Coercer;
 
 use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Traits\Type\CoercerResultTrait;

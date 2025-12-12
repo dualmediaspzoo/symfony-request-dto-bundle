@@ -3,7 +3,7 @@
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver;
 
 use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
-use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverInterface;
 use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
 use DualMedia\DtoRequestBundle\Tests\Model\ArrayIterator;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;

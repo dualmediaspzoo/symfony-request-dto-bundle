@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type;
 
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\CoercerService;

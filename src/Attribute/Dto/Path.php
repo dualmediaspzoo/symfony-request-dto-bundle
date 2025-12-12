@@ -2,9 +2,9 @@
 
 namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\PathInterface;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\PathInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
 use DualMedia\DtoRequestBundle\Traits\Annotation\PathTrait;
 
 /**

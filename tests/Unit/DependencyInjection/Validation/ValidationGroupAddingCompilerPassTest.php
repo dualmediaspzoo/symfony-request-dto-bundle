@@ -4,7 +4,7 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Validation;
 
 use DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
 use DualMedia\DtoRequestBundle\DtoBundle;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;

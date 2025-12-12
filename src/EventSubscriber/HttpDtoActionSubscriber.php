@@ -3,7 +3,7 @@
 namespace DualMedia\DtoRequestBundle\EventSubscriber;
 
 use DualMedia\DtoRequestBundle\Exception\Http\DtoHttpException;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 

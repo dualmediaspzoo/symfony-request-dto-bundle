@@ -5,7 +5,7 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Entity;
 use DualMedia\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Entity\TestEntity;
