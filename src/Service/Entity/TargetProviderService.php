@@ -18,6 +18,7 @@ class TargetProviderService implements TargetProviderInterface
     ) {
     }
 
+    #[\Override]
     public function setFqcn(
         string $fqcn
     ): bool {
@@ -27,6 +28,7 @@ class TargetProviderService implements TargetProviderInterface
         );
     }
 
+    #[\Override]
     public function findComplex(
         callable $fn,
         array $fields,
@@ -39,6 +41,7 @@ class TargetProviderService implements TargetProviderInterface
         return $fn($fields, $orderBy, $this->repository->createQueryBuilder('entity'));
     }
 
+    #[\Override]
     public function findOneBy(
         array $criteria,
         array|null $orderBy = null
@@ -46,6 +49,7 @@ class TargetProviderService implements TargetProviderInterface
         return $this->repository?->findOneBy($criteria, $orderBy) ?? null;
     }
 
+    #[\Override]
     public function findBy(
         array $criteria,
         array|null $orderBy = null,

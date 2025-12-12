@@ -33,7 +33,7 @@ class TaggingExtensionTest extends TestCase
             $this->assertEquals($interface, $in);
         });
 
-        $container->expects($this->once())
+        $container->expects(static::once())
             ->method('registerForAutoconfiguration')
             ->willReturnCallback(function (...$args) use ($child, $interfaceCheck) {
                 $interfaceCheck->set($args);
@@ -45,7 +45,7 @@ class TaggingExtensionTest extends TestCase
             $this->assertEquals($tag, $in);
         });
 
-        $child->expects($this->once())
+        $child->expects(static::once())
             ->method('addTag')
             ->willReturnCallback(function (...$args) use ($child, $tagCheck) {
                 $tagCheck->set($args);

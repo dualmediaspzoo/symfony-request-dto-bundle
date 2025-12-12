@@ -23,6 +23,6 @@ class GroupProviderExtractTest extends TestCase
         );
 
         $dto = $helper->extract(new \ReflectionClass(DtoWithGroupProvider::class));
-        $this->assertTrue($dto->hasDtoAttribute(ProvideValidationGroups::class));
+        static::assertTrue($dto->hasDtoAttribute(ProvideValidationGroups::class));
     }
 }

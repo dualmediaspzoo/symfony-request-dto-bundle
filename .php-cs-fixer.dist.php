@@ -34,7 +34,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_types_order' => false,
         'phpdoc_scalar' => false,
         'phpdoc_types' => false,
-        'declare_strict_types' => true,
         'increment_style' => false,
         'ordered_class_elements' => true,
         'fully_qualified_strict_types' => false,

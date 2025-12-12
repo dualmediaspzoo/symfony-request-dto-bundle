@@ -21,6 +21,7 @@ class UploadedFileCoercer implements CoercerInterface
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
@@ -30,6 +31,7 @@ class UploadedFileCoercer implements CoercerInterface
         );
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,

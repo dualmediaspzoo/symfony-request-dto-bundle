@@ -6,12 +6,14 @@ use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorInterface;
 
 class PascalCaseProcessor implements LabelProcessorInterface
 {
+    #[\Override]
     public function normalize(
         string $value
     ): string {
         return strtoupper((string)preg_replace('/[A-Z]/', '_\\0', lcfirst($value)));
     }
 
+    #[\Override]
     public function denormalize(
         string $value
     ): string {

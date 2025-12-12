@@ -27,7 +27,7 @@ class HttpActionTest extends KernelTestCase
     {
         $type = $this->service->extract(new \ReflectionClass(OnNullDto::class));
 
-        $this->assertArrayHasKey('model', $type);
-        $this->assertInstanceOf(OnNull::class, $type['model']->getHttpAction());
+        static::assertArrayHasKey('model', $type);
+        static::assertInstanceOf(OnNull::class, $type['model']->getHttpAction());
     }
 }

@@ -8,7 +8,7 @@ use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
 class ActionValidatorService implements ActionValidatorInterface
 {
     /**
-     * @var ActionValidatorInterface[]
+     * @var list<ActionValidatorInterface>
      */
     private array $validators;
 
@@ -23,6 +23,7 @@ class ActionValidatorService implements ActionValidatorInterface
         $this->validators = iterator_to_array($iterator->getIterator());
     }
 
+    #[\Override]
     public function supports(
         HttpActionInterface $action,
         mixed $variable
@@ -36,6 +37,7 @@ class ActionValidatorService implements ActionValidatorInterface
         return false;
     }
 
+    #[\Override]
     public function validate(
         HttpActionInterface $action,
         mixed $variable

@@ -11,6 +11,7 @@ use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
  */
 class OnNullActionValidator implements ActionValidatorInterface
 {
+    #[\Override]
     public function supports(
         HttpActionInterface $action,
         mixed $variable
@@ -19,6 +20,7 @@ class OnNullActionValidator implements ActionValidatorInterface
         return $action instanceof OnNull;
     }
 
+    #[\Override]
     public function validate(
         HttpActionInterface $action,
         mixed $variable

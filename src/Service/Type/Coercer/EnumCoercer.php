@@ -37,6 +37,7 @@ class EnumCoercer implements CoercerInterface
     ) {
     }
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
@@ -44,6 +45,7 @@ class EnumCoercer implements CoercerInterface
             && is_subclass_of($property->getFqcn() ?? '', \BackedEnum::class);
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,

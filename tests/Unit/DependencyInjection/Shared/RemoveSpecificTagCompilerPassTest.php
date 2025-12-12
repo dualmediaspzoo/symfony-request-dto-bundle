@@ -29,7 +29,7 @@ class RemoveSpecificTagCompilerPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $def = $this->container->getDefinition('unaffected');
-        $this->assertCount(1, $def->getTag(self::TAG));
+        static::assertCount(1, $def->getTag(self::TAG));
     }
 
     public function testRemove(): void
@@ -44,10 +44,10 @@ class RemoveSpecificTagCompilerPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $def = $this->container->getDefinition('unaffected');
-        $this->assertCount(1, $def->getTag(self::TAG));
+        static::assertCount(1, $def->getTag(self::TAG));
 
         $affected = $this->container->getDefinition(self::SERVICE_ID);
-        $this->assertEmpty($affected->getTag(self::TAG));
+        static::assertEmpty($affected->getTag(self::TAG));
     }
 
     protected function registerCompilerPass(

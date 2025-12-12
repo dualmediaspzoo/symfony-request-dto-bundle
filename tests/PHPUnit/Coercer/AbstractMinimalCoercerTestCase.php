@@ -25,7 +25,7 @@ abstract class AbstractMinimalCoercerTestCase extends KernelTestCase
     protected function setUp(): void
     {
         if (null === static::SERVICE_ID) {
-            $this->fail('No service id is set');
+            static::fail('No service id is set');
         }
 
         self::bootKernel();
@@ -37,7 +37,7 @@ abstract class AbstractMinimalCoercerTestCase extends KernelTestCase
         Property $property,
         bool $supports
     ): void {
-        $this->assertEquals(
+        static::assertEquals(
             $supports,
             $this->service->supports($property)
         );

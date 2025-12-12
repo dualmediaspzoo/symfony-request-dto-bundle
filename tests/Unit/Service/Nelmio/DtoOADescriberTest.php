@@ -17,11 +17,11 @@ class DtoOADescriberTest extends NelmioTestCase
     {
         $api = $this->describe(DescriptorTest::class, 'testMethod');
 
-        $this->assertCount(1, $api->paths);
+        static::assertCount(1, $api->paths);
         $path = $api->paths[0];
 
-        $this->assertEquals('/some-path', $path->path);
-        $this->assertInstanceOf(Post::class, $path->post);
-        $this->assertInstanceOf(RequestBody::class, $path->post->requestBody);
+        static::assertEquals('/some-path', $path->path);
+        static::assertInstanceOf(Post::class, $path->post);
+        static::assertInstanceOf(RequestBody::class, $path->post->requestBody);
     }
 }

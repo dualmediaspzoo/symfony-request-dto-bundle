@@ -29,7 +29,7 @@ class ComplexLoaderServiceTest extends TestCase
     public function testNotFoundLoader(): void
     {
         $mock = $this->createMockWithMethods(ComplexLoaderInterface::class, ['custom_call']);
-        $mock->expects($this->never())
+        $mock->expects(static::never())
             ->method('custom_call');
 
         /** @psalm-suppress InvalidArgument */
@@ -39,7 +39,7 @@ class ComplexLoaderServiceTest extends TestCase
 
         $this->expectException(ComplexLoaderNotFoundException::class);
         $find = $this->createMock(FindComplexInterface::class);
-        $find->expects($this->exactly(2))
+        $find->expects(static::exactly(2))
             ->method('getService')
             ->willReturn('some_other_id');
 
@@ -49,7 +49,7 @@ class ComplexLoaderServiceTest extends TestCase
     public function testMethodNotExists(): void
     {
         $mock = $this->createMockWithMethods(ComplexLoaderInterface::class, ['custom_call']);
-        $mock->expects($this->never())
+        $mock->expects(static::never())
             ->method('custom_call');
 
         /** @psalm-suppress InvalidArgument */
@@ -59,11 +59,11 @@ class ComplexLoaderServiceTest extends TestCase
 
         $this->expectException(ComplexLoaderFunctionNotFoundException::class);
         $find = $this->createMock(FindComplexInterface::class);
-        $find->expects($this->exactly(3))
+        $find->expects(static::exactly(3))
             ->method('getService')
             ->willReturn('some_id');
 
-        $find->expects($this->exactly(2))
+        $find->expects(static::exactly(2))
             ->method('getFn')
             ->willReturn('unknown_call');
 
@@ -84,7 +84,7 @@ class ComplexLoaderServiceTest extends TestCase
     ): void {
         // this test does not mock actually calling these objects
         $loader = $this->createMockWithMethods(ComplexLoaderInterface::class, [$fn]);
-        $loader->expects($this->never())
+        $loader->expects(static::never())
             ->method($fn);
 
         /** @psalm-suppress InvalidArgument */
@@ -93,19 +93,19 @@ class ComplexLoaderServiceTest extends TestCase
         ], $this->provider);
 
         $find = $this->createMock(FindComplexInterface::class);
-        $find->expects($this->exactly(3))
+        $find->expects(static::exactly(3))
             ->method('getService')
             ->willReturn($serviceId);
 
-        $find->expects($this->exactly(2))
+        $find->expects(static::exactly(2))
             ->method('getFn')
             ->willReturn($fn);
 
-        $find->expects($this->once())
+        $find->expects(static::once())
             ->method('getProviderId')
             ->willReturn($providerId);
 
-        $find->expects($this->once())
+        $find->expects(static::once())
             ->method('getOrderBy')
             ->willReturn($orderBy);
 
@@ -115,7 +115,7 @@ class ComplexLoaderServiceTest extends TestCase
             $this->assertEquals($providerId, $provIdIn);
         });
 
-        $this->provider->expects($this->once())
+        $this->provider->expects(static::once())
             ->method('getProvider')
             ->willReturnCallback(function (...$args) use ($getProviderCheck, $providerMock) {
                 $getProviderCheck->set($args);
@@ -128,7 +128,7 @@ class ComplexLoaderServiceTest extends TestCase
             $this->assertEquals($orderBy, $ordIn);
         });
 
-        $providerMock->expects($this->once())
+        $providerMock->expects(static::once())
             ->method('findComplex')
             ->willReturnCallback(function (...$args) use ($findComplexCheck, $output) {
                 $findComplexCheck->set($args);
@@ -136,7 +136,7 @@ class ComplexLoaderServiceTest extends TestCase
                 return $output;
             });
 
-        $this->assertEquals(
+        static::assertEquals(
             $output,
             $service->loadComplex($fqcn, $find, $input)
         );

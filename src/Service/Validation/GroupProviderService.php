@@ -20,6 +20,7 @@ class GroupProviderService implements GroupServiceInterface
     ) {
     }
 
+    #[\Override]
     public function provideGroups(
         Request $request,
         DtoInterface $dto,

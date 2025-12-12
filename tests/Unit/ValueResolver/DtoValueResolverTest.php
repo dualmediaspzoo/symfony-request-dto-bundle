@@ -38,7 +38,7 @@ class DtoValueResolverTest extends KernelTestCase
             $this->assertInstanceOf(SubDto::class, $event->getDto());
         });
 
-        $this->eventMock->expects($this->once())
+        $this->eventMock->expects(static::once())
             ->method('dispatch')
             ->willReturnCallback(function (...$args) use ($event) {
                 $event->set($args);
@@ -64,11 +64,11 @@ class DtoValueResolverTest extends KernelTestCase
          */
         $dto = iterator_to_array($this->service->resolve($request, $mock))[0];
 
-        $this->assertInstanceOf(SubDto::class, $dto);
-        $this->assertTrue($dto->isValid());
-        $this->assertEquals(155, $dto->value);
-        $this->assertEquals(22.5, $dto->floatVal);
-        $this->assertTrue($dto->visited('value'));
-        $this->assertTrue($dto->visited('floatVal'));
+        static::assertInstanceOf(SubDto::class, $dto);
+        static::assertTrue($dto->isValid());
+        static::assertEquals(155, $dto->value);
+        static::assertEquals(22.5, $dto->floatVal);
+        static::assertTrue($dto->visited('value'));
+        static::assertTrue($dto->visited('floatVal'));
     }
 }

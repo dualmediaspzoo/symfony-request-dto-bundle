@@ -20,6 +20,7 @@ class ComplexLoaderService implements ComplexLoaderServiceInterface
     ) {
     }
 
+    #[\Override]
     public function loadComplex(
         string $fqcn,
         FindComplexInterface $find,

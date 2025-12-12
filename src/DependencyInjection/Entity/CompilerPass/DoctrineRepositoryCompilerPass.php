@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DoctrineRepositoryCompilerPass implements CompilerPassInterface
 {
+    #[\Override]
     public function process(
         ContainerBuilder $container
     ): void {

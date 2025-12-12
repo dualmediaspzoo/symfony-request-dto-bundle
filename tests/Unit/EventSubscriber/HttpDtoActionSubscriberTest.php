@@ -64,17 +64,17 @@ class HttpDtoActionSubscriberTest extends KernelTestCase
             $exception = $e;
         } finally {
             if ($valid && null !== $action) {
-                $this->assertInstanceOf(DtoHttpException::class, $exception);
-                $this->assertEquals($action->getHttpStatusCode(), $exception->getStatusCode());
-                $this->assertEquals($action->getMessage(), $exception->getMessage());
-                $this->assertEquals($action->getHeaders(), $exception->getHeaders());
+                static::assertInstanceOf(DtoHttpException::class, $exception);
+                static::assertEquals($action->getHttpStatusCode(), $exception->getStatusCode());
+                static::assertEquals($action->getMessage(), $exception->getMessage());
+                static::assertEquals($action->getHeaders(), $exception->getHeaders());
             } else {
-                $this->assertNull($exception);
+                static::assertNull($exception);
             }
         }
     }
 
-    public static function provideHandleCases(): array
+    public static function provideHandleCases(): iterable
     {
         return [
             [false],

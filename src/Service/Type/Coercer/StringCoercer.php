@@ -25,12 +25,14 @@ class StringCoercer implements CoercerInterface
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
         return 'string' === $property->getType();
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,

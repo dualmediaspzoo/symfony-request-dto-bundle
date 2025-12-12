@@ -28,15 +28,15 @@ class PathFixResolveErrorsTest extends KernelTestCase
     {
         $resolved = $this->service->resolve(new Request(), PathFixDto::class);
 
-        $this->assertFalse($resolved->isValid());
-        $this->assertCount(2, $resolved->getConstraintViolationList());
+        static::assertFalse($resolved->isValid());
+        static::assertCount(2, $resolved->getConstraintViolationList());
 
         /** @var ConstraintViolationInterface $violation */
         $violation = $resolved->getConstraintViolationList()[0];
-        $this->assertEquals('integer', $violation->getPropertyPath());
+        static::assertEquals('integer', $violation->getPropertyPath());
 
         /** @var ConstraintViolationInterface $violation */
         $violation = $resolved->getConstraintViolationList()[1];
-        $this->assertEquals('other_string_path', $violation->getPropertyPath());
+        static::assertEquals('other_string_path', $violation->getPropertyPath());
     }
 }

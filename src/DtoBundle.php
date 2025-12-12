@@ -17,26 +17,34 @@ use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
+use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
 use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
 use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-class DtoBundle extends Bundle
+class DtoBundle extends AbstractBundle
 {
-    public const COERCER_TAG = 'dto_bundle.coercer';
-    public const DYNAMIC_RESOLVER_TAG = 'dto_bundle.dynamic_resolver';
+    protected string $extensionAlias = 'dm_dto';
 
-    public const HTTP_ACTION_VALIDATOR_TAG = 'dto_bundle.http_action_validator';
+    public const string COERCER_TAG = 'dto_bundle.coercer';
+    public const string DYNAMIC_RESOLVER_TAG = 'dto_bundle.dynamic_resolver';
 
-    public const ENTITY_PROVIDER_PRE_CONFIG_TAG = 'dto_bundle.entity_provider.pre_config';
+    public const string HTTP_ACTION_VALIDATOR_TAG = 'dto_bundle.http_action_validator';
 
-    public const COMPLEX_LOADER_TAG = 'dto_bundle.complex_loader';
-    public const GROUP_PROVIDER_TAG = 'dto_bundle.validation_group_provider';
+    public const string ENTITY_PROVIDER_PRE_CONFIG_TAG = 'dto_bundle.entity_provider.pre_config';
 
-    public const LABEL_PROCESSOR_TAB = 'dto_bundle.label_processor';
+    public const string COMPLEX_LOADER_TAG = 'dto_bundle.complex_loader';
+    public const string GROUP_PROVIDER_TAG = 'dto_bundle.validation_group_provider';
 
+    public const string LABEL_PROCESSOR_TAB = 'dto_bundle.label_processor';
+
+    #[\Override]
     public function build(
         ContainerBuilder $container
     ): void {
@@ -82,5 +90,31 @@ class DtoBundle extends Bundle
 
         // label processors
         $container->addCompilerPass(new LabelProcessorCompilerPass());
+    }
+
+    #[\Override]
+    public function loadExtension(
+        array $config,
+        ContainerConfigurator $container,
+        ContainerBuilder $builder
+    ): void {
+        $loader = new PhpFileLoader(
+            $builder,
+            new FileLocator(__DIR__.'/../config')
+        );
+
+        /** @psalm-suppress UndefinedDocblockClass */
+        if ($container->getParameter('kernel.debug')) {
+            $loader->load('services_dev.php');
+        } else {
+            $loader->load('services.php');
+        }
+
+        // @codeCoverageIgnoreStart
+        if (!interface_exists(RouteDescriberInterface::class)) {
+            // remove the describer if Nelmio is unavailable
+            $container->removeDefinition(DtoOADescriber::class);
+        }
+        // @codeCoverageIgnoreEnd
     }
 }

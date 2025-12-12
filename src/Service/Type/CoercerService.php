@@ -31,6 +31,7 @@ class CoercerService implements CoercionServiceInterface
         $this->coercers = iterator_to_array($iterator->getIterator());
     }
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
@@ -43,6 +44,7 @@ class CoercerService implements CoercionServiceInterface
         return false;
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,

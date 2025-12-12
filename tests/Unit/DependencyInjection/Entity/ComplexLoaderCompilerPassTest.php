@@ -32,7 +32,7 @@ class ComplexLoaderCompilerPassTest extends AbstractCompilerPassTestCase
 
         $definition = $this->container->getDefinition(ComplexLoaderService::class);
 
-        $this->assertEmpty($definition->getArgument(0));
+        static::assertEmpty($definition->getArgument(0));
     }
 
     public function testTagged(): void
@@ -46,13 +46,13 @@ class ComplexLoaderCompilerPassTest extends AbstractCompilerPassTestCase
         $this->compile();
         $definition = $this->container->getDefinition(ComplexLoaderService::class);
 
-        $this->assertCount(1, $arg = $definition->getArgument(0));
-        $this->assertArrayHasKey('affected', $arg);
+        static::assertCount(1, $arg = $definition->getArgument(0));
+        static::assertArrayHasKey('affected', $arg);
 
         /** @var Reference $ref */
         $ref = $arg['affected'];
-        $this->assertInstanceOf(Reference::class, $ref);
-        $this->assertEquals('affected', (string)$ref);
+        static::assertInstanceOf(Reference::class, $ref);
+        static::assertEquals('affected', (string)$ref);
     }
 
     protected function registerCompilerPass(

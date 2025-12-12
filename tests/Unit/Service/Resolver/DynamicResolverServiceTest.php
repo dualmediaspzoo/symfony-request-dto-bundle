@@ -30,20 +30,20 @@ class DynamicResolverServiceTest extends TestCase
 
     public function testNothingSupported(): void
     {
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('getSupportedParameters')
             ->willReturn([]);
 
-        $this->assertEmpty($this->service->getSupportedParameters());
+        static::assertEmpty($this->service->getSupportedParameters());
     }
 
     public function testDuplicatedSupported(): void
     {
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('getSupportedParameters')
             ->willReturn(['something', 'whatever', 'something']);
 
-        $this->assertEquals([
+        static::assertEquals([
             'something',
             'whatever',
         ], $this->service->getSupportedParameters());
@@ -51,7 +51,7 @@ class DynamicResolverServiceTest extends TestCase
 
     public function testNotSupported(): void
     {
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('getSupportedParameters')
             ->willReturn(['something']);
 
@@ -62,7 +62,7 @@ class DynamicResolverServiceTest extends TestCase
 
     public function testSupported(): void
     {
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('getSupportedParameters')
             ->willReturn(['something']);
 
@@ -70,7 +70,7 @@ class DynamicResolverServiceTest extends TestCase
             $this->assertEquals('something', $name);
         });
 
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('resolveParameter')
             ->willReturnCallback(function (...$args) use ($nameDefer) {
                 $nameDefer->set($args);
@@ -78,7 +78,7 @@ class DynamicResolverServiceTest extends TestCase
                 return 15;
             });
 
-        $this->assertEquals(
+        static::assertEquals(
             15,
             $this->service->resolveParameter('something')
         );

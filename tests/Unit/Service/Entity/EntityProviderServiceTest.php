@@ -101,7 +101,7 @@ class EntityProviderServiceTest extends TestCase
             ]],
         ]);
 
-        $this->assertEquals(
+        static::assertEquals(
             $mock,
             $service->getProvider($fqcn, $providerId)
         );
@@ -120,7 +120,7 @@ class EntityProviderServiceTest extends TestCase
         $service = new EntityProviderService([], $mock);
 
         if ($result) {
-            $this->assertEquals($mock, $service->getProvider(TestEntity::class));
+            static::assertEquals($mock, $service->getProvider(TestEntity::class));
         } else {
             $this->expectException(EntityHasNoProviderException::class);
             $this->expectExceptionMessage(sprintf(
@@ -150,7 +150,7 @@ class EntityProviderServiceTest extends TestCase
         ], $mock);
 
         if ($result) {
-            $this->assertEquals($mock, $service->getProvider(TestEntity::class));
+            static::assertEquals($mock, $service->getProvider(TestEntity::class));
         } else {
             $this->expectException(DefaultProviderNotFoundException::class);
             $this->expectExceptionMessage(sprintf(

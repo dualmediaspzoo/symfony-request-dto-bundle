@@ -32,8 +32,8 @@ class DeepResolveTest extends KernelTestCase
             ],
         ]), DeepDto::class);
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertTrue($resolved->visited('pathed'));
-        $this->assertEquals('value', $resolved->pathed);
+        static::assertTrue($resolved->isValid());
+        static::assertTrue($resolved->visited('pathed'));
+        static::assertEquals('value', $resolved->pathed);
     }
 }

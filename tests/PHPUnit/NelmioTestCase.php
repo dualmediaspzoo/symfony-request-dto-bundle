@@ -26,7 +26,7 @@ class NelmioTestCase extends KernelTestCase
         $collection = $this->loader->load($class);
 
         if (null === ($route = $collection->get($routeName))) {
-            $this->fail('No route has been found');
+            static::fail('No route has been found');
         }
 
         $reflection = new \ReflectionMethod($route->getDefault('_controller'));

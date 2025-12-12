@@ -31,7 +31,7 @@ class OnNullActionValidatorTest extends KernelTestCase
         mixed $variable,
         bool $expected
     ): void {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->service->validate(new OnNull(Response::HTTP_NOT_FOUND), $variable)
         );
@@ -39,7 +39,7 @@ class OnNullActionValidatorTest extends KernelTestCase
 
     public function testSupports(): void
     {
-        $this->assertTrue(
+        static::assertTrue(
             $this->service->supports(new OnNull(Response::HTTP_NOT_FOUND), null)
         );
     }

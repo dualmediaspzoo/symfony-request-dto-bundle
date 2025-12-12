@@ -47,6 +47,7 @@ class EntityProviderService implements ProviderServiceInterface
         }
     }
 
+    #[\Override]
     public function getProvider(
         string $fqcn,
         string|null $providerId = null

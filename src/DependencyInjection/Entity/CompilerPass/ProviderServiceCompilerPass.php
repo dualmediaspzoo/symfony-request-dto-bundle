@@ -22,6 +22,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
      * @throws AttributeMissingException
      * @throws \ReflectionException
      */
+    #[\Override]
     public function process(
         ContainerBuilder $container
     ): void {

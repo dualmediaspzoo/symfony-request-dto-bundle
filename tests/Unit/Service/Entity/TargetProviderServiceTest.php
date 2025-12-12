@@ -29,7 +29,7 @@ class TargetProviderServiceTest extends TestCase
         bool $hasRepo = true,
         bool $addEm = true
     ): void {
-        $this->assertEquals(
+        static::assertEquals(
             $known,
             $this->getService($hasRepo ? $this->createMock(EntityRepository::class) : null, $addEm)
                 ->setFqcn($fqcn) // @phpstan-ignore-line
@@ -45,13 +45,13 @@ class TargetProviderServiceTest extends TestCase
         $repo = $this->createMock(EntityRepository::class);
         $builder = $this->createMock(QueryBuilder::class);
 
-        $repo->expects($this->once())
+        $repo->expects(static::once())
             ->method('createQueryBuilder')
             ->with('entity')
             ->willReturn($builder);
 
         $service = $this->getService($repo);
-        $this->assertTrue($service->setFqcn(TestEntity::class));
+        static::assertTrue($service->setFqcn(TestEntity::class));
 
         $callable = function (
             array $f,
@@ -75,15 +75,15 @@ class TargetProviderServiceTest extends TestCase
         $repo = $this->createMock(EntityRepository::class);
         $mock = $this->createMock(TestEntity::class);
 
-        $repo->expects($this->once())
+        $repo->expects(static::once())
             ->method('findOneBy')
             ->with($fields, $orderBy)
             ->willReturn($mock);
 
         $service = $this->getService($repo);
-        $this->assertTrue($service->setFqcn(TestEntity::class));
+        static::assertTrue($service->setFqcn(TestEntity::class));
 
-        $this->assertEquals($mock, $service->findOneBy($fields, $orderBy));
+        static::assertEquals($mock, $service->findOneBy($fields, $orderBy));
     }
 
     #[TestWith([['some' => 15, 'field' => 'yeet']])]
@@ -99,15 +99,15 @@ class TargetProviderServiceTest extends TestCase
         $repo = $this->createMock(EntityRepository::class);
         $mock = $this->createMock(TestEntity::class);
 
-        $repo->expects($this->once())
+        $repo->expects(static::once())
             ->method('findBy')
             ->with($fields, $orderBy, $limit, $offset)
             ->willReturn($mock);
 
         $service = $this->getService($repo);
-        $this->assertTrue($service->setFqcn(TestEntity::class));
+        static::assertTrue($service->setFqcn(TestEntity::class));
 
-        $this->assertEquals($mock, $service->findBy($fields, $orderBy, $limit, $offset));
+        static::assertEquals($mock, $service->findBy($fields, $orderBy, $limit, $offset));
     }
 
     private function getService(

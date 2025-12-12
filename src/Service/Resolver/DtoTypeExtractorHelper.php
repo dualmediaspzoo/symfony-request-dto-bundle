@@ -30,6 +30,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
      *
      * @noinspection PhpDocMissingThrowsInspection
      */
+    #[\Override]
     public function extract(
         \ReflectionClass $class,
         Bag|null $root = null

@@ -24,7 +24,7 @@ class ArrayAllValidatorTest extends KernelTestCase
 
     public function testUnexpectedValue(): void
     {
-        $this->assertCount(
+        static::assertCount(
             1,
             $list = $this->service->validate(
                 15,
@@ -33,15 +33,15 @@ class ArrayAllValidatorTest extends KernelTestCase
         );
         /** @var ConstraintViolationInterface $violation */
         $violation = $list[0];
-        $this->assertEquals('This value should be of type iterable.', $violation->getMessage());
-        $this->assertEquals(15, $violation->getInvalidValue());
+        static::assertEquals('This value should be of type iterable.', $violation->getMessage());
+        static::assertEquals(15, $violation->getInvalidValue());
     }
 
     #[DataProvider('provideOkCases')]
     public function testOk(
         $input
     ): void {
-        $this->assertCount(
+        static::assertCount(
             0,
             $this->service->validate(
                 $input,
@@ -50,7 +50,7 @@ class ArrayAllValidatorTest extends KernelTestCase
         );
     }
 
-    public static function provideOkCases(): array
+    public static function provideOkCases(): iterable
     {
         return [
             [null],

@@ -21,6 +21,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
     ) {
     }
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
@@ -28,6 +29,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
             && in_array($property->getFqcn(), [\DateTimeInterface::class, \DateTimeImmutable::class]);
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,

@@ -64,6 +64,7 @@ class DtoResolverService implements DtoResolverInterface
      *
      * @noinspection PhpDocMissingThrowsInspection
      */
+    #[\Override]
     public function resolve(
         Request $request,
         string $class

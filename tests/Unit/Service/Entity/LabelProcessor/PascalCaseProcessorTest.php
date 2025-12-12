@@ -28,7 +28,7 @@ class PascalCaseProcessorTest extends TestCase
         string $input,
         string $output
     ): void {
-        $this->assertEquals(
+        static::assertEquals(
             $output,
             $this->service->normalize($input)
         );
@@ -40,7 +40,7 @@ class PascalCaseProcessorTest extends TestCase
         string $input,
         string $output
     ): void {
-        $this->assertEquals(
+        static::assertEquals(
             $output,
             $this->service->denormalize($input)
         );

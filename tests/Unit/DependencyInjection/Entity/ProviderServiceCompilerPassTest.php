@@ -43,14 +43,14 @@ class ProviderServiceCompilerPassTest extends AbstractCompilerPassTestCase
         try {
             $this->compile();
         } catch (DuplicateDefaultProviderException $e) {
-            $this->assertEquals([
+            static::assertEquals([
                 DummyModel::class => [
                     'dummy1',
                     'dummy2',
                 ],
             ], $e->getDuplicates());
         } catch (\Throwable $e) {
-            $this->fail('Invalid exception caught - '.get_class($e));
+            static::fail('Invalid exception caught - '.get_class($e));
         }
     }
 
@@ -64,9 +64,9 @@ class ProviderServiceCompilerPassTest extends AbstractCompilerPassTestCase
         try {
             $this->compile();
         } catch (AttributeMissingException $e) {
-            $this->assertEquals(BadDummyModelProvider::class, $e->getClass());
+            static::assertEquals(BadDummyModelProvider::class, $e->getClass());
         } catch (\Throwable $e) {
-            $this->fail('Invalid exception caught - '.get_class($e));
+            static::fail('Invalid exception caught - '.get_class($e));
         }
     }
 
@@ -84,23 +84,23 @@ class ProviderServiceCompilerPassTest extends AbstractCompilerPassTestCase
         $default = $this->container->getDefinition('default');
         $nonDefault = $this->container->getDefinition('non_default');
 
-        $this->assertFalse($default->hasTag(DtoBundle::ENTITY_PROVIDER_PRE_CONFIG_TAG));
-        $this->assertFalse($nonDefault->hasTag(DtoBundle::ENTITY_PROVIDER_PRE_CONFIG_TAG));
+        static::assertFalse($default->hasTag(DtoBundle::ENTITY_PROVIDER_PRE_CONFIG_TAG));
+        static::assertFalse($nonDefault->hasTag(DtoBundle::ENTITY_PROVIDER_PRE_CONFIG_TAG));
 
         $service = $this->container->getDefinition(EntityProviderService::class);
 
-        $this->assertCount(2, $arg = $service->getArgument(0));
+        static::assertCount(2, $arg = $service->getArgument(0));
 
         foreach (['default', 'non_default'] as $index) {
-            $this->assertArrayHasKey($index, $arg);
+            static::assertArrayHasKey($index, $arg);
 
             /** @var list<array{0: Reference, 1: class-string, 2: bool}> $params */
-            $this->assertCount(1, $params = $arg[$index]);
+            static::assertCount(1, $params = $arg[$index]);
 
-            $this->assertInstanceOf(Reference::class, $params[0][0]);
-            $this->assertEquals($index, (string)$params[0][0]);
-            $this->assertEquals(DummyModel::class, $params[0][1]);
-            $this->assertEquals('default' === $index, $params[0][2]);
+            static::assertInstanceOf(Reference::class, $params[0][0]);
+            static::assertEquals($index, (string)$params[0][0]);
+            static::assertEquals(DummyModel::class, $params[0][1]);
+            static::assertEquals('default' === $index, $params[0][2]);
         }
     }
 
@@ -128,23 +128,23 @@ class ProviderServiceCompilerPassTest extends AbstractCompilerPassTestCase
         $default = $this->container->getDefinition('default');
         $nonDefault = $this->container->getDefinition('non_default');
 
-        $this->assertFalse($default->hasTag(DtoBundle::ENTITY_PROVIDER_PRE_CONFIG_TAG));
-        $this->assertFalse($nonDefault->hasTag(DtoBundle::ENTITY_PROVIDER_PRE_CONFIG_TAG));
+        static::assertFalse($default->hasTag(DtoBundle::ENTITY_PROVIDER_PRE_CONFIG_TAG));
+        static::assertFalse($nonDefault->hasTag(DtoBundle::ENTITY_PROVIDER_PRE_CONFIG_TAG));
 
         $service = $this->container->getDefinition(EntityProviderService::class);
 
-        $this->assertCount(3, $arg = $service->getArgument(0));
+        static::assertCount(3, $arg = $service->getArgument(0));
 
         foreach (['default', 'non_default', 'some_service_injected_previously'] as $index) {
-            $this->assertArrayHasKey($index, $arg);
+            static::assertArrayHasKey($index, $arg);
 
             /** @var list<array{0: Reference, 1: class-string, 2: bool}> $params */
-            $this->assertCount(1, $params = $arg[$index]);
+            static::assertCount(1, $params = $arg[$index]);
 
-            $this->assertInstanceOf(Reference::class, $params[0][0]);
-            $this->assertEquals($index, (string)$params[0][0]);
-            $this->assertEquals(DummyModel::class, $params[0][1]);
-            $this->assertEquals('default' === $index, $params[0][2]);
+            static::assertInstanceOf(Reference::class, $params[0][0]);
+            static::assertEquals($index, (string)$params[0][0]);
+            static::assertEquals(DummyModel::class, $params[0][1]);
+            static::assertEquals('default' === $index, $params[0][2]);
         }
     }
 

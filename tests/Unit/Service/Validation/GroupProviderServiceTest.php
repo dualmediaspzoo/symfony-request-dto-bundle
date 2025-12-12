@@ -28,7 +28,7 @@ class GroupProviderServiceTest extends TestCase
             $providers[$index] = $this->makeProvider(...$providerData);
         }
 
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             (new GroupProviderService($providers))->provideGroups(
                 $this->createMock(Request::class),
@@ -68,7 +68,7 @@ class GroupProviderServiceTest extends TestCase
         bool $willBeUsed = true
     ): MockObject {
         $mock = $this->createMock(GroupProviderInterface::class);
-        $mock->expects($this->exactly((int)$willBeUsed))
+        $mock->expects(static::exactly((int)$willBeUsed))
             ->method('provideValidationGroups')
             ->willReturn($returns);
 

@@ -31,7 +31,7 @@ class CoercerServiceTest extends TestCase
         });
 
         $mock = $this->createMock(CoercerInterface::class);
-        $mock->expects($this->once())
+        $mock->expects(static::once())
             ->method('supports')
             ->willReturnCallback(function (...$args) use ($check, $result) {
                 $check->set($args);
@@ -40,7 +40,7 @@ class CoercerServiceTest extends TestCase
             });
 
         $service = new CoercerService(new ArrayIterator([$mock]), $this->createMock(ValidatorInterface::class));
-        $this->assertEquals(
+        static::assertEquals(
             $result,
             $service->supports($property)
         );
@@ -62,7 +62,7 @@ class CoercerServiceTest extends TestCase
         });
 
         $mock = $this->createMock(CoercerInterface::class);
-        $mock->expects($this->once())
+        $mock->expects(static::once())
             ->method('supports')
             ->willReturnCallback(function (...$args) use ($check, $supports) {
                 $check->set($args);
@@ -77,7 +77,7 @@ class CoercerServiceTest extends TestCase
                 $this->assertEquals($input, $in);
             });
 
-            $mock->expects($this->once())
+            $mock->expects(static::once())
                 ->method('coerce')
                 ->willReturnCallback(function (...$args) use ($coerce, $output) {
                     $coerce->set($args);
@@ -93,7 +93,7 @@ class CoercerServiceTest extends TestCase
         $service = new CoercerService(new ArrayIterator([$mock]), $this->createMock(ValidatorInterface::class));
         $result = $service->coerce('something', $property, $input);
 
-        $this->assertEquals(
+        static::assertEquals(
             $output,
             $result?->getValue()
         );

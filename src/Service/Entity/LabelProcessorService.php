@@ -16,6 +16,7 @@ class LabelProcessorService implements LabelProcessorServiceInterface
     ) {
     }
 
+    #[\Override]
     public function getProcessor(
         string $service
     ): LabelProcessorInterface {

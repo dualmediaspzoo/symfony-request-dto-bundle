@@ -30,8 +30,8 @@ class WhenVisitedTest extends KernelTestCase
             WhenVisitedDto::class
         );
 
-        $this->assertCount(1, $dto->getConstraintViolationList());
-        $this->assertEquals(
+        static::assertCount(1, $dto->getConstraintViolationList());
+        static::assertEquals(
             'This value should not be null.',
             $dto->getConstraintViolationList()[0]->getMessage()
         );
@@ -44,6 +44,6 @@ class WhenVisitedTest extends KernelTestCase
             WhenVisitedDto::class
         );
 
-        $this->assertCount(0, $dto->getConstraintViolationList());
+        static::assertCount(0, $dto->getConstraintViolationList());
     }
 }

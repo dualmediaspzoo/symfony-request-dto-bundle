@@ -20,12 +20,14 @@ class FloatCoercer implements CoercerInterface
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
         return 'float' === $property->getType();
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,

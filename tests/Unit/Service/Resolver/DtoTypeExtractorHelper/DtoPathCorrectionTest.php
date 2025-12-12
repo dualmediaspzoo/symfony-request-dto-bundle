@@ -122,7 +122,7 @@ class DtoPathCorrectionTest extends KernelTestCase
     ): void {
         $pp = new PropertyPath($propertyPath);
 
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->model[$pp->getElement(0)]->fixPropertyPath($pp)
         );

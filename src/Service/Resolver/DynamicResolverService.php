@@ -24,6 +24,7 @@ class DynamicResolverService implements ResolverServiceInterface
         $this->resolvers = iterator_to_array($iterator->getIterator());
     }
 
+    #[\Override]
     public function getSupportedParameters(): array
     {
         $arrays = [];
@@ -35,6 +36,7 @@ class DynamicResolverService implements ResolverServiceInterface
         return array_values(array_unique(array_merge(...$arrays)));
     }
 
+    #[\Override]
     public function resolveParameter(
         string $name
     ): mixed {

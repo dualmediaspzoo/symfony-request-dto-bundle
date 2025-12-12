@@ -21,10 +21,8 @@ interface ProviderInterface
      *
      * Proper arguments should be passed depending on the type of provider
      *
+     * @param callable(array, array, mixed): mixed $fn
      * @param array<string, mixed> $fields
-     *
-     * @psalm-param callable(array $fields, array $orderBy, mixed ...$args) $fn $orderBy must be nullable, but psalm doesn't like that
-     *
      * @param array<string, string>|null $orderBy
      *
      * @return list<T>|T|null

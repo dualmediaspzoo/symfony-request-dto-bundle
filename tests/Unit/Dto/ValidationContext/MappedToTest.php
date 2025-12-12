@@ -31,10 +31,10 @@ class MappedToTest extends KernelTestCase
             MappedToDto::class
         );
 
-        $this->assertNull($dto->intVal);
-        $this->assertCount(2, $dto->getConstraintViolationList());
+        static::assertNull($dto->intVal);
+        static::assertCount(2, $dto->getConstraintViolationList());
 
-        $this->assertEquals(
+        static::assertEquals(
             'Expression failed, intVal is null',
             $dto->getConstraintViolationList()[0]->getMessage()
         );

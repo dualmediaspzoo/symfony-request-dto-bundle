@@ -29,15 +29,15 @@ class HttpActionResolveTest extends KernelTestCase
     {
         $resolved = $this->service->resolve(new Request(), OnNullDto::class);
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertInstanceOf(OnNull::class, $resolved->getHttpAction());
+        static::assertTrue($resolved->isValid());
+        static::assertInstanceOf(OnNull::class, $resolved->getHttpAction());
     }
 
     public function testFindByOnNull(): void
     {
         $resolved = $this->service->resolve(new Request(), FindOneOnNullDto::class);
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertInstanceOf(OnNull::class, $resolved->getHttpAction());
+        static::assertTrue($resolved->isValid());
+        static::assertInstanceOf(OnNull::class, $resolved->getHttpAction());
     }
 }

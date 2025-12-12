@@ -35,7 +35,7 @@ class TypeValidationHelperTest extends KernelTestCase
                 ->setType('int'),
         ]);
 
-        $this->assertCount(0, $list);
+        static::assertCount(0, $list);
     }
 
     public function testErrors(): void
@@ -50,7 +50,7 @@ class TypeValidationHelperTest extends KernelTestCase
                 ->setCollection(true),
         ]);
 
-        $this->assertCount(1, $list);
+        static::assertCount(1, $list);
     }
 
     public function testIndexRemoval(): void
@@ -70,9 +70,9 @@ class TypeValidationHelperTest extends KernelTestCase
                 ->setCollection(true),
         ]);
 
-        $this->assertCount(2, $list);
+        static::assertCount(2, $list);
 
-        $this->assertEquals([
+        static::assertEquals([
             'value' => [
                 0 => 15,
                 2 => 255,
@@ -97,10 +97,10 @@ class TypeValidationHelperTest extends KernelTestCase
                 ->setSubType('int'),
         ]);
 
-        $this->assertCount(1, $list);
-        $this->assertArrayHasKey(0, $values['value']);
-        $this->assertInstanceOf(IntegerEnum::class, $values['value'][0]);
-        $this->assertEquals(IntegerEnum::IntegerKey->value, $values['value'][0]->value);
+        static::assertCount(1, $list);
+        static::assertArrayHasKey(0, $values['value']);
+        static::assertInstanceOf(IntegerEnum::class, $values['value'][0]);
+        static::assertEquals(IntegerEnum::IntegerKey->value, $values['value'][0]->value);
     }
 
     public function testIndexRemovalForSubtypesWithNoCoercion(): void
@@ -121,17 +121,17 @@ class TypeValidationHelperTest extends KernelTestCase
                 ->setSubType('string'),
         ]);
 
-        $this->assertCount(2, $list);
+        static::assertCount(2, $list);
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($list);
 
-        $this->assertArrayHasKey('value[0]', $mapped);
-        $this->assertArrayHasKey('value[1]', $mapped);
+        static::assertArrayHasKey('value[0]', $mapped);
+        static::assertArrayHasKey('value[1]', $mapped);
 
-        $this->assertArrayNotHasKey(0, $values['value']);
-        $this->assertArrayNotHasKey(1, $values['value']);
-        $this->assertArrayHasKey(2, $values['value']);
+        static::assertArrayNotHasKey(0, $values['value']);
+        static::assertArrayNotHasKey(1, $values['value']);
+        static::assertArrayHasKey(2, $values['value']);
 
-        $this->assertInstanceOf(StringEnum::class, $values['value'][2]);
-        $this->assertEquals(StringEnum::StringKey->value, $values['value'][2]->value);
+        static::assertInstanceOf(StringEnum::class, $values['value'][2]);
+        static::assertEquals(StringEnum::StringKey->value, $values['value'][2]->value);
     }
 }

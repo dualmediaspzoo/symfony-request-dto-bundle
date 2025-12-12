@@ -37,10 +37,10 @@ class BasicResolveAndErrorsTest extends KernelTestCase
             BaseDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertEquals('whatever', $resolved->field);
-        $this->assertEquals(['field', 'subBase'], $resolved->getVisited());
-        $this->assertTrue($resolved->visited('field'));
+        static::assertTrue($resolved->isValid());
+        static::assertEquals('whatever', $resolved->field);
+        static::assertEquals(['field', 'subBase'], $resolved->getVisited());
+        static::assertTrue($resolved->visited('field'));
     }
 
     public function testSubDtoResolve(): void
@@ -58,13 +58,13 @@ class BasicResolveAndErrorsTest extends KernelTestCase
             BaseDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertEquals(162, $resolved->subBase->value);
-        $this->assertEquals(15.2, $resolved->subBase->floatVal);
-        $this->assertEquals(['subBase'], $resolved->getVisited());
-        $this->assertEquals(['value', 'floatVal'], $resolved->subBase->getVisited());
-        $this->assertFalse($resolved->visited('field'));
-        $this->assertTrue($resolved->visited('subBase'));
+        static::assertTrue($resolved->isValid());
+        static::assertEquals(162, $resolved->subBase->value);
+        static::assertEquals(15.2, $resolved->subBase->floatVal);
+        static::assertEquals(['subBase'], $resolved->getVisited());
+        static::assertEquals(['value', 'floatVal'], $resolved->subBase->getVisited());
+        static::assertFalse($resolved->visited('field'));
+        static::assertTrue($resolved->visited('subBase'));
     }
 
     public function testArraySubResolve(): void
@@ -88,15 +88,15 @@ class BasicResolveAndErrorsTest extends KernelTestCase
             BaseDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertEquals(['subBase', 'subDtos'], $resolved->getVisited());
-        $this->assertCount(2, $resolved->subDtos);
+        static::assertTrue($resolved->isValid());
+        static::assertEquals(['subBase', 'subDtos'], $resolved->getVisited());
+        static::assertCount(2, $resolved->subDtos);
 
-        $this->assertEquals(14, $resolved->subDtos[0]->value);
-        $this->assertEquals(55.5, $resolved->subDtos[0]->floatVal);
+        static::assertEquals(14, $resolved->subDtos[0]->value);
+        static::assertEquals(55.5, $resolved->subDtos[0]->floatVal);
 
-        $this->assertEquals(22, $resolved->subDtos[1]->value);
-        $this->assertEquals(13.2, $resolved->subDtos[1]->floatVal);
+        static::assertEquals(22, $resolved->subDtos[1]->value);
+        static::assertEquals(13.2, $resolved->subDtos[1]->floatVal);
     }
 
     public function testBadInputAndPathCorrection(): void
@@ -125,39 +125,39 @@ class BasicResolveAndErrorsTest extends KernelTestCase
             BaseDto::class
         );
 
-        $this->assertFalse($resolved->isValid());
-        $this->assertCount(6, $resolved->getConstraintViolationList());
+        static::assertFalse($resolved->isValid());
+        static::assertCount(6, $resolved->getConstraintViolationList());
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($resolved->getConstraintViolationList());
 
-        $this->assertArrayHasKey('field', $mapped);
-        $this->assertCount(1, $mapped['field']);
+        static::assertArrayHasKey('field', $mapped);
+        static::assertCount(1, $mapped['field']);
 
-        $this->assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['field'][0]->getCode());
-        $this->assertEquals('This value should be of type string.', $mapped['field'][0]->getMessage());
+        static::assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['field'][0]->getCode());
+        static::assertEquals('This value should be of type string.', $mapped['field'][0]->getMessage());
 
-        $this->assertArrayHasKey('subBase.value', $mapped);
-        $this->assertCount(1, $mapped['subBase.value']);
-        $this->assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['subBase.value'][0]->getCode());
-        $this->assertEquals('This value should be of type int.', $mapped['subBase.value'][0]->getMessage());
+        static::assertArrayHasKey('subBase.value', $mapped);
+        static::assertCount(1, $mapped['subBase.value']);
+        static::assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['subBase.value'][0]->getCode());
+        static::assertEquals('This value should be of type int.', $mapped['subBase.value'][0]->getMessage());
 
-        $this->assertArrayHasKey('subBase.floaty_boy', $mapped);
-        $this->assertCount(1, $mapped['subBase.floaty_boy']);
-        $this->assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['subBase.floaty_boy'][0]->getCode());
-        $this->assertEquals('This value should be of type float.', $mapped['subBase.floaty_boy'][0]->getMessage());
+        static::assertArrayHasKey('subBase.floaty_boy', $mapped);
+        static::assertCount(1, $mapped['subBase.floaty_boy']);
+        static::assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['subBase.floaty_boy'][0]->getCode());
+        static::assertEquals('This value should be of type float.', $mapped['subBase.floaty_boy'][0]->getMessage());
 
-        $this->assertArrayHasKey('array', $mapped);
-        $this->assertCount(1, $mapped['array']);
-        $this->assertEquals(DtoAssert\ArrayAll::NOT_ALL_ELEMENTS_ARE_ARRAY_ERROR, $mapped['array'][0]->getCode());
-        $this->assertEquals('This field must be an array of arrays.', $mapped['array'][0]->getMessage());
+        static::assertArrayHasKey('array', $mapped);
+        static::assertCount(1, $mapped['array']);
+        static::assertEquals(DtoAssert\ArrayAll::NOT_ALL_ELEMENTS_ARE_ARRAY_ERROR, $mapped['array'][0]->getCode());
+        static::assertEquals('This field must be an array of arrays.', $mapped['array'][0]->getMessage());
 
-        $this->assertArrayHasKey('other[0].value', $mapped);
-        $this->assertCount(1, $mapped['other[0].value']);
-        $this->assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['other[0].value'][0]->getCode());
-        $this->assertEquals('This value should be of type int.', $mapped['other[0].value'][0]->getMessage());
+        static::assertArrayHasKey('other[0].value', $mapped);
+        static::assertCount(1, $mapped['other[0].value']);
+        static::assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['other[0].value'][0]->getCode());
+        static::assertEquals('This value should be of type int.', $mapped['other[0].value'][0]->getMessage());
 
-        $this->assertArrayHasKey('other[0].floaty_boy', $mapped);
-        $this->assertCount(1, $mapped['other[0].floaty_boy']);
-        $this->assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['other[0].floaty_boy'][0]->getCode());
-        $this->assertEquals('This value should be of type float.', $mapped['other[0].floaty_boy'][0]->getMessage());
+        static::assertArrayHasKey('other[0].floaty_boy', $mapped);
+        static::assertCount(1, $mapped['other[0].floaty_boy']);
+        static::assertEquals(Assert\Type::INVALID_TYPE_ERROR, $mapped['other[0].floaty_boy'][0]->getCode());
+        static::assertEquals('This value should be of type float.', $mapped['other[0].floaty_boy'][0]->getMessage());
     }
 }

@@ -38,7 +38,7 @@ class DoctrineRepositoryCompilerPassTest extends AbstractCompilerPassTestCase
         ]);
 
         $this->compile();
-        $this->assertInstanceOf(Definition::class, $this->container->getDefinition(TargetProviderService::class));
+        static::assertInstanceOf(Definition::class, $this->container->getDefinition(TargetProviderService::class));
     }
 
     protected function registerCompilerPass(

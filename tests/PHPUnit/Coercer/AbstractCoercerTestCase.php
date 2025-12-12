@@ -13,7 +13,7 @@ abstract class AbstractCoercerTestCase extends AbstractMinimalCoercerTestCase
         $input,
         $expected
     ): void {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->service->coerce('something', $property, $input)->getValue(),
         );

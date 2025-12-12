@@ -46,6 +46,7 @@ class DtoOADescriber implements RouteDescriberInterface
     ) {
     }
 
+    #[\Override]
     public function describe(
         OpenApi $api,
         Route $route,

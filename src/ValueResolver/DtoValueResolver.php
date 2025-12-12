@@ -21,6 +21,7 @@ class DtoValueResolver implements ValueResolverInterface
     /**
      * @return iterable<DtoInterface>
      */
+    #[\Override]
     public function resolve(
         Request $request,
         ArgumentMetadata $argument

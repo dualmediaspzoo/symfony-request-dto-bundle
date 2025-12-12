@@ -42,9 +42,9 @@ class UploadedFileCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFqcn(UploadedFile::class);
 
         $result = $this->service->coerce('something', $fileProp, [$mock = $this->createMock(UploadedFile::class)]);
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             $mock,
             $result->getValue()
         );
@@ -67,9 +67,9 @@ class UploadedFileCoercerTest extends AbstractMinimalCoercerTestCase
             $fileProp,
             $data
         );
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             $data,
             $result->getValue()
         );
@@ -82,7 +82,7 @@ class UploadedFileCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFqcn(UploadedFile::class);
 
         $result = $this->service->coerce('something', $fileProp, null);
-        $this->assertEmpty($result->getViolations());
-        $this->assertNull($result->getValue());
+        static::assertEmpty($result->getViolations());
+        static::assertNull($result->getValue());
     }
 }

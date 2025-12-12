@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class ValidationGroupAddingCompilerPass implements CompilerPassInterface
 {
+    #[\Override]
     public function process(
         ContainerBuilder $container
     ): void {
