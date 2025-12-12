@@ -9,7 +9,6 @@ parameters:
     strictFunctionCalls: true
     dynamicCallOnStaticMethod: true
   reportUnmatchedIgnoredErrors: false
-  checkGenericClassInNonGenericObjectType: false
   level: 9
   paths:
     - src

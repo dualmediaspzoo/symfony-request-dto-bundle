@@ -66,11 +66,13 @@ trait FieldTrait
     /**
      * @return array<string, string>
      */
+    #[\Override]
     public function getFields(): array
     {
         return $this->fields;
     }
 
+    #[\Override]
     public function getFirstNonDynamicField(): string|null
     {
         foreach ($this->fields as $key => $field) {
@@ -82,6 +84,7 @@ trait FieldTrait
         return null;
     }
 
+    #[\Override]
     public function getStatic(): array
     {
         return $this->static;
@@ -90,11 +93,13 @@ trait FieldTrait
     /**
      * @return array<string, string>|null
      */
+    #[\Override]
     public function getOrderBy(): array|null
     {
         return $this->orderBy;
     }
 
+    #[\Override]
     public function getErrorPath(): string|null
     {
         return $this->errorPath;
@@ -103,6 +108,7 @@ trait FieldTrait
     /**
      * @return array<string, Constraint|list<Constraint>>
      */
+    #[\Override]
     public function getConstraints(): array
     {
         return $this->constraints;
@@ -111,6 +117,7 @@ trait FieldTrait
     /**
      * @return array<string, Type>
      */
+    #[\Override]
     public function getTypes(): array
     {
         return $this->types;
@@ -119,6 +126,7 @@ trait FieldTrait
     /**
      * @return array<string, string>
      */
+    #[\Override]
     public function getDescriptions(): array
     {
         return $this->descriptions;

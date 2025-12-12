@@ -39,17 +39,20 @@ abstract class AbstractDto implements DtoInterface
         $this->_constraintList = new ConstraintViolationList();
     }
 
+    #[\Override]
     public function getVisited(): array
     {
         return $this->_visited;
     }
 
+    #[\Override]
     public function visited(
         string $property
     ): bool {
         return in_array($property, $this->_visited, true);
     }
 
+    #[\Override]
     public function visitedVirtualProperty(
         string $property,
         string $field
@@ -58,6 +61,7 @@ abstract class AbstractDto implements DtoInterface
             && in_array($field, $this->_visitedVirtual[$property], true);
     }
 
+    #[\Override]
     public function visit(
         string $property,
         string|null $virtual = null
@@ -73,29 +77,34 @@ abstract class AbstractDto implements DtoInterface
         }
     }
 
+    #[\Override]
     public function isOptional(): bool
     {
         return $this->_optional;
     }
 
+    #[\Override]
     public function setOptional(
         bool $optional
     ): void {
         $this->_optional = $optional;
     }
 
+    #[\Override]
     public function preValidate(
         string $property
     ): void {
         $this->_preValidated[] = $property;
     }
 
+    #[\Override]
     public function isPreValidated(
         string $property
     ): bool {
         return in_array($property, $this->_preValidated);
     }
 
+    #[\Override]
     public function addConstraintViolation(
         ConstraintViolationInterface $violation
     ): void {
@@ -105,26 +114,31 @@ abstract class AbstractDto implements DtoInterface
     /**
      * @phpstan-ignore-next-line
      */
+    #[\Override]
     public function getConstraintViolationList(): ConstraintViolationListInterface
     {
         return $this->_constraintList;
     }
 
+    #[\Override]
     public function isValid(): bool
     {
         return 0 === $this->_constraintList->count();
     }
 
+    #[\Override]
     public function getParentDto(): DtoInterface|null
     {
         return $this->_parentDto;
     }
 
+    #[\Override]
     public function getHighestParentDto(): DtoInterface
     {
         return $this->getParentDto()?->getHighestParentDto() ?? $this;
     }
 
+    #[\Override]
     public function setParentDto(
         DtoInterface|null $parentDto
     ): AbstractDto {
@@ -133,11 +147,13 @@ abstract class AbstractDto implements DtoInterface
         return $this;
     }
 
+    #[\Override]
     public function getHttpAction(): HttpActionInterface|null
     {
         return $this->_httpAction;
     }
 
+    #[\Override]
     public function setHttpAction(
         HttpActionInterface|null $action
     ): void {

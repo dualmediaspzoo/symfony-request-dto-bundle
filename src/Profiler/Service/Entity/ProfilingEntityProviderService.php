@@ -19,6 +19,7 @@ class ProfilingEntityProviderService extends AbstractWrapper implements Provider
         parent::__construct($stopwatch);
     }
 
+    #[\Override]
     public function getProvider(
         string $fqcn,
         string|null $providerId = null

@@ -81,6 +81,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
         $this->static = $static;
     }
 
+    #[\Override]
     public function getFn(): string
     {
         if (null === $this->fn) {
@@ -90,6 +91,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
         return $this->fn;
     }
 
+    #[\Override]
     public function getService(): string
     {
         if (null === $this->service) {
@@ -99,6 +101,7 @@ class FindComplex implements FindComplexInterface, DtoAttributeInterface
         return $this->service;
     }
 
+    #[\Override]
     public function isCollection(): bool
     {
         return $this->collection;

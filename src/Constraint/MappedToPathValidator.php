@@ -8,8 +8,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class MappedToPathValidator extends ConstraintValidator
 {
+    #[\Override]
     public function validate(
-        $value,
+        mixed $value,
         Constraint $constraint
     ): void {
         // @codeCoverageIgnoreStart

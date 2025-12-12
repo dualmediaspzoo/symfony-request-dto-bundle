@@ -44,6 +44,7 @@ class FindOneBy implements FindInterface, DtoAttributeInterface
         $this->static = $static;
     }
 
+    #[\Override]
     public function isCollection(): bool
     {
         return false;

@@ -140,7 +140,7 @@ jobs:
 
       - name: PHP-CS-Fixer
         run: |
-          vendor/bin/php-cs-fixer fix --config ./.php-cs-fixer.dist.php --dry-run --diff --ansi
+          vendor/bin/php-cs-fixer fix --config ./.php-cs-fixer.dist.php --dry-run --diff --ansi --show-progress none
 
   test:
     concurrency:

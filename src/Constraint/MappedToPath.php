@@ -24,6 +24,7 @@ class MappedToPath extends Constraint
         parent::__construct($options, $groups, $payload);
     }
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

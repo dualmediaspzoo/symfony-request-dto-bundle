@@ -24,6 +24,7 @@ class ProfilingDtoResolverService extends AbstractWrapper implements DtoResolver
         parent::__construct($stopwatch);
     }
 
+    #[\Override]
     public function resolve(
         Request $request,
         string $class

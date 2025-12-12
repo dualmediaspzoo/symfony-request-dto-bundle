@@ -20,6 +20,7 @@ class ProfilingDtoTypeExtractorService extends AbstractWrapper implements DtoTyp
         parent::__construct($stopwatch);
     }
 
+    #[\Override]
     public function extract(
         \ReflectionClass $class,
         Bag|null $root = null

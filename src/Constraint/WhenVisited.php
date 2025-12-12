@@ -31,16 +31,19 @@ class WhenVisited extends Composite
         parent::__construct($options);
     }
 
+    #[\Override]
     public function getRequiredOptions(): array
     {
         return ['constraints'];
     }
 
+    #[\Override]
     public function getTargets(): string|array
     {
         return [self::PROPERTY_CONSTRAINT];
     }
 
+    #[\Override]
     protected function getCompositeOption(): string
     {
         return 'constraints';

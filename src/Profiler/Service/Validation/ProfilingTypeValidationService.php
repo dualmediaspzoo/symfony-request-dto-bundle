@@ -22,6 +22,7 @@ class ProfilingTypeValidationService extends AbstractWrapper implements TypeVali
     /**
      * @phpstan-ignore-next-line
      */
+    #[\Override]
     public function validateType(
         array &$values,
         array $properties,

@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class WhenVisitedValidator extends ConstraintValidator
 {
+    #[\Override]
     public function validate(
         mixed $value,
         Constraint $constraint

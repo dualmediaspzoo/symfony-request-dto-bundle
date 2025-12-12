@@ -13,8 +13,9 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 class ArrayAllValidator extends ConstraintValidator
 {
+    #[\Override]
     public function validate(
-        $value,
+        mixed $value,
         Constraint $constraint
     ): void {
         // @codeCoverageIgnoreStart

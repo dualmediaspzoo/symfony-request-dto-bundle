@@ -30,8 +30,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class DtoBundle extends AbstractBundle
 {
-    protected string $extensionAlias = 'dm_dto';
-
     public const string COERCER_TAG = 'dto_bundle.coercer';
     public const string DYNAMIC_RESOLVER_TAG = 'dto_bundle.dynamic_resolver';
 
@@ -43,6 +41,8 @@ class DtoBundle extends AbstractBundle
     public const string GROUP_PROVIDER_TAG = 'dto_bundle.validation_group_provider';
 
     public const string LABEL_PROCESSOR_TAB = 'dto_bundle.label_processor';
+
+    protected string $extensionAlias = 'dm_dto';
 
     #[\Override]
     public function build(
