@@ -61,7 +61,7 @@ return static function (ContainerConfigurator $configurator) {
     $services->alias(TargetProviderInterface::class, TargetProviderService::class);
     $services->set(TargetProviderService::class)
         ->arg(0, new Reference(ManagerRegistry::class))
-        ->arg(0, new Reference(QueryCreator::class));
+        ->arg(1, new Reference(QueryCreator::class));
 
     $services->set(QueryCreator::class);
 
