@@ -147,6 +147,8 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
+     * @template T of DtoInterface
+     *
      * @param class-string<T> $class
      *
      * @return T
