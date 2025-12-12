@@ -9,6 +9,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * @extends AbstractWrapper<ProviderInterface<object>>
+ *
+ * @implements ProviderServiceInterface<object>
  */
 class ProfilingEntityProviderService extends AbstractWrapper implements ProviderServiceInterface
 {

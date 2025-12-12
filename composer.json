@@ -56,7 +56,9 @@
   },
   "scripts": {
     "lint": "php-cs-fixer fix",
-    "test": "phpunit"
+    "test": "phpunit",
+    "baseline-psalm": "vendor/bin/psalm --set-baseline=psalm-baseline.xml",
+    "baseline-phpstan": "vendor/bin/phpstan --generate-baseline"
   },
   "suggest": {
     "nelmio/api-doc-bundle": "Adds api docs for endpoints for your DTOs",

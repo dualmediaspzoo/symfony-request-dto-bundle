@@ -11,6 +11,9 @@ use DualMedia\DtoRequestBundle\Interface\Entity\TargetProviderInterface;
  */
 class TargetProviderService implements TargetProviderInterface
 {
+    /**
+     * @var EntityRepository<object>|null
+     */
     private EntityRepository|null $repository = null;
 
     public function __construct(

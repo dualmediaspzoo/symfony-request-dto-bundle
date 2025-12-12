@@ -93,7 +93,7 @@ class DtoBundle extends AbstractBundle
     }
 
     /**
-     * @param array<string, mixed> $config
+     * @param array<array-key, mixed> $config
      */
     #[\Override]
     public function loadExtension(

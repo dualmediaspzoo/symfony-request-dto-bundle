@@ -11,7 +11,6 @@ use DualMedia\DtoRequestBundle\Traits\Type\CoercerResultTrait;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

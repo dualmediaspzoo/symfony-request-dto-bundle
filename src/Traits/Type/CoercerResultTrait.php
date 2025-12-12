@@ -7,7 +7,6 @@ use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

@@ -428,8 +428,9 @@ class Property implements \ArrayAccess, \IteratorAggregate
     /**
      * @param string $offset
      */
+    #[\Override]
     public function offsetExists(
-        $offset
+        mixed $offset
     ): bool {
         return isset($this->properties[$offset]);
     }
@@ -437,8 +438,9 @@ class Property implements \ArrayAccess, \IteratorAggregate
     /**
      * @param string $offset
      */
+    #[\Override]
     public function offsetGet(
-        $offset
+        mixed $offset
     ): Property|null {
         return $this->properties[$offset] ?? null;
     }
@@ -447,9 +449,10 @@ class Property implements \ArrayAccess, \IteratorAggregate
      * @param string $offset
      * @param Property $value
      */
+    #[\Override]
     public function offsetSet(
-        $offset,
-        $value
+        mixed $offset,
+        mixed $value
     ): void {
         $this->properties[$offset] = $value;
     }
@@ -457,8 +460,9 @@ class Property implements \ArrayAccess, \IteratorAggregate
     /**
      * @param string $offset
      */
+    #[\Override]
     public function offsetUnset(
-        $offset
+        mixed $offset
     ): void {
         unset($this->properties[$offset]);
     }
@@ -466,6 +470,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
     /**
      * @return \Traversable<string, Property>
      */
+    #[\Override]
     public function getIterator(): \Traversable
     {
         yield from $this->properties;
