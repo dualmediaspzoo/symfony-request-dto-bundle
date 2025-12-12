@@ -24,7 +24,7 @@ class Util
      *
      * @phpstan-ignore-next-line
      *
-     * @param array ...$arrays
+     * @param array<mixed, mixed> ...$arrays
      *
      * @phpstan-ignore-next-line
      *
@@ -34,7 +34,7 @@ class Util
      * @psalm-pure
      */
     public static function mergeRecursively(
-        ...$arrays
+        array ...$arrays
     ): array {
         $merge =
             /**

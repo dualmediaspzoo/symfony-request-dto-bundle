@@ -58,9 +58,7 @@ class EnumCoercer implements CoercerInterface
 
         if ($property->isCollection()) {
             $constraints = [
-                new All([
-                    'constraints' => $constraints,
-                ]),
+                new All($constraints),
             ];
         }
 
@@ -76,7 +74,6 @@ class EnumCoercer implements CoercerInterface
             );
         }
 
-        /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
             Util::removeIndexByConstraintViolation($value, $propertyPath, $violation);
         }
@@ -121,7 +118,6 @@ class EnumCoercer implements CoercerInterface
         $choices = $property->getEnumCases();
 
         if (null !== ($fromKey = ($property->getDtoAttributes(FromKey::class)[0] ?? null))) {
-            /** @var FromKey $fromKey */
             $processor = $this->labelProcessorService->getProcessor($fromKey->normalizer);
 
             $choices = array_map(
@@ -135,6 +131,6 @@ class EnumCoercer implements CoercerInterface
             );
         }
 
-        return new Choice(['choices' => $choices]);
+        return new Choice(choices: $choices);
     }
 }

@@ -42,9 +42,9 @@ class BoolCoercer implements CoercerInterface
                 $value[$index] = null;
             }
 
-            if (in_array($val, ['0', '1'], false)) { // cast from int
+            if (in_array((string)$val, ['0', '1'], true)) { // cast from int
                 $value[$index] = (bool)((int)$val);
-            } elseif (in_array($val, ['true', 'false'])) { // cast from text
+            } elseif (in_array((string)$val, ['true', 'false'], true)) { // cast from text
                 $value[$index] = 'true' == $val; // non-strict comparison so pure-boolean checks go through too
             }
         }

@@ -10,6 +10,9 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class TypeValidationHelper implements TypeValidationInterface
 {
+    /**
+     * @param CoercionServiceInterface<mixed> $coercionService
+     */
     public function __construct(
         private readonly CoercionServiceInterface $coercionService
     ) {

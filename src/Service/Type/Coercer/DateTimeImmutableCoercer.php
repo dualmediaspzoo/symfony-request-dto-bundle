@@ -26,7 +26,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
         Property $property
     ): bool {
         return 'object' === $property->getType()
-            && in_array($property->getFqcn(), [\DateTimeInterface::class, \DateTimeImmutable::class]);
+            && in_array($property->getFqcn(), [\DateTimeInterface::class, \DateTimeImmutable::class], true);
     }
 
     #[\Override]
@@ -37,7 +37,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
     ): CoerceResult {
         // php8
         $format = ($property->getFormat() ?? new Format())->format ?? $this->defaultDateFormat;
-        $constraint = new DateTime(['format' => $format]);
+        $constraint = new DateTime(format: $format); // @phpstan-ignore-line
 
         $violations = $this->validator->startContext()
             ->atPath($propertyPath)
@@ -46,7 +46,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
 
         if (is_array($value)) {
             foreach ($value as $index => $val) {
-                if (false === ($time = \DateTimeImmutable::createFromFormat($format, $val))) {
+                if (false === ($time = \DateTimeImmutable::createFromFormat($format, (string)$val))) { // @phpstan-ignore-line
                     unset($value[$index]);
                     continue;
                 }

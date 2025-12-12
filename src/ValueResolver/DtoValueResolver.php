@@ -12,6 +12,9 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class DtoValueResolver implements ValueResolverInterface
 {
+    /**
+     * @param DtoResolverInterface<DtoInterface> $dtoResolver
+     */
     public function __construct(
         private readonly DtoResolverInterface $dtoResolver,
         private readonly EventDispatcherInterface $eventDispatcher

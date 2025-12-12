@@ -48,11 +48,11 @@ trait CoercerResultTrait
             );
         }
 
-        /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
-            Util::removeIndexByConstraintViolation($value, $propertyPath, $violation);
+            Util::removeIndexByConstraintViolation($value, $propertyPath, $violation); // @phpstan-ignore-line
         }
 
+        // @phpstan-ignore-next-line
         return new CoerceResult(
             $value,
             $violations
