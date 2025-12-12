@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\AllowEnum;
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Attribute\Dto\AllowEnum;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;

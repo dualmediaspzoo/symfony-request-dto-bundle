@@ -2,10 +2,10 @@
 
 namespace DualMedia\DtoRequestBundle\Model\Type;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\AllowEnum;
-use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
-use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Attribute\Dto\AllowEnum;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Format;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;

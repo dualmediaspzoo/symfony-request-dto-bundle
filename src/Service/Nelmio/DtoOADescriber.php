@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Nelmio;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;

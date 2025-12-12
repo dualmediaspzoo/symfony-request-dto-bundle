@@ -1,6 +1,6 @@
 <?php
 
-namespace DualMedia\DtoRequestBundle\Constraints;
+namespace DualMedia\DtoRequestBundle\Constraint;
 
 use DualMedia\DtoRequestBundle\Model\AbstractDto;
 use Symfony\Component\Validator\Constraint;

@@ -131,10 +131,6 @@ class EntityProviderServiceTest extends TestCase
         }
     }
 
-    /**
-     * @testWith [true]
-     *           [false]
-     */
     #[TestWith([true])]
     #[TestWith([false])]
     public function testHandleNoDefaultTargetProvider(

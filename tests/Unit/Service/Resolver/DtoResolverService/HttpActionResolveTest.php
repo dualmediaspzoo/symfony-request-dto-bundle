@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Http\OnNull;
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\FindOneOnNullDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\OnNullDto;

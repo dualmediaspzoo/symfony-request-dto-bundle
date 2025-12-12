@@ -1,6 +1,5 @@
 <?php
 
-use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
 use DualMedia\DtoRequestBundle\DtoBundle;
 use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
 use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
@@ -50,7 +49,7 @@ return static function (ContainerConfigurator $configurator) {
 
         DtoOADescriber::class,
 
-        interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class) ? DtoValueResolver::class : DtoArgumentResolver::class,
+        DtoValueResolver::class,
 
         OnNullActionValidator::class,
         HttpDtoActionSubscriber::class,

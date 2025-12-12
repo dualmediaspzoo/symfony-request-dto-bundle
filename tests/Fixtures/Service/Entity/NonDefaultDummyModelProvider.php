@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity;
 
-use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 /**

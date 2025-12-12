@@ -1,6 +1,6 @@
 <?php
 
-namespace DualMedia\DtoRequestBundle\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 

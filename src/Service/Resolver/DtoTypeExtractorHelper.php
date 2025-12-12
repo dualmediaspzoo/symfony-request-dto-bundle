@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Resolver;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
-use DualMedia\DtoRequestBundle\Attributes\Dto\Type as TypeAnnotation;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Type as TypeAnnotation;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;

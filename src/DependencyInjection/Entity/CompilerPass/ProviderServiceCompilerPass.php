@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
 
-use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
 use DualMedia\DtoRequestBundle\DtoBundle;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;

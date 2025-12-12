@@ -1,20 +1,18 @@
 <?php
 
-namespace DualMedia\DtoRequestBundle\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
 use DualMedia\DtoRequestBundle\Traits\Annotation\FieldTrait;
-use DualMedia\DtoRequestBundle\Traits\Annotation\LimitAndOffsetTrait;
 use DualMedia\DtoRequestBundle\Traits\Annotation\ProviderTrait;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class FindBy implements FindInterface, DtoAttributeInterface
+class FindOneBy implements FindInterface, DtoAttributeInterface
 {
     use FieldTrait;
     use ProviderTrait;
-    use LimitAndOffsetTrait;
 
     /**
      * @param array<string, string> $fields
@@ -34,8 +32,6 @@ class FindBy implements FindInterface, DtoAttributeInterface
         string|null $errorPath = null,
         array $descriptions = [],
         string|null $provider = null,
-        int|null $limit = null,
-        int|null $offset = null,
         array $static = []
     ) {
         $this->fields = $fields;
@@ -45,13 +41,11 @@ class FindBy implements FindInterface, DtoAttributeInterface
         $this->errorPath = $errorPath;
         $this->descriptions = $descriptions;
         $this->provider = $provider;
-        $this->limit = $limit;
-        $this->offset = $offset;
         $this->static = $static;
     }
 
     public function isCollection(): bool
     {
-        return true;
+        return false;
     }
 }

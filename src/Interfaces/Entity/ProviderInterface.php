@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Interfaces\Entity;
 
-use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
 
 /**
  * This interface may be implemented by classes that wish to provide entities to {@link DtoInterface} objects.

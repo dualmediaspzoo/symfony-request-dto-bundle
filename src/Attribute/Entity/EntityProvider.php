@@ -1,6 +1,6 @@
 <?php
 
-namespace DualMedia\DtoRequestBundle\Attributes\Entity;
+namespace DualMedia\DtoRequestBundle\Attribute\Entity;
 
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 

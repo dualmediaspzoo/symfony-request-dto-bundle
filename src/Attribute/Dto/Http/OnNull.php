@@ -1,6 +1,6 @@
 <?php
 
-namespace DualMedia\DtoRequestBundle\Attributes\Dto\Http;
+namespace DualMedia\DtoRequestBundle\Attribute\Dto\Http;
 
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DualMedia\DtoRequestBundle\Traits\Annotation\HttpActionTrait;

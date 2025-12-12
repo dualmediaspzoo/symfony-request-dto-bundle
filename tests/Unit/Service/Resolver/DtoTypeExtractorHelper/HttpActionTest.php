@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Http\OnNull;
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\OnNullDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;

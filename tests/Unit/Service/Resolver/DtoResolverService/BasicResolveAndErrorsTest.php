@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverService;
 
-use DualMedia\DtoRequestBundle\Constraints as DtoAssert;
+use DualMedia\DtoRequestBundle\Constraint as DtoAssert;
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto\BaseDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;

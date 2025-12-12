@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Constraints;
 
-use DualMedia\DtoRequestBundle\Constraints\ArrayAll;
+use DualMedia\DtoRequestBundle\Constraint\ArrayAll;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;

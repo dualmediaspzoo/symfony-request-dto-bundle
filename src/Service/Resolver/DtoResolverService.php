@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Resolver;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\ProvideValidationGroups;
-use DualMedia\DtoRequestBundle\Constraints as DtoAssert;
+use DualMedia\DtoRequestBundle\Attribute\Dto\ProvideValidationGroups;
+use DualMedia\DtoRequestBundle\Constraint as DtoAssert;
 use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;

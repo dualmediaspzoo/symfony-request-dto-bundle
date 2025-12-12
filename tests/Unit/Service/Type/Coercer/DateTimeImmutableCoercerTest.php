@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Format;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;

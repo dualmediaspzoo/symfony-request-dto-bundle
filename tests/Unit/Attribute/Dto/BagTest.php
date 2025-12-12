@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DualMedia\DtoRequestBundle\Tests\Unit\Attributes\Dto;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Attribute\Dto;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Bag;
 use DualMedia\DtoRequestBundle\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use PHPUnit\Framework\Attributes\TestWith;

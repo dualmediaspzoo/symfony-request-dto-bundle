@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Interfaces\Resolver;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Bag;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
 use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;

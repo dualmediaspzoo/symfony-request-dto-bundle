@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Interfaces\Attribute;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Type;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Type;
 use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
 use Symfony\Component\Validator\Constraint;
 

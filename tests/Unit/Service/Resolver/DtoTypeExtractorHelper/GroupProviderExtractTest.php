@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\ProvideValidationGroups;
+use DualMedia\DtoRequestBundle\Attribute\Dto\ProvideValidationGroups;
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\DtoWithGroupProvider;
 use PHPUnit\Framework\Attributes\CoversClass;

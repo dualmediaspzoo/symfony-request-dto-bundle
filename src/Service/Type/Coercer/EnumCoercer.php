@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Type\Coercer;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;

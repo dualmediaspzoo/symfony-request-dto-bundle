@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\EventSubscriber;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Http\OnNull;
 use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
 use DualMedia\DtoRequestBundle\Exception\Http\DtoHttpException;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;

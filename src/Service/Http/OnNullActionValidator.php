@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Http;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Http\OnNull;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
 

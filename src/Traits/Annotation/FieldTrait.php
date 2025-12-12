@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Traits\Annotation;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Type;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Type;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
 

@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\AllowEnum;
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Attribute\Dto\AllowEnum;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Model\AbstractDto;
 use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\PascalCaseProcessor;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;

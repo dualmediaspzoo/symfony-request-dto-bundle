@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Profiler\Service\Resolver;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Bag;
 use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Dto;
 use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;

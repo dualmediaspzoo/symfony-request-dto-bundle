@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\ValidationContext;
 
-use DualMedia\DtoRequestBundle\Constraints\MappedToPath;
+use DualMedia\DtoRequestBundle\Constraint\MappedToPath;
 use DualMedia\DtoRequestBundle\Model\AbstractDto;
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -110,7 +110,7 @@ If you want to map a class-wide assert to a path without having to directly modi
 
 ```php
 
-use \DualMedia\DtoRequestBundle\Constraints\MappedToPath;
+use \DualMedia\DtoRequestBundle\Constraint\MappedToPath;
 use \DualMedia\DtoRequestBundle\Model\AbstractDto;
 use Symfony\Component\Validator\Constraints as Assert;
 

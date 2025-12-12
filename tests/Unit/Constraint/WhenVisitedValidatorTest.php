@@ -1,9 +1,9 @@
 <?php
 
-namespace DualMedia\DtoRequestBundle\Tests\Unit\Constraints;
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Constraint;
 
-use DualMedia\DtoRequestBundle\Constraints\WhenVisited;
-use DualMedia\DtoRequestBundle\Constraints\WhenVisitedValidator;
+use DualMedia\DtoRequestBundle\Constraint\WhenVisited;
+use DualMedia\DtoRequestBundle\Constraint\WhenVisitedValidator;
 use DualMedia\DtoRequestBundle\Model\AbstractDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
