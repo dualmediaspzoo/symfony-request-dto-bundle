@@ -8,11 +8,17 @@ use DualMedia\DtoRequestBundle\Exception\Http\DtoHttpException;
 use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
 use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+#[Group('unit')]
+#[Group('event-subscriber')]
+#[CoversClass(HttpDtoActionSubscriber::class)]
 class HttpDtoActionSubscriberTest extends KernelTestCase
 {
     private HttpDtoActionSubscriber $service;
@@ -23,9 +29,7 @@ class HttpDtoActionSubscriberTest extends KernelTestCase
         $this->service = $this->getService(HttpDtoActionSubscriber::class);
     }
 
-    /**
-     * @dataProvider provideHandle
-     */
+    #[DataProvider('provideHandleCases')]
     public function testHandle(
         bool $hasDto,
         bool $valid = false,
@@ -49,7 +53,7 @@ class HttpDtoActionSubscriberTest extends KernelTestCase
             'print_r',
             $params,
             $this->createMock(Request::class),
-            HttpKernelInterface::MASTER_REQUEST
+            HttpKernelInterface::MAIN_REQUEST
         );
 
         $exception = null;
@@ -70,7 +74,7 @@ class HttpDtoActionSubscriberTest extends KernelTestCase
         }
     }
 
-    public function provideHandle(): array
+    public static function provideHandleCases(): array
     {
         return [
             [false],

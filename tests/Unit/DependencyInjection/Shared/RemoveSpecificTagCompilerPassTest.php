@@ -5,12 +5,15 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Shared;
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/**
- * @group dependency-injection
- */
+#[Group('unit')]
+#[Group('dependency-injection')]
+#[Group('shared')]
+#[CoversClass(RemoveSpecificTagCompilerPass::class)]
 class RemoveSpecificTagCompilerPassTest extends AbstractCompilerPassTestCase
 {
     public const TAG = 'test_tag';

@@ -11,12 +11,15 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\StaticDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use DualMedia\DtoRequestBundle\Tests\Service\Entity\DummyModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group find
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoResolverService::class)]
 class FindResolveAndErrorsTest extends KernelTestCase
 {
     private DtoResolverService $service;

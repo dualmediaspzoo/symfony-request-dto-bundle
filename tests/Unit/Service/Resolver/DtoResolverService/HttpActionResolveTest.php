@@ -7,8 +7,14 @@ use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\FindOneOnNullDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\HttpAction\OnNullDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoResolverService::class)]
 class HttpActionResolveTest extends KernelTestCase
 {
     private DtoResolverService $service;

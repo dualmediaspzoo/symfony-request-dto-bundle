@@ -6,6 +6,9 @@ use DualMedia\DtoRequestBundle\Constraints\WhenVisited;
 use DualMedia\DtoRequestBundle\Constraints\WhenVisitedValidator;
 use DualMedia\DtoRequestBundle\Model\AbstractDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -15,9 +18,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ContextualValidatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @group when-visited-validator
- */
+#[Group('unit')]
+#[Group('constraints')]
+#[CoversClass(WhenVisitedValidator::class)]
 class WhenVisitedValidatorTest extends TestCase
 {
     private WhenVisitedValidator $validator;
@@ -30,7 +33,7 @@ class WhenVisitedValidatorTest extends TestCase
         $this->validator->initialize($this->context);
     }
 
-    public static function validateDataProvider(): \Generator
+    public static function provideValidateCases(): iterable
     {
         yield ['test', 'test', [new NotNull()]];
         yield ['test', 'test', new NotNull()];
@@ -44,9 +47,8 @@ class WhenVisitedValidatorTest extends TestCase
 
     /**
      * @param list<Constraint>|Constraint $constraints
-     *
-     * @dataProvider validateDataProvider
      */
+    #[DataProvider('provideValidateCases')]
     public function testValidate(
         string|int|null $value,
         string $propertyName,

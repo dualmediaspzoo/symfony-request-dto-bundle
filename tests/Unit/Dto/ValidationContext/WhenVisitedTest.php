@@ -5,11 +5,12 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Dto\ValidationContext;
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\ValidationContext\WhenVisitedDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group when-visited
- */
+#[Group('unit')]
+#[Group('dto')]
+#[Group('validation-context')]
 class WhenVisitedTest extends KernelTestCase
 {
     private DtoResolverService $resolver;

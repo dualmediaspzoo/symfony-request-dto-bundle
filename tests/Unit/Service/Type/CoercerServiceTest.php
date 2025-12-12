@@ -8,14 +8,19 @@ use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
 use DualMedia\DtoRequestBundle\Tests\Model\ArrayIterator;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('type')]
+#[CoversClass(CoercerService::class)]
 class CoercerServiceTest extends TestCase
 {
-    /**
-     * @testWith [true]
-     *           [false]
-     */
+    #[TestWith([true])]
+    #[TestWith([false])]
     public function testSupports(
         bool $result
     ): void {
@@ -41,12 +46,10 @@ class CoercerServiceTest extends TestCase
         );
     }
 
-    /**
-     * @testWith [true, 15, 20]
-     *           [true, 25, 444]
-     *           [false, 15, null]
-     *           [false, "string", null]
-     */
+    #[TestWith([true, 15, 20])]
+    #[TestWith([true, 25, 444])]
+    #[TestWith([false, 15, null])]
+    #[TestWith([false, 'string', null])]
     public function testCoerce(
         bool $supports,
         $input,
@@ -92,7 +95,7 @@ class CoercerServiceTest extends TestCase
 
         $this->assertEquals(
             $output,
-            null !== $result ? $result->getValue() : null
+            $result?->getValue()
         );
     }
 }

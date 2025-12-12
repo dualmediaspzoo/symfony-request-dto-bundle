@@ -7,40 +7,38 @@ use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-/** @psalm-suppress UndefinedClass */
-if (interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class)) {
-    class DtoValueResolver implements \Symfony\Component\HttpKernel\Controller\ValueResolverInterface
-    {
-        public function __construct(
-            private DtoResolverInterface $dtoResolver,
-            private EventDispatcherInterface $eventDispatcher
-        ) {
+class DtoValueResolver implements ValueResolverInterface
+{
+    public function __construct(
+        private readonly DtoResolverInterface $dtoResolver,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
+
+    /**
+     * @return iterable<DtoInterface>
+     */
+    public function resolve(
+        Request $request,
+        ArgumentMetadata $argument
+    ): iterable {
+        $class = $argument->getType();
+
+        if (null === $class || !is_subclass_of($class, DtoInterface::class)) {
+            return [];
         }
 
-        /**
-         * @return iterable<DtoInterface>
-         */
-        public function resolve(
-            Request $request,
-            ArgumentMetadata $argument
-        ): iterable {
-            $class = $argument->getType();
+        $this->eventDispatcher->dispatch(
+            new DtoResolvedEvent(
+                $object = $this->dtoResolver->resolve($request, $class)
+            )
+        );
 
-            if (null === $class || !is_subclass_of($class, DtoInterface::class)) {
-                return [];
-            }
+        $object->setOptional($argument->isNullable());
 
-            $this->eventDispatcher->dispatch(
-                new DtoResolvedEvent(
-                    $object = $this->dtoResolver->resolve($request, $class)
-                )
-            );
-
-            $object->setOptional($argument->isNullable());
-
-            yield $object;
-        }
+        yield $object;
     }
 }

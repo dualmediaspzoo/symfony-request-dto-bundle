@@ -7,10 +7,13 @@ use DualMedia\DtoRequestBundle\Service\Validation\TypeValidationHelper;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @group type-validation
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('validation')]
+#[CoversClass(TypeValidationHelper::class)]
 class TypeValidationHelperTest extends KernelTestCase
 {
     private TypeValidationHelper $service;

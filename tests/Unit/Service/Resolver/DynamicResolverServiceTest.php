@@ -7,8 +7,14 @@ use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
 use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
 use DualMedia\DtoRequestBundle\Tests\Model\ArrayIterator;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DynamicResolverService::class)]
 class DynamicResolverServiceTest extends TestCase
 {
     private MockObject $mock;

@@ -5,6 +5,7 @@ namespace DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer;
 use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractMinimalCoercerTestCase extends KernelTestCase
 {
@@ -31,9 +32,7 @@ abstract class AbstractMinimalCoercerTestCase extends KernelTestCase
         $this->service = $this->getService(static::SERVICE_ID);
     }
 
-    /**
-     * @dataProvider supportsProvider
-     */
+    #[DataProvider('provideSupportsCases')]
     public function testSupports(
         Property $property,
         bool $supports
@@ -47,9 +46,9 @@ abstract class AbstractMinimalCoercerTestCase extends KernelTestCase
     /**
      * @return iterable<array{0: Property, 1: bool}>
      */
-    abstract public function supportsProvider(): iterable;
+    abstract public static function provideSupportsCases(): iterable;
 
-    protected function buildProperty(
+    protected static function buildProperty(
         string $type,
         bool $isCollection = false,
         string|null $class = null

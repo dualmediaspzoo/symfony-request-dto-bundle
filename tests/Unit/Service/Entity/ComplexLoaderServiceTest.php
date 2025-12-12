@@ -10,14 +10,16 @@ use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('entity')]
 class ComplexLoaderServiceTest extends TestCase
 {
-    /**
-     * @var MockObject|ProviderServiceInterface
-     */
-    private MockObject $provider;
+    private ProviderServiceInterface&MockObject $provider;
 
     protected function setUp(): void
     {
@@ -68,11 +70,9 @@ class ComplexLoaderServiceTest extends TestCase
         $service->loadComplex('does_not_matter', $find, []);
     }
 
-    /**
-     * @testWith ["something", "some_id", "my_custom_call", 15, {"aa": 15}]
-     *           ["other", "other_id", "fn_whatever", null, {"test": 15, "aaaa": 55.5}, "custom", {"something":"DESC"}]
-     *           ["\\Custom\\Class", "\\Custom\\ServiceId", "loadEntity", {}, {"something": "here"}, "specified"]
-     */
+    #[TestWith(['something', 'some_id', 'my_custom_call', 15, ['aa' => 15]])]
+    #[TestWith(['other', 'other_id', 'fn_whatever', null, ['test' => 15, 'aaaa' => 55.5], 'custom', ['something' => 'DESC']])]
+    #[TestWith(['\\Custom\\Class', '\\Custom\\ServiceID', 'loadEntity', [], ['something' => 'here'], 'specified'])]
     public function testLoadComplex(
         string $fqcn,
         string $serviceId,

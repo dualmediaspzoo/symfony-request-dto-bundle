@@ -5,8 +5,15 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Http;
 use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
 use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\HttpFoundation\Response;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('http')]
+#[CoversClass(OnNullActionValidator::class)]
 class OnNullActionValidatorTest extends KernelTestCase
 {
     private OnNullActionValidator $service;
@@ -17,13 +24,11 @@ class OnNullActionValidatorTest extends KernelTestCase
         $this->service = $this->getService(OnNullActionValidator::class);
     }
 
-    /**
-     * @testWith [155, false]
-     *           [null, true]
-     *           ["aaaaaA", false]
-     */
+    #[TestWith([155, false])]
+    #[TestWith([null, true])]
+    #[TestWith(['aaaAAA', false])]
     public function testValidation(
-        $variable,
+        mixed $variable,
         bool $expected
     ): void {
         $this->assertEquals(

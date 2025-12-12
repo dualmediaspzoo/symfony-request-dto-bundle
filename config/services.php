@@ -1,7 +1,6 @@
 <?php
 
 use Doctrine\Persistence\ManagerRegistry;
-use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
 use DualMedia\DtoRequestBundle\DtoBundle as Bundle;
 use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
 use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
@@ -138,7 +137,7 @@ return static function (ContainerConfigurator $configurator) {
         ->arg(6, new Reference(ActionValidatorService::class))
         ->arg(7, new Reference('validator'));
 
-    $services->set(interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class) ? DtoValueResolver::class : DtoArgumentResolver::class)
+    $services->set(DtoValueResolver::class)
         ->arg(0, new Reference(DtoResolverInterface::class))
         ->arg(1, new Reference('event_dispatcher'))
         ->tag('controller.argument_value_resolver');

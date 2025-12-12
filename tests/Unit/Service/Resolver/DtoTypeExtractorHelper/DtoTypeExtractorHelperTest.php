@@ -10,8 +10,14 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\ComplexDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\SubDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 // todo: add specific checks for only parts of items, create dummy classes
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoTypeExtractorHelper::class)]
 class DtoTypeExtractorHelperTest extends KernelTestCase
 {
     private DtoTypeExtractorHelper $service;

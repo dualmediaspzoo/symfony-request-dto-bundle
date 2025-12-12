@@ -4,12 +4,14 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Constraints;
 
 use DualMedia\DtoRequestBundle\Constraints\ArrayAll;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @group constraint
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('constraints')]
 class ArrayAllValidatorTest extends KernelTestCase
 {
     private ValidatorInterface $service;
@@ -35,9 +37,7 @@ class ArrayAllValidatorTest extends KernelTestCase
         $this->assertEquals(15, $violation->getInvalidValue());
     }
 
-    /**
-     * @dataProvider okProvider
-     */
+    #[DataProvider('provideOkCases')]
     public function testOk(
         $input
     ): void {
@@ -50,7 +50,7 @@ class ArrayAllValidatorTest extends KernelTestCase
         );
     }
 
-    public function okProvider(): array
+    public static function provideOkCases(): array
     {
         return [
             [null],

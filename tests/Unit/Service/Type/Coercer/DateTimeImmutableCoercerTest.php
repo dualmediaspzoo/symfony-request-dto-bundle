@@ -6,25 +6,32 @@ use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Validator\Constraints\DateTime as DateTimeConstraint;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('type')]
+#[Group('coercer')]
+#[CoversClass(DateTimeImmutableCoercer::class)]
 class DateTimeImmutableCoercerTest extends AbstractMinimalCoercerTestCase
 {
     protected const SERVICE_ID = DateTimeImmutableCoercer::class;
 
-    public function supportsProvider(): iterable
+    public static function provideSupportsCases(): iterable
     {
         foreach ([\DateTimeImmutable::class, \DateTimeInterface::class] as $c) {
             foreach ([true, false] as $bool) {
                 yield [
-                    $this->buildProperty('object', $bool, $c),
+                    static::buildProperty('object', $bool, $c),
                     true,
                 ];
             }
         }
 
         yield [
-            $this->buildProperty('string'),
+            static::buildProperty('string'),
             false,
         ];
     }

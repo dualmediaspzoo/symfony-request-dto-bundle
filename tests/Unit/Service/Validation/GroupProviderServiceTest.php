@@ -6,19 +6,28 @@ use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('validation')]
+#[CoversClass(GroupProviderService::class)]
 class GroupProviderServiceTest extends TestCase
 {
-    /**
-     * @dataProvider inputProvider
-     */
-    public function testInputs(
+    #[DataProvider('provideInputCases')]
+    public function testInput(
         array $expected,
         array $providers,
         array $ids
     ): void {
+        foreach ($providers as $index => $providerData) {
+            $providers[$index] = $this->makeProvider(...$providerData);
+        }
+
         $this->assertEquals(
             $expected,
             (new GroupProviderService($providers))->provideGroups(
@@ -29,7 +38,7 @@ class GroupProviderServiceTest extends TestCase
         );
     }
 
-    public function inputProvider(): iterable
+    public static function provideInputCases(): iterable
     {
         yield [
             ['Default'],
@@ -39,16 +48,16 @@ class GroupProviderServiceTest extends TestCase
         yield [
             ['Default', 'custom'],
             [
-                'custom' => $this->makeProvider(['custom']),
-                'non_custom' => $this->makeProvider(['non_custom'], false),
+                'custom' => [['custom']],
+                'non_custom' => [['non_custom'], false],
             ],
             ['custom'],
         ];
         yield [
             ['Default', 'non-repeating'],
             [
-                'no' => $this->makeProvider(['non-repeating']),
-                'yes' => $this->makeProvider(['non-repeating']),
+                'no' => [['non-repeating']],
+                'yes' => [['non-repeating']],
             ],
             ['no', 'yes'],
         ];

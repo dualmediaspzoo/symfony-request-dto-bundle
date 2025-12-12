@@ -9,15 +9,20 @@ use Doctrine\Persistence\ManagerRegistry;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Entity\TestEntity;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('entity')]
+#[CoversClass(TargetProviderService::class)]
 class TargetProviderServiceTest extends TestCase
 {
-    /**
-     * @testWith ["aaaa", true]
-     *           ["bbbb", false, false, false]
-     *           ["aaa", false, false]
-     *           ["aaaa", false, true, false]
-     */
+    #[TestWith(['aaaa', true])]
+    #[TestWith(['bbbb', false, false, false])]
+    #[TestWith(['aaa', false, false])]
+    #[TestWith(['aaaa', false, true, false])]
     public function testSet(
         string $fqcn,
         bool $known,
@@ -31,10 +36,8 @@ class TargetProviderServiceTest extends TestCase
         );
     }
 
-    /**
-     * @testWith [{"some": 15, "field": "yeet"}]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}]
-     */
+    #[TestWith([['some' => 15, 'field' => 'yeet']])]
+    #[TestWith([['some' => 5525, 'field' => 'yeewwwwwwt'], ['id' => 'desc']])]
     public function testComplex(
         array $fields,
         array|null $orderBy = null
@@ -63,10 +66,8 @@ class TargetProviderServiceTest extends TestCase
         $service->findComplex($callable, $fields, $orderBy);
     }
 
-    /**
-     * @testWith [{"some": 15, "field": "yeet"}]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}]
-     */
+    #[TestWith([['some' => 15, 'field' => 'yeet']])]
+    #[TestWith([['some' => 5525, 'field' => 'yeeeewt'], ['id' => 'desc']])]
     public function testFindOneBy(
         array $fields,
         array|null $orderBy = null
@@ -85,12 +86,10 @@ class TargetProviderServiceTest extends TestCase
         $this->assertEquals($mock, $service->findOneBy($fields, $orderBy));
     }
 
-    /**
-     * @testWith [{"some": 15, "field": "yeet"}]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}, 5, 15]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}, 0, 222]
-     */
+    #[TestWith([['some' => 15, 'field' => 'yeet']])]
+    #[TestWith([['somee' => 5525, 'field' => 'yeeewt2'], ['id' => 'desc']])]
+    #[TestWith([['somee' => 5525, 'field' => 'yeeewt2'], ['id' => 'desc'], 5, 15])]
+    #[TestWith([['somee' => 5525, 'field' => 'yeeewt2'], ['id' => 'desc'], 0, 222])]
     public function testFindBy(
         array $fields,
         array|null $orderBy = null,

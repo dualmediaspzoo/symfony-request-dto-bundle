@@ -9,29 +9,36 @@ use DualMedia\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Validator\Constraints\Choice;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('type')]
+#[Group('coercer')]
+#[CoversClass(EnumCoercer::class)]
 class EnumCoercerTest extends AbstractMinimalCoercerTestCase
 {
     protected const SERVICE_ID = EnumCoercer::class;
 
-    public function supportsProvider(): iterable
+    public static function provideSupportsCases(): iterable
     {
         foreach ([StringEnum::class, IntegerEnum::class] as $c) {
             foreach ([true, false] as $bool) {
                 yield [
-                    $this->buildProperty('object', false, $c),
+                    static::buildProperty('object', false, $c),
                     true,
                 ];
                 yield [
-                    $this->buildProperty('object', true, $c),
+                    static::buildProperty('object', true, $c),
                     true,
                 ];
             }
         }
 
         yield [
-            $this->buildProperty('object', false, \BackedEnum::class),
+            static::buildProperty('object', false, \BackedEnum::class),
             false,
         ];
     }

@@ -10,11 +10,14 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumQueryDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\LimitedEnumByKeyDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\LimitedEnumDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group enum
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoResolverService::class)]
 class EnumResolveTest extends KernelTestCase
 {
     private DtoResolverService $service;

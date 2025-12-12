@@ -6,12 +6,17 @@ use DualMedia\DtoRequestBundle\Event\DtoResolvedEvent;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\ResolveDto\SubDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
+#[Group('unit')]
+#[Group('value-resolver')]
+#[CoversClass(DtoValueResolver::class)]
 class DtoValueResolverTest extends KernelTestCase
 {
     private ValueResolverInterface $service;
@@ -21,21 +26,13 @@ class DtoValueResolverTest extends KernelTestCase
     {
         self::bootKernel();
         $this->eventMock = $this->createMock(EventDispatcherInterface::class);
-        self::$container->set('event_dispatcher', $this->eventMock);
+        self::getContainer()->set('event_dispatcher', $this->eventMock);
 
-        if (interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class)) {
-            $this->service = $this->getService(DtoValueResolver::class);
-        }
+        $this->service = $this->getService(DtoValueResolver::class);
     }
 
     public function testResolve(): void
     {
-        if (!interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class)) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
         $event = $this->deferCallable(function ($event): void {
             $this->assertInstanceOf(DtoResolvedEvent::class, $event);
             $this->assertInstanceOf(SubDto::class, $event->getDto());

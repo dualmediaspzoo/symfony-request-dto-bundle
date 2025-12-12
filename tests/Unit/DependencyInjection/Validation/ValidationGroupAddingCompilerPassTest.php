@@ -8,13 +8,16 @@ use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @group dependency-injection
- */
+#[Group('unit')]
+#[Group('dependency-injection')]
+#[Group('validation')]
+#[CoversClass(ValidationGroupAddingCompilerPass::class)]
 class ValidationGroupAddingCompilerPassTest extends AbstractCompilerPassTestCase
 {
     protected function setUp(): void

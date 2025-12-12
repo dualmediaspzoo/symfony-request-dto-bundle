@@ -6,11 +6,12 @@ use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\ValidationContext\MainDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use DualMedia\DtoRequestBundle\Tests\Traits\Unit\ConstraintValidationTrait;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group new-validation
- */
+#[Group('unit')]
+#[Group('dto')]
+#[Group('validation-context')]
 class DtoWithChildrenContextTest extends KernelTestCase
 {
     use ConstraintValidationTrait;
