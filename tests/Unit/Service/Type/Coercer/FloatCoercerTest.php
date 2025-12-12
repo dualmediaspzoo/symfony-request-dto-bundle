@@ -17,7 +17,7 @@ class FloatCoercerTest extends AbstractBasicCoercerTestCase
     protected const SERVICE_ID = FloatCoercer::class;
     protected const EXPECTED_BASIC_TYPE = 'float';
 
-    protected function getCoerceExpected(): iterable
+    protected static function getCoerceExpected(): iterable
     {
         return [
             ['null', null],

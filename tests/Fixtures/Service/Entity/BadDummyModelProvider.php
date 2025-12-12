@@ -3,11 +3,10 @@
 namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity;
 
 use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
-use Override;
 
 class BadDummyModelProvider implements ProviderInterface
 {
-    #[Override]
+    #[\Override]
     public function findComplex(
         callable $fn,
         array $fields,
@@ -17,7 +16,7 @@ class BadDummyModelProvider implements ProviderInterface
         throw new \RuntimeException('Not implemented');
     }
 
-    #[Override]
+    #[\Override]
     public function findOneBy(
         array $criteria,
         array|null $orderBy = null,
@@ -26,7 +25,7 @@ class BadDummyModelProvider implements ProviderInterface
         throw new \RuntimeException('Not implemented');
     }
 
-    #[Override]
+    #[\Override]
     public function findBy(
         array $criteria,
         array|null $orderBy = null,
