@@ -2,22 +2,34 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Entity;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use DualMedia\DtoRequestBundle\Interface\Entity\TargetProviderInterface;
+use DualMedia\DtoRequestBundle\Traits\Provider\MetadataTrait;
 
 /**
  * @implements TargetProviderInterface<object>
  */
 class TargetProviderService implements TargetProviderInterface
 {
+    use MetadataTrait;
+
     /**
      * @var EntityRepository<object>|null
      */
     private EntityRepository|null $repository = null;
+    private EntityManagerInterface|null $manager = null;
+
+    /**
+     * @var class-string|null
+     */
+    private string|null $fqcn = null;
 
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private readonly ManagerRegistry $registry,
+        private readonly QueryCreator $creator
     ) {
     }
 
@@ -26,9 +38,17 @@ class TargetProviderService implements TargetProviderInterface
         string $fqcn
     ): bool {
         // This is kinda nasty, but Doctrine will be changing the interface in 3.0 anyway, so it should be fine?
-        return null !== (
-            $this->repository = $this->registry->getManagerForClass($fqcn)?->getRepository($fqcn) ?? null // @phpstan-ignore-line
-        );
+        $manager = $this->registry->getManagerForClass($fqcn);
+
+        if (!($manager instanceof EntityManagerInterface)) {
+            return false;
+        }
+
+        $this->repository = $manager->getRepository($fqcn);
+        $this->manager = $manager;
+        $this->fqcn = $fqcn;
+
+        return true;
     }
 
     #[\Override]
@@ -42,7 +62,7 @@ class TargetProviderService implements TargetProviderInterface
             return null;
         }
 
-        return $fn($fields, $orderBy, $this->repository->createQueryBuilder('entity')); // @phpstan-ignore-line
+        return $fn($fields, $orderBy, $this->repository->createQueryBuilder('entity'), $metadata); // @phpstan-ignore-line
     }
 
     #[\Override]
@@ -51,7 +71,22 @@ class TargetProviderService implements TargetProviderInterface
         array|null $orderBy = null,
         array $metadata = []
     ): mixed {
-        return $this->repository?->findOneBy($criteria, $orderBy) ?? null;
+        if (null === $this->repository) {
+            return null;
+        }
+
+        if (!$this->metaAsReference($metadata)) {
+            return $this->repository->findOneBy($criteria, $orderBy) ?? null;
+        }
+
+        return $this->resolveReferences(
+            $this->creator->buildQuery(
+                $this->repository->createQueryBuilder('entity'),
+                'entity',
+                $criteria,
+                $orderBy ?? []
+            )
+        )[0] ?? null;
     }
 
     #[\Override]
@@ -62,6 +97,43 @@ class TargetProviderService implements TargetProviderInterface
         int|null $offset = null,
         array $metadata = []
     ) {
-        return $this->repository?->findBy($criteria, $orderBy, $limit, $offset) ?? []; // @phpstan-ignore-line
+        if (null === $this->repository) {
+            return [];
+        }
+
+        if (!$this->metaAsReference($metadata)) {
+            return $this->repository->findBy($criteria, $orderBy, $limit, $offset); // @phpstan-ignore-line
+        }
+
+        return $this->resolveReferences(
+            $this->creator->buildQuery(
+                $this->repository->createQueryBuilder('entity'),
+                'entity',
+                $criteria,
+                $orderBy ?? []
+            )
+        );
+    }
+
+    /**
+     * @return list<object>
+     */
+    private function resolveReferences(
+        QueryBuilder $qb
+    ): array {
+        assert(null !== $this->manager);
+        assert(null !== $this->fqcn);
+
+        $ids = $qb->select('entity.id')
+            ->getQuery()
+            ->getSingleColumnResult();
+
+        $results = [];
+
+        foreach ($ids as $id) {
+            $results[] = $this->manager->getReference($this->fqcn, $id);
+        }
+
+        return array_values(array_filter($results));
     }
 }

@@ -25,7 +25,8 @@ class ComplexLoaderService implements ComplexLoaderServiceInterface
     public function loadComplex(
         string $fqcn,
         FindComplexInterface $find,
-        array $input
+        array $input,
+        array $metadata = []
     ): mixed {
         if (!array_key_exists($find->getService(), $this->loaders)) {
             throw new ComplexLoaderNotFoundException(sprintf(
@@ -48,7 +49,8 @@ class ComplexLoaderService implements ComplexLoaderServiceInterface
         )->findComplex(
             \Closure::fromCallable([$this->loaders[$find->getService()], $find->getFn()]), // @phpstan-ignore-line
             $input,
-            $find->getOrderBy()
+            $find->getOrderBy(),
+            $metadata
         );
     }
 }

@@ -5,6 +5,7 @@ namespace DualMedia\DtoRequestBundle\Interface\Entity;
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\ProviderNotFoundException;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoFindMetaAttributeInterface;
 use DualMedia\DtoRequestBundle\Interface\Attribute\FindComplexInterface;
 
 /**
@@ -17,6 +18,7 @@ interface ComplexLoaderServiceInterface
      *
      * @param class-string<T> $fqcn
      * @param array<string, mixed> $input
+     * @param list<DtoFindMetaAttributeInterface> $metadata
      *
      * @throws ComplexLoaderNotFoundException
      * @throws ComplexLoaderFunctionNotFoundException
@@ -25,6 +27,7 @@ interface ComplexLoaderServiceInterface
     public function loadComplex(
         string $fqcn,
         FindComplexInterface $find,
-        array $input
+        array $input,
+        array $metadata = []
     ): mixed;
 }

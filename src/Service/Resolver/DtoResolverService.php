@@ -379,16 +379,20 @@ class DtoResolverService implements DtoResolverInterface
 
         /** @var class-string $class */
         $class = $property->getFqcn();
+        $metadata = $property->getMetaAttributes();
 
         if ($find instanceof FindComplexInterface) {
-            $dto->{$property->getName()} = $this->complexLoaderService->loadComplex($class, $find, $criteria);
+            $dto->{$property->getName()} = $this->complexLoaderService->loadComplex($class, $find, $criteria, $metadata);
         } elseif ($find->isCollection()) {
             $dto->{$property->getName()} = $this->providerService->getProvider(
                 $class,
                 $find->getProviderId()
             )->findBy(
                 $criteria,
-                $find->getOrderBy()
+                $find->getOrderBy(),
+                $find->getLimit(),
+                $find->getOffset(),
+                $metadata
             );
         } else {
             $dto->{$property->getName()} = $this->providerService->getProvider(
@@ -396,7 +400,8 @@ class DtoResolverService implements DtoResolverInterface
                 $find->getProviderId()
             )->findOneBy(
                 $criteria,
-                $find->getOrderBy()
+                $find->getOrderBy(),
+                $metadata
             );
         }
 

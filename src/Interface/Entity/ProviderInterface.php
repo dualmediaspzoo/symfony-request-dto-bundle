@@ -2,6 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Interface\Entity;
 
+use Doctrine\ORM\QueryBuilder;
 use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
 use DualMedia\DtoRequestBundle\Interface\Attribute\DtoFindMetaAttributeInterface;
 
@@ -22,7 +23,7 @@ interface ProviderInterface
      *
      * Proper arguments should be passed depending on the type of provider
      *
-     * @param callable(array<string, mixed>, array<string, string>|null, mixed): mixed $fn
+     * @param callable(array<string, mixed>, array<string, string>|null, QueryBuilder, list<DtoFindMetaAttributeInterface>): mixed $fn
      * @param array<string, mixed> $fields
      * @param array<string, string>|null $orderBy
      * @param list<DtoFindMetaAttributeInterface> $metadata

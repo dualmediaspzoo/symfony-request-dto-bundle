@@ -13,4 +13,16 @@ trait LimitAndOffsetTrait
      * Result offset.
      */
     public int|null $offset = null;
+
+    #[\Override]
+    public function getLimit(): int|null
+    {
+        return $this->limit;
+    }
+
+    #[\Override]
+    public function getOffset(): int|null
+    {
+        return $this->offset;
+    }
 }
