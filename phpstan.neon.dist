@@ -1,4 +1,13 @@
+includes:
+  - vendor/phpstan/phpstan-strict-rules/rules.neon
+
 parameters:
+  strictRules:
+    allRules: false
+    switchConditionsMatchingType: true
+    disallowedBacktick: true
+    strictFunctionCalls: true
+    dynamicCallOnStaticMethod: true
   reportUnmatchedIgnoredErrors: false
   checkGenericClassInNonGenericObjectType: false
   level: 9

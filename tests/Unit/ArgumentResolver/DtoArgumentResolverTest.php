@@ -11,12 +11,12 @@ use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class DtoArgumentResolverTest extends KernelTestCase
 {
-    private ArgumentValueResolverInterface $service;
+    private ValueResolverInterface $service;
     private MockObject $eventMock;
 
     protected function setUp(): void

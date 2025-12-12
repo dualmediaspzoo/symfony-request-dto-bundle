@@ -4,18 +4,18 @@ namespace DualMedia\DtoRequestBundle\Tests\PHPUnit;
 
 use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
 use OpenApi\Annotations\OpenApi;
-use Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader;
+use Symfony\Bundle\FrameworkBundle\Routing\AttributeRouteControllerLoader;
 
 class NelmioTestCase extends KernelTestCase
 {
     private DtoOADescriber $service;
-    private AnnotatedRouteControllerLoader $loader;
+    private AttributeRouteControllerLoader $loader;
 
     protected function setUp(): void
     {
         self::bootKernel();
         $this->service = $this->getService(DtoOADescriber::class);
-        $this->loader = new AnnotatedRouteControllerLoader();
+        $this->loader = new AttributeRouteControllerLoader();
     }
 
     protected function describe(

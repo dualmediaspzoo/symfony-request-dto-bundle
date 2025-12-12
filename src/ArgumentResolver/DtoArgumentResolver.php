@@ -9,28 +9,15 @@ use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
 use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-class DtoArgumentResolver implements ArgumentValueResolverInterface
+class DtoArgumentResolver implements ValueResolverInterface
 {
-    private DtoResolverInterface $dtoResolver;
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        DtoResolverInterface $resolverService,
-        EventDispatcherInterface $eventDispatcher
+        private readonly DtoResolverInterface $resolverService,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
-        $this->dtoResolver = $resolverService;
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function supports(
-        Request $request,
-        ArgumentMetadata $argument
-    ): bool {
-        return null !== $argument->getType()
-            && is_subclass_of($argument->getType(), DtoInterface::class);
     }
 
     /**
@@ -43,16 +30,21 @@ class DtoArgumentResolver implements ArgumentValueResolverInterface
         Request $request,
         ArgumentMetadata $argument
     ): iterable {
+        if (null === $argument->getType()
+            || !is_subclass_of($argument->getType(), DtoInterface::class)) {
+            return [];
+        }
+
         /** @var class-string<DtoInterface> $class */
         $class = $argument->getType();
         $this->eventDispatcher->dispatch(
             new DtoResolvedEvent(
-                $object = $this->dtoResolver->resolve($request, $class)
+                $object = $this->resolverService->resolve($request, $class)
             )
         );
 
         $object->setOptional($argument->isNullable());
 
-        yield $object;
+        return [$object];
     }
 }

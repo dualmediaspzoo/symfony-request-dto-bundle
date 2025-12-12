@@ -1,32 +1,33 @@
 <?php
 
-namespace DualMedia\DtoRequestBundle\Tests\Unit\Annotations\Dto;
+declare(strict_types=1);
+
+namespace DualMedia\DtoRequestBundle\Tests\Unit\Attributes\Dto;
 
 use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
 use DualMedia\DtoRequestBundle\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class BagTest extends TestCase
 {
-    /**
-     * @testWith ["query"]
-     *           ["request"]
-     *           ["attributes"]
-     *           ["files"]
-     *           ["cookies"]
-     *           ["headers", true]
-     */
+    #[TestWith(['query'])]
+    #[TestWith(['request'])]
+    #[TestWith(['attributes'])]
+    #[TestWith(['files'])]
+    #[TestWith(['cookies'])]
+    #[TestWith(['headers', true])]
     public function testCreation(
         string $bag,
         bool $isHeader = false
     ): void {
         $annotation = new Bag(BagEnum::from($bag));
 
-        $this->assertEquals(
+        static::assertEquals(
             $bag,
             $annotation->bag->value
         );
-        $this->assertEquals(
+        static::assertEquals(
             $isHeader,
             $annotation->bag->isHeaders()
         );
