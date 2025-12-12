@@ -25,7 +25,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -75,7 +74,6 @@ class DtoResolverService implements DtoResolverInterface
         /** @noinspection PhpUnhandledExceptionInspection */
         $model = $this->typeExtractor->extract(new \ReflectionClass($class));
 
-        /** @var T $object */
         $object = $this->internalResolve($request, $class, $model);
 
         $list = $this->validator->validate(
@@ -107,7 +105,6 @@ class DtoResolverService implements DtoResolverInterface
             return;
         }
 
-        /** @var ConstraintViolationInterface $violation */
         foreach ($list as $violation) {
             if ('' !== $violation->getPropertyPath()) {
                 $propPath = new PropertyPath($violation->getPropertyPath());
@@ -140,8 +137,8 @@ class DtoResolverService implements DtoResolverInterface
                 $violation->getInvalidValue(),
                 $violation->getPlural(),
                 $violation->getCode(),
-                method_exists($violation, 'getConstraint') ? $violation->getConstraint() : null,
-                method_exists($violation, 'getCause') ? $violation->getCause() : null
+                $violation->getConstraint(),
+                $violation->getCause()
             ));
         }
     }
@@ -230,7 +227,7 @@ class DtoResolverService implements DtoResolverInterface
         string $propertyPath,
         string $replacePath
     ): void {
-        /** @var class-string<T> $childClass */
+        /** @var class-string<DtoInterface> $childClass */
         $childClass = $property->getFqcn();
 
         if ($property->isCollection()) {
