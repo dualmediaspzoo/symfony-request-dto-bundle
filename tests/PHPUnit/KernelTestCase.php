@@ -4,7 +4,6 @@ namespace DualMedia\DtoRequestBundle\Tests\PHPUnit;
 
 use DualMedia\DtoRequestBundle\Tests\Traits\Unit\BoundCallableTrait;
 use DualMedia\DtoRequestBundle\Tests\Traits\Unit\KernelAccessTrait;
-use DualMedia\DtoRequestBundle\Tests\Traits\Unit\MockWithCustomMethodsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as SymfonyTestCase;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -13,7 +12,6 @@ class KernelTestCase extends SymfonyTestCase
 {
     use KernelAccessTrait;
     use BoundCallableTrait;
-    use MockWithCustomMethodsTrait;
 
     protected function tearDown(): void
     {
