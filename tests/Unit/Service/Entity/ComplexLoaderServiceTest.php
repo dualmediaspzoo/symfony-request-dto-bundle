@@ -5,7 +5,6 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Entity;
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
 use DualMedia\DtoRequestBundle\Interface\Attribute\FindComplexInterface;
-use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
 use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
