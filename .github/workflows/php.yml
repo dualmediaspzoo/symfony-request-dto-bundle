@@ -148,7 +148,7 @@ jobs:
 
       - name: PHPUnit
         run: |
-          vendor/bin/phpunit --coverage-cobertura artifacts/code-coverage-cobertura.xml
+          php -dpcov.exclude="~config~" vendor/bin/phpunit --coverage-cobertura artifacts/code-coverage-cobertura.xml
 
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
