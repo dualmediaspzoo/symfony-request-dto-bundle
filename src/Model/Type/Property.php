@@ -227,8 +227,9 @@ class Property implements \ArrayAccess, \IteratorAggregate
             if (!is_subclass_of($class, DtoFindMetaAttributeInterface::class)) {
                 continue;
             }
+            /** @var list<DtoFindMetaAttributeInterface> $list */
 
-            $attributes[] = $list;
+            $attributes[] = $list; // @phpstan-ignore-line
         }
 
         return array_merge(...$attributes);

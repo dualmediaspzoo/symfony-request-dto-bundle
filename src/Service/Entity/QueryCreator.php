@@ -65,4 +65,3 @@ class QueryCreator
         return $qb;
     }
 }
-
