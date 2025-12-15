@@ -28,7 +28,6 @@
     "phpunit/phpunit": "^12",
     "friendsofphp/php-cs-fixer": "^3",
     "pedrotroller/php-cs-custom-fixer": "^2",
-    "vimeo/psalm": "^6",
     "phpstan/phpstan": "^2",
     "symfony/phpunit-bridge": "^6.4|^7.3",
     "matthiasnoback/symfony-dependency-injection-test": "^6",
@@ -57,7 +56,6 @@
   "scripts": {
     "lint": "php-cs-fixer fix",
     "test": "phpunit",
-    "baseline-psalm": "vendor/bin/psalm --set-baseline=psalm-baseline.xml",
     "baseline-phpstan": "vendor/bin/phpstan --generate-baseline"
   },
   "suggest": {
