@@ -24,7 +24,7 @@ interface ProviderInterface
      * Proper arguments should be passed depending on the type of provider
      *
      * @param callable(array<string, mixed>, array<string, string>|null, QueryBuilder, list<DtoFindMetaAttributeInterface>): mixed $fn
-     * @param array<string, mixed> $fields
+     * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
      * @param list<DtoFindMetaAttributeInterface> $metadata
      *
@@ -34,7 +34,7 @@ interface ProviderInterface
      */
     public function findComplex(
         callable $fn,
-        array $fields,
+        array $criteria,
         array|null $orderBy = null,
         array $metadata = []
     );
