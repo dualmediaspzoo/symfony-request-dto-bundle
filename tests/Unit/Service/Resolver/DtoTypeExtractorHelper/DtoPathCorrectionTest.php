@@ -9,11 +9,14 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\PathFindByFix;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\PathFixDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\RequestEdgeCaseDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
-/**
- * @group test-path-correction
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoTypeExtractorHelper::class)]
 class DtoPathCorrectionTest extends KernelTestCase
 {
     private DtoTypeExtractorHelper $service;
@@ -119,7 +122,7 @@ class DtoPathCorrectionTest extends KernelTestCase
     ): void {
         $pp = new PropertyPath($propertyPath);
 
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->model[$pp->getElement(0)]->fixPropertyPath($pp)
         );

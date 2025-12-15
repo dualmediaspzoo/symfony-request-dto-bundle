@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Type;
 
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercionServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercionServiceInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -31,6 +31,7 @@ class CoercerService implements CoercionServiceInterface
         $this->coercers = iterator_to_array($iterator->getIterator());
     }
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
@@ -43,6 +44,7 @@ class CoercerService implements CoercionServiceInterface
         return false;
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,

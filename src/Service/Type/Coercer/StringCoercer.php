@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Type\Coercer;
 
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Traits\Type\CoerceConstructWithValidatorTrait;
@@ -25,12 +25,14 @@ class StringCoercer implements CoercerInterface
     use CoercerResultTrait;
     use CoerceConstructWithValidatorTrait;
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
         return 'string' === $property->getType();
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,

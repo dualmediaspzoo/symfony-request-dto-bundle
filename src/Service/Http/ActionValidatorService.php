@@ -2,15 +2,15 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Http;
 
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interface\Http\ActionValidatorInterface;
 
 class ActionValidatorService implements ActionValidatorInterface
 {
     /**
-     * @var ActionValidatorInterface[]
+     * @var iterable<ActionValidatorInterface>
      */
-    private array $validators;
+    private iterable $validators;
 
     /**
      * @param \IteratorAggregate<array-key, ActionValidatorInterface> $iterator
@@ -23,6 +23,7 @@ class ActionValidatorService implements ActionValidatorInterface
         $this->validators = iterator_to_array($iterator->getIterator());
     }
 
+    #[\Override]
     public function supports(
         HttpActionInterface $action,
         mixed $variable
@@ -36,6 +37,7 @@ class ActionValidatorService implements ActionValidatorInterface
         return false;
     }
 
+    #[\Override]
     public function validate(
         HttpActionInterface $action,
         mixed $variable

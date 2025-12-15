@@ -1,0 +1,187 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$type of class Symfony\\Component\\Validator\\Constraints\\Type constructor expects list\<string\>\|string\|null, array\{type\: ''array''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Constraint/ArrayAllValidator.php
+
+		-
+			message: '#^Parameter \#1 \$constraints of method DualMedia\\DtoRequestBundle\\Model\\Type\\Property\:\:findFromArray\(\) expects array\<Symfony\\Component\\Validator\\Constraint\>, array\|Symfony\\Component\\Validator\\Constraint given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Model/Type/Property.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 6
+			path: src/Service/Nelmio/DtoOADescriber.php
+
+		-
+			message: '#^Method DualMedia\\DtoRequestBundle\\Service\\Nelmio\\DtoOADescriber\:\:resolveProperties\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/Nelmio/DtoOADescriber.php
+
+		-
+			message: '#^Parameter \#1 \$fields of method DualMedia\\DtoRequestBundle\\Service\\Nelmio\\DtoOADescriber\:\:resolveRequiredProperties\(\) expects array\<string, array\<string, DualMedia\\DtoRequestBundle\\Model\\Type\\Property\>\|DualMedia\\DtoRequestBundle\\Model\\Type\\Property\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Nelmio/DtoOADescriber.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/Service/Resolver/DynamicResolverService.php
+
+		-
+			message: '#^Property DualMedia\\DtoRequestBundle\\Service\\Resolver\\DynamicResolverService\:\:\$resolvers \(list\<DualMedia\\DtoRequestBundle\\Interface\\Dynamic\\ResolverInterface\>\) does not accept array\<DualMedia\\DtoRequestBundle\\Interface\\Dynamic\\ResolverInterface\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Service/Resolver/DynamicResolverService.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Service/Type/Coercer/BoolCoercer.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: src/Service/Type/Coercer/BoolCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<Symfony\\Component\\Validator\\Constraint\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/BoolCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$type of class Symfony\\Component\\Validator\\Constraints\\Type constructor expects list\<string\>\|string\|null, array\{type\: ''bool''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/BoolCoercer.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Service/Type/Coercer/EnumCoercer.php
+
+		-
+			message: '#^Cannot access offset mixed on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Service/Type/Coercer/EnumCoercer.php
+
+		-
+			message: '#^Method DualMedia\\DtoRequestBundle\\Service\\Type\\Coercer\\EnumCoercer\:\:coerce\(\) should return DualMedia\\DtoRequestBundle\\Model\\Type\\CoerceResult\<BackedEnum\|null\> but returns DualMedia\\DtoRequestBundle\\Model\\Type\\CoerceResult\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Service/Type/Coercer/EnumCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$array of static method DualMedia\\DtoRequestBundle\\Util\:\:removeIndexByConstraintViolation\(\) expects array\<mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/EnumCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<Symfony\\Component\\Validator\\Constraint\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/EnumCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$value of method DualMedia\\DtoRequestBundle\\Service\\Type\\Coercer\\EnumCoercer\:\:createEnum\(\) expects int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/EnumCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<Symfony\\Component\\Validator\\Constraint\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/FloatCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$type of class Symfony\\Component\\Validator\\Constraints\\Type constructor expects list\<string\>\|string\|null, array\{type\: ''float''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/FloatCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<Symfony\\Component\\Validator\\Constraint\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/IntCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$type of class Symfony\\Component\\Validator\\Constraints\\Type constructor expects list\<string\>\|string\|null, array\{type\: ''int''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/IntCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<Symfony\\Component\\Validator\\Constraint\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/StringCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$type of class Symfony\\Component\\Validator\\Constraints\\Type constructor expects list\<string\>\|string\|null, array\{type\: ''string''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/StringCoercer.php
+
+		-
+			message: '#^Parameter \#4 \$value of method DualMedia\\DtoRequestBundle\\Service\\Type\\Coercer\\StringCoercer\:\:buildResult\(\) expects list\<string\|null\>\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/StringCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<Symfony\\Component\\Validator\\Constraint\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/UploadedFileCoercer.php
+
+		-
+			message: '#^Parameter \#1 \$type of class Symfony\\Component\\Validator\\Constraints\\Type constructor expects list\<string\>\|string\|null, array\{type\: ''Symfony\\\\Component\\\\HttpFoundation\\\\File\\\\UploadedFile''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/UploadedFileCoercer.php
+
+		-
+			message: '#^Parameter \#4 \$value of method DualMedia\\DtoRequestBundle\\Service\\Type\\Coercer\\UploadedFileCoercer\:\:buildResult\(\) expects list\<Symfony\\Component\\HttpFoundation\\File\\UploadedFile\|null\>\|Symfony\\Component\\HttpFoundation\\File\\UploadedFile\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/UploadedFileCoercer.php
+
+		-
+			message: '#^Method DualMedia\\DtoRequestBundle\\Service\\Type\\CoercerService\:\:__construct\(\) has parameter \$iterator with generic interface DualMedia\\DtoRequestBundle\\Interface\\Type\\CoercerInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Service/Type/CoercerService.php
+
+		-
+			message: '#^Parameter \#1 \$type of class Symfony\\Component\\Validator\\Constraints\\Type constructor expects list\<string\>\|string\|null, array\{type\: ''array''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/CoercerService.php
+
+		-
+			message: '#^Property DualMedia\\DtoRequestBundle\\Service\\Type\\CoercerService\:\:\$coercers \(list\<DualMedia\\DtoRequestBundle\\Interface\\Type\\CoercerInterface\<mixed\>\>\) does not accept array\<DualMedia\\DtoRequestBundle\\Interface\\Type\\CoercerInterface\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Service/Type/CoercerService.php
+
+		-
+			message: '#^Method DualMedia\\DtoRequestBundle\\Util\:\:mergeRecursively\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Util.php

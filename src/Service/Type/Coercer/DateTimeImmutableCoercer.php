@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Type\Coercer;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Format;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use Symfony\Component\Validator\Constraints\All;
@@ -21,13 +21,15 @@ class DateTimeImmutableCoercer implements CoercerInterface
     ) {
     }
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
         return 'object' === $property->getType()
-            && in_array($property->getFqcn(), [\DateTimeInterface::class, \DateTimeImmutable::class]);
+            && in_array($property->getFqcn(), [\DateTimeInterface::class, \DateTimeImmutable::class], true);
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,
@@ -35,7 +37,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
     ): CoerceResult {
         // php8
         $format = ($property->getFormat() ?? new Format())->format ?? $this->defaultDateFormat;
-        $constraint = new DateTime(['format' => $format]);
+        $constraint = new DateTime(format: $format); // @phpstan-ignore-line
 
         $violations = $this->validator->startContext()
             ->atPath($propertyPath)
@@ -44,7 +46,7 @@ class DateTimeImmutableCoercer implements CoercerInterface
 
         if (is_array($value)) {
             foreach ($value as $index => $val) {
-                if (false === ($time = \DateTimeImmutable::createFromFormat($format, $val))) {
+                if (false === ($time = \DateTimeImmutable::createFromFormat($format, (string)$val))) { // @phpstan-ignore-line
                     unset($value[$index]);
                     continue;
                 }

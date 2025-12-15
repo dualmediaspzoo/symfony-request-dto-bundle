@@ -2,36 +2,43 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\AllowEnum;
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Attribute\Dto\AllowEnum;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\IntegerEnum;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Enum\StringEnum;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Validator\Constraints\Choice;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('type')]
+#[Group('coercer')]
+#[CoversClass(EnumCoercer::class)]
 class EnumCoercerTest extends AbstractMinimalCoercerTestCase
 {
     protected const SERVICE_ID = EnumCoercer::class;
 
-    public function supportsProvider(): iterable
+    public static function provideSupportsCases(): iterable
     {
         foreach ([StringEnum::class, IntegerEnum::class] as $c) {
             foreach ([true, false] as $bool) {
                 yield [
-                    $this->buildProperty('object', false, $c),
+                    static::buildProperty('object', false, $c),
                     true,
                 ];
                 yield [
-                    $this->buildProperty('object', true, $c),
+                    static::buildProperty('object', true, $c),
                     true,
                 ];
             }
         }
 
         yield [
-            $this->buildProperty('object', false, \BackedEnum::class),
+            static::buildProperty('object', false, \BackedEnum::class),
             false,
         ];
     }
@@ -43,9 +50,9 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFqcn(StringEnum::class);
 
         $result = $this->service->coerce('something', $enum, StringEnum::StringKey->value);
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             StringEnum::StringKey,
             $result->getValue()
         );
@@ -58,8 +65,8 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFqcn(StringEnum::class);
 
         $result = $this->service->coerce('something', $enum, null);
-        $this->assertEmpty($result->getViolations());
-        $this->assertNull($result->getValue());
+        static::assertEmpty($result->getViolations());
+        static::assertNull($result->getValue());
     }
 
     public function testLimited(): void
@@ -70,20 +77,20 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
             ->addDtoAttribute(new AllowEnum([IntegerEnum::OtherKey, IntegerEnum::LastKey]));
 
         $result = $this->service->coerce('something', $enum, 20);
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             IntegerEnum::OtherKey,
             $result->getValue()
         );
 
         $result = $this->service->coerce('something', $enum, 15);
-        $this->assertCount(1, $result->getViolations());
+        static::assertCount(1, $result->getViolations());
 
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($result->getViolations());
-        $this->assertArrayHasKey('something', $mapped);
+        static::assertArrayHasKey('something', $mapped);
 
-        $this->assertEquals(
+        static::assertEquals(
             (new Choice())->message,
             $mapped['something'][0]->getMessage()
         );
@@ -92,20 +99,20 @@ class EnumCoercerTest extends AbstractMinimalCoercerTestCase
         $enum->addDtoAttribute(new FromKey());
 
         $result = $this->service->coerce('something', $enum, 'OtherKey');
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             IntegerEnum::OtherKey,
             $result->getValue()
         );
 
         $result = $this->service->coerce('something', $enum, 'IntegerKey');
-        $this->assertCount(1, $result->getViolations());
+        static::assertCount(1, $result->getViolations());
 
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($result->getViolations());
-        $this->assertArrayHasKey('something', $mapped);
+        static::assertArrayHasKey('something', $mapped);
 
-        $this->assertEquals(
+        static::assertEquals(
             (new Choice())->message,
             $mapped['something'][0]->getMessage()
         );

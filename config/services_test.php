@@ -1,6 +1,5 @@
 <?php
 
-use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
 use DualMedia\DtoRequestBundle\DtoBundle;
 use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
 use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
@@ -22,10 +21,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 
 return static function (ContainerConfigurator $configurator) {
-    $fn = include __DIR__.'/services_dev.php';
-
-    $fn($configurator);
-
     $services = $configurator->services()
         ->defaults()
         ->private();
@@ -50,7 +45,7 @@ return static function (ContainerConfigurator $configurator) {
 
         DtoOADescriber::class,
 
-        interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class) ? DtoValueResolver::class : DtoArgumentResolver::class,
+        DtoValueResolver::class,
 
         OnNullActionValidator::class,
         HttpDtoActionSubscriber::class,

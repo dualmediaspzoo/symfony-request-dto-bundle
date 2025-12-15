@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Profiler\Service\Validation;
 
-use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\TypeValidationInterface;
 use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -22,6 +22,7 @@ class ProfilingTypeValidationService extends AbstractWrapper implements TypeVali
     /**
      * @phpstan-ignore-next-line
      */
+    #[\Override]
     public function validateType(
         array &$values,
         array $properties,

@@ -5,11 +5,12 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Dto\ValidationContext;
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\ValidationContext\WhenVisitedDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group when-visited
- */
+#[Group('unit')]
+#[Group('dto')]
+#[Group('validation-context')]
 class WhenVisitedTest extends KernelTestCase
 {
     private DtoResolverService $resolver;
@@ -29,8 +30,8 @@ class WhenVisitedTest extends KernelTestCase
             WhenVisitedDto::class
         );
 
-        $this->assertCount(1, $dto->getConstraintViolationList());
-        $this->assertEquals(
+        static::assertCount(1, $dto->getConstraintViolationList());
+        static::assertEquals(
             'This value should not be null.',
             $dto->getConstraintViolationList()[0]->getMessage()
         );
@@ -43,6 +44,6 @@ class WhenVisitedTest extends KernelTestCase
             WhenVisitedDto::class
         );
 
-        $this->assertCount(0, $dto->getConstraintViolationList());
+        static::assertCount(0, $dto->getConstraintViolationList());
     }
 }

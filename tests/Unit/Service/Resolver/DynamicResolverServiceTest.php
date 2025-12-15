@@ -3,12 +3,18 @@
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver;
 
 use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
-use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverInterface;
 use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
 use DualMedia\DtoRequestBundle\Tests\Model\ArrayIterator;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DynamicResolverService::class)]
 class DynamicResolverServiceTest extends TestCase
 {
     private MockObject $mock;
@@ -24,20 +30,20 @@ class DynamicResolverServiceTest extends TestCase
 
     public function testNothingSupported(): void
     {
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('getSupportedParameters')
             ->willReturn([]);
 
-        $this->assertEmpty($this->service->getSupportedParameters());
+        static::assertEmpty($this->service->getSupportedParameters());
     }
 
     public function testDuplicatedSupported(): void
     {
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('getSupportedParameters')
             ->willReturn(['something', 'whatever', 'something']);
 
-        $this->assertEquals([
+        static::assertEquals([
             'something',
             'whatever',
         ], $this->service->getSupportedParameters());
@@ -45,7 +51,7 @@ class DynamicResolverServiceTest extends TestCase
 
     public function testNotSupported(): void
     {
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('getSupportedParameters')
             ->willReturn(['something']);
 
@@ -56,7 +62,7 @@ class DynamicResolverServiceTest extends TestCase
 
     public function testSupported(): void
     {
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('getSupportedParameters')
             ->willReturn(['something']);
 
@@ -64,7 +70,7 @@ class DynamicResolverServiceTest extends TestCase
             $this->assertEquals('something', $name);
         });
 
-        $this->mock->expects($this->once())
+        $this->mock->expects(static::once())
             ->method('resolveParameter')
             ->willReturnCallback(function (...$args) use ($nameDefer) {
                 $nameDefer->set($args);
@@ -72,7 +78,7 @@ class DynamicResolverServiceTest extends TestCase
                 return 15;
             });
 
-        $this->assertEquals(
+        static::assertEquals(
             15,
             $this->service->resolveParameter('something')
         );

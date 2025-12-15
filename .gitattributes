@@ -1,0 +1,8 @@
+tests/ export-ignore
+.github/ export-ignore
+
+composer.lock export-ignore
+phpstan.neon.dist export-ignore
+phpunit.xml.dist export-ignore
+psalm.xml export-ignore
+.gitignore export-ignore

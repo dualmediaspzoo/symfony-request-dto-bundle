@@ -3,18 +3,17 @@
 namespace DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer;
 
 use DualMedia\DtoRequestBundle\Model\Type\Property;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractCoercerTestCase extends AbstractMinimalCoercerTestCase
 {
-    /**
-     * @dataProvider coerceProvider
-     */
+    #[DataProvider('provideCoerceCases')]
     public function testCoerce(
         Property $property,
-        $input,
-        $expected
+        mixed $input,
+        mixed $expected
     ): void {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->service->coerce('something', $property, $input)->getValue(),
         );
@@ -23,5 +22,5 @@ abstract class AbstractCoercerTestCase extends AbstractMinimalCoercerTestCase
     /**
      * @return iterable<array{0: Property, 1: mixed, 2: mixed}>
      */
-    abstract public function coerceProvider(): iterable;
+    abstract public static function provideCoerceCases(): iterable;
 }

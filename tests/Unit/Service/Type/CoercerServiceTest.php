@@ -2,20 +2,25 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type;
 
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
 use DualMedia\DtoRequestBundle\Tests\Model\ArrayIterator;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('type')]
+#[CoversClass(CoercerService::class)]
 class CoercerServiceTest extends TestCase
 {
-    /**
-     * @testWith [true]
-     *           [false]
-     */
+    #[TestWith([true])]
+    #[TestWith([false])]
     public function testSupports(
         bool $result
     ): void {
@@ -26,7 +31,7 @@ class CoercerServiceTest extends TestCase
         });
 
         $mock = $this->createMock(CoercerInterface::class);
-        $mock->expects($this->once())
+        $mock->expects(static::once())
             ->method('supports')
             ->willReturnCallback(function (...$args) use ($check, $result) {
                 $check->set($args);
@@ -35,18 +40,16 @@ class CoercerServiceTest extends TestCase
             });
 
         $service = new CoercerService(new ArrayIterator([$mock]), $this->createMock(ValidatorInterface::class));
-        $this->assertEquals(
+        static::assertEquals(
             $result,
             $service->supports($property)
         );
     }
 
-    /**
-     * @testWith [true, 15, 20]
-     *           [true, 25, 444]
-     *           [false, 15, null]
-     *           [false, "string", null]
-     */
+    #[TestWith([true, 15, 20])]
+    #[TestWith([true, 25, 444])]
+    #[TestWith([false, 15, null])]
+    #[TestWith([false, 'string', null])]
     public function testCoerce(
         bool $supports,
         $input,
@@ -59,7 +62,7 @@ class CoercerServiceTest extends TestCase
         });
 
         $mock = $this->createMock(CoercerInterface::class);
-        $mock->expects($this->once())
+        $mock->expects(static::once())
             ->method('supports')
             ->willReturnCallback(function (...$args) use ($check, $supports) {
                 $check->set($args);
@@ -74,7 +77,7 @@ class CoercerServiceTest extends TestCase
                 $this->assertEquals($input, $in);
             });
 
-            $mock->expects($this->once())
+            $mock->expects(static::once())
                 ->method('coerce')
                 ->willReturnCallback(function (...$args) use ($coerce, $output) {
                     $coerce->set($args);
@@ -90,9 +93,9 @@ class CoercerServiceTest extends TestCase
         $service = new CoercerService(new ArrayIterator([$mock]), $this->createMock(ValidatorInterface::class));
         $result = $service->coerce('something', $property, $input);
 
-        $this->assertEquals(
+        static::assertEquals(
             $output,
-            null !== $result ? $result->getValue() : null
+            $result?->getValue()
         );
     }
 }

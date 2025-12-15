@@ -7,7 +7,6 @@ use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -48,11 +47,11 @@ trait CoercerResultTrait
             );
         }
 
-        /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
-            Util::removeIndexByConstraintViolation($value, $propertyPath, $violation);
+            Util::removeIndexByConstraintViolation($value, $propertyPath, $violation); // @phpstan-ignore-line
         }
 
+        // @phpstan-ignore-next-line
         return new CoerceResult(
             $value,
             $violations

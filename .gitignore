@@ -8,3 +8,5 @@ vendor/
 
 artifacts/
 code-coverage-html/
+
+config/reference.php

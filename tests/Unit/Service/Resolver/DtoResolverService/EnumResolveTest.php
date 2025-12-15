@@ -10,11 +10,14 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\EnumQueryDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\LimitedEnumByKeyDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\LimitedEnumDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group enum
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoResolverService::class)]
 class EnumResolveTest extends KernelTestCase
 {
     private DtoResolverService $service;
@@ -38,12 +41,12 @@ class EnumResolveTest extends KernelTestCase
             EnumDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertEquals(15, $resolved->int->value);
-        $this->assertEquals('not_string_key', $resolved->string->value);
-        $this->assertEquals(['int', 'string'], $resolved->getVisited());
-        $this->assertTrue($resolved->visited('int'));
-        $this->assertTrue($resolved->visited('string'));
+        static::assertTrue($resolved->isValid());
+        static::assertEquals(15, $resolved->int->value);
+        static::assertEquals('not_string_key', $resolved->string->value);
+        static::assertEquals(['int', 'string'], $resolved->getVisited());
+        static::assertTrue($resolved->visited('int'));
+        static::assertTrue($resolved->visited('string'));
     }
 
     public function testEnumResolveKey(): void
@@ -59,12 +62,12 @@ class EnumResolveTest extends KernelTestCase
             EnumByKeysDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertEquals(15, $resolved->int?->value);
-        $this->assertEquals('not_string_key', $resolved->string?->value);
-        $this->assertEquals(['int', 'string'], $resolved->getVisited());
-        $this->assertTrue($resolved->visited('int'));
-        $this->assertTrue($resolved->visited('string'));
+        static::assertTrue($resolved->isValid());
+        static::assertEquals(15, $resolved->int?->value);
+        static::assertEquals('not_string_key', $resolved->string?->value);
+        static::assertEquals(['int', 'string'], $resolved->getVisited());
+        static::assertTrue($resolved->visited('int'));
+        static::assertTrue($resolved->visited('string'));
     }
 
     public function testResolveQueryEnum(): void
@@ -79,10 +82,10 @@ class EnumResolveTest extends KernelTestCase
             EnumQueryDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertEquals(15, $resolved->int?->value);
-        $this->assertEquals(['int'], $resolved->getVisited());
-        $this->assertTrue($resolved->visited('int'));
+        static::assertTrue($resolved->isValid());
+        static::assertEquals(15, $resolved->int?->value);
+        static::assertEquals(['int'], $resolved->getVisited());
+        static::assertTrue($resolved->visited('int'));
     }
 
     public function testLimitedResolve(): void
@@ -97,10 +100,10 @@ class EnumResolveTest extends KernelTestCase
             LimitedEnumDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertTrue($resolved->visited('int'));
-        $this->assertEquals(15, $resolved->int->value);
-        $this->assertEquals(['int'], $resolved->getVisited());
+        static::assertTrue($resolved->isValid());
+        static::assertTrue($resolved->visited('int'));
+        static::assertEquals(15, $resolved->int->value);
+        static::assertEquals(['int'], $resolved->getVisited());
     }
 
     public function testBadValueResolve(): void
@@ -115,10 +118,10 @@ class EnumResolveTest extends KernelTestCase
             LimitedEnumDto::class
         );
 
-        $this->assertFalse($resolved->isValid());
-        $this->assertTrue($resolved->visited('int'));
-        $this->assertNull($resolved->int);
-        $this->assertEquals(['int'], $resolved->getVisited());
+        static::assertFalse($resolved->isValid());
+        static::assertTrue($resolved->visited('int'));
+        static::assertNull($resolved->int);
+        static::assertEquals(['int'], $resolved->getVisited());
     }
 
     public function testLimitedKeyResolve(): void
@@ -133,10 +136,10 @@ class EnumResolveTest extends KernelTestCase
             LimitedEnumByKeyDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertTrue($resolved->visited('int'));
-        $this->assertEquals(15, $resolved->int->value);
-        $this->assertEquals(['int'], $resolved->getVisited());
+        static::assertTrue($resolved->isValid());
+        static::assertTrue($resolved->visited('int'));
+        static::assertEquals(15, $resolved->int->value);
+        static::assertEquals(['int'], $resolved->getVisited());
     }
 
     public function testBadKeyResolve(): void
@@ -151,10 +154,10 @@ class EnumResolveTest extends KernelTestCase
             LimitedEnumByKeyDto::class
         );
 
-        $this->assertFalse($resolved->isValid());
-        $this->assertTrue($resolved->visited('int'));
-        $this->assertNull($resolved->int);
-        $this->assertEquals(['int'], $resolved->getVisited());
+        static::assertFalse($resolved->isValid());
+        static::assertTrue($resolved->visited('int'));
+        static::assertNull($resolved->int);
+        static::assertEquals(['int'], $resolved->getVisited());
     }
 
     public function testLimitedKeyResolveWithNormalizer(): void
@@ -169,9 +172,9 @@ class EnumResolveTest extends KernelTestCase
             LimitedEnumByKeyDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertTrue($resolved->visited('string'));
-        $this->assertEquals(StringEnum::StringKey->value, $resolved->string->value);
-        $this->assertEquals(['string'], $resolved->getVisited());
+        static::assertTrue($resolved->isValid());
+        static::assertTrue($resolved->visited('string'));
+        static::assertEquals(StringEnum::StringKey->value, $resolved->string->value);
+        static::assertEquals(['string'], $resolved->getVisited());
     }
 }

@@ -4,15 +4,20 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Shared;
 
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+#[Group('unit')]
+#[Group('dependency-injection')]
+#[Group('shared')]
+#[CoversClass(TaggingExtension::class)]
 class TaggingExtensionTest extends TestCase
 {
-    /**
-     * @testWith ["interface", "tag"]
-     *           ["other-interface", "other-tag"]
-     */
+    #[TestWith(['interface', 'tag'])]
+    #[TestWith(['other-interface', 'other-tag'])]
     public function testLoad(
         string $interface,
         string $tag
@@ -28,7 +33,7 @@ class TaggingExtensionTest extends TestCase
             $this->assertEquals($interface, $in);
         });
 
-        $container->expects($this->once())
+        $container->expects(static::once())
             ->method('registerForAutoconfiguration')
             ->willReturnCallback(function (...$args) use ($child, $interfaceCheck) {
                 $interfaceCheck->set($args);
@@ -40,7 +45,7 @@ class TaggingExtensionTest extends TestCase
             $this->assertEquals($tag, $in);
         });
 
-        $child->expects($this->once())
+        $child->expects(static::once())
             ->method('addTag')
             ->willReturnCallback(function (...$args) use ($child, $tagCheck) {
                 $tagCheck->set($args);

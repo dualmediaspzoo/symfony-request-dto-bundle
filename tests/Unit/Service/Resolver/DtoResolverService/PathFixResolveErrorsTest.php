@@ -5,12 +5,15 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverServ
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto\PathFixDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
-/**
- * @group fix-paths-test
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoResolverService::class)]
 class PathFixResolveErrorsTest extends KernelTestCase
 {
     private DtoResolverService $service;
@@ -25,15 +28,15 @@ class PathFixResolveErrorsTest extends KernelTestCase
     {
         $resolved = $this->service->resolve(new Request(), PathFixDto::class);
 
-        $this->assertFalse($resolved->isValid());
-        $this->assertCount(2, $resolved->getConstraintViolationList());
+        static::assertFalse($resolved->isValid());
+        static::assertCount(2, $resolved->getConstraintViolationList());
 
         /** @var ConstraintViolationInterface $violation */
         $violation = $resolved->getConstraintViolationList()[0];
-        $this->assertEquals('integer', $violation->getPropertyPath());
+        static::assertEquals('integer', $violation->getPropertyPath());
 
         /** @var ConstraintViolationInterface $violation */
         $violation = $resolved->getConstraintViolationList()[1];
-        $this->assertEquals('other_string_path', $violation->getPropertyPath());
+        static::assertEquals('other_string_path', $violation->getPropertyPath());
     }
 }

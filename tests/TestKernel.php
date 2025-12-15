@@ -29,6 +29,7 @@ class TestKernel extends Kernel
         LoaderInterface $loader,
         ContainerBuilder $builder
     ): void {
+        $loader->load(__DIR__.'/../config/services.php');
         $loader->load(__DIR__.'/../config/services_test.php');
 
         $container->extension('framework', [

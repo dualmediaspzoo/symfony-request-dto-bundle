@@ -3,7 +3,9 @@
 namespace DualMedia\DtoRequestBundle\Tests\Traits\Unit;
 
 use DualMedia\DtoRequestBundle\Tests\Model\BoundCallable;
+use JetBrains\PhpStorm\Deprecated;
 
+#[Deprecated('Up for removal with next update')]
 trait BoundCallableTrait
 {
     /**

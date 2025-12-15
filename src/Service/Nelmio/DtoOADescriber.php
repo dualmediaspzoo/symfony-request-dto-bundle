@@ -2,11 +2,11 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Nelmio;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoTypeExtractorInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Dto as DtoTypeModel;
 use DualMedia\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
 use DualMedia\DtoRequestBundle\Util as DtoUtil;
@@ -46,6 +46,7 @@ class DtoOADescriber implements RouteDescriberInterface
     ) {
     }
 
+    #[\Override]
     public function describe(
         OpenApi $api,
         Route $route,

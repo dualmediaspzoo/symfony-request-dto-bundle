@@ -1,24 +1,25 @@
 <?php
 
 use Doctrine\Persistence\ManagerRegistry;
-use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
 use DualMedia\DtoRequestBundle\DtoBundle as Bundle;
 use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
-use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\TargetProviderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercionServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\TargetProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercionServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\TypeValidationInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
 use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\DefaultProcessor;
 use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\PascalCaseProcessor;
 use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessorService;
+use DualMedia\DtoRequestBundle\Service\Entity\QueryCreator;
+use DualMedia\DtoRequestBundle\Service\Entity\ReferenceHelper;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
 use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
@@ -60,7 +61,12 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->alias(TargetProviderInterface::class, TargetProviderService::class);
     $services->set(TargetProviderService::class)
-        ->arg(0, new Reference(ManagerRegistry::class));
+        ->arg(0, new Reference(ManagerRegistry::class))
+        ->arg(1, new Reference(QueryCreator::class))
+        ->arg(2, new Reference(ReferenceHelper::class));
+
+    $services->set(QueryCreator::class);
+    $services->set(ReferenceHelper::class);
 
     // coercion services
     $services->alias(CoercionServiceInterface::class, CoercerService::class);
@@ -138,7 +144,7 @@ return static function (ContainerConfigurator $configurator) {
         ->arg(6, new Reference(ActionValidatorService::class))
         ->arg(7, new Reference('validator'));
 
-    $services->set(interface_exists(\Symfony\Component\HttpKernel\Controller\ValueResolverInterface::class) ? DtoValueResolver::class : DtoArgumentResolver::class)
+    $services->set(DtoValueResolver::class)
         ->arg(0, new Reference(DtoResolverInterface::class))
         ->arg(1, new Reference('event_dispatcher'))
         ->tag('controller.argument_value_resolver');

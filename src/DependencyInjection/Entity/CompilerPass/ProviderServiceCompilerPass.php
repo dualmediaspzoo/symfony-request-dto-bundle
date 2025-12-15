@@ -2,11 +2,11 @@
 
 namespace DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass;
 
-use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
 use DualMedia\DtoRequestBundle\DtoBundle;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\AttributeMissingException;
 use DualMedia\DtoRequestBundle\Exception\DependencyInjection\Entity\DuplicateDefaultProviderException;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\TargetProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\TargetProviderInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -22,6 +22,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
      * @throws AttributeMissingException
      * @throws \ReflectionException
      */
+    #[\Override]
     public function process(
         ContainerBuilder $container
     ): void {
@@ -50,7 +51,7 @@ class ProviderServiceCompilerPass implements CompilerPassInterface
             }
 
             /** @var \ReflectionClass $reflection */
-            $reflection = $container->getReflectionClass($def->getClass());
+            $reflection = $container->getReflectionClass($def->getClass()); // @phpstan-ignore-line
             $attributes = $reflection->getAttributes(EntityProvider::class);
 
             if (array_key_exists(TargetProviderInterface::class, $reflection->getInterfaces())) {

@@ -2,16 +2,15 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Type\Coercer;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\LabelProcessorServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Type\CoercerInterface;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
 use DualMedia\DtoRequestBundle\Model\Type\CoerceResult;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Traits\Type\CoercerResultTrait;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -37,6 +36,7 @@ class EnumCoercer implements CoercerInterface
     ) {
     }
 
+    #[\Override]
     public function supports(
         Property $property
     ): bool {
@@ -44,6 +44,7 @@ class EnumCoercer implements CoercerInterface
             && is_subclass_of($property->getFqcn() ?? '', \BackedEnum::class);
     }
 
+    #[\Override]
     public function coerce(
         string $propertyPath,
         Property $property,
@@ -56,9 +57,7 @@ class EnumCoercer implements CoercerInterface
 
         if ($property->isCollection()) {
             $constraints = [
-                new All([
-                    'constraints' => $constraints,
-                ]),
+                new All($constraints),
             ];
         }
 
@@ -74,7 +73,6 @@ class EnumCoercer implements CoercerInterface
             );
         }
 
-        /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
             Util::removeIndexByConstraintViolation($value, $propertyPath, $violation);
         }
@@ -119,7 +117,6 @@ class EnumCoercer implements CoercerInterface
         $choices = $property->getEnumCases();
 
         if (null !== ($fromKey = ($property->getDtoAttributes(FromKey::class)[0] ?? null))) {
-            /** @var FromKey $fromKey */
             $processor = $this->labelProcessorService->getProcessor($fromKey->normalizer);
 
             $choices = array_map(
@@ -133,6 +130,6 @@ class EnumCoercer implements CoercerInterface
             );
         }
 
-        return new Choice(['choices' => $choices]);
+        return new Choice(choices: $choices);
     }
 }

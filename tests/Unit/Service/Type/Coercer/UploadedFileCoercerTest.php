@@ -5,25 +5,32 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\Coercer\UploadedFileCoercer;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('type')]
+#[Group('coercer')]
+#[CoversClass(UploadedFileCoercer::class)]
 class UploadedFileCoercerTest extends AbstractMinimalCoercerTestCase
 {
     protected const SERVICE_ID = UploadedFileCoercer::class;
 
-    public function supportsProvider(): iterable
+    public static function provideSupportsCases(): iterable
     {
         yield [
-            $this->buildProperty('object', false, UploadedFile::class),
+            static::buildProperty('object', false, UploadedFile::class),
             true,
         ];
         yield [
-            $this->buildProperty('object', true, UploadedFile::class),
+            static::buildProperty('object', true, UploadedFile::class),
             true,
         ];
 
         yield [
-            $this->buildProperty('object', false, \DateTime::class),
+            static::buildProperty('object', false, \DateTime::class),
             false,
         ];
     }
@@ -35,9 +42,9 @@ class UploadedFileCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFqcn(UploadedFile::class);
 
         $result = $this->service->coerce('something', $fileProp, [$mock = $this->createMock(UploadedFile::class)]);
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             $mock,
             $result->getValue()
         );
@@ -60,9 +67,9 @@ class UploadedFileCoercerTest extends AbstractMinimalCoercerTestCase
             $fileProp,
             $data
         );
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             $data,
             $result->getValue()
         );
@@ -75,7 +82,7 @@ class UploadedFileCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFqcn(UploadedFile::class);
 
         $result = $this->service->coerce('something', $fileProp, null);
-        $this->assertEmpty($result->getViolations());
-        $this->assertNull($result->getValue());
+        static::assertEmpty($result->getViolations());
+        static::assertNull($result->getValue());
     }
 }

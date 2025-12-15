@@ -2,14 +2,16 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Constraints;
 
-use DualMedia\DtoRequestBundle\Constraints\ArrayAll;
+use DualMedia\DtoRequestBundle\Constraint\ArrayAll;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @group constraint
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('constraints')]
 class ArrayAllValidatorTest extends KernelTestCase
 {
     private ValidatorInterface $service;
@@ -22,7 +24,7 @@ class ArrayAllValidatorTest extends KernelTestCase
 
     public function testUnexpectedValue(): void
     {
-        $this->assertCount(
+        static::assertCount(
             1,
             $list = $this->service->validate(
                 15,
@@ -31,17 +33,15 @@ class ArrayAllValidatorTest extends KernelTestCase
         );
         /** @var ConstraintViolationInterface $violation */
         $violation = $list[0];
-        $this->assertEquals('This value should be of type iterable.', $violation->getMessage());
-        $this->assertEquals(15, $violation->getInvalidValue());
+        static::assertEquals('This value should be of type iterable.', $violation->getMessage());
+        static::assertEquals(15, $violation->getInvalidValue());
     }
 
-    /**
-     * @dataProvider okProvider
-     */
+    #[DataProvider('provideOkCases')]
     public function testOk(
         $input
     ): void {
-        $this->assertCount(
+        static::assertCount(
             0,
             $this->service->validate(
                 $input,
@@ -50,7 +50,7 @@ class ArrayAllValidatorTest extends KernelTestCase
         );
     }
 
-    public function okProvider(): array
+    public static function provideOkCases(): iterable
     {
         return [
             [null],

@@ -4,15 +4,16 @@ namespace DualMedia\DtoRequestBundle\Service\Entity;
 
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderFunctionNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\ComplexLoaderNotFoundException;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
 
 class ComplexLoaderService implements ComplexLoaderServiceInterface
 {
     /**
      * @param array<string, ComplexLoaderInterface> $loaders
+     * @param ProviderServiceInterface<object> $providerService
      */
     public function __construct(
         private readonly array $loaders,
@@ -20,10 +21,12 @@ class ComplexLoaderService implements ComplexLoaderServiceInterface
     ) {
     }
 
+    #[\Override]
     public function loadComplex(
         string $fqcn,
         FindComplexInterface $find,
-        array $input
+        array $input,
+        array $metadata = []
     ): mixed {
         if (!array_key_exists($find->getService(), $this->loaders)) {
             throw new ComplexLoaderNotFoundException(sprintf(
@@ -46,7 +49,10 @@ class ComplexLoaderService implements ComplexLoaderServiceInterface
         )->findComplex(
             \Closure::fromCallable([$this->loaders[$find->getService()], $find->getFn()]), // @phpstan-ignore-line
             $input,
-            $find->getOrderBy()
+            $find->getOrderBy(),
+            $find->getLimit(),
+            $find->getOffset(),
+            $metadata
         );
     }
 }

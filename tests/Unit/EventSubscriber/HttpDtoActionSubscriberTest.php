@@ -2,17 +2,23 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\EventSubscriber;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Http\OnNull;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Http\OnNull;
 use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
 use DualMedia\DtoRequestBundle\Exception\Http\DtoHttpException;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+#[Group('unit')]
+#[Group('event-subscriber')]
+#[CoversClass(HttpDtoActionSubscriber::class)]
 class HttpDtoActionSubscriberTest extends KernelTestCase
 {
     private HttpDtoActionSubscriber $service;
@@ -23,9 +29,7 @@ class HttpDtoActionSubscriberTest extends KernelTestCase
         $this->service = $this->getService(HttpDtoActionSubscriber::class);
     }
 
-    /**
-     * @dataProvider provideHandle
-     */
+    #[DataProvider('provideHandleCases')]
     public function testHandle(
         bool $hasDto,
         bool $valid = false,
@@ -49,7 +53,7 @@ class HttpDtoActionSubscriberTest extends KernelTestCase
             'print_r',
             $params,
             $this->createMock(Request::class),
-            HttpKernelInterface::MASTER_REQUEST
+            HttpKernelInterface::MAIN_REQUEST
         );
 
         $exception = null;
@@ -60,17 +64,17 @@ class HttpDtoActionSubscriberTest extends KernelTestCase
             $exception = $e;
         } finally {
             if ($valid && null !== $action) {
-                $this->assertInstanceOf(DtoHttpException::class, $exception);
-                $this->assertEquals($action->getHttpStatusCode(), $exception->getStatusCode());
-                $this->assertEquals($action->getMessage(), $exception->getMessage());
-                $this->assertEquals($action->getHeaders(), $exception->getHeaders());
+                static::assertInstanceOf(DtoHttpException::class, $exception);
+                static::assertEquals($action->getHttpStatusCode(), $exception->getStatusCode());
+                static::assertEquals($action->getMessage(), $exception->getMessage());
+                static::assertEquals($action->getHeaders(), $exception->getHeaders());
             } else {
-                $this->assertNull($exception);
+                static::assertNull($exception);
             }
         }
     }
 
-    public function provideHandle(): array
+    public static function provideHandleCases(): iterable
     {
         return [
             [false],

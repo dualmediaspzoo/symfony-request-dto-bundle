@@ -11,12 +11,15 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\StaticDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use DualMedia\DtoRequestBundle\Tests\Service\Entity\DummyModelProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group find
- */
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoResolverService::class)]
 class FindResolveAndErrorsTest extends KernelTestCase
 {
     private DtoResolverService $service;
@@ -45,7 +48,7 @@ class FindResolveAndErrorsTest extends KernelTestCase
             $this->assertEquals($date->getTimestamp(), $criteria['date']->getTimestamp());
         });
 
-        $this->provider->expects($this->once())
+        $this->provider->expects(static::once())
             ->method('findOneBy')
             ->willReturnCallback(function (...$args) use ($find) {
                 $find->set($args);
@@ -64,15 +67,15 @@ class FindResolveAndErrorsTest extends KernelTestCase
             FindDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertTrue($resolved->visited('model'));
-        $this->assertTrue($resolved->visitedVirtualProperty('model', 'id'));
-        $this->assertTrue($resolved->visitedVirtualProperty('model', 'date'));
+        static::assertTrue($resolved->isValid());
+        static::assertTrue($resolved->visited('model'));
+        static::assertTrue($resolved->visitedVirtualProperty('model', 'id'));
+        static::assertTrue($resolved->visitedVirtualProperty('model', 'date'));
     }
 
     public function testErrors(): void
     {
-        $this->provider->expects($this->never())
+        $this->provider->expects(static::never())
             ->method('findOneBy');
 
         $request = new Request([], [
@@ -85,19 +88,19 @@ class FindResolveAndErrorsTest extends KernelTestCase
             FindDto::class
         );
 
-        $this->assertFalse($resolved->isValid());
-        $this->assertTrue($resolved->visited('model'));
-        $this->assertTrue($resolved->visitedVirtualProperty('model', 'id'));
-        $this->assertTrue($resolved->visitedVirtualProperty('model', 'date'));
+        static::assertFalse($resolved->isValid());
+        static::assertTrue($resolved->visited('model'));
+        static::assertTrue($resolved->visitedVirtualProperty('model', 'id'));
+        static::assertTrue($resolved->visitedVirtualProperty('model', 'date'));
 
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($resolved->getConstraintViolationList());
-        $this->assertArrayHasKey('whatever', $mapped);
-        $this->assertArrayHasKey('id', $mapped);
+        static::assertArrayHasKey('whatever', $mapped);
+        static::assertArrayHasKey('id', $mapped);
     }
 
     public function testSecondValidation(): void
     {
-        $this->provider->expects($this->never())
+        $this->provider->expects(static::never())
             ->method('findOneBy');
 
         $resolved = $this->service->resolve(
@@ -105,17 +108,17 @@ class FindResolveAndErrorsTest extends KernelTestCase
             FindWithSecondErrorDto::class
         );
 
-        $this->assertFalse($resolved->isValid());
-        $this->assertFalse($resolved->visited('model'));
+        static::assertFalse($resolved->isValid());
+        static::assertFalse($resolved->visited('model'));
 
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($resolved->getConstraintViolationList());
-        $this->assertArrayHasKey('something_id', $mapped);
-        $this->assertEquals($mapped['something_id'][0]->getMessage(), 'This value should not be blank.');
+        static::assertArrayHasKey('something_id', $mapped);
+        static::assertEquals($mapped['something_id'][0]->getMessage(), 'This value should not be blank.');
     }
 
     public function testSecondValidationWithPropertyVisit(): void
     {
-        $this->provider->expects($this->never())
+        $this->provider->expects(static::never())
             ->method('findOneBy');
 
         $resolved = $this->service->resolve(
@@ -125,17 +128,17 @@ class FindResolveAndErrorsTest extends KernelTestCase
             FindWithSomeSecondErrorDto::class
         );
 
-        $this->assertFalse($resolved->isValid());
-        $this->assertTrue($resolved->visited('model'));
+        static::assertFalse($resolved->isValid());
+        static::assertTrue($resolved->visited('model'));
 
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($resolved->getConstraintViolationList());
-        $this->assertArrayHasKey('something_id', $mapped);
-        $this->assertEquals($mapped['something_id'][0]->getMessage(), 'This value should not be blank.');
+        static::assertArrayHasKey('something_id', $mapped);
+        static::assertEquals($mapped['something_id'][0]->getMessage(), 'This value should not be blank.');
     }
 
     public function testForceError(): void
     {
-        $this->provider->expects($this->never())
+        $this->provider->expects(static::never())
             ->method('findBy');
 
         $resolved = $this->service->resolve(
@@ -143,7 +146,7 @@ class FindResolveAndErrorsTest extends KernelTestCase
             MultiFindDto::class
         );
 
-        $this->assertFalse($resolved->isValid());
+        static::assertFalse($resolved->isValid());
     }
 
     public function testStaticData(): void
@@ -161,7 +164,7 @@ class FindResolveAndErrorsTest extends KernelTestCase
             $this->assertEquals(1551, $criteria['static']);
         });
 
-        $this->provider->expects($this->once())
+        $this->provider->expects(static::once())
             ->method('findOneBy')
             ->willReturnCallback(function (...$args) use ($find) {
                 $find->set($args);
@@ -180,9 +183,9 @@ class FindResolveAndErrorsTest extends KernelTestCase
             StaticDto::class
         );
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertTrue($resolved->visited('model'));
-        $this->assertTrue($resolved->visitedVirtualProperty('model', 'id'));
-        $this->assertTrue($resolved->visitedVirtualProperty('model', 'second'));
+        static::assertTrue($resolved->isValid());
+        static::assertTrue($resolved->visited('model'));
+        static::assertTrue($resolved->visitedVirtualProperty('model', 'id'));
+        static::assertTrue($resolved->visitedVirtualProperty('model', 'second'));
     }
 }

@@ -2,21 +2,21 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Resolver;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\ProvideValidationGroups;
-use DualMedia\DtoRequestBundle\Constraints as DtoAssert;
+use DualMedia\DtoRequestBundle\Attribute\Dto\ProvideValidationGroups;
+use DualMedia\DtoRequestBundle\Constraint as DtoAssert;
 use DualMedia\DtoRequestBundle\Exception\Dynamic\ParameterNotSupportedException;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindComplexInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Dynamic\ResolverServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ComplexLoaderServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Http\ActionValidatorInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\TypeValidationInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindComplexInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Http\ActionValidatorInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\TypeValidationInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Dto as DtoTypeModel;
 use DualMedia\DtoRequestBundle\Model\Type\Property as PropertyTypeModel;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,19 +25,19 @@ use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template T of DtoInterface
- *
- * @implements DtoResolverInterface<T>
+ * @implements DtoResolverInterface<DtoInterface>
  */
 class DtoResolverService implements DtoResolverInterface
 {
     private PropertyAccessorInterface $propertyAccessor;
 
+    /**
+     * @param ProviderServiceInterface<object> $providerService
+     */
     public function __construct(
         private readonly TypeValidationInterface $validationHelper,
         private readonly DtoTypeExtractorInterface $typeExtractor,
@@ -55,6 +55,8 @@ class DtoResolverService implements DtoResolverInterface
     }
 
     /**
+     * @template T of DtoInterface
+     *
      * @param class-string<T> $class
      *
      * @return T
@@ -64,6 +66,7 @@ class DtoResolverService implements DtoResolverInterface
      *
      * @noinspection PhpDocMissingThrowsInspection
      */
+    #[\Override]
     public function resolve(
         Request $request,
         string $class
@@ -71,7 +74,6 @@ class DtoResolverService implements DtoResolverInterface
         /** @noinspection PhpUnhandledExceptionInspection */
         $model = $this->typeExtractor->extract(new \ReflectionClass($class));
 
-        /** @var T $object */
         $object = $this->internalResolve($request, $class, $model);
 
         $list = $this->validator->validate(
@@ -103,7 +105,6 @@ class DtoResolverService implements DtoResolverInterface
             return;
         }
 
-        /** @var ConstraintViolationInterface $violation */
         foreach ($list as $violation) {
             if ('' !== $violation->getPropertyPath()) {
                 $propPath = new PropertyPath($violation->getPropertyPath());
@@ -136,13 +137,15 @@ class DtoResolverService implements DtoResolverInterface
                 $violation->getInvalidValue(),
                 $violation->getPlural(),
                 $violation->getCode(),
-                method_exists($violation, 'getConstraint') ? $violation->getConstraint() : null,
-                method_exists($violation, 'getCause') ? $violation->getCause() : null
+                $violation->getConstraint(),
+                $violation->getCause()
             ));
         }
     }
 
     /**
+     * @template T of DtoInterface
+     *
      * @param class-string<T> $class
      *
      * @return T
@@ -224,7 +227,7 @@ class DtoResolverService implements DtoResolverInterface
         string $propertyPath,
         string $replacePath
     ): void {
-        /** @var class-string<T> $childClass */
+        /** @var class-string<DtoInterface> $childClass */
         $childClass = $property->getFqcn();
 
         if ($property->isCollection()) {
@@ -376,16 +379,25 @@ class DtoResolverService implements DtoResolverInterface
 
         /** @var class-string $class */
         $class = $property->getFqcn();
+        $metadata = $property->getMetaAttributes();
 
         if ($find instanceof FindComplexInterface) {
-            $dto->{$property->getName()} = $this->complexLoaderService->loadComplex($class, $find, $criteria);
+            $dto->{$property->getName()} = $this->complexLoaderService->loadComplex(
+                $class,
+                $find,
+                $criteria,
+                $metadata
+            );
         } elseif ($find->isCollection()) {
             $dto->{$property->getName()} = $this->providerService->getProvider(
                 $class,
                 $find->getProviderId()
             )->findBy(
                 $criteria,
-                $find->getOrderBy()
+                $find->getOrderBy(),
+                $find->getLimit(),
+                $find->getOffset(),
+                $metadata
             );
         } else {
             $dto->{$property->getName()} = $this->providerService->getProvider(
@@ -393,7 +405,8 @@ class DtoResolverService implements DtoResolverInterface
                 $find->getProviderId()
             )->findOneBy(
                 $criteria,
-                $find->getOrderBy()
+                $find->getOrderBy(),
+                $metadata
             );
         }
 

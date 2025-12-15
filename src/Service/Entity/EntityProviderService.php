@@ -5,8 +5,8 @@ namespace DualMedia\DtoRequestBundle\Service\Entity;
 use DualMedia\DtoRequestBundle\Exception\Entity\CustomProviderNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\DefaultProviderNotFoundException;
 use DualMedia\DtoRequestBundle\Exception\Entity\EntityHasNoProviderException;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
 
 /**
  * @implements ProviderServiceInterface<object>
@@ -14,7 +14,7 @@ use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderServiceInterface;
 class EntityProviderService implements ProviderServiceInterface
 {
     /**
-     * @var array<class-string, array<string, ProviderInterface>>
+     * @var array<class-string, array<string, ProviderInterface<object>>>
      */
     private array $providers = [];
 
@@ -24,7 +24,7 @@ class EntityProviderService implements ProviderServiceInterface
     private array $defaultProviders = [];
 
     /**
-     * @param array<string, list<array{0: ProviderInterface, 1: class-string, 2: bool}>> $providers key is the service id, contains an array of ProviderInterface, FQCN and isDefault
+     * @param array<string, list<array{0: ProviderInterface<object>, 1: class-string, 2: bool}>> $providers key is the service id, contains an array of ProviderInterface, FQCN and isDefault
      */
     public function __construct(
         array $providers,
@@ -47,6 +47,7 @@ class EntityProviderService implements ProviderServiceInterface
         }
     }
 
+    #[\Override]
     public function getProvider(
         string $fqcn,
         string|null $providerId = null

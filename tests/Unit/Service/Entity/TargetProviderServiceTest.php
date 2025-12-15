@@ -6,35 +6,39 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use DualMedia\DtoRequestBundle\Service\Entity\QueryCreator;
+use DualMedia\DtoRequestBundle\Service\Entity\ReferenceHelper;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Entity\TestEntity;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('entity')]
+#[CoversClass(TargetProviderService::class)]
 class TargetProviderServiceTest extends TestCase
 {
-    /**
-     * @testWith ["aaaa", true]
-     *           ["bbbb", false, false, false]
-     *           ["aaa", false, false]
-     *           ["aaaa", false, true, false]
-     */
+    #[TestWith(['aaaa', true])]
+    #[TestWith(['bbbb', false, false])]
+    #[TestWith(['aaaa', false, false])]
     public function testSet(
         string $fqcn,
         bool $known,
-        bool $hasRepo = true,
         bool $addEm = true
     ): void {
-        $this->assertEquals(
+        static::assertEquals(
             $known,
-            $this->getService($hasRepo ? $this->createMock(EntityRepository::class) : null, $addEm)
+            $this->getService($this->createMock(EntityRepository::class), $addEm)
                 ->setFqcn($fqcn) // @phpstan-ignore-line
         );
     }
 
-    /**
-     * @testWith [{"some": 15, "field": "yeet"}]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}]
-     */
+    #[TestWith([['some' => 15, 'field' => 'yeet']])]
+    #[TestWith([['some' => 5525, 'field' => 'yeewwwwwwt'], ['id' => 'desc']])]
     public function testComplex(
         array $fields,
         array|null $orderBy = null
@@ -42,13 +46,13 @@ class TargetProviderServiceTest extends TestCase
         $repo = $this->createMock(EntityRepository::class);
         $builder = $this->createMock(QueryBuilder::class);
 
-        $repo->expects($this->once())
+        $repo->expects(static::once())
             ->method('createQueryBuilder')
             ->with('entity')
             ->willReturn($builder);
 
         $service = $this->getService($repo);
-        $this->assertTrue($service->setFqcn(TestEntity::class));
+        static::assertTrue($service->setFqcn(TestEntity::class));
 
         $callable = function (
             array $f,
@@ -63,10 +67,8 @@ class TargetProviderServiceTest extends TestCase
         $service->findComplex($callable, $fields, $orderBy);
     }
 
-    /**
-     * @testWith [{"some": 15, "field": "yeet"}]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}]
-     */
+    #[TestWith([['some' => 15, 'field' => 'yeet']])]
+    #[TestWith([['some' => 5525, 'field' => 'yeeeewt'], ['id' => 'desc']])]
     public function testFindOneBy(
         array $fields,
         array|null $orderBy = null
@@ -74,23 +76,21 @@ class TargetProviderServiceTest extends TestCase
         $repo = $this->createMock(EntityRepository::class);
         $mock = $this->createMock(TestEntity::class);
 
-        $repo->expects($this->once())
+        $repo->expects(static::once())
             ->method('findOneBy')
             ->with($fields, $orderBy)
             ->willReturn($mock);
 
         $service = $this->getService($repo);
-        $this->assertTrue($service->setFqcn(TestEntity::class));
+        static::assertTrue($service->setFqcn(TestEntity::class));
 
-        $this->assertEquals($mock, $service->findOneBy($fields, $orderBy));
+        static::assertEquals($mock, $service->findOneBy($fields, $orderBy));
     }
 
-    /**
-     * @testWith [{"some": 15, "field": "yeet"}]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}, 5, 15]
-     *           [{"some": 5525, "field": "yeewwwwwwwt"}, {"id": "desc"}, 0, 222]
-     */
+    #[TestWith([['some' => 15, 'field' => 'yeet']])]
+    #[TestWith([['somee' => 5525, 'field' => 'yeeewt2'], ['id' => 'desc']])]
+    #[TestWith([['somee' => 5525, 'field' => 'yeeewt2'], ['id' => 'desc'], 5, 15])]
+    #[TestWith([['somee' => 5525, 'field' => 'yeeewt2'], ['id' => 'desc'], 0, 222])]
     public function testFindBy(
         array $fields,
         array|null $orderBy = null,
@@ -100,30 +100,34 @@ class TargetProviderServiceTest extends TestCase
         $repo = $this->createMock(EntityRepository::class);
         $mock = $this->createMock(TestEntity::class);
 
-        $repo->expects($this->once())
+        $repo->expects(static::once())
             ->method('findBy')
             ->with($fields, $orderBy, $limit, $offset)
-            ->willReturn($mock);
+            ->willReturn([$mock]);
 
         $service = $this->getService($repo);
-        $this->assertTrue($service->setFqcn(TestEntity::class));
+        static::assertTrue($service->setFqcn(TestEntity::class));
 
-        $this->assertEquals($mock, $service->findBy($fields, $orderBy, $limit, $offset));
+        static::assertEquals([$mock], $service->findBy($fields, $orderBy, $limit, $offset));
     }
 
     private function getService(
-        EntityRepository|null $repository,
+        EntityRepository $repository,
         bool $addEm = true
     ): TargetProviderService {
         $registry = $this->createMock(ManagerRegistry::class);
 
-        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager = $addEm ? $this->createMock(EntityManagerInterface::class) : $this->createMock(ObjectManager::class);
         $manager->method('getRepository')
             ->willReturn($repository);
 
         $registry->method('getManagerForClass')
-            ->willReturn($addEm ? $manager : null);
+            ->willReturn($manager);
 
-        return new TargetProviderService($registry);
+        return new TargetProviderService(
+            $registry,
+            $this->createMock(QueryCreator::class),
+            $this->createMock(ReferenceHelper::class)
+        );
     }
 }

@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Profiler\Service\Resolver;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Bag;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoTypeExtractorInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Dto;
 use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -20,6 +20,7 @@ class ProfilingDtoTypeExtractorService extends AbstractWrapper implements DtoTyp
         parent::__construct($stopwatch);
     }
 
+    #[\Override]
     public function extract(
         \ReflectionClass $class,
         Bag|null $root = null

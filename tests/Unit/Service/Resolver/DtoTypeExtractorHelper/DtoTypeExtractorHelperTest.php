@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoTypeExtractorHelper;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Type;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Type;
 use DualMedia\DtoRequestBundle\Model\Type\Dto;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
@@ -10,8 +10,14 @@ use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\ComplexDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\SubDto;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 // todo: add specific checks for only parts of items, create dummy classes
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoTypeExtractorHelper::class)]
 class DtoTypeExtractorHelperTest extends KernelTestCase
 {
     private DtoTypeExtractorHelper $service;
@@ -27,122 +33,122 @@ class DtoTypeExtractorHelperTest extends KernelTestCase
         $dto = $this->service->extract(new \ReflectionClass(ComplexDto::class));
 
         foreach (['myInt', 'intArr', 'myString', 'model', 'dto', 'date'] as $key) {
-            $this->assertArrayHasKey($key, $dto);
+            static::assertArrayHasKey($key, $dto);
             /** @var Property $prop */
             $prop = $dto[$key];
-            $this->assertEquals($dto, $prop->getParent());
-            $this->assertInstanceOf(Property::class, $prop);
+            static::assertEquals($dto, $prop->getParent());
+            static::assertInstanceOf(Property::class, $prop);
         }
 
         /** @var Property $intEnum */
         $intEnum = $dto['intEnum'];
-        $this->assertEquals('object', $intEnum->getType());
-        $this->assertEquals('intEnum', $intEnum->getName());
-        $this->assertEquals('int', $intEnum->getSubType());
-        $this->assertFalse($intEnum->isCollection());
+        static::assertEquals('object', $intEnum->getType());
+        static::assertEquals('intEnum', $intEnum->getName());
+        static::assertEquals('int', $intEnum->getSubType());
+        static::assertFalse($intEnum->isCollection());
 
         /** @var Property $stringEnum */
         $stringEnum = $dto['stringEnum'];
-        $this->assertEquals('object', $stringEnum->getType());
-        $this->assertEquals('stringEnum', $stringEnum->getName());
-        $this->assertEquals('string', $stringEnum->getSubType());
-        $this->assertFalse($stringEnum->isCollection());
+        static::assertEquals('object', $stringEnum->getType());
+        static::assertEquals('stringEnum', $stringEnum->getName());
+        static::assertEquals('string', $stringEnum->getSubType());
+        static::assertFalse($stringEnum->isCollection());
 
         /** @var Property $int */
         $int = $dto['myInt'];
-        $this->assertEquals('int', $int->getType());
-        $this->assertEquals('myInt', $int->getName());
-        $this->assertFalse($int->isCollection());
+        static::assertEquals('int', $int->getType());
+        static::assertEquals('myInt', $int->getName());
+        static::assertFalse($int->isCollection());
 
         /** @var Property $intArr */
         $intArr = $dto['intArr'];
-        $this->assertEquals('int', $intArr->getType());
-        $this->assertEquals('intArr', $intArr->getName());
-        $this->assertTrue($intArr->isCollection());
+        static::assertEquals('int', $intArr->getType());
+        static::assertEquals('intArr', $intArr->getName());
+        static::assertTrue($intArr->isCollection());
 
         /** @var Property $string */
         $string = $dto['myString'];
-        $this->assertEquals('string', $string->getType());
-        $this->assertEquals('myString', $string->getName());
-        $this->assertFalse($string->isCollection());
+        static::assertEquals('string', $string->getType());
+        static::assertEquals('myString', $string->getName());
+        static::assertFalse($string->isCollection());
 
         /** @var Property $date */
         $date = $dto['date'];
-        $this->assertEquals('object', $date->getType());
-        $this->assertEquals('date', $date->getName());
-        $this->assertEquals('string', $date->getSubType());
-        $this->assertFalse($date->isCollection());
+        static::assertEquals('object', $date->getType());
+        static::assertEquals('date', $date->getName());
+        static::assertEquals('string', $date->getSubType());
+        static::assertFalse($date->isCollection());
 
         /** @var Property $model */
         $model = $dto['model'];
-        $this->assertEquals('object', $model->getType());
-        $this->assertEquals('model', $model->getName());
-        $this->assertFalse($model->isCollection());
-        $this->assertEquals(DummyModel::class, $model->getFqcn());
+        static::assertEquals('object', $model->getType());
+        static::assertEquals('model', $model->getName());
+        static::assertFalse($model->isCollection());
+        static::assertEquals(DummyModel::class, $model->getFqcn());
 
-        $this->assertNotNull($find = $model->getFindAttribute());
-        $this->assertEquals([
+        static::assertNotNull($find = $model->getFindAttribute());
+        static::assertEquals([
             'id' => 'id',
             'custom' => '$customProp',
             'date' => 'whatever',
         ], $find->getFields());
 
-        $this->assertCount(2, $find->getTypes());
-        $this->assertInstanceOf(Type::class, $type = $find->getTypes()['id'] ?? null);
+        static::assertCount(2, $find->getTypes());
+        static::assertInstanceOf(Type::class, $type = $find->getTypes()['id'] ?? null);
 
-        $this->assertEquals('int', $type->type);
-        $this->assertFalse($type->collection);
-        $this->assertNull($type->format);
+        static::assertEquals('int', $type->type);
+        static::assertFalse($type->collection);
+        static::assertNull($type->format);
 
-        $this->assertInstanceOf(Type::class, $date = $find->getTypes()['date'] ?? null);
+        static::assertInstanceOf(Type::class, $date = $find->getTypes()['date'] ?? null);
 
-        $this->assertEquals('object', $date->type);
-        $this->assertFalse($date->collection);
-        $this->assertNotNull($date->format);
+        static::assertEquals('object', $date->type);
+        static::assertFalse($date->collection);
+        static::assertNotNull($date->format);
 
         // check if sub-prop was created
-        $this->assertArrayHasKey('id', $model);
+        static::assertArrayHasKey('id', $model);
 
         /** @var Property $subProp */
         $subProp = $model['id'];
 
-        $this->assertEquals('int', $subProp->getType());
-        $this->assertFalse($subProp->isCollection());
+        static::assertEquals('int', $subProp->getType());
+        static::assertFalse($subProp->isCollection());
 
         /** @var Property $subDate */
         $subDate = $model['date'];
 
-        $this->assertEquals('object', $subDate->getType());
-        $this->assertFalse($subDate->isCollection());
-        $this->assertEquals('string', $subDate->getSubType());
-        $this->assertEquals('date', $subDate->getName());
+        static::assertEquals('object', $subDate->getType());
+        static::assertFalse($subDate->isCollection());
+        static::assertEquals('string', $subDate->getSubType());
+        static::assertEquals('date', $subDate->getName());
 
         /** @var Dto $subDto */
         $subDto = $dto['dto'];
-        $this->assertEquals('object', $subDto->getType());
-        $this->assertEquals('dto', $subDto->getName());
-        $this->assertFalse($subDto->isCollection());
-        $this->assertEquals(SubDto::class, $subDto->getFqcn());
+        static::assertEquals('object', $subDto->getType());
+        static::assertEquals('dto', $subDto->getName());
+        static::assertFalse($subDto->isCollection());
+        static::assertEquals(SubDto::class, $subDto->getFqcn());
 
         foreach (['subDtoInt', 'subDtoFloat', 'subDtoBool'] as $key) {
-            $this->assertArrayHasKey($key, $subDto);
+            static::assertArrayHasKey($key, $subDto);
         }
 
         /** @var Property $subInt */
         $subInt = $subDto['subDtoInt'];
-        $this->assertEquals('int', $subInt->getType());
-        $this->assertEquals('subDtoInt', $subInt->getName());
-        $this->assertFalse($subInt->isCollection());
+        static::assertEquals('int', $subInt->getType());
+        static::assertEquals('subDtoInt', $subInt->getName());
+        static::assertFalse($subInt->isCollection());
 
         /** @var Property $subFloat */
         $subFloat = $subDto['subDtoFloat'];
-        $this->assertEquals('float', $subFloat->getType());
-        $this->assertEquals('subDtoFloat', $subFloat->getName());
-        $this->assertFalse($subFloat->isCollection());
+        static::assertEquals('float', $subFloat->getType());
+        static::assertEquals('subDtoFloat', $subFloat->getName());
+        static::assertFalse($subFloat->isCollection());
 
         $subBool = $subDto['subDtoBool'];
-        $this->assertEquals('bool', $subBool->getType());
-        $this->assertEquals('subDtoBool', $subBool->getName());
-        $this->assertFalse($subBool->isCollection());
+        static::assertEquals('bool', $subBool->getType());
+        static::assertEquals('subDtoBool', $subBool->getName());
+        static::assertFalse($subBool->isCollection());
     }
 }

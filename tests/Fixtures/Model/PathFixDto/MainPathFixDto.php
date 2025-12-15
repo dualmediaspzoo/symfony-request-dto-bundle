@@ -2,7 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Path;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Path;
 use DualMedia\DtoRequestBundle\Model\AbstractDto;
 
 class MainPathFixDto extends AbstractDto

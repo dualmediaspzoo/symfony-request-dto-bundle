@@ -5,8 +5,14 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Resolver\DtoResolverServ
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\Dto\DeepDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('resolver')]
+#[CoversClass(DtoResolverService::class)]
 class DeepResolveTest extends KernelTestCase
 {
     private DtoResolverService $service;
@@ -26,8 +32,8 @@ class DeepResolveTest extends KernelTestCase
             ],
         ]), DeepDto::class);
 
-        $this->assertTrue($resolved->isValid());
-        $this->assertTrue($resolved->visited('pathed'));
-        $this->assertEquals('value', $resolved->pathed);
+        static::assertTrue($resolved->isValid());
+        static::assertTrue($resolved->visited('pathed'));
+        static::assertEquals('value', $resolved->pathed);
     }
 }

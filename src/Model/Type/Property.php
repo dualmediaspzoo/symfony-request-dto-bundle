@@ -2,15 +2,16 @@
 
 namespace DualMedia\DtoRequestBundle\Model\Type;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\AllowEnum;
-use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
-use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
-use DualMedia\DtoRequestBundle\Attributes\Dto\FromKey;
+use DualMedia\DtoRequestBundle\Attribute\Dto\AllowEnum;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Format;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FromKey;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\HttpActionInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\PathInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoFindMetaAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\PathInterface;
 use OpenApi\Annotations\Schema;
 use Symfony\Component\PropertyAccess\Exception\OutOfBoundsException;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -215,6 +216,24 @@ class Property implements \ArrayAccess, \IteratorAggregate
         return $this->dtoAttributes[$class] ?? [];
     }
 
+    /**
+     * @return list<DtoFindMetaAttributeInterface>
+     */
+    public function getMetaAttributes(): array
+    {
+        $attributes = [];
+
+        foreach ($this->dtoAttributes as $class => $list) {
+            if (!is_subclass_of($class, DtoFindMetaAttributeInterface::class)) {
+                continue;
+            }
+            /** @var list<DtoFindMetaAttributeInterface> $list */
+            $attributes[] = $list; // @phpstan-ignore-line
+        }
+
+        return array_merge(...$attributes);
+    }
+
     public function getHttpAction(): HttpActionInterface|null
     {
         return $this->httpAction;
@@ -325,13 +344,6 @@ class Property implements \ArrayAccess, \IteratorAggregate
          */
         $enums = call_user_func([$this->getFqcn(), 'cases']);
 
-        /**
-         * @phpstan-ignore-next-line
-         *
-         * @var AllowEnum $allowed
-         *
-         * @psalm-suppress NoInterfaceProperties
-         */
         if (null !== ($allowed = $this->getDtoAttributes(AllowEnum::class)[0] ?? null)
             && !empty($allowed->allowed)) {
             $enums = $allowed->allowed;
@@ -435,8 +447,9 @@ class Property implements \ArrayAccess, \IteratorAggregate
     /**
      * @param string $offset
      */
+    #[\Override]
     public function offsetExists(
-        $offset
+        mixed $offset
     ): bool {
         return isset($this->properties[$offset]);
     }
@@ -444,19 +457,20 @@ class Property implements \ArrayAccess, \IteratorAggregate
     /**
      * @param string $offset
      */
+    #[\Override]
     public function offsetGet(
-        $offset
+        mixed $offset
     ): Property|null {
         return $this->properties[$offset] ?? null;
     }
 
     /**
-     * @param string $offset
      * @param Property $value
      */
+    #[\Override]
     public function offsetSet(
-        $offset,
-        $value
+        mixed $offset,
+        mixed $value
     ): void {
         $this->properties[$offset] = $value;
     }
@@ -464,8 +478,9 @@ class Property implements \ArrayAccess, \IteratorAggregate
     /**
      * @param string $offset
      */
+    #[\Override]
     public function offsetUnset(
-        $offset
+        mixed $offset
     ): void {
         unset($this->properties[$offset]);
     }
@@ -473,6 +488,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
     /**
      * @return \Traversable<string, Property>
      */
+    #[\Override]
     public function getIterator(): \Traversable
     {
         yield from $this->properties;

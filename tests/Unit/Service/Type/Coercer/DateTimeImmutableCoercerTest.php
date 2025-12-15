@@ -2,29 +2,36 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Service\Type\Coercer;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Format;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Format;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use DualMedia\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\Coercer\AbstractMinimalCoercerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Validator\Constraints\DateTime as DateTimeConstraint;
 
+#[Group('unit')]
+#[Group('service')]
+#[Group('type')]
+#[Group('coercer')]
+#[CoversClass(DateTimeImmutableCoercer::class)]
 class DateTimeImmutableCoercerTest extends AbstractMinimalCoercerTestCase
 {
     protected const SERVICE_ID = DateTimeImmutableCoercer::class;
 
-    public function supportsProvider(): iterable
+    public static function provideSupportsCases(): iterable
     {
         foreach ([\DateTimeImmutable::class, \DateTimeInterface::class] as $c) {
             foreach ([true, false] as $bool) {
                 yield [
-                    $this->buildProperty('object', $bool, $c),
+                    static::buildProperty('object', $bool, $c),
                     true,
                 ];
             }
         }
 
         yield [
-            $this->buildProperty('string'),
+            static::buildProperty('string'),
             false,
         ];
     }
@@ -36,9 +43,9 @@ class DateTimeImmutableCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFqcn(\DateTimeInterface::class);
 
         $result = $this->service->coerce('something', $date, '2012-02-12T12:00:00+00:00');
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             '2012-02-12T12:00:00+00:00',
             $result->getValue()->format(\DateTimeInterface::ATOM)
         );
@@ -52,9 +59,9 @@ class DateTimeImmutableCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFormat(new Format('Y-m-d H:i:s'));
 
         $result = $this->service->coerce('something', $date, '2015-02-15 15:30:00');
-        $this->assertEmpty($result->getViolations());
+        static::assertEmpty($result->getViolations());
 
-        $this->assertEquals(
+        static::assertEquals(
             '2015-02-15 15:30:00',
             $result->getValue()->format('Y-m-d H:i:s')
         );
@@ -68,13 +75,13 @@ class DateTimeImmutableCoercerTest extends AbstractMinimalCoercerTestCase
             ->setFormat(new Format('Y-m-d H:i:s'));
 
         $result = $this->service->coerce('something', $date, '2015-02-15');
-        $this->assertCount(1, $result->getViolations());
-        $this->assertNull($result->getValue());
+        static::assertCount(1, $result->getViolations());
+        static::assertNull($result->getValue());
 
         $mapped = $this->getConstraintViolationsMappedToPropertyPaths($result->getViolations());
-        $this->assertArrayHasKey('something', $mapped);
+        static::assertArrayHasKey('something', $mapped);
 
-        $this->assertEquals(
+        static::assertEquals(
             (new DateTimeConstraint())->message,
             $mapped['something'][0]->getMessage()
         );

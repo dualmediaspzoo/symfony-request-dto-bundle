@@ -2,21 +2,22 @@
 
 namespace DualMedia\DtoRequestBundle\Profiler\Service\Resolver;
 
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
 use DualMedia\DtoRequestBundle\Profiler\AbstractWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
- * @template T of DtoInterface
+ * @extends AbstractWrapper<DtoInterface>
  *
- * @extends AbstractWrapper<T>
- *
- * @implements DtoResolverInterface<T>
+ * @implements DtoResolverInterface<DtoInterface>
  */
 class ProfilingDtoResolverService extends AbstractWrapper implements DtoResolverInterface
 {
+    /**
+     * @param DtoResolverInterface<DtoInterface> $resolver
+     */
     public function __construct(
         private readonly DtoResolverInterface $resolver,
         Stopwatch|null $stopwatch = null
@@ -24,6 +25,7 @@ class ProfilingDtoResolverService extends AbstractWrapper implements DtoResolver
         parent::__construct($stopwatch);
     }
 
+    #[\Override]
     public function resolve(
         Request $request,
         string $class

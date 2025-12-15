@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Service\Entity;
 
-use DualMedia\DtoRequestBundle\Attributes\Entity\EntityProvider;
-use DualMedia\DtoRequestBundle\Interfaces\Entity\ProviderInterface;
+use DualMedia\DtoRequestBundle\Attribute\Entity\EntityProvider;
+use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 /**
@@ -16,24 +16,29 @@ class DummyModelProvider implements ProviderInterface
 {
     public function findComplex(
         callable $fn,
-        array $fields,
-        array|null $orderBy = null
+        array $criteria,
+        array|null $orderBy = null,
+        int|null $limit = null,
+        int|null $offset = null,
+        array $metadata = []
     ) {
         // TODO: Implement findComplex() method.
     }
 
     public function findOneBy(
         array $criteria,
-        array|null $orderBy = null
-    ) {
-        // TODO: Implement findOneBy() method.
+        array|null $orderBy = null,
+        array $metadata = []
+    ): mixed {
+        return null;
     }
 
     public function findBy(
         array $criteria,
         array|null $orderBy = null,
         int|null $limit = null,
-        int|null $offset = null
+        int|null $offset = null,
+        array $metadata = []
     ): array {
         // TODO: Implement findBy() method.
     }

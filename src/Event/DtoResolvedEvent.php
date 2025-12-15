@@ -2,12 +2,12 @@
 
 namespace DualMedia\DtoRequestBundle\Event;
 
-use DualMedia\DtoRequestBundle\ArgumentResolver\DtoArgumentResolver;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * When the DTO objects are resolved by {@link DtoArgumentResolver} this event is fired.
+ * When the DTO objects are resolved by {@link DtoValueResolver} this event is fired.
  */
 class DtoResolvedEvent extends Event
 {

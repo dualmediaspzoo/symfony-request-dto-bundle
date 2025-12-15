@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\Fixtures\Model\PathFixDto;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\FindBy;
-use DualMedia\DtoRequestBundle\Attributes\Dto\FindOneBy;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FindBy;
+use DualMedia\DtoRequestBundle\Attribute\Dto\FindOneBy;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Model\DummyModel;
 
 class PathFindByFix

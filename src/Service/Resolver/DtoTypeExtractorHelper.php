@@ -2,14 +2,14 @@
 
 namespace DualMedia\DtoRequestBundle\Service\Resolver;
 
-use DualMedia\DtoRequestBundle\Attributes\Dto\Bag;
-use DualMedia\DtoRequestBundle\Attributes\Dto\Type as TypeAnnotation;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Bag;
+use DualMedia\DtoRequestBundle\Attribute\Dto\Type as TypeAnnotation;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidDateTimeClassException;
 use DualMedia\DtoRequestBundle\Exception\Type\InvalidTypeCountException;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\DtoAttributeInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Attribute\FindInterface;
-use DualMedia\DtoRequestBundle\Interfaces\DtoInterface;
-use DualMedia\DtoRequestBundle\Interfaces\Resolver\DtoTypeExtractorInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
+use DualMedia\DtoRequestBundle\Interface\Attribute\FindInterface;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use DualMedia\DtoRequestBundle\Interface\Resolver\DtoTypeExtractorInterface;
 use DualMedia\DtoRequestBundle\Model\Type\Dto;
 use DualMedia\DtoRequestBundle\Model\Type\Property;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
@@ -30,6 +30,7 @@ class DtoTypeExtractorHelper implements DtoTypeExtractorInterface
      *
      * @noinspection PhpDocMissingThrowsInspection
      */
+    #[\Override]
     public function extract(
         \ReflectionClass $class,
         Bag|null $root = null

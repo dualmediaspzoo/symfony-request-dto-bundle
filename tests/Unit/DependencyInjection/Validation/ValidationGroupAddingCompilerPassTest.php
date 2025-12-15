@@ -4,17 +4,20 @@ namespace DualMedia\DtoRequestBundle\Tests\Unit\DependencyInjection\Validation;
 
 use DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
 use DualMedia\DtoRequestBundle\DtoBundle;
-use DualMedia\DtoRequestBundle\Interfaces\Validation\GroupServiceInterface;
+use DualMedia\DtoRequestBundle\Interface\Validation\GroupServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyModelProvider;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @group dependency-injection
- */
+#[Group('unit')]
+#[Group('dependency-injection')]
+#[Group('validation')]
+#[CoversClass(ValidationGroupAddingCompilerPass::class)]
 class ValidationGroupAddingCompilerPassTest extends AbstractCompilerPassTestCase
 {
     protected function setUp(): void
@@ -29,7 +32,7 @@ class ValidationGroupAddingCompilerPassTest extends AbstractCompilerPassTestCase
 
         $definition = $this->container->getDefinition(GroupProviderService::class);
 
-        $this->assertEmpty($definition->getArgument(0));
+        static::assertEmpty($definition->getArgument(0));
     }
 
     public function testTagged(): void
@@ -43,13 +46,13 @@ class ValidationGroupAddingCompilerPassTest extends AbstractCompilerPassTestCase
         $this->compile();
         $definition = $this->container->getDefinition(GroupProviderService::class);
 
-        $this->assertCount(1, $arg = $definition->getArgument(0));
-        $this->assertArrayHasKey('affected', $arg);
+        static::assertCount(1, $arg = $definition->getArgument(0));
+        static::assertArrayHasKey('affected', $arg);
 
         /** @var Reference $ref */
         $ref = $arg['affected'];
-        $this->assertInstanceOf(Reference::class, $ref);
-        $this->assertEquals('affected', (string)$ref);
+        static::assertInstanceOf(Reference::class, $ref);
+        static::assertEquals('affected', (string)$ref);
     }
 
     protected function registerCompilerPass(
