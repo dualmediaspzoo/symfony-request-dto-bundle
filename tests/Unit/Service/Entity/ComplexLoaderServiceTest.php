@@ -9,6 +9,7 @@ use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
 use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
 use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
 use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
+use DualMedia\DtoRequestBundle\Tests\Fixtures\Service\Entity\DummyComplexLoaderImplementation;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -28,9 +29,9 @@ class ComplexLoaderServiceTest extends TestCase
 
     public function testNotFoundLoader(): void
     {
-        $mock = $this->createMockWithMethods(ComplexLoaderInterface::class, ['custom_call']);
+        $mock = $this->createMock(DummyComplexLoaderImplementation::class);
         $mock->expects(static::never())
-            ->method('custom_call');
+            ->method('custom');
 
         /** @psalm-suppress InvalidArgument */
         $service = new ComplexLoaderService([
@@ -48,9 +49,9 @@ class ComplexLoaderServiceTest extends TestCase
 
     public function testMethodNotExists(): void
     {
-        $mock = $this->createMockWithMethods(ComplexLoaderInterface::class, ['custom_call']);
+        $mock = $this->createMock(DummyComplexLoaderImplementation::class);
         $mock->expects(static::never())
-            ->method('custom_call');
+            ->method('custom');
 
         /** @psalm-suppress InvalidArgument */
         $service = new ComplexLoaderService([
@@ -70,22 +71,21 @@ class ComplexLoaderServiceTest extends TestCase
         $service->loadComplex('does_not_matter', $find, []);
     }
 
-    #[TestWith(['something', 'some_id', 'my_custom_call', 15, ['aa' => 15]])]
-    #[TestWith(['other', 'other_id', 'fn_whatever', null, ['test' => 15, 'aaaa' => 55.5], 'custom', ['something' => 'DESC']])]
-    #[TestWith(['\\Custom\\Class', '\\Custom\\ServiceID', 'loadEntity', [], ['something' => 'here'], 'specified'])]
+    #[TestWith(['something', 'some_id', 15, ['aa' => 15]])]
+    #[TestWith(['other', 'other_id', null, ['test' => 15, 'aaaa' => 55.5], 'custom', ['something' => 'DESC']])]
+    #[TestWith(['\\Custom\\Class', '\\Custom\\ServiceID', [], ['something' => 'here'], 'specified'])]
     public function testLoadComplex(
         string $fqcn,
         string $serviceId,
-        string $fn,
         $output,
         array $input,
         string|null $providerId = null,
         array|null $orderBy = null
     ): void {
         // this test does not mock actually calling these objects
-        $loader = $this->createMockWithMethods(ComplexLoaderInterface::class, [$fn]);
+        $loader = $this->createMock(DummyComplexLoaderImplementation::class);
         $loader->expects(static::never())
-            ->method($fn);
+            ->method('custom');
 
         /** @psalm-suppress InvalidArgument */
         $service = new ComplexLoaderService([
@@ -99,7 +99,7 @@ class ComplexLoaderServiceTest extends TestCase
 
         $find->expects(static::exactly(2))
             ->method('getFn')
-            ->willReturn($fn);
+            ->willReturn('custom');
 
         $find->expects(static::once())
             ->method('getProviderId')

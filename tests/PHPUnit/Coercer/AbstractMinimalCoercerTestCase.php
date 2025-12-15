@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 abstract class AbstractMinimalCoercerTestCase extends KernelTestCase
 {
-    protected const BASIC_TYPES = [
+    protected const array BASIC_TYPES = [
         'string',
         'int',
         'bool',

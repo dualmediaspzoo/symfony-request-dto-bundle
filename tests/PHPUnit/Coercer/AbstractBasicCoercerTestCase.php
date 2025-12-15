@@ -12,13 +12,13 @@ abstract class AbstractBasicCoercerTestCase extends AbstractCoercerTestCase
             static::markTestSkipped('No specified basic type');
         }
 
-        if (!in_array(static::EXPECTED_BASIC_TYPE, self::BASIC_TYPES)) {
+        if (!in_array(static::EXPECTED_BASIC_TYPE, self::BASIC_TYPES, true)) {
             static::fail(sprintf('Invalid basic type %s', static::EXPECTED_BASIC_TYPE));
         }
 
         // copy allowed types and remove the one we know here
         $copy = static::BASIC_TYPES;
-        unset($copy[array_search(static::EXPECTED_BASIC_TYPE, $copy)]);
+        unset($copy[array_search(static::EXPECTED_BASIC_TYPE, $copy, true)]);
 
         $items = [
             [static::buildProperty(static::EXPECTED_BASIC_TYPE), true],

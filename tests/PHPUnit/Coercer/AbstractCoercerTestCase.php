@@ -10,8 +10,8 @@ abstract class AbstractCoercerTestCase extends AbstractMinimalCoercerTestCase
     #[DataProvider('provideCoerceCases')]
     public function testCoerce(
         Property $property,
-        $input,
-        $expected
+        mixed $input,
+        mixed $expected
     ): void {
         static::assertEquals(
             $expected,

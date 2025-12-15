@@ -38,7 +38,8 @@
     "symfony/var-exporter": "^6.4|^7.3",
     "doctrine/doctrine-bundle": "^2",
     "doctrine/orm": "^2|^3",
-    "phpstan/phpstan-strict-rules": "^2.0"
+    "phpstan/phpstan-strict-rules": "^2.0",
+    "jetbrains/phpstorm-attributes": "^1.2"
   },
   "conflict": {
     "nelmio/api-doc-bundle": "<5",

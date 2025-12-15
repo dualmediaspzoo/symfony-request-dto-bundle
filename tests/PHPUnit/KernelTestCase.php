@@ -19,6 +19,8 @@ class KernelTestCase extends SymfonyTestCase
     {
         $this->assertBoundCallables();
         parent::tearDown();
+
+        restore_exception_handler();
     }
 
     /**
