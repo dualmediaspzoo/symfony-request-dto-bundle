@@ -23,7 +23,7 @@ interface ProviderInterface
      *
      * Proper arguments should be passed depending on the type of provider
      *
-     * @param callable(array<string, mixed>, array<string, string>|null, QueryBuilder, list<DtoFindMetaAttributeInterface>): mixed $fn
+     * @param callable(array<string, mixed>, array<string, string>|null, QueryBuilder, int|null, int|null, list<DtoFindMetaAttributeInterface>): mixed $fn
      * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
      * @param list<DtoFindMetaAttributeInterface> $metadata
@@ -36,6 +36,8 @@ interface ProviderInterface
         callable $fn,
         array $criteria,
         array|null $orderBy = null,
+        int|null $limit = null,
+        int|null $offset = null,
         array $metadata = []
     );
 

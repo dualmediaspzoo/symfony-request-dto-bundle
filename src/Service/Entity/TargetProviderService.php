@@ -54,15 +54,17 @@ class TargetProviderService implements TargetProviderInterface
     #[\Override]
     public function findComplex(
         callable $fn,
-        array $fields,
+        array $criteria,
         array|null $orderBy = null,
+        int|null $limit = null,
+        int|null $offset = null,
         array $metadata = []
     ) {
         if (null === $this->repository) {
             return null;
         }
 
-        return $fn($fields, $orderBy, $this->repository->createQueryBuilder('entity'), $metadata); // @phpstan-ignore-line
+        return $fn($criteria, $orderBy, $this->repository->createQueryBuilder('entity'), $limit, $offset, $metadata); // @phpstan-ignore-line
     }
 
     #[\Override]

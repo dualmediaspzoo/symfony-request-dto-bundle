@@ -382,7 +382,12 @@ class DtoResolverService implements DtoResolverInterface
         $metadata = $property->getMetaAttributes();
 
         if ($find instanceof FindComplexInterface) {
-            $dto->{$property->getName()} = $this->complexLoaderService->loadComplex($class, $find, $criteria, $metadata);
+            $dto->{$property->getName()} = $this->complexLoaderService->loadComplex(
+                $class,
+                $find,
+                $criteria,
+                $metadata
+            );
         } elseif ($find->isCollection()) {
             $dto->{$property->getName()} = $this->providerService->getProvider(
                 $class,

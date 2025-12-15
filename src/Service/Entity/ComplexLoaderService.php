@@ -50,6 +50,8 @@ class ComplexLoaderService implements ComplexLoaderServiceInterface
             \Closure::fromCallable([$this->loaders[$find->getService()], $find->getFn()]), // @phpstan-ignore-line
             $input,
             $find->getOrderBy(),
+            $find->getLimit(),
+            $find->getOffset(),
             $metadata
         );
     }
