@@ -19,6 +19,7 @@ use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\DefaultProcessor;
 use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\PascalCaseProcessor;
 use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessorService;
 use DualMedia\DtoRequestBundle\Service\Entity\QueryCreator;
+use DualMedia\DtoRequestBundle\Service\Entity\ReferenceHelper;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
 use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
@@ -61,9 +62,11 @@ return static function (ContainerConfigurator $configurator) {
     $services->alias(TargetProviderInterface::class, TargetProviderService::class);
     $services->set(TargetProviderService::class)
         ->arg(0, new Reference(ManagerRegistry::class))
-        ->arg(1, new Reference(QueryCreator::class));
+        ->arg(1, new Reference(QueryCreator::class))
+        ->arg(2, new Reference(ReferenceHelper::class));
 
     $services->set(QueryCreator::class);
+    $services->set(ReferenceHelper::class);
 
     // coercion services
     $services->alias(CoercionServiceInterface::class, CoercerService::class);

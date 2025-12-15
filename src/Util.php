@@ -2,10 +2,27 @@
 
 namespace DualMedia\DtoRequestBundle;
 
+use DualMedia\DtoRequestBundle\Attribute\Dto\AsDoctrineReference;
+use DualMedia\DtoRequestBundle\Interface\Attribute\DtoFindMetaAttributeInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class Util
 {
+    /**
+     * @param list<DtoFindMetaAttributeInterface> $metadata
+     */
+    public static function metaHasReference(
+        array $metadata
+    ): bool {
+        foreach ($metadata as $attribute) {
+            if ($attribute instanceof AsDoctrineReference) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * array_merge_recursive does indeed merge arrays, but it converts values with duplicate
      * keys to arrays rather than overwriting the value in the first array with the duplicate

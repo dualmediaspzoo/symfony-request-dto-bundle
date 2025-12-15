@@ -4,23 +4,19 @@ namespace DualMedia\DtoRequestBundle\Service\Entity;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use DualMedia\DtoRequestBundle\Interface\Entity\TargetProviderInterface;
-use DualMedia\DtoRequestBundle\Traits\Provider\MetadataTrait;
+use DualMedia\DtoRequestBundle\Util;
 
 /**
  * @implements TargetProviderInterface<object>
  */
 class TargetProviderService implements TargetProviderInterface
 {
-    use MetadataTrait;
-
     /**
      * @var EntityRepository<object>|null
      */
     private EntityRepository|null $repository = null;
-    private EntityManagerInterface|null $manager = null;
 
     /**
      * @var class-string|null
@@ -29,7 +25,8 @@ class TargetProviderService implements TargetProviderInterface
 
     public function __construct(
         private readonly ManagerRegistry $registry,
-        private readonly QueryCreator $creator
+        private readonly QueryCreator $creator,
+        private readonly ReferenceHelper $helper
     ) {
     }
 
@@ -45,7 +42,6 @@ class TargetProviderService implements TargetProviderInterface
         }
 
         $this->repository = $manager->getRepository($fqcn);
-        $this->manager = $manager;
         $this->fqcn = $fqcn;
 
         return true;
@@ -77,17 +73,20 @@ class TargetProviderService implements TargetProviderInterface
             return null;
         }
 
-        if (!$this->metaAsReference($metadata)) {
+        if (!Util::metaHasReference($metadata)) {
             return $this->repository->findOneBy($criteria, $orderBy) ?? null;
         }
 
-        return $this->resolveReferences(
+        assert(null !== $this->fqcn);
+
+        return $this->helper->resolve(
             $this->creator->buildQuery(
                 $this->repository->createQueryBuilder('entity'),
                 'entity',
                 $criteria,
                 $orderBy ?? []
-            )
+            ),
+            $this->fqcn
         )[0] ?? null;
     }
 
@@ -103,39 +102,22 @@ class TargetProviderService implements TargetProviderInterface
             return [];
         }
 
-        if (!$this->metaAsReference($metadata)) {
+        if (!Util::metaHasReference($metadata)) {
             return $this->repository->findBy($criteria, $orderBy, $limit, $offset); // @phpstan-ignore-line
         }
 
-        return $this->resolveReferences(
+        assert(null !== $this->fqcn);
+
+        return $this->helper->resolve(
             $this->creator->buildQuery(
                 $this->repository->createQueryBuilder('entity'),
                 'entity',
                 $criteria,
-                $orderBy ?? []
-            )
+                $orderBy ?? [],
+                $limit,
+                $offset
+            ),
+            $this->fqcn
         );
-    }
-
-    /**
-     * @return list<object>
-     */
-    private function resolveReferences(
-        QueryBuilder $qb
-    ): array {
-        assert(null !== $this->manager);
-        assert(null !== $this->fqcn);
-
-        $ids = $qb->select('entity.id')
-            ->getQuery()
-            ->getSingleColumnResult();
-
-        $results = [];
-
-        foreach ($ids as $id) {
-            $results[] = $this->manager->getReference($this->fqcn, $id);
-        }
-
-        return array_values(array_filter($results));
     }
 }
