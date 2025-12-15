@@ -224,7 +224,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
         $attributes = [];
 
         foreach ($this->dtoAttributes as $class => $list) {
-            if (!($class instanceof DtoFindMetaAttributeInterface)) {
+            if (!is_subclass_of($class, DtoFindMetaAttributeInterface::class)) {
                 continue;
             }
 
