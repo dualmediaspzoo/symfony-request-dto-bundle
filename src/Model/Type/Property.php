@@ -228,7 +228,6 @@ class Property implements \ArrayAccess, \IteratorAggregate
                 continue;
             }
             /** @var list<DtoFindMetaAttributeInterface> $list */
-
             $attributes[] = $list; // @phpstan-ignore-line
         }
 

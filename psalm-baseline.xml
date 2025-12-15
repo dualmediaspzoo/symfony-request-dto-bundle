@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.14.2@bbd217fc98c0daa0a13aea2a7f119d03ba3fc9a0">
+  <file src="src/Attribute/Dto/AllowEnum.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Attribute/Dto/FindBy.php">
+    <UnusedClass>
+      <code><![CDATA[FindBy]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Attribute/Dto/FindComplex.php">
+    <UnusedClass>
+      <code><![CDATA[FindComplex]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Attribute/Dto/FindOneBy.php">
+    <UnusedClass>
+      <code><![CDATA[FindOneBy]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Attribute/Dto/FromKey.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Attribute/Dto/Path.php">
+    <UnusedClass>
+      <code><![CDATA[Path]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Attribute/Dto/ProvideValidationGroups.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Constraint/ArrayAllValidator.php">
+    <UnusedClass>
+      <code><![CDATA[ArrayAllValidator]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Constraint/MappedToPathValidator.php">
+    <UnusedClass>
+      <code><![CDATA[MappedToPathValidator]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Constraint/ObjectCollectionValidator.php">
+    <UnusedClass>
+      <code><![CDATA[ObjectCollectionValidator]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/DependencyInjection/Entity/CompilerPass/ComplexLoaderCompilerPass.php">
+    <UnusedForeachValue>
+      <code><![CDATA[$tags]]></code>
+    </UnusedForeachValue>
+  </file>
+  <file src="src/DependencyInjection/Entity/CompilerPass/LabelProcessorCompilerPass.php">
+    <UnusedForeachValue>
+      <code><![CDATA[$tags]]></code>
+    </UnusedForeachValue>
+  </file>
+  <file src="src/DependencyInjection/Entity/CompilerPass/ProviderServiceCompilerPass.php">
+    <UnnecessaryVarAnnotation>
+      <code><![CDATA[class-string]]></code>
+    </UnnecessaryVarAnnotation>
+    <UnusedForeachValue>
+      <code><![CDATA[$tags]]></code>
+    </UnusedForeachValue>
+    <UnusedVariable>
+      <code><![CDATA[$ref]]></code>
+    </UnusedVariable>
+  </file>
+  <file src="src/DependencyInjection/Shared/CompilerPass/RemoveSpecificTagCompilerPass.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function process(]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/DependencyInjection/Shared/TaggingExtension.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function load(]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/DependencyInjection/Validation/CompilerPass/ValidationGroupAddingCompilerPass.php">
+    <UnusedForeachValue>
+      <code><![CDATA[$tags]]></code>
+    </UnusedForeachValue>
+  </file>
+  <file src="src/EventSubscriber/HttpDtoActionSubscriber.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public static function getSubscribedEvents(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Exception/Dynamic/ParameterNotAvailableException.php">
+    <UnusedClass>
+      <code><![CDATA[ParameterNotAvailableException]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Exception/Http/DtoHttpException.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getDto]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Interface/DtoInterface.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[addConstraintViolation]]></code>
+      <code><![CDATA[getVisited]]></code>
+      <code><![CDATA[isOptional]]></code>
+      <code><![CDATA[isPreValidated]]></code>
+      <code><![CDATA[visitedVirtualProperty]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedReturnValue>
+      <code><![CDATA[mixed]]></code>
+    </PossiblyUnusedReturnValue>
+  </file>
+  <file src="src/Interface/Type/CoercionServiceInterface.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[supports]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Model/Type/Property.php">
+    <RedundantCast>
+      <code><![CDATA[(int)$count->max]]></code>
+      <code><![CDATA[(int)$count->min]]></code>
+    </RedundantCast>
+  </file>
+  <file src="src/Profiler/Service/Entity/ProfilingEntityProviderService.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Profiler/Service/Resolver/ProfilingDtoResolverService.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Profiler/Service/Resolver/ProfilingDtoTypeExtractorService.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Profiler/Service/Validation/ProfilingTypeValidationService.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Service/Entity/LabelProcessorService.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Service/Http/ActionValidatorService.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Service/Nelmio/DtoOADescriber.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <RedundantCast>
+      <code><![CDATA[(int)$length->max]]></code>
+      <code><![CDATA[(int)$length->min]]></code>
+    </RedundantCast>
+    <ReferenceReusedFromConfusingScope>
+      <code><![CDATA[$selected]]></code>
+    </ReferenceReusedFromConfusingScope>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$this->getUndefined() === $operation->parameters]]></code>
+      <code><![CDATA[$this->getUndefined() === $operation->responses]]></code>
+    </TypeDoesNotContainType>
+    <UndefinedMethod>
+      <code><![CDATA[getName]]></code>
+    </UndefinedMethod>
+    <UnnecessaryVarAnnotation>
+      <code><![CDATA[DtoTypeModel|PropertyTypeModel]]></code>
+      <code><![CDATA[FromKey]]></code>
+      <code><![CDATA[PropertyTypeModel]]></code>
+    </UnnecessaryVarAnnotation>
+    <UnusedVariable>
+      <code><![CDATA[$selected]]></code>
+    </UnusedVariable>
+  </file>
+  <file src="src/Service/Resolver/DtoResolverService.php">
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$class]]></code>
+    </MoreSpecificImplementedParamType>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <UnnecessaryVarAnnotation>
+      <code><![CDATA[PropertyTypeModel]]></code>
+    </UnnecessaryVarAnnotation>
+    <UnusedForeachValue>
+      <code><![CDATA[$v]]></code>
+    </UnusedForeachValue>
+    <UnusedVariable>
+      <code><![CDATA[$tmp]]></code>
+      <code><![CDATA[$tmp]]></code>
+    </UnusedVariable>
+  </file>
+  <file src="src/Service/Resolver/DtoTypeExtractorHelper.php">
+    <UnnecessaryVarAnnotation>
+      <code><![CDATA[FindInterface|null]]></code>
+    </UnnecessaryVarAnnotation>
+  </file>
+  <file src="src/Service/Type/Coercer/DateTimeImmutableCoercer.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Service/Type/Coercer/EnumCoercer.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Service/Validation/TypeValidationHelper.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Traits/Annotation/FieldTrait.php">
+    <LessSpecificImplementedReturnType>
+      <code><![CDATA[array]]></code>
+    </LessSpecificImplementedReturnType>
+    <UnusedVariable>
+      <code><![CDATA[$key]]></code>
+    </UnusedVariable>
+  </file>
+  <file src="src/Traits/Type/CoerceConstructWithValidatorTrait.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Traits/Type/CoercerResultTrait.php">
+    <InvalidArgument>
+      <code><![CDATA[[
+                    'constraints' => $constraints,
+                ]]]></code>
+    </InvalidArgument>
+  </file>
+  <file src="src/ValueResolver/DtoValueResolver.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+</files>
