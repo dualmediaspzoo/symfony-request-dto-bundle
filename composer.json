@@ -35,6 +35,7 @@
     "symfony/stopwatch": "^6.4|^7.3",
     "symfony/expression-language": "^6.4|^7.3",
     "symfony/web-profiler-bundle": "^6.4|^7.3",
+    "symfony/var-exporter": "^6.4|^7.3",
     "doctrine/doctrine-bundle": "^2",
     "doctrine/orm": "^2|^3",
     "phpstan/phpstan-strict-rules": "^2.0"

@@ -17,8 +17,10 @@ class DummyModelProvider implements ProviderInterface
     #[\Override]
     public function findComplex(
         callable $fn,
-        array $fields,
+        array $criteria,
         array|null $orderBy = null,
+        int|null $limit = null,
+        int|null $offset = null,
         array $metadata = []
     ) {
         throw new \RuntimeException('Not implemented');

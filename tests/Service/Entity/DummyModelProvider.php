@@ -16,8 +16,10 @@ class DummyModelProvider implements ProviderInterface
 {
     public function findComplex(
         callable $fn,
-        array $fields,
+        array $criteria,
         array|null $orderBy = null,
+        int|null $limit = null,
+        int|null $offset = null,
         array $metadata = []
     ) {
         // TODO: Implement findComplex() method.
