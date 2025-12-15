@@ -30,7 +30,7 @@ class DummyModelProvider implements ProviderInterface
         array|null $orderBy = null,
         array $metadata = []
     ): mixed {
-        // TODO: Implement findOneBy() method.
+        return null;
     }
 
     public function findBy(

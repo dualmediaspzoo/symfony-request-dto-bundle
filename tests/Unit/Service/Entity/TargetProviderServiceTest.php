@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use DualMedia\DtoRequestBundle\Service\Entity\QueryCreator;
+use DualMedia\DtoRequestBundle\Service\Entity\ReferenceHelper;
 use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
 use DualMedia\DtoRequestBundle\Tests\Fixtures\Entity\TestEntity;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\TestCase;
@@ -20,18 +23,16 @@ use PHPUnit\Framework\Attributes\TestWith;
 class TargetProviderServiceTest extends TestCase
 {
     #[TestWith(['aaaa', true])]
-    #[TestWith(['bbbb', false, false, false])]
-    #[TestWith(['aaa', false, false])]
-    #[TestWith(['aaaa', false, true, false])]
+    #[TestWith(['bbbb', false, false])]
+    #[TestWith(['aaaa', false, false])]
     public function testSet(
         string $fqcn,
         bool $known,
-        bool $hasRepo = true,
         bool $addEm = true
     ): void {
         static::assertEquals(
             $known,
-            $this->getService($hasRepo ? $this->createMock(EntityRepository::class) : null, $addEm)
+            $this->getService($this->createMock(EntityRepository::class), $addEm)
                 ->setFqcn($fqcn) // @phpstan-ignore-line
         );
     }
@@ -102,27 +103,31 @@ class TargetProviderServiceTest extends TestCase
         $repo->expects(static::once())
             ->method('findBy')
             ->with($fields, $orderBy, $limit, $offset)
-            ->willReturn($mock);
+            ->willReturn([$mock]);
 
         $service = $this->getService($repo);
         static::assertTrue($service->setFqcn(TestEntity::class));
 
-        static::assertEquals($mock, $service->findBy($fields, $orderBy, $limit, $offset));
+        static::assertEquals([$mock], $service->findBy($fields, $orderBy, $limit, $offset));
     }
 
     private function getService(
-        EntityRepository|null $repository,
+        EntityRepository $repository,
         bool $addEm = true
     ): TargetProviderService {
         $registry = $this->createMock(ManagerRegistry::class);
 
-        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager = $addEm ? $this->createMock(EntityManagerInterface::class) : $this->createMock(ObjectManager::class);
         $manager->method('getRepository')
             ->willReturn($repository);
 
         $registry->method('getManagerForClass')
-            ->willReturn($addEm ? $manager : null);
+            ->willReturn($manager);
 
-        return new TargetProviderService($registry);
+        return new TargetProviderService(
+            $registry,
+            $this->createMock(QueryCreator::class),
+            $this->createMock(ReferenceHelper::class)
+        );
     }
 }
