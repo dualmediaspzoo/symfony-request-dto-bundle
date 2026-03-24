@@ -2,6 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle\ValueResolver;
 
+use DualMedia\DtoRequestBundle\Attribute\Parameter\AllowInvalid;
 use DualMedia\DtoRequestBundle\Event\DtoResolvedEvent;
 use DualMedia\DtoRequestBundle\Interface\DtoInterface;
 use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
@@ -35,13 +36,15 @@ class DtoValueResolver implements ValueResolverInterface
             return [];
         }
 
+        $hasAllowInvalid = !empty($argument->getAttributesOfType(AllowInvalid::class));
+
         $this->eventDispatcher->dispatch(
             new DtoResolvedEvent(
                 $object = $this->dtoResolver->resolve($request, $class)
             )
         );
 
-        $object->setOptional($argument->isNullable());
+        $object->setOptional($hasAllowInvalid);
 
         yield $object;
     }
