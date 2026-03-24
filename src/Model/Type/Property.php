@@ -508,7 +508,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
         $all = null;
 
         foreach ($this->constraints as $constraint) {
-            if (!($constraint instanceof Assert\All)) {
+            if (!$constraint instanceof Assert\All) {
                 continue;
             }
 
