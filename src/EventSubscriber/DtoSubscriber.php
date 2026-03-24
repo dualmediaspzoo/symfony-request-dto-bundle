@@ -1,0 +1,58 @@
+<?php
+
+namespace DualMedia\DtoRequestBundle\EventSubscriber;
+
+use DualMedia\DtoRequestBundle\Event\DtoActionEvent;
+use DualMedia\DtoRequestBundle\Event\DtoInvalidEvent;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+
+class DtoSubscriber implements EventSubscriberInterface
+{
+    public function __construct(
+        private readonly EventDispatcherInterface $dispatcher
+    ) {
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            ControllerArgumentsEvent::class => ['onArgumentEvent', 5],
+        ];
+    }
+
+    public function onArgumentEvent(
+        ControllerArgumentsEvent $event
+    ): void {
+        foreach ($event->getArguments() as $argument) {
+            if (!$argument instanceof DtoInterface
+                || $argument->isValid()) {
+                continue;
+            }
+
+            if (null !== ($action = $argument->getHttpAction())) {
+                $output = $this->dispatcher->dispatch(new DtoActionEvent($action, $argument));
+
+                if (null !== ($response = $output->getResponse())) {
+                    $event->setController(static fn () => $response);
+
+                    return;
+                }
+            }
+
+            if ($argument->isOptional()) {
+                continue;
+            }
+
+            $output = $this->dispatcher->dispatch(new DtoInvalidEvent($argument));
+
+            if (null !== ($response = $output->getResponse())) {
+                $event->setController(static fn () => $response);
+
+                return;
+            }
+        }
+    }
+}

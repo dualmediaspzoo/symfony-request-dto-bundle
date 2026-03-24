@@ -1,6 +1,6 @@
 <?php
 
-namespace DualMedia\DtoRequestBundle\Traits\Annotation;
+namespace DualMedia\DtoRequestBundle\Traits\Attribute;
 
 use DualMedia\DtoRequestBundle\Attribute\Dto\Type;
 use Symfony\Component\PropertyAccess\PropertyAccess;

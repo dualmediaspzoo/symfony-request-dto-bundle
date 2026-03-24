@@ -3,7 +3,7 @@
 namespace DualMedia\DtoRequestBundle\Attribute\Dto\Http;
 
 use DualMedia\DtoRequestBundle\Interface\Attribute\HttpActionInterface;
-use DualMedia\DtoRequestBundle\Traits\Annotation\HttpActionTrait;
+use DualMedia\DtoRequestBundle\Traits\Attribute\HttpActionTrait;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
