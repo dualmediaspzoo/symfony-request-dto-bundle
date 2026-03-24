@@ -31,6 +31,12 @@ parameters:
 			path: src/Service/Nelmio/DtoOADescriber.php
 
 		-
+			message: '#^Parameter \#1 \$fields of method DualMedia\\DtoRequestBundle\\Service\\Nelmio\\DtoOADescriber\:\:resolveRequiredProperties\(\) expects array\<string, array\<string, DualMedia\\DtoRequestBundle\\Model\\Type\\Property\>\|DualMedia\\DtoRequestBundle\\Model\\Type\\Property\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Nelmio/DtoOADescriber.php
+
+		-
 			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
 			identifier: function.strict
 			count: 1
@@ -65,6 +71,18 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Service/Type/Coercer/BoolCoercer.php
+
+		-
+			message: '#^Parameter \#4 \$value of method DualMedia\\DtoRequestBundle\\Service\\Type\\Coercer\\BoolCoercer\:\:buildResult\(\) expects bool\|list\<bool\|null\>\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/BoolCoercer.php
+
+		-
+			message: '#^Method DualMedia\\DtoRequestBundle\\Service\\Type\\Coercer\\DateTimeImmutableCoercer\:\:coerce\(\) should return DualMedia\\DtoRequestBundle\\Model\\Type\\CoerceResult\<DateTimeImmutable\|null\> but returns DualMedia\\DtoRequestBundle\\Model\\Type\\CoerceResult\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Service/Type/Coercer/DateTimeImmutableCoercer.php
 
 		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
@@ -115,6 +133,12 @@ parameters:
 			path: src/Service/Type/Coercer/FloatCoercer.php
 
 		-
+			message: '#^Parameter \#4 \$value of method DualMedia\\DtoRequestBundle\\Service\\Type\\Coercer\\FloatCoercer\:\:buildResult\(\) expects float\|list\<float\|null\>\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/FloatCoercer.php
+
+		-
 			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<Symfony\\Component\\Validator\\Constraint\>\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -122,6 +146,12 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$type of class Symfony\\Component\\Validator\\Constraints\\Type constructor expects list\<string\>\|string\|null, array\{type\: ''int''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Type/Coercer/IntCoercer.php
+
+		-
+			message: '#^Parameter \#4 \$value of method DualMedia\\DtoRequestBundle\\Service\\Type\\Coercer\\IntCoercer\:\:buildResult\(\) expects int\|list\<int\|null\>\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Service/Type/Coercer/IntCoercer.php

@@ -472,7 +472,7 @@ class Property implements \ArrayAccess, \IteratorAggregate
         mixed $offset,
         mixed $value
     ): void {
-        $this->properties[$offset] = $value;
+        $this->properties[$offset ?? ''] = $value;
     }
 
     /**
