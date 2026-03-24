@@ -80,7 +80,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - symfony-version: 7.4.*
+          - symfony-version: 7.3.*
             php-version: 8.5
 
     runs-on: ubuntu-latest
