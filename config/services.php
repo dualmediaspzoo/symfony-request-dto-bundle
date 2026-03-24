@@ -2,7 +2,7 @@
 
 use Doctrine\Persistence\ManagerRegistry;
 use DualMedia\DtoRequestBundle\DtoBundle as Bundle;
-use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
+use DualMedia\DtoRequestBundle\EventSubscriber\DtoSubscriber;
 use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverServiceInterface;
 use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderServiceInterface;
 use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorServiceInterface;
@@ -155,6 +155,6 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('nelmio_api_doc.route_describer');
 
     // Subscribers
-    $services->set(HttpDtoActionSubscriber::class)
+    $services->set(DtoSubscriber::class)
         ->tag('kernel.event_subscriber');
 };
