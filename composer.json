@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": ">=8.5",
+    "php": ">=8.4",
     "symfony/framework-bundle": "^6.4|^7.3",
     "symfony/event-dispatcher": "^6.4|^7.3",
     "symfony/property-info": "^6.4|^7.3",
