@@ -80,13 +80,18 @@ class DtoSubscriberTest extends TestCase
     {
         $action = static::createStub(HttpActionInterface::class);
         $response = new Response('action response');
+        $request = new Request();
 
         $dto = $this->createDtoStub(valid: false, action: $action);
-        $event = $this->createControllerArgumentsEvent([$dto]);
+        $event = $this->createControllerArgumentsEvent([$dto], $request, HttpKernelInterface::SUB_REQUEST);
 
         $this->dispatcher->expects(static::once())
             ->method('dispatch')
-            ->with(static::callback(fn ($e) => $e instanceof DtoActionEvent && $e->getAction() === $action && $e->getDto() === $dto))
+            ->with(static::callback(fn ($e) => $e instanceof DtoActionEvent
+                && $e->getAction() === $action
+                && $e->getDto() === $dto
+                && $e->getRequest() === $request
+                && HttpKernelInterface::SUB_REQUEST === $e->getRequestType()))
             ->willReturnCallback(function (DtoActionEvent $e) use ($response) {
                 $e->setResponse($response);
 
@@ -117,14 +122,22 @@ class DtoSubscriberTest extends TestCase
     {
         $action = static::createStub(HttpActionInterface::class);
         $response = new Response('invalid response');
+        $request = new Request();
 
         $dto = $this->createDtoStub(valid: false, optional: false, action: $action);
-        $event = $this->createControllerArgumentsEvent([$dto]);
+        $event = $this->createControllerArgumentsEvent([$dto], $request, HttpKernelInterface::SUB_REQUEST);
 
         $this->dispatcher->expects(static::exactly(2))
             ->method('dispatch')
-            ->willReturnCallback(function (object $e) use ($response) {
+            ->willReturnCallback(function (object $e) use ($response, $request) {
+                if ($e instanceof DtoActionEvent) {
+                    static::assertSame($request, $e->getRequest());
+                    static::assertSame(HttpKernelInterface::SUB_REQUEST, $e->getRequestType());
+                }
+
                 if ($e instanceof DtoInvalidEvent) {
+                    static::assertSame($request, $e->getRequest());
+                    static::assertSame(HttpKernelInterface::SUB_REQUEST, $e->getRequestType());
                     $e->setResponse($response);
                 }
 
@@ -151,9 +164,10 @@ class DtoSubscriberTest extends TestCase
     public function testInvalidDtoNoActionNotOptionalDispatchesInvalidEvent(): void
     {
         $response = new Response('invalid');
+        $request = new Request();
 
         $dto = $this->createDtoStub(valid: false, optional: false, action: null);
-        $event = $this->createControllerArgumentsEvent([$dto]);
+        $event = $this->createControllerArgumentsEvent([$dto], $request, HttpKernelInterface::SUB_REQUEST);
 
         $this->dispatcher->expects(static::once())
             ->method('dispatch')
@@ -161,6 +175,8 @@ class DtoSubscriberTest extends TestCase
                 fn ($e) => $e instanceof DtoInvalidEvent
                     && 1 === count($e->getObjects())
                     && $dto === $e->getObjects()[0]
+                    && $e->getRequest() === $request
+                    && HttpKernelInterface::SUB_REQUEST === $e->getRequestType()
             ))
             ->willReturnCallback(function (DtoInvalidEvent $e) use ($response) {
                 $e->setResponse($response);
@@ -193,14 +209,17 @@ class DtoSubscriberTest extends TestCase
     {
         $action = static::createStub(HttpActionInterface::class);
         $response = new Response('first');
+        $request = new Request();
 
         $dto1 = $this->createDtoStub(valid: false, action: $action);
         $dto2 = $this->createDtoStub(valid: false, action: $action);
-        $event = $this->createControllerArgumentsEvent([$dto1, $dto2]);
+        $event = $this->createControllerArgumentsEvent([$dto1, $dto2], $request, HttpKernelInterface::SUB_REQUEST);
 
         $this->dispatcher->expects(static::once())
             ->method('dispatch')
-            ->willReturnCallback(function (DtoActionEvent $e) use ($response) {
+            ->willReturnCallback(function (DtoActionEvent $e) use ($response, $request) {
+                static::assertSame($request, $e->getRequest());
+                static::assertSame(HttpKernelInterface::SUB_REQUEST, $e->getRequestType());
                 $e->setResponse($response);
 
                 return $e;
@@ -228,14 +247,16 @@ class DtoSubscriberTest extends TestCase
      * @param list<mixed> $arguments
      */
     private function createControllerArgumentsEvent(
-        array $arguments
+        array $arguments,
+        Request|null $request = null,
+        int $requestType = HttpKernelInterface::MAIN_REQUEST
     ): ControllerArgumentsEvent {
         return new ControllerArgumentsEvent(
             $this->kernel,
             'print_r',
             $arguments,
-            new Request(),
-            HttpKernelInterface::MAIN_REQUEST
+            $request ?? new Request(),
+            $requestType
         );
     }
 }

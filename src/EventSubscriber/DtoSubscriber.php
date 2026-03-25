@@ -26,6 +26,8 @@ class DtoSubscriber implements EventSubscriberInterface
     public function onArgumentEvent(
         ControllerArgumentsEvent $event
     ): void {
+        $request = $event->getRequest();
+        $requestType = $event->getRequestType();
         /** @var list<DtoInterface> $invalid */
         $invalid = [];
 
@@ -36,7 +38,7 @@ class DtoSubscriber implements EventSubscriberInterface
             }
 
             if (null !== ($action = $argument->getHttpAction())) {
-                $output = $this->dispatcher->dispatch(new DtoActionEvent($action, $argument));
+                $output = $this->dispatcher->dispatch(new DtoActionEvent($action, $argument, $request, $requestType));
 
                 if (null !== ($response = $output->getResponse())) {
                     $event->setController(static fn () => $response);
@@ -56,7 +58,7 @@ class DtoSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $output = $this->dispatcher->dispatch(new DtoInvalidEvent($invalid));
+        $output = $this->dispatcher->dispatch(new DtoInvalidEvent($invalid, $request, $requestType));
 
         if (null !== ($response = $output->getResponse())) {
             $event->setController(static fn () => $response);
