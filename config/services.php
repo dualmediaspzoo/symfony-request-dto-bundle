@@ -156,5 +156,6 @@ return static function (ContainerConfigurator $configurator) {
 
     // Subscribers
     $services->set(DtoSubscriber::class)
+        ->arg(0, new Reference('event_dispatcher'))
         ->tag('kernel.event_subscriber');
 };
