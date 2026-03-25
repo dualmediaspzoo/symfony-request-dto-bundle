@@ -10,13 +10,19 @@ class DtoInvalidEvent extends Event
 {
     use ResponseAwareTrait;
 
+    /**
+     * @param list<DtoInterface> $objects
+     */
     public function __construct(
-        private readonly DtoInterface $dto
+        private readonly array $objects
     ) {
     }
 
-    public function getDto(): DtoInterface
+    /**
+     * @return list<DtoInterface>
+     */
+    public function getObjects(): array
     {
-        return $this->dto;
+        return $this->objects;
     }
 }

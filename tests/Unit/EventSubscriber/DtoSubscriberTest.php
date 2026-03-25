@@ -157,7 +157,11 @@ class DtoSubscriberTest extends TestCase
 
         $this->dispatcher->expects(static::once())
             ->method('dispatch')
-            ->with(static::callback(fn ($e) => $e instanceof DtoInvalidEvent && $e->getDto() === $dto))
+            ->with(static::callback(
+                fn ($e) => $e instanceof DtoInvalidEvent
+                    && 1 === count($e->getObjects())
+                    && $dto === $e->getObjects()[0]
+            ))
             ->willReturnCallback(function (DtoInvalidEvent $e) use ($response) {
                 $e->setResponse($response);
 

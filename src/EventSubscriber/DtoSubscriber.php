@@ -26,6 +26,9 @@ class DtoSubscriber implements EventSubscriberInterface
     public function onArgumentEvent(
         ControllerArgumentsEvent $event
     ): void {
+        /** @var list<DtoInterface> $invalid */
+        $invalid = [];
+
         foreach ($event->getArguments() as $argument) {
             if (!$argument instanceof DtoInterface
                 || $argument->isValid()) {
@@ -46,13 +49,17 @@ class DtoSubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            $output = $this->dispatcher->dispatch(new DtoInvalidEvent($argument));
+            $invalid[] = $argument;
+        }
 
-            if (null !== ($response = $output->getResponse())) {
-                $event->setController(static fn () => $response);
+        if (empty($invalid)) {
+            return;
+        }
 
-                return;
-            }
+        $output = $this->dispatcher->dispatch(new DtoInvalidEvent($invalid));
+
+        if (null !== ($response = $output->getResponse())) {
+            $event->setController(static fn () => $response);
         }
     }
 }
