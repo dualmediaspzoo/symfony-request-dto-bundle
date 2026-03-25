@@ -26,18 +26,30 @@ class DtoSubscriber implements EventSubscriberInterface
     public function onArgumentEvent(
         ControllerArgumentsEvent $event
     ): void {
+        /** @var list<DtoInterface> $arguments */
+        $arguments = [];
+
+        foreach ($event->getArguments() as $argument) {
+            if (!$argument instanceof DtoInterface) {
+                continue;
+            }
+
+            $arguments[] = $argument;
+        }
+
+        if (empty($arguments)) {
+            return;
+        }
+
         $request = $event->getRequest();
         $requestType = $event->getRequestType();
         /** @var list<DtoInterface> $invalid */
         $invalid = [];
 
-        foreach ($event->getArguments() as $argument) {
-            if (!$argument instanceof DtoInterface
-                || $argument->isValid()) {
-                continue;
-            }
+        foreach ($arguments as $argument) {
+            $valid = $argument->isValid();
 
-            if (null !== ($action = $argument->getHttpAction())) {
+            if ($valid && null !== ($action = $argument->getHttpAction())) {
                 $output = $this->dispatcher->dispatch(new DtoActionEvent($action, $argument, $request, $requestType));
 
                 if (null !== ($response = $output->getResponse())) {
@@ -47,7 +59,7 @@ class DtoSubscriber implements EventSubscriberInterface
                 }
             }
 
-            if ($argument->isOptional()) {
+            if (!$valid && $argument->isOptional()) {
                 continue;
             }
 
