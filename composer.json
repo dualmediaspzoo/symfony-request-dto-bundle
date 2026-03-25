@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": "^8.3",
+    "php": ">=8.4",
     "symfony/framework-bundle": "^6.4|^7.3",
     "symfony/event-dispatcher": "^6.4|^7.3",
     "symfony/property-info": "^6.4|^7.3",
@@ -58,7 +58,7 @@
   "scripts": {
     "lint": "php-cs-fixer fix",
     "test": "phpunit",
-    "baseline-phpstan": "vendor/bin/phpstan --generate-baseline"
+    "baseline": "vendor/bin/phpstan --generate-baseline"
   },
   "suggest": {
     "nelmio/api-doc-bundle": "Adds api docs for endpoints for your DTOs",

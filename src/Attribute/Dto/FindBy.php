@@ -4,9 +4,9 @@ namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 
 use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
 use DualMedia\DtoRequestBundle\Interface\Attribute\FindInterface;
-use DualMedia\DtoRequestBundle\Traits\Annotation\FieldTrait;
-use DualMedia\DtoRequestBundle\Traits\Annotation\LimitAndOffsetTrait;
-use DualMedia\DtoRequestBundle\Traits\Annotation\ProviderTrait;
+use DualMedia\DtoRequestBundle\Traits\Attribute\FieldTrait;
+use DualMedia\DtoRequestBundle\Traits\Attribute\LimitAndOffsetTrait;
+use DualMedia\DtoRequestBundle\Traits\Attribute\ProviderTrait;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]

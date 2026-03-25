@@ -5,7 +5,7 @@ namespace DualMedia\DtoRequestBundle\Attribute\Dto;
 use DualMedia\DtoRequestBundle\Interface\Attribute\DtoAttributeInterface;
 use DualMedia\DtoRequestBundle\Interface\Attribute\PathInterface;
 use DualMedia\DtoRequestBundle\Interface\DtoInterface;
-use DualMedia\DtoRequestBundle\Traits\Annotation\PathTrait;
+use DualMedia\DtoRequestBundle\Traits\Attribute\PathTrait;
 
 /**
  * By default, if this annotation does not exist on a property of {@link DtoInterface}, then a default object

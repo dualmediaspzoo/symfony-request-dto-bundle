@@ -1,7 +1,7 @@
 <?php
 
 use DualMedia\DtoRequestBundle\DtoBundle;
-use DualMedia\DtoRequestBundle\EventSubscriber\HttpDtoActionSubscriber;
+use DualMedia\DtoRequestBundle\EventSubscriber\DtoSubscriber;
 use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
 use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
 use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
@@ -48,7 +48,7 @@ return static function (ContainerConfigurator $configurator) {
         DtoValueResolver::class,
 
         OnNullActionValidator::class,
-        HttpDtoActionSubscriber::class,
+        DtoSubscriber::class,
     ];
 
     foreach ($makePublic as $id) {

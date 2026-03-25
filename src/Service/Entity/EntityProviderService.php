@@ -64,7 +64,7 @@ class EntityProviderService implements ProviderServiceInterface
         }
 
         $provider = null === $providerId ?
-            $this->providers[$fqcn][$this->defaultProviders[$fqcn] ?? null] ?? null :
+            $this->providers[$fqcn][$this->defaultProviders[$fqcn] ?? ''] ?? null :
             $this->providers[$fqcn][$providerId] ?? null;
 
         if (null === $provider) {

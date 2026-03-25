@@ -37,7 +37,7 @@ class TargetProviderService implements TargetProviderInterface
         // This is kinda nasty, but Doctrine will be changing the interface in 3.0 anyway, so it should be fine?
         $manager = $this->registry->getManagerForClass($fqcn);
 
-        if (!($manager instanceof EntityManagerInterface)) {
+        if (!$manager instanceof EntityManagerInterface) {
             return false;
         }
 
