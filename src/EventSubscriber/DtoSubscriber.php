@@ -26,16 +26,12 @@ class DtoSubscriber implements EventSubscriberInterface
     public function onArgumentEvent(
         ControllerArgumentsEvent $event
     ): void {
-        /** @var list<DtoInterface> $arguments */
-        $arguments = [];
+        /** @var array<int, DtoInterface> $arguments */
+        $arguments = array_filter(
+            $event->getArguments(),
+            static fn ($o) => $o instanceof DtoInterface,
 
-        foreach ($event->getArguments() as $argument) {
-            if (!$argument instanceof DtoInterface) {
-                continue;
-            }
-
-            $arguments[] = $argument;
-        }
+        );
 
         if (empty($arguments)) {
             return;

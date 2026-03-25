@@ -36,15 +36,13 @@ class DtoValueResolver implements ValueResolverInterface
             return [];
         }
 
-        $hasAllowInvalid = !empty($argument->getAttributesOfType(AllowInvalid::class));
-
         $this->eventDispatcher->dispatch(
             new DtoResolvedEvent(
                 $object = $this->dtoResolver->resolve($request, $class)
             )
         );
 
-        $object->setOptional($hasAllowInvalid);
+        $object->setOptional(!empty($argument->getAttributesOfType(AllowInvalid::class)));
 
         yield $object;
     }
