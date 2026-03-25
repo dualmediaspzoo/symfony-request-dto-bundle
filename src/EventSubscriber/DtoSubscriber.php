@@ -29,8 +29,7 @@ class DtoSubscriber implements EventSubscriberInterface
         /** @var array<int, DtoInterface> $arguments */
         $arguments = array_filter(
             $event->getArguments(),
-            static fn ($o) => $o instanceof DtoInterface,
-
+            static fn ($o) => $o instanceof DtoInterface
         );
 
         if (empty($arguments)) {
