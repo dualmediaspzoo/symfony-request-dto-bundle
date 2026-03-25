@@ -65,24 +65,13 @@ class DtoSubscriberTest extends TestCase
         $this->subscriber->onArgumentEvent($event);
     }
 
-    public function testValidDtoIsSkipped(): void
-    {
-        $dto = $this->createDtoStub(valid: true);
-        $event = $this->createControllerArgumentsEvent([$dto]);
-
-        $this->dispatcher->expects(static::never())
-            ->method('dispatch');
-
-        $this->subscriber->onArgumentEvent($event);
-    }
-
-    public function testInvalidDtoWithActionAndResponse(): void
+    public function testValidDtoWithActionAndResponse(): void
     {
         $action = static::createStub(HttpActionInterface::class);
         $response = new Response('action response');
         $request = new Request();
 
-        $dto = $this->createDtoStub(valid: false, action: $action);
+        $dto = $this->createDtoStub(valid: true, action: $action);
         $event = $this->createControllerArgumentsEvent([$dto], $request, HttpKernelInterface::SUB_REQUEST);
 
         $this->dispatcher->expects(static::once())
@@ -104,10 +93,11 @@ class DtoSubscriberTest extends TestCase
         static::assertSame($response, $controller());
     }
 
-    public function testInvalidDtoWithActionNoResponseAndOptional(): void
+    public function testValidDtoWithActionNoResponseIsSkipped(): void
     {
         $action = static::createStub(HttpActionInterface::class);
-        $dto = $this->createDtoStub(valid: false, optional: true, action: $action);
+
+        $dto = $this->createDtoStub(valid: true, action: $action);
         $event = $this->createControllerArgumentsEvent([$dto]);
 
         $this->dispatcher->expects(static::once())
@@ -115,44 +105,15 @@ class DtoSubscriberTest extends TestCase
             ->with(static::isInstanceOf(DtoActionEvent::class))
             ->willReturnArgument(0);
 
-        $this->subscriber->onArgumentEvent($event);
-    }
-
-    public function testInvalidDtoWithActionNoResponseNotOptionalDispatchesInvalidEvent(): void
-    {
-        $action = static::createStub(HttpActionInterface::class);
-        $response = new Response('invalid response');
-        $request = new Request();
-
-        $dto = $this->createDtoStub(valid: false, optional: false, action: $action);
-        $event = $this->createControllerArgumentsEvent([$dto], $request, HttpKernelInterface::SUB_REQUEST);
-
-        $this->dispatcher->expects(static::exactly(2))
-            ->method('dispatch')
-            ->willReturnCallback(function (object $e) use ($response, $request) {
-                if ($e instanceof DtoActionEvent) {
-                    static::assertSame($request, $e->getRequest());
-                    static::assertSame(HttpKernelInterface::SUB_REQUEST, $e->getRequestType());
-                }
-
-                if ($e instanceof DtoInvalidEvent) {
-                    static::assertSame($request, $e->getRequest());
-                    static::assertSame(HttpKernelInterface::SUB_REQUEST, $e->getRequestType());
-                    $e->setResponse($response);
-                }
-
-                return $e;
-            });
-
+        $originalController = $event->getController();
         $this->subscriber->onArgumentEvent($event);
 
-        $controller = $event->getController();
-        static::assertSame($response, $controller());
+        static::assertSame($originalController, $event->getController());
     }
 
-    public function testInvalidDtoNoActionOptionalIsSkipped(): void
+    public function testValidDtoWithoutActionIsSkipped(): void
     {
-        $dto = $this->createDtoStub(valid: false, optional: true, action: null);
+        $dto = $this->createDtoStub(valid: true);
         $event = $this->createControllerArgumentsEvent([$dto]);
 
         $this->dispatcher->expects(static::never())
@@ -161,12 +122,35 @@ class DtoSubscriberTest extends TestCase
         $this->subscriber->onArgumentEvent($event);
     }
 
-    public function testInvalidDtoNoActionNotOptionalDispatchesInvalidEvent(): void
+    public function testInvalidDtoOptionalIsSkipped(): void
+    {
+        $dto = $this->createDtoStub(valid: false, optional: true);
+        $event = $this->createControllerArgumentsEvent([$dto]);
+
+        $this->dispatcher->expects(static::never())
+            ->method('dispatch');
+
+        $this->subscriber->onArgumentEvent($event);
+    }
+
+    public function testInvalidDtoOptionalWithActionIsStillSkipped(): void
+    {
+        $action = static::createStub(HttpActionInterface::class);
+        $dto = $this->createDtoStub(valid: false, optional: true, action: $action);
+        $event = $this->createControllerArgumentsEvent([$dto]);
+
+        $this->dispatcher->expects(static::never())
+            ->method('dispatch');
+
+        $this->subscriber->onArgumentEvent($event);
+    }
+
+    public function testInvalidDtoNotOptionalDispatchesInvalidEvent(): void
     {
         $response = new Response('invalid');
         $request = new Request();
 
-        $dto = $this->createDtoStub(valid: false, optional: false, action: null);
+        $dto = $this->createDtoStub(valid: false, optional: false);
         $event = $this->createControllerArgumentsEvent([$dto], $request, HttpKernelInterface::SUB_REQUEST);
 
         $this->dispatcher->expects(static::once())
@@ -190,9 +174,9 @@ class DtoSubscriberTest extends TestCase
         static::assertSame($response, $controller());
     }
 
-    public function testInvalidDtoNoActionNotOptionalNoResponseContinues(): void
+    public function testInvalidDtoNotOptionalNoResponseContinues(): void
     {
-        $dto = $this->createDtoStub(valid: false, optional: false, action: null);
+        $dto = $this->createDtoStub(valid: false, optional: false);
         $event = $this->createControllerArgumentsEvent([$dto]);
 
         $this->dispatcher->expects(static::once())
@@ -205,14 +189,102 @@ class DtoSubscriberTest extends TestCase
         static::assertSame($originalController, $event->getController());
     }
 
+    public function testInvalidDtoWithActionIgnoresAction(): void
+    {
+        $action = static::createStub(HttpActionInterface::class);
+        $response = new Response('invalid');
+        $request = new Request();
+
+        $dto = $this->createDtoStub(valid: false, optional: false, action: $action);
+        $event = $this->createControllerArgumentsEvent([$dto], $request, HttpKernelInterface::SUB_REQUEST);
+
+        $this->dispatcher->expects(static::once())
+            ->method('dispatch')
+            ->with(static::callback(
+                fn ($e) => $e instanceof DtoInvalidEvent
+                    && [$dto] === $e->getObjects()
+                    && $e->getRequest() === $request
+                    && HttpKernelInterface::SUB_REQUEST === $e->getRequestType()
+            ))
+            ->willReturnCallback(function (DtoInvalidEvent $e) use ($response) {
+                $e->setResponse($response);
+
+                return $e;
+            });
+
+        $this->subscriber->onArgumentEvent($event);
+
+        $controller = $event->getController();
+        static::assertSame($response, $controller());
+    }
+
+    public function testMultipleInvalidDtosCombinedInSingleEvent(): void
+    {
+        $response = new Response('combined');
+        $request = new Request();
+
+        $dto1 = $this->createDtoStub(valid: false, optional: false);
+        $dto2 = $this->createDtoStub(valid: false, optional: false);
+        $event = $this->createControllerArgumentsEvent([$dto1, $dto2], $request, HttpKernelInterface::SUB_REQUEST);
+
+        $this->dispatcher->expects(static::once())
+            ->method('dispatch')
+            ->with(static::callback(
+                fn ($e) => $e instanceof DtoInvalidEvent
+                    && 2 === count($e->getObjects())
+                    && $dto1 === $e->getObjects()[0]
+                    && $dto2 === $e->getObjects()[1]
+                    && $e->getRequest() === $request
+                    && HttpKernelInterface::SUB_REQUEST === $e->getRequestType()
+            ))
+            ->willReturnCallback(function (DtoInvalidEvent $e) use ($response) {
+                $e->setResponse($response);
+
+                return $e;
+            });
+
+        $this->subscriber->onArgumentEvent($event);
+
+        $controller = $event->getController();
+        static::assertSame($response, $controller());
+    }
+
+    public function testOptionalDtosExcludedFromInvalidEvent(): void
+    {
+        $response = new Response('invalid');
+        $request = new Request();
+
+        $optionalDto = $this->createDtoStub(valid: false, optional: true);
+        $requiredDto = $this->createDtoStub(valid: false, optional: false);
+        $event = $this->createControllerArgumentsEvent([$optionalDto, $requiredDto], $request, HttpKernelInterface::SUB_REQUEST);
+
+        $this->dispatcher->expects(static::once())
+            ->method('dispatch')
+            ->with(static::callback(
+                fn ($e) => $e instanceof DtoInvalidEvent
+                    && 1 === count($e->getObjects())
+                    && $requiredDto === $e->getObjects()[0]
+            ))
+            ->willReturnCallback(function (DtoInvalidEvent $e) use ($response) {
+                $e->setResponse($response);
+
+                return $e;
+            });
+
+        $this->subscriber->onArgumentEvent($event);
+
+        $controller = $event->getController();
+        static::assertSame($response, $controller());
+    }
+
     public function testStopsAtFirstResponseFromAction(): void
     {
         $action = static::createStub(HttpActionInterface::class);
         $response = new Response('first');
         $request = new Request();
 
-        $dto1 = $this->createDtoStub(valid: false, action: $action);
-        $dto2 = $this->createDtoStub(valid: false, action: $action);
+        $dto1 = $this->createDtoStub(valid: true, action: $action);
+        $dto2 = $this->createDtoStub(valid: true, action: $action);
         $event = $this->createControllerArgumentsEvent([$dto1, $dto2], $request, HttpKernelInterface::SUB_REQUEST);
 
         $this->dispatcher->expects(static::once())

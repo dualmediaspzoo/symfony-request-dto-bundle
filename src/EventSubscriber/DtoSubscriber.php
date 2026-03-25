@@ -59,7 +59,7 @@ class DtoSubscriber implements EventSubscriberInterface
                 }
             }
 
-            if (!$valid && $argument->isOptional()) {
+            if ($valid || $argument->isOptional()) {
                 continue;
             }
 
