@@ -1,6 +1,7 @@
 tests/ export-ignore
 .github/ export-ignore
 
+CLAUDE.md export-ignore
 composer.lock export-ignore
 phpstan.neon.dist export-ignore
 phpunit.xml.dist export-ignore
