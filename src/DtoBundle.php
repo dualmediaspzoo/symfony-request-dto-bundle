@@ -2,6 +2,7 @@
 
 namespace DualMedia\DtoRequestBundle;
 
+use DualMedia\DtoRequestBundle\DependencyInjection\Dto\CompilerPass\DtoContainerRemovalCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\DoctrineRepositoryCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\LabelProcessorCompilerPass;
@@ -9,6 +10,7 @@ use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderS
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
 use DualMedia\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
 use DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
+use DualMedia\DtoRequestBundle\Interface\DtoInterface;
 use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverInterface;
 use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
 use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorInterface;
@@ -30,17 +32,19 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class DtoBundle extends AbstractBundle
 {
-    public const string COERCER_TAG = 'dto_bundle.coercer';
-    public const string DYNAMIC_RESOLVER_TAG = 'dto_bundle.dynamic_resolver';
+    public const string COERCER_TAG = 'dm.dto_bundle.coercer';
+    public const string DYNAMIC_RESOLVER_TAG = 'dm.dto_bundle.dynamic_resolver';
 
-    public const string HTTP_ACTION_VALIDATOR_TAG = 'dto_bundle.http_action_validator';
+    public const string HTTP_ACTION_VALIDATOR_TAG = 'dm.dto_bundle.http_action_validator';
 
-    public const string ENTITY_PROVIDER_PRE_CONFIG_TAG = 'dto_bundle.entity_provider.pre_config';
+    public const string ENTITY_PROVIDER_PRE_CONFIG_TAG = 'dm.dto_bundle.entity_provider.pre_config';
 
-    public const string COMPLEX_LOADER_TAG = 'dto_bundle.complex_loader';
-    public const string GROUP_PROVIDER_TAG = 'dto_bundle.validation_group_provider';
+    public const string COMPLEX_LOADER_TAG = 'dm.dto_bundle.complex_loader';
+    public const string GROUP_PROVIDER_TAG = 'dm.dto_bundle.validation_group_provider';
 
-    public const string LABEL_PROCESSOR_TAB = 'dto_bundle.label_processor';
+    public const string LABEL_PROCESSOR_TAB = 'dm.dto_bundle.label_processor';
+
+    public const string DTO_TAG = 'dm.dto_bundle.dto';
 
     protected string $extensionAlias = 'dm_dto';
 
@@ -56,6 +60,7 @@ class DtoBundle extends AbstractBundle
             ComplexLoaderInterface::class => self::COMPLEX_LOADER_TAG,
             ActionValidatorInterface::class => self::HTTP_ACTION_VALIDATOR_TAG,
             LabelProcessorInterface::class => self::LABEL_PROCESSOR_TAB,
+            DtoInterface::class => self::DTO_TAG,
         ]));
 
         // Doctrine autoconfigure
@@ -90,6 +95,8 @@ class DtoBundle extends AbstractBundle
 
         // label processors
         $container->addCompilerPass(new LabelProcessorCompilerPass());
+
+        $container->addCompilerPass(new DtoContainerRemovalCompilerPass());
     }
 
     /**
