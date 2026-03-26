@@ -1,0 +1,1 @@
+- [Line length preference](feedback_line_length.md) — keep ~120 chars per line in docs/guidance files
