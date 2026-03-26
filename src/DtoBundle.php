@@ -2,26 +2,6 @@
 
 namespace DualMedia\DtoRequestBundle;
 
-use DualMedia\DtoRequestBundle\DependencyInjection\Dto\CompilerPass\DtoContainerRemovalCompilerPass;
-use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ComplexLoaderCompilerPass;
-use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\DoctrineRepositoryCompilerPass;
-use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\LabelProcessorCompilerPass;
-use DualMedia\DtoRequestBundle\DependencyInjection\Entity\CompilerPass\ProviderServiceCompilerPass;
-use DualMedia\DtoRequestBundle\DependencyInjection\Shared\CompilerPass\RemoveSpecificTagCompilerPass;
-use DualMedia\DtoRequestBundle\DependencyInjection\Shared\TaggingExtension;
-use DualMedia\DtoRequestBundle\DependencyInjection\Validation\CompilerPass\ValidationGroupAddingCompilerPass;
-use DualMedia\DtoRequestBundle\Interface\DtoInterface;
-use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverInterface;
-use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderInterface;
-use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorInterface;
-use DualMedia\DtoRequestBundle\Interface\Entity\ProviderInterface;
-use DualMedia\DtoRequestBundle\Interface\Http\ActionValidatorInterface;
-use DualMedia\DtoRequestBundle\Interface\Type\CoercerInterface;
-use DualMedia\DtoRequestBundle\Interface\Validation\GroupProviderInterface;
-use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
-use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
-use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
-use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
