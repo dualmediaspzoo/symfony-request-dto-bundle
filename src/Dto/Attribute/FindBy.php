@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Dto\Attribute;
 
 /**
- * Override expected path for property/dto.
+ * Marker property for input. Expected on multiple objects/entities.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-readonly class Path
+readonly class FindBy
 {
-    public function __construct(
-        public string $path
-    ) {
-    }
 }

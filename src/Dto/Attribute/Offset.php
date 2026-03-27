@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Dto\Attribute;
 
 /**
- * Override expected path for property/dto.
+ * Entity/object offset count.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-readonly class Path
+readonly class Offset
 {
     public function __construct(
-        public string $path
+        public int $count
     ) {
     }
 }

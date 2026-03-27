@@ -6,6 +6,9 @@ namespace DualMedia\DtoRequestBundle\Dto\Attribute;
 
 use DualMedia\DtoRequestBundle\Metadata\BagEnum;
 
+/**
+ * Override which bag will be used for the property/dto.
+ */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_PROPERTY)]
 readonly class Bag
 {
