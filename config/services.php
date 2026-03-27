@@ -35,8 +35,11 @@ return static function (ContainerConfigurator $configurator) {
     // reflection services
     $services->set(\DualMedia\DtoRequestBundle\Reflection\PropertyReflector::class);
 
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class);
+
     $services->set(\DualMedia\DtoRequestBundle\Reflection\Reflector::class)
         ->arg('$propertyReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\PropertyReflector::class))
+        ->arg('$virtualReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class))
         ->arg('$validator', new Reference(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class));
 
     // cache and warmers

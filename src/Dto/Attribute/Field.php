@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Dto\Attribute;
 
 use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
+use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use Symfony\Component\Validator\Constraint;
 
@@ -19,7 +20,7 @@ readonly class Field
      */
     public function __construct(
         public string $target,
-        public string|Dynamic $input,
+        public string|Dynamic|Literal $input,
         public Type|null $type = null,
         public iterable|Constraint $constraints = [],
         public BagEnum|null $bag = null

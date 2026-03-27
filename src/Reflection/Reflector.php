@@ -13,11 +13,13 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\Type as TypeAttribute;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Metadata\Model\Type;
+use Symfony\Component\Validator\Constraint;
 
 class Reflector
 {
     public function __construct(
         private readonly PropertyReflector $propertyReflector,
+        private readonly VirtualReflector $virtualReflector,
         private readonly SupportValidator $validator
     ) {
     }
@@ -72,25 +74,38 @@ class Reflector
                 static fn ($m) => $m instanceof PathAttribute
             )?->path;
 
-            if (!$type->isBuiltin()) {
+            $constraints = [];
+
+            foreach ($attributes as $attribute) {
+                if ($attribute instanceof Constraint) {
+                    $constraints[] = $attribute;
+                }
+            }
+
+            if (!$type->isBuiltin()
+                && is_subclass_of($possibleTypeName, AbstractDto::class)) {
                 // check if we need to loop around
                 // todo: write only main metadata! (constraints, bag, etc.)
-                // todo: differentiate between normal and collections later!
-                // this will be an instance of dto
-                if (is_subclass_of($possibleTypeName, AbstractDto::class)) {
-                    $results[$name] = new Dto(
-                        $name,
-                        new Type(
-                            'object',
-                            $collectionType,
-                            $possibleTypeName
-                        ),
-                        $bag,
-                        $path
-                    );
 
-                    continue;
-                }
+                // this will be an instance of dto
+                $results[$name] = new Dto(
+                    $name,
+                    new Type(
+                        'object',
+                        $collectionType,
+                        $possibleTypeName
+                    ),
+                    $bag,
+                    $path,
+                    $constraints
+                );
+
+                continue;
+            }
+
+            if (null === $fqcn && !$type->isBuiltin()) {
+                $fqcn = $possibleTypeName;
+                $possibleTypeName = 'object';
             }
 
             $typeMetadata = new Type(
@@ -104,7 +119,9 @@ class Reflector
                 $typeMetadata,
                 $bag,
                 $path,
-                $this->validator->supports($typeMetadata)
+                $this->validator->supports($typeMetadata),
+                $constraints,
+                $this->virtualReflector->reflect($attributes)
             );
         }
 
