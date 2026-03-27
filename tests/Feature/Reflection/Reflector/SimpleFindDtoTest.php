@@ -30,6 +30,6 @@ class SimpleFindDtoTest extends AbstractReflectorTestCase
         static::assertArrayHasKey('id', $property->virtual);
         static::assertInstanceOf(Property::class, $virtual = $property->virtual['id']);
         static::assertEquals('id', $virtual->name);
-        static::assertEquals('inputId', $virtual->input);
+        static::assertEquals('inputId', $virtual->path);
     }
 }

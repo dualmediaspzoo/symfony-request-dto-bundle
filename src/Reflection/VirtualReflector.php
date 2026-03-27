@@ -39,8 +39,8 @@ class VirtualReflector
                     null
                 ),
                 $attribute->bag,
-                constraints: $attribute->constraints,
-                input: $attribute->input
+                path: $attribute->input,
+                constraints: $attribute->constraints
             );
         }
 

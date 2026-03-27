@@ -26,7 +26,7 @@ class ComplexDtoTest extends AbstractReflectorTestCase
         static::assertEquals('someInput', $someInput->name);
         static::assertEquals(BagEnum::Cookies, $someInput->bag);
         static::assertEquals(IntegerCoercer::class, $someInput->coercer);
-        static::assertNull($someInput->input);
+        static::assertNull($someInput->path);
         static::assertEmpty($someInput->constraints);
         static::assertEmpty($someInput->virtual);
 

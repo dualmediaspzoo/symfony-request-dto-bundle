@@ -22,8 +22,7 @@ readonly class Property
         public string|null $path = null,
         public string|null $coercer = null,
         public array $constraints = [],
-        public array $virtual = [],
-        public string|null $input = null
+        public array $virtual = []
     ) {
     }
 
