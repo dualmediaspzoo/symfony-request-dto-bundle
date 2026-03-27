@@ -45,6 +45,8 @@ class PropertyReflector
             $throw('Property %s->%s has no valid type detected');
         }
 
+        assert($type instanceof \ReflectionNamedType);
+
         return $type;
     }
 }

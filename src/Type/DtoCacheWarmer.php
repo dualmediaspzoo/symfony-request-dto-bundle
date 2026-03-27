@@ -16,7 +16,8 @@ class DtoCacheWarmer implements CacheWarmerInterface
      */
     public function __construct(
         private readonly array $dtoClassList,
-        private readonly Reflector $reflector
+        private readonly Reflector $reflector,
+        private readonly PhpFilesAdapter $cache
     ) {
     }
 
@@ -29,15 +30,10 @@ class DtoCacheWarmer implements CacheWarmerInterface
         string $cacheDir,
         string|null $buildDir = null
     ): array {
-        $cache = new PhpFilesAdapter(
-            namespace: 'dto_bundle.metadata',
-            directory: $cacheDir.'/dto-bundle/metadata'
-        );
-
         foreach ($this->dtoClassList as $class) {
-            $cacheItem = $cache->getItem($class);
+            $cacheItem = $this->cache->getItem($class);
             $cacheItem->set($this->reflector->reflect($class));
-            $cache->save($cacheItem);
+            $this->cache->save($cacheItem);
         }
 
         return $this->dtoClassList;

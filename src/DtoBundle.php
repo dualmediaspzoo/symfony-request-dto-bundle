@@ -11,6 +11,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class DtoBundle extends AbstractBundle
 {
+    public const string COERCER_TAG = 'dm.dto_bundle.coercer';
+
     public const string DTO_TAG = 'dm.dto_bundle.dto';
 
     public const string DTO_LIST_PARAMETER = 'dm.dto_bundle.dto_class_list';

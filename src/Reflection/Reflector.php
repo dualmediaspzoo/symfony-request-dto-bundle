@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Reflection;
 
 use Doctrine\Common\Collections\Collection;
+use DualMedia\DtoRequestBundle\Coercer\SupportValidator;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Bag as BagAttribute;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Path as PathAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Type as TypeAttribute;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
@@ -14,7 +17,8 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Type;
 class Reflector
 {
     public function __construct(
-        private readonly PropertyReflector $propertyReflector
+        private readonly PropertyReflector $propertyReflector,
+        private readonly SupportValidator $validator
     ) {
     }
 
@@ -49,23 +53,27 @@ class Reflector
 
             // now, if yes we might need to modify the actual type if we have a Type attribute
             if ($collectionType) {
-                $typeAttr = null;
+                $typeAttr = array_find(
+                    $attributes,
+                    static fn ($m) => $m instanceof TypeAttribute
+                );
 
-                foreach ($attributes as $attribute) {
-                    if ($attribute instanceof TypeAttribute) {
-                        $typeAttr = $attribute;
-                        break;
-                    }
-                }
-
-                $possibleTypeName = $typeAttr?->type ?? $possibleTypeName;
+                $possibleTypeName = $typeAttr->type ?? $possibleTypeName;
                 $fqcn = $typeAttr?->fqcn;
             }
 
+            $bag = array_find(
+                $attributes,
+                static fn ($m) => $m instanceof BagAttribute
+            )?->bag;
+
+            $path = array_find(
+                $attributes,
+                static fn ($m) => $m instanceof PathAttribute
+            )?->path;
 
             if (!$type->isBuiltin()) {
                 // check if we need to loop around
-
                 // todo: write only main metadata! (constraints, bag, etc.)
                 // todo: differentiate between normal and collections later!
                 // this will be an instance of dto
@@ -76,20 +84,27 @@ class Reflector
                             'object',
                             $collectionType,
                             $possibleTypeName
-                        )
+                        ),
+                        $bag,
+                        $path
                     );
 
                     continue;
                 }
             }
 
+            $typeMetadata = new Type(
+                $possibleTypeName,
+                $collectionType,
+                $fqcn
+            );
+
             $results[$name] = new Property(
                 $name,
-                new Type(
-                    $possibleTypeName,
-                    $collectionType,
-                    $fqcn
-                )
+                $typeMetadata,
+                $bag,
+                $path,
+                $this->validator->supports($typeMetadata)
             );
         }
 

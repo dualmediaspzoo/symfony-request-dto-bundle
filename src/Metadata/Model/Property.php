@@ -18,10 +18,9 @@ readonly class Property
         public Type $type,
         public BagEnum|null $bag = null,
         public string|null $path = null,
-        public string|null $coercerKey = null,
+        public string|null $coercer = null,
         public array $constraints = [],
-        public array $virtual = [],
-        public bool $requiresRuntimeResolve = false,
+        public array $virtual = []
     ) {
     }
 

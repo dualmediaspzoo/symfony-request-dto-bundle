@@ -8,9 +8,10 @@ use DualMedia\DtoRequestBundle\Coercer\Attribute\Supports;
 use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\Metadata\Model\Type as TypeModel;
 use Symfony\Component\Validator\Constraints\Type;
 
-#[Supports(static fn (Property $p) => 'int' === $p->type)]
+#[Supports(static fn (TypeModel $p) => 'int' === $p->type)]
 class IntegerCoercer implements CoercerInterface
 {
     #[\Override]
@@ -31,7 +32,7 @@ class IntegerCoercer implements CoercerInterface
         }
 
         return new Result(
-            $property->collection ? $value : $value[0],
+            $property->type->isCollection() ? $value : $value[0],
             [new Type(type: 'int')]
         );
     }
