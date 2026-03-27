@@ -48,11 +48,11 @@ class TestKernel extends Kernel
                 'auto_generate_proxy_classes' => true,
                 'auto_mapping' => true,
                 'mappings' => [
-                    'DualMedia\\DtoRequestBundle\\Tests\\Fixtures\\Entity\\' => [
+                    'DualMedia\\DtoRequestBundle\\Tests\\Fixture\\Entity\\' => [
                         'is_bundle' => false,
                         'type' => 'attribute',
-                        'dir' => '%kernel.project_dir%/tests/Fixtures/Entity',
-                        'prefix' => 'DualMedia\\DtoRequestBundle\\Tests\\Fixtures\\Entity\\',
+                        'dir' => '%kernel.project_dir%/tests/Fixture/Entity',
+                        'prefix' => 'DualMedia\\DtoRequestBundle\\Tests\\Fixture\\Entity\\',
                         'alias' => 'app',
                     ],
                 ],

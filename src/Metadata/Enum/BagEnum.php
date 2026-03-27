@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DualMedia\DtoRequestBundle\Metadata;
+namespace DualMedia\DtoRequestBundle\Metadata\Enum;
 
 enum BagEnum: string
 {

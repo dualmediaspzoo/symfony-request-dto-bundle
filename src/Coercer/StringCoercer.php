@@ -7,7 +7,7 @@ namespace DualMedia\DtoRequestBundle\Coercer;
 use DualMedia\DtoRequestBundle\Coercer\Attribute\Supports;
 use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
-use DualMedia\DtoRequestBundle\Metadata\Property;
+use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static fn (Property $p) => 'string' === $p->type)]

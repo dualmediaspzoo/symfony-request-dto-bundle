@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Dto\Attribute;
 
-use DualMedia\DtoRequestBundle\Metadata\BagEnum;
+use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 
 /**
  * Override which bag will be used for the property/dto.

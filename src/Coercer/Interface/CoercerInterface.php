@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Coercer\Interface;
 
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
-use DualMedia\DtoRequestBundle\Metadata\Property;
+use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 
 interface CoercerInterface
 {
