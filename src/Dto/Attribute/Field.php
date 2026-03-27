@@ -18,6 +18,7 @@ readonly class Field
     public function __construct(
         public string $target,
         public string $input,
+        public Type|null $type = null,
         public iterable|Constraint $constraints = []
     ) {
     }

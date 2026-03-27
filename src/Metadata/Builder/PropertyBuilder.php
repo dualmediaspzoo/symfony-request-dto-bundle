@@ -6,14 +6,12 @@ namespace DualMedia\DtoRequestBundle\Metadata\Builder;
 
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\Metadata\Model\Type;
 use Symfony\Component\Validator\Constraint;
 
 class PropertyBuilder
 {
     private string|null $path = null;
-    private string|null $subType = null;
-    private string|null $fqcn = null;
-    private bool $collection = false;
     private string|null $coercerKey = null;
     private bool $requiresRuntimeResolve = false;
 
@@ -28,8 +26,8 @@ class PropertyBuilder
 
     public function __construct(
         private readonly string $name,
-        private readonly string $type,
-        private readonly BagEnum $bag = BagEnum::Request,
+        private readonly Type $type,
+        private readonly BagEnum|null $bag = null
     ) {
     }
 
@@ -37,30 +35,6 @@ class PropertyBuilder
         string $path
     ): static {
         $this->path = $path;
-
-        return $this;
-    }
-
-    public function subType(
-        string $subType
-    ): static {
-        $this->subType = $subType;
-
-        return $this;
-    }
-
-    public function fqcn(
-        string $fqcn
-    ): static {
-        $this->fqcn = $fqcn;
-
-        return $this;
-    }
-
-    public function collection(
-        bool $collection = true
-    ): static {
-        $this->collection = $collection;
 
         return $this;
     }
@@ -134,9 +108,6 @@ class PropertyBuilder
             type: $this->type,
             bag: $this->bag,
             path: $this->path,
-            subType: $this->subType,
-            fqcn: $this->fqcn,
-            collection: $this->collection,
             coercerKey: $this->coercerKey,
             constraints: $this->constraints,
             requiresRuntimeResolve: $this->requiresRuntimeResolve,

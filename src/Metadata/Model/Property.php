@@ -16,17 +16,15 @@ readonly class Property
      */
     public function __construct(
         public string $name,
-        public string $type,
-        public BagEnum $bag,
+        public Type $type,
+        public BagEnum|null $bag = null,
         public string|null $path = null,
-        public string|null $subType = null,
-        public string|null $fqcn = null,
-        public bool $collection = false,
         public string|null $coercerKey = null,
         public array $constraints = [],
         public bool $requiresRuntimeResolve = false,
         public array $children = [],
-        public array $meta = []
+        public array $meta = [],
+        public bool $isDto = false
     ) {
     }
 
