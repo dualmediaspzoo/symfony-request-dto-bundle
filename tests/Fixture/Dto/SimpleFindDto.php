@@ -9,7 +9,7 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\Field;
 use DualMedia\DtoRequestBundle\Dto\Attribute\FindOneBy;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Entity\SimpleEntity;
 
-class SimpleDto extends AbstractDto
+class SimpleFindDto extends AbstractDto
 {
     #[FindOneBy]
     #[Field('id', 'inputId')]

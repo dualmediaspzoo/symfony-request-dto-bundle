@@ -7,26 +7,17 @@ namespace DualMedia\DtoRequestBundle\Metadata\Model;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use Symfony\Component\Validator\Constraint;
 
-readonly class Property
+readonly class Dto
 {
     /**
      * @param list<Constraint> $constraints
-     * @param array<string, self> $virtual list of virtual properties existing on fields, used with FindX
      */
     public function __construct(
         public string $name,
         public Type $type,
         public BagEnum|null $bag = null,
         public string|null $path = null,
-        public string|null $coercerKey = null,
-        public array $constraints = [],
-        public array $virtual = [],
-        public bool $requiresRuntimeResolve = false,
+        public array $constraints = []
     ) {
-    }
-
-    public function getRealPath(): string
-    {
-        return $this->path ?? $this->name;
     }
 }
