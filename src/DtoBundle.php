@@ -41,10 +41,5 @@ class DtoBundle extends AbstractBundle
         );
 
         $loader->load('services.php');
-
-        /** @psalm-suppress UndefinedDocblockClass */
-        if ($builder->getParameter('kernel.debug')) {
-            $loader->load('services_dev.php');
-        }
     }
 }

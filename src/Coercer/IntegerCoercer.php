@@ -11,7 +11,9 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Metadata\Model\Type as TypeModel;
 use Symfony\Component\Validator\Constraints\Type;
 
-#[Supports(static fn (TypeModel $p) => 'int' === $p->type)]
+#[Supports(static function (TypeModel $p): bool {
+    return 'int' === $p->type;
+})]
 class IntegerCoercer implements CoercerInterface
 {
     #[\Override]
