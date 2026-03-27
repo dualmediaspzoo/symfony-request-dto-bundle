@@ -15,6 +15,7 @@ class TestKernel extends Kernel
 {
     use MicroKernelTrait;
 
+    #[\Override]
     public function registerBundles(): array
     {
         return [

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a3208b042445490df9e0d08160a09a2",
+    "content-hash": "1ffe70da27d40d3bd9f145b44cc289dc",
     "packages": [
         {
             "name": "psr/cache",
@@ -5470,6 +5470,46 @@
             "time": "2026-02-18T12:38:40+00:00"
         },
         {
+            "name": "pkly/phpunit-service-create-trait",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pkly/phpunit-service-create-trait.git",
+                "reference": "b509ddd87e7881ba69a99934aaf89663e91bee42"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pkly/phpunit-service-create-trait/zipball/b509ddd87e7881ba69a99934aaf89663e91bee42",
+                "reference": "b509ddd87e7881ba69a99934aaf89663e91bee42",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "phpunit/phpunit": ">=10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pkly\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "pkly"
+                }
+            ],
+            "description": "A helper trait for PHPUnit 10+ for easier creation of services with dependencies in unit testing",
+            "support": {
+                "issues": "https://github.com/pkly/phpunit-service-create-trait/issues",
+                "source": "https://github.com/pkly/phpunit-service-create-trait/tree/1.0.3"
+            },
+            "time": "2024-04-26T10:34:48+00:00"
+        },
+        {
             "name": "react/cache",
             "version": "v1.2.0",
             "source": {
@@ -8403,7 +8443,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.4"
+        "php": ">=8.5"
     },
     "platform-dev": {
         "ext-simplexml": "*"
