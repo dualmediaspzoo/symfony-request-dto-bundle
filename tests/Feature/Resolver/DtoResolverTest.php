@@ -23,10 +23,9 @@ class DtoResolverTest extends KernelTestCase
         $resolved = $this->service->resolve(
             MiniDto::class,
             new Request(request: [
-                'intField' => '15',
+                'intField' => 15,
             ])
         );
-
-        print_r($resolved);
+        static::assertEquals(15, $resolved->intField);
     }
 }
