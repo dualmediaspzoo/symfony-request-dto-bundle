@@ -49,6 +49,14 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
         ->arg('$typeFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class));
 
+    // resolve services
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)
+        ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
+        ->arg('$propertyResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class))
+        ->arg('$validator', new Reference('validator'));
+
     // cache and warmers
     $services->set(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class)
         ->arg('$cache', new Reference('dm.dto_bundle.file_cache'))
