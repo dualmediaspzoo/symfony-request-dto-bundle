@@ -16,13 +16,13 @@ use Symfony\Component\Validator\Constraint;
 readonly class Field
 {
     /**
-     * @param iterable<Constraint>|Constraint $constraints
+     * @param list<Constraint>|Constraint $constraints
      */
     public function __construct(
         public string $target,
         public string|Dynamic|Literal $input,
         public Type|null $type = null,
-        public iterable|Constraint $constraints = [],
+        public array|Constraint $constraints = [],
         public BagEnum|null $bag = null
     ) {
     }

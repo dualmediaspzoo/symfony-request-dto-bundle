@@ -12,10 +12,15 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Type;
 
 class VirtualReflector
 {
+    public function __construct(
+        private readonly PropertyFactory $propertyFactory
+    ) {
+    }
+
     /**
      * @param list<mixed> $attributes
      *
-     * @return array<string, Property>
+     * @return array<string, Property|Literal|Dynamic>
      */
     public function reflect(
         array $attributes
@@ -30,17 +35,26 @@ class VirtualReflector
             if ($attribute->input instanceof Literal
                 || $attribute->input instanceof Dynamic) {
                 $fields[$attribute->target] = $attribute->input;
+                continue;
             }
 
-            $fields[$attribute->target] = new Property(
+            $constraints = $attribute->constraints;
+
+            if (!is_array($constraints)) {
+                $constraints = [$constraints];
+            }
+
+            $attrType = $attribute->type;
+            $type = null !== $attrType
+                ? new Type($attrType->type, null, $attrType->fqcn)
+                : new Type('int', null);
+
+            $fields[$attribute->target] = $this->propertyFactory->create(
                 $attribute->target,
-                $attribute->type ?? new Type(
-                    'int',
-                    null
-                ),
+                $type,
                 $attribute->bag,
-                path: $attribute->input,
-                constraints: $attribute->constraints
+                $attribute->input,
+                $constraints
             );
         }
 

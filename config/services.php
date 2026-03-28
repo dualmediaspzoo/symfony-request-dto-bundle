@@ -33,14 +33,18 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$registry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
 
     // reflection services
-    $services->set(\DualMedia\DtoRequestBundle\Reflection\PropertyReflector::class);
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\TypeReflector::class);
 
-    $services->set(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class);
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\PropertyFactory::class)
+        ->arg('$validator', new Reference(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class));
+
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class)
+        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\PropertyFactory::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\Reflector::class)
-        ->arg('$propertyReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\PropertyReflector::class))
+        ->arg('$propertyReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\TypeReflector::class))
         ->arg('$virtualReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class))
-        ->arg('$validator', new Reference(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class));
+        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\PropertyFactory::class));
 
     // cache and warmers
     $services->set(\DualMedia\DtoRequestBundle\Type\DtoCacheWarmer::class)

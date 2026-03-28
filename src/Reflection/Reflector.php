@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Reflection;
 
 use Doctrine\Common\Collections\Collection;
-use DualMedia\DtoRequestBundle\Coercer\SupportValidator;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Bag as BagAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Path as PathAttribute;
@@ -18,9 +17,9 @@ use Symfony\Component\Validator\Constraint;
 class Reflector
 {
     public function __construct(
-        private readonly PropertyReflector $propertyReflector,
+        private readonly TypeReflector $propertyReflector,
         private readonly VirtualReflector $virtualReflector,
-        private readonly SupportValidator $validator
+        private readonly PropertyFactory $propertyFactory
     ) {
     }
 
@@ -114,12 +113,11 @@ class Reflector
                 $fqcn
             );
 
-            $results[$name] = new Property(
+            $results[$name] = $this->propertyFactory->create(
                 $name,
                 $typeMetadata,
                 $bag,
                 $path,
-                $this->validator->supports($typeMetadata),
                 $constraints,
                 $this->virtualReflector->reflect($attributes)
             );

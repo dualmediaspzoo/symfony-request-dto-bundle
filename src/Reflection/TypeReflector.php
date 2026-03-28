@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Reflection;
 
-class PropertyReflector
+class TypeReflector
 {
     public function reflect(
         \ReflectionProperty $property
