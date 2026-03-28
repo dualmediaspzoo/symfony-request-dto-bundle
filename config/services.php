@@ -5,7 +5,6 @@ declare(strict_types=1);
 use DualMedia\DtoRequestBundle\DtoBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
-
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return static function (ContainerConfigurator $configurator) {
@@ -35,16 +34,20 @@ return static function (ContainerConfigurator $configurator) {
     // reflection services
     $services->set(\DualMedia\DtoRequestBundle\Reflection\TypeReflector::class);
 
-    $services->set(\DualMedia\DtoRequestBundle\Reflection\PropertyFactory::class)
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class);
+
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class)
         ->arg('$validator', new Reference(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class)
-        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\PropertyFactory::class));
+        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
+        ->arg('$typeFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\Reflector::class)
         ->arg('$propertyReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\TypeReflector::class))
         ->arg('$virtualReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class))
-        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\PropertyFactory::class));
+        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
+        ->arg('$typeFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class));
 
     // cache and warmers
     $services->set(\DualMedia\DtoRequestBundle\Type\DtoCacheWarmer::class)

@@ -8,12 +8,14 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\Field;
 use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
 use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Metadata\Model\Type;
+use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
+use DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory;
 
 class VirtualReflector
 {
     public function __construct(
-        private readonly PropertyFactory $propertyFactory
+        private readonly PropertyFactory $propertyFactory,
+        private readonly TypeFactory $typeFactory
     ) {
     }
 
@@ -44,14 +46,9 @@ class VirtualReflector
                 $constraints = [$constraints];
             }
 
-            $attrType = $attribute->type;
-            $type = null !== $attrType
-                ? new Type($attrType->type, null, $attrType->fqcn)
-                : new Type('int', null);
-
             $fields[$attribute->target] = $this->propertyFactory->create(
                 $attribute->target,
-                $type,
+                $this->typeFactory->typeFromAttribute($attribute->type) ?? $this->typeFactory->default(),
                 $attribute->bag,
                 $attribute->input,
                 $constraints

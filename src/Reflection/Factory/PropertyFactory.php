@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DualMedia\DtoRequestBundle\Reflection;
+namespace DualMedia\DtoRequestBundle\Reflection\Factory;
 
 use DualMedia\DtoRequestBundle\Coercer\SupportValidator;
 use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;

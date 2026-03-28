@@ -11,7 +11,8 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\Path as PathAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Type as TypeAttribute;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Metadata\Model\Type;
+use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
+use DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory;
 use Symfony\Component\Validator\Constraint;
 
 class Reflector
@@ -19,7 +20,8 @@ class Reflector
     public function __construct(
         private readonly TypeReflector $propertyReflector,
         private readonly VirtualReflector $virtualReflector,
-        private readonly PropertyFactory $propertyFactory
+        private readonly PropertyFactory $propertyFactory,
+        private readonly TypeFactory $typeFactory
     ) {
     }
 
@@ -35,15 +37,13 @@ class Reflector
         $results = [];
 
         foreach ($reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
-            $type = $this->propertyReflector->reflect($property);
+            $reflectionType = $this->propertyReflector->reflect($property);
             $name = $property->getName();
-            $possibleTypeName = $type->getName();
-            $fqcn = null;
 
             // check if our type is a collection
             $collectionType = match (true) {
-                $type->isBuiltin() && 'array' === $possibleTypeName => 'array',
-                !$type->isBuiltin() && is_subclass_of($possibleTypeName, Collection::class) => Collection::class,
+                $reflectionType->isBuiltin() && 'array' === $reflectionType->getName() => 'array',
+                !$reflectionType->isBuiltin() && is_subclass_of($reflectionType->getName(), Collection::class) => Collection::class,
                 default => null,
             };
 
@@ -52,16 +52,10 @@ class Reflector
                 $property->getAttributes()
             );
 
-            // now, if yes we might need to modify the actual type if we have a Type attribute
-            if ($collectionType) {
-                $typeAttr = array_find(
-                    $attributes,
-                    static fn ($m) => $m instanceof TypeAttribute
-                );
-
-                $possibleTypeName = $typeAttr->type ?? $possibleTypeName;
-                $fqcn = $typeAttr?->fqcn;
-            }
+            // for collections, a Type attribute may override the element type
+            $typeAttribute = $collectionType
+                ? array_find($attributes, static fn ($m) => $m instanceof TypeAttribute)
+                : null;
 
             $bag = array_find(
                 $attributes,
@@ -81,19 +75,14 @@ class Reflector
                 }
             }
 
-            if (!$type->isBuiltin()
-                && is_subclass_of($possibleTypeName, AbstractDto::class)) {
-                // check if we need to loop around
-                // todo: write only main metadata! (constraints, bag, etc.)
+            $typeMetadata = $this->typeFactory->type($reflectionType, $collectionType, $typeAttribute);
 
-                // this will be an instance of dto
+            if (!$reflectionType->isBuiltin()
+                && is_subclass_of($reflectionType->getName(), AbstractDto::class)) {
+                // todo: write only main metadata! (constraints, bag, etc.)
                 $results[$name] = new Dto(
                     $name,
-                    new Type(
-                        'object',
-                        $collectionType,
-                        $possibleTypeName
-                    ),
+                    $typeMetadata,
                     $bag,
                     $path,
                     $constraints
@@ -101,17 +90,6 @@ class Reflector
 
                 continue;
             }
-
-            if (null === $fqcn && !$type->isBuiltin()) {
-                $fqcn = $possibleTypeName;
-                $possibleTypeName = 'object';
-            }
-
-            $typeMetadata = new Type(
-                $possibleTypeName,
-                $collectionType,
-                $fqcn
-            );
 
             $results[$name] = $this->propertyFactory->create(
                 $name,
