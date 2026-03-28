@@ -31,6 +31,7 @@ class TestKernel extends Kernel
         ContainerBuilder $builder
     ): void {
         $loader->load(__DIR__.'/../config/services.php');
+        $loader->load(__DIR__.'/../config/services.test.php');
 
         $container->extension('framework', [
             'test' => true,

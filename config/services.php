@@ -50,11 +50,14 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$typeFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class));
 
     // cache and warmers
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class)
+        ->arg('$cache', new Reference('dm.dto_bundle.file_cache'))
+        ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class));
+
     $services->set(\DualMedia\DtoRequestBundle\Type\DtoCacheWarmer::class)
         ->tag('kernel.cache_warmer')
         ->arg('$dtoClassList', '%'.DtoBundle::DTO_LIST_PARAMETER.'%')
-        ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class))
-        ->arg('$cache', new Reference('dm.dto_bundle.file_cache'));
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class));
 
     $services->set('dm.dto_bundle.file_cache', \Symfony\Component\Cache\Adapter\PhpFilesAdapter::class)
         ->arg('$namespace', 'dto_metadata')
