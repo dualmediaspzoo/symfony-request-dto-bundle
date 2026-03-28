@@ -55,7 +55,9 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
         ->arg('$propertyResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class))
-        ->arg('$validator', new Reference('validator'));
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
+        ->arg('$validator', new Reference('validator'))
+        ->public();
 
     // cache and warmers
     $services->set(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class)

@@ -7,7 +7,7 @@ namespace DualMedia\DtoRequestBundle\Resolve;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
-use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,13 +16,13 @@ class DtoResolver
 {
     public function __construct(
         private readonly PropertyResolver $propertyResolver,
+        private readonly CacheReflector $cacheReflector,
         private readonly ValidatorInterface $validator
     ) {
     }
 
     /**
      * @param class-string<T> $class
-     * @param array<string, Property|Dto> $metadata
      * @param list<string> $prefix path segments from parent DTOs
      *
      * @return T
@@ -31,12 +31,12 @@ class DtoResolver
      */
     public function resolve(
         string $class,
-        array $metadata,
         Request $request,
-        BagEnum $defaultBag = BagEnum::Query,
+        BagEnum $defaultBag = BagEnum::Request,
         array $prefix = []
     ): AbstractDto {
         $dto = new $class();
+        $metadata = $this->cacheReflector->get($class) ?? [];
 
         // phase 1: extract and coerce all properties
         /** @var array<string, mixed> $values coerced values keyed by property name */
