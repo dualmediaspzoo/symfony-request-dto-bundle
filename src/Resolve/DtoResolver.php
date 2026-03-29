@@ -8,7 +8,6 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DtoResolver
@@ -32,6 +31,7 @@ class DtoResolver
         BagEnum $defaultBag = BagEnum::Request
     ): AbstractDto {
         $dto = new $class();
+        /** @var list<PendingValue> $pending */
         $pending = [];
 
         // phase 1: recursively extract and coerce all values across the tree
@@ -41,10 +41,12 @@ class DtoResolver
         $context = $this->validator->startContext();
 
         foreach ($pending as $entry) {
-            if ([] !== $entry->constraints) {
-                $context->atPath($entry->validationPath)
-                    ->validate($entry->value, $entry->constraints);
+            if (empty($entry->constraints)) {
+                continue;
             }
+
+            $context->atPath($entry->validationPath)
+                ->validate($entry->value, $entry->constraints);
         }
 
         $violations = $context->getViolations();
@@ -65,29 +67,10 @@ class DtoResolver
             $entry->dto->{$entry->name} = $entry->value;
         }
 
-        for ($i = 0; $i < $violations->count(); ++$i) {
-            $this->addViolationToDto($violations->get($i)->getPropertyPath(), $pending, $violations->get($i));
+        foreach ($violations as $violation) {
+            $dto->addConstraintViolation($violation);
         }
 
         return $dto;
-    }
-
-    /**
-     * Finds the DTO that owns the violated path and adds the violation to it.
-     *
-     * @param list<PendingValue> $pending
-     */
-    private function addViolationToDto(
-        string $violationPath,
-        array $pending,
-        ConstraintViolationInterface $violation
-    ): void {
-        foreach ($pending as $entry) {
-            if ($entry->validationPath === $violationPath) {
-                $entry->dto->addConstraintViolation($violation);
-
-                return;
-            }
-        }
     }
 }

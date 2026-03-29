@@ -38,6 +38,8 @@ class DtoResolverTest extends KernelTestCase
                 'intField' => 'not a number',
             ])
         );
+
+        static::assertFalse($resolved->isValid());
         static::assertNull($resolved->intField);
         $constraints = static::getConstraintViolationsMappedToPropertyPaths($resolved->getConstraintViolationList());
 
@@ -67,5 +69,34 @@ class DtoResolverTest extends KernelTestCase
         );
         static::assertEquals('some stuff', $resolved->value);
         static::assertEquals(22, $resolved->child->intField);
+    }
+
+    public function testWithChildError(): void
+    {
+        $resolved = $this->service->resolve(
+            ParentMiniDto::class,
+            new Request(request: [
+                'value' => 'some stuff',
+                'child' => [
+                    'intField' => 'invalid',
+                ],
+            ])
+        );
+        static::assertFalse($resolved->isValid());
+        static::assertEquals('some stuff', $resolved->value);
+        static::assertNull($resolved->child->intField);
+
+        $constraints = static::getConstraintViolationsMappedToPropertyPaths($resolved->getConstraintViolationList());
+        static::assertNotEmpty($constraints['child.intField'] ?? []);
+        $constraint = $constraints['child.intField'][0];
+
+        static::assertEquals(
+            'This value should be of type int.',
+            $constraint->getMessage()
+        );
+        static::assertEquals(
+            'invalid',
+            $constraint->getInvalidValue()
+        );
     }
 }
