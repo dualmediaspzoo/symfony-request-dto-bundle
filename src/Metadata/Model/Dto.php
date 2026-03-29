@@ -20,4 +20,9 @@ readonly class Dto
         public array $constraints = []
     ) {
     }
+
+    public function getRealPath(): string
+    {
+        return $this->path ?? $this->name;
+    }
 }

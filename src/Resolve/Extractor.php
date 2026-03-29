@@ -48,7 +48,7 @@ class Extractor
                     $child,
                     $request,
                     $meta->bag ?? $defaultBag,
-                    [...$prefix, $meta->path ?? $name],
+                    [...$prefix, $meta->getRealPath()],
                     $pending
                 );
 
@@ -68,7 +68,7 @@ class Extractor
                 $name,
                 $result->value,
                 $result->constraints,
-                $pathPrefix.$name
+                $pathPrefix.$meta->getRealPath()
             );
         }
     }

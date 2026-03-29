@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ComplexDto extends AbstractDto
 {
-    #[Bag(BagEnum::Cookies)]
     #[Path('some-path')]
     public int|null $someInput = null;
 

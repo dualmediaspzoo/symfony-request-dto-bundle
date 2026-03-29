@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Tests\Feature\Resolver;
 
 use DualMedia\DtoRequestBundle\Resolve\DtoResolver;
+use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ComplexDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\MiniDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ParentMiniDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
@@ -17,6 +18,18 @@ class DtoResolverTest extends KernelTestCase
     protected function setUp(): void
     {
         $this->service = static::getService(DtoResolver::class);
+    }
+
+    public function testResolveComplex(): void
+    {
+        $resolved = $this->service->resolve(
+            ComplexDto::class,
+            new Request(request: [
+                'some-path' => 22,
+            ])
+        );
+
+        static::assertEquals(22, $resolved->someInput);
     }
 
     public function test(): void
