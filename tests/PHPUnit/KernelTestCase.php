@@ -22,7 +22,7 @@ class KernelTestCase extends SymfonyTestCase
     /**
      * @return array<string, list<ConstraintViolationInterface>>
      */
-    protected function getConstraintViolationsMappedToPropertyPaths(
+    protected static function getConstraintViolationsMappedToPropertyPaths(
         ConstraintViolationListInterface $list
     ): array {
         /** @var array<string, list<ConstraintViolationInterface>> $out */

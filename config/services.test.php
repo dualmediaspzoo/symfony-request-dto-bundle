@@ -21,4 +21,7 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->set(\DualMedia\DtoRequestBundle\Tests\Fixture\Dto\MiniDto::class)
         ->tag(DtoBundle::DTO_TAG);
+
+    $services->set(\DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ParentMiniDto::class)
+        ->tag(DtoBundle::DTO_TAG);
 };

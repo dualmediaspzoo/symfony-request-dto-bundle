@@ -53,9 +53,12 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)
         ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
 
-    $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
         ->arg('$propertyResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class))
-        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class));
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
         ->arg('$validator', new Reference('validator'))
         ->public();
 

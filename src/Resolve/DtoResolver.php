@@ -6,8 +6,6 @@ namespace DualMedia\DtoRequestBundle\Resolve;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
-use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
-use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -16,8 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DtoResolver
 {
     public function __construct(
-        private readonly PropertyResolver $propertyResolver,
-        private readonly CacheReflector $cacheReflector,
+        private readonly Extractor $extractor,
         private readonly ValidatorInterface $validator
     ) {
     }
@@ -38,7 +35,7 @@ class DtoResolver
         $pending = [];
 
         // phase 1: recursively extract and coerce all values across the tree
-        $this->extract($dto, $request, $defaultBag, [], $pending);
+        $this->extractor->extract($dto, $request, $defaultBag, [], $pending);
 
         // phase 2: validate all type constraints in one pass
         $context = $this->validator->startContext();
@@ -76,58 +73,6 @@ class DtoResolver
     }
 
     /**
-     * Recursively walks the metadata tree, extracting and coercing values
-     * into PendingValue entries without validating.
-     *
-     * @param list<string> $prefix path segments from parent DTOs
-     * @param list<PendingValue> $pending collected entries (mutated)
-     */
-    private function extract(
-        AbstractDto $dto,
-        Request $request,
-        BagEnum $defaultBag,
-        array $prefix,
-        array &$pending
-    ): void {
-        $metadata = $this->cacheReflector->get($dto::class) ?? [];
-        $pathPrefix = [] !== $prefix ? implode('.', $prefix).'.' : '';
-
-        foreach ($metadata as $name => $meta) {
-            if ($meta instanceof Dto) {
-                $child = $this->createDto($meta->type->fqcn);
-                $child->setParentDto($dto);
-                $dto->{$name} = $child;
-
-                $this->extract(
-                    $child,
-                    $request,
-                    $meta->bag ?? $defaultBag,
-                    [...$prefix, $meta->path ?? $name],
-                    $pending
-                );
-
-                continue;
-            }
-
-            $result = $this->propertyResolver->resolve($meta, $request, $defaultBag, $prefix);
-
-            if (null === $result) {
-                continue;
-            }
-
-            $dto->visit($name);
-
-            $pending[] = new PendingValue(
-                $dto,
-                $name,
-                $result->value,
-                $result->constraints,
-                $pathPrefix.$name
-            );
-        }
-    }
-
-    /**
      * Finds the DTO that owns the violated path and adds the violation to it.
      *
      * @param list<PendingValue> $pending
@@ -144,13 +89,5 @@ class DtoResolver
                 return;
             }
         }
-    }
-
-    private function createDto(
-        string|null $class
-    ): AbstractDto {
-        assert(null !== $class && is_subclass_of($class, AbstractDto::class));
-
-        return new $class();
     }
 }

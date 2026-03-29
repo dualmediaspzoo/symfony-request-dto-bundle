@@ -89,17 +89,17 @@ class PropertyResolver
             return self::MISSING;
         }
 
-        $data = $bag->get($root);
+        $data = $bag->all($root);
 
         foreach ($prefix as $segment) {
-            if (!is_array($data) || !array_key_exists($segment, $data)) {
+            if (!array_key_exists($segment, $data) || !is_array($data[$segment])) {
                 return self::MISSING;
             }
 
             $data = $data[$segment];
         }
 
-        if (!is_array($data) || !array_key_exists($path, $data)) {
+        if (!array_key_exists($path, $data)) {
             return self::MISSING;
         }
 
