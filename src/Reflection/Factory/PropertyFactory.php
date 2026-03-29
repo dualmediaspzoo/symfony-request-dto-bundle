@@ -22,6 +22,7 @@ class PropertyFactory
     /**
      * @param list<Constraint> $constraints
      * @param array<string, Property|Dynamic|Literal> $virtual
+     * @param array<string, mixed> $meta
      */
     public function create(
         string $name,
@@ -29,7 +30,8 @@ class PropertyFactory
         BagEnum|null $bag = null,
         string|null $path = null,
         array $constraints = [],
-        array $virtual = []
+        array $virtual = [],
+        array $meta = []
     ): Property {
         return new Property(
             $name,
@@ -38,7 +40,8 @@ class PropertyFactory
             $path,
             $this->validator->supports($type),
             $constraints,
-            $virtual
+            $virtual,
+            $meta
         );
     }
 }

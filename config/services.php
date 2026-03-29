@@ -32,6 +32,8 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$registry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
 
     // reflection services
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class);
+
     $services->set(\DualMedia\DtoRequestBundle\Reflection\TypeReflector::class);
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class);
@@ -47,7 +49,8 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$propertyReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\TypeReflector::class))
         ->arg('$virtualReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class))
         ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
-        ->arg('$typeFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class));
+        ->arg('$typeFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class))
+        ->arg('$metaReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class));
 
     // resolve services
     $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)

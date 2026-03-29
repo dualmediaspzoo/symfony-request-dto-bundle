@@ -14,6 +14,7 @@ readonly class Property
     /**
      * @param list<Constraint> $constraints
      * @param array<string, self|Dynamic|Literal> $virtual list of virtual properties existing on fields, used with FindX
+     * @param array<string, mixed> $meta list of special fields to be saved and read later
      */
     public function __construct(
         public string $name,
@@ -22,7 +23,8 @@ readonly class Property
         public string|null $path = null,
         public string|null $coercer = null,
         public array $constraints = [],
-        public array $virtual = []
+        public array $virtual = [],
+        public array $meta = []
     ) {
     }
 

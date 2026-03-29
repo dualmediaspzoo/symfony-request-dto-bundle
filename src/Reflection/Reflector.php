@@ -21,7 +21,8 @@ class Reflector
         private readonly TypeReflector $propertyReflector,
         private readonly VirtualReflector $virtualReflector,
         private readonly PropertyFactory $propertyFactory,
-        private readonly TypeFactory $typeFactory
+        private readonly TypeFactory $typeFactory,
+        private readonly MetaReflector $metaReflector
     ) {
     }
 
@@ -40,17 +41,14 @@ class Reflector
             $reflectionType = $this->propertyReflector->reflect($property);
             $name = $property->getName();
 
-            // check if our type is a collection
-            $collectionType = match (true) {
-                $reflectionType->isBuiltin() && 'array' === $reflectionType->getName() => 'array',
-                !$reflectionType->isBuiltin() && is_subclass_of($reflectionType->getName(), Collection::class) => Collection::class,
-                default => null,
-            };
-
+            // prepare all attributes
             $attributes = array_map(
                 static fn (\ReflectionAttribute $a) => $a->newInstance(),
                 $property->getAttributes()
             );
+
+            // check if our type is a collection
+            $collectionType = $this->metaReflector->collection($reflectionType);
 
             // for collections, a Type attribute may override the element type
             $typeAttribute = $collectionType
