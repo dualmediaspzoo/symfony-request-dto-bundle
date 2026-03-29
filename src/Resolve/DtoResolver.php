@@ -8,8 +8,9 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
+use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DtoResolver
@@ -23,7 +24,6 @@ class DtoResolver
 
     /**
      * @param class-string<T> $class
-     * @param list<string> $prefix path segments from parent DTOs
      *
      * @return T
      *
@@ -32,21 +32,80 @@ class DtoResolver
     public function resolve(
         string $class,
         Request $request,
-        BagEnum $defaultBag = BagEnum::Request,
-        array $prefix = []
+        BagEnum $defaultBag = BagEnum::Request
     ): AbstractDto {
         $dto = new $class();
-        $metadata = $this->cacheReflector->get($class) ?? [];
+        $pending = [];
 
-        // phase 1: extract and coerce all properties
-        /** @var array<string, mixed> $values coerced values keyed by property name */
-        $values = [];
-        /** @var array<string, list<Constraint>> $typeConstraints coercer constraints keyed by property name */
-        $typeConstraints = [];
+        // phase 1: recursively extract and coerce all values across the tree
+        $this->extract($dto, $request, $defaultBag, [], $pending);
+
+        // phase 2: validate all type constraints in one pass
+        $context = $this->validator->startContext();
+
+        foreach ($pending as $entry) {
+            if ([] !== $entry->constraints) {
+                $context->atPath($entry->validationPath)
+                    ->validate($entry->value, $entry->constraints);
+            }
+        }
+
+        $violations = $context->getViolations();
+
+        $violated = [];
+
+        for ($i = 0; $i < $violations->count(); ++$i) {
+            $violation = $violations->get($i);
+            $violated[$violation->getPropertyPath()] = true;
+        }
+
+        // phase 3: set valid values and add violations to their respective DTOs
+        foreach ($pending as $entry) {
+            if (isset($violated[$entry->validationPath])) {
+                continue;
+            }
+
+            $entry->dto->{$entry->name} = $entry->value;
+        }
+
+        for ($i = 0; $i < $violations->count(); ++$i) {
+            $this->addViolationToDto($violations->get($i)->getPropertyPath(), $pending, $violations->get($i));
+        }
+
+        return $dto;
+    }
+
+    /**
+     * Recursively walks the metadata tree, extracting and coercing values
+     * into PendingValue entries without validating.
+     *
+     * @param list<string> $prefix path segments from parent DTOs
+     * @param list<PendingValue> $pending collected entries (mutated)
+     */
+    private function extract(
+        AbstractDto $dto,
+        Request $request,
+        BagEnum $defaultBag,
+        array $prefix,
+        array &$pending
+    ): void {
+        $metadata = $this->cacheReflector->get($dto::class) ?? [];
+        $pathPrefix = [] !== $prefix ? implode('.', $prefix).'.' : '';
 
         foreach ($metadata as $name => $meta) {
             if ($meta instanceof Dto) {
-                // todo: recursive DTO resolution (pass [...$prefix, $name])
+                $child = $this->createDto($meta->type->fqcn);
+                $child->setParentDto($dto);
+                $dto->{$name} = $child;
+
+                $this->extract(
+                    $child,
+                    $request,
+                    $meta->bag ?? $defaultBag,
+                    [...$prefix, $meta->path ?? $name],
+                    $pending
+                );
+
                 continue;
             }
 
@@ -57,38 +116,41 @@ class DtoResolver
             }
 
             $dto->visit($name);
-            $values[$name] = $result->value;
-            $typeConstraints[$name] = $result->constraints;
+
+            $pending[] = new PendingValue(
+                $dto,
+                $name,
+                $result->value,
+                $result->constraints,
+                $pathPrefix.$name
+            );
         }
+    }
 
-        // phase 2: validate type constraints in one pass
-        $context = $this->validator->startContext();
+    /**
+     * Finds the DTO that owns the violated path and adds the violation to it.
+     *
+     * @param list<PendingValue> $pending
+     */
+    private function addViolationToDto(
+        string $violationPath,
+        array $pending,
+        ConstraintViolationInterface $violation
+    ): void {
+        foreach ($pending as $entry) {
+            if ($entry->validationPath === $violationPath) {
+                $entry->dto->addConstraintViolation($violation);
 
-        foreach ($typeConstraints as $name => $constraints) {
-            $context->atPath($name)
-                ->validate($values[$name], $constraints);
-        }
-
-        $violations = $context->getViolations();
-
-        // collect violated property names
-        $violated = [];
-
-        for ($i = 0; $i < $violations->count(); ++$i) {
-            $path = $violations->get($i)->getPropertyPath();
-            $violated[$path] = true;
-            $dto->addConstraintViolation($violations->get($i));
-        }
-
-        // phase 3: set values that passed type checks
-        foreach ($values as $name => $value) {
-            if (isset($violated[$name])) {
-                continue;
+                return;
             }
-
-            $dto->{$name} = $value;
         }
+    }
 
-        return $dto;
+    private function createDto(
+        string|null $class
+    ): AbstractDto {
+        assert(null !== $class && is_subclass_of($class, AbstractDto::class));
+
+        return new $class();
     }
 }
