@@ -19,8 +19,8 @@ class SimpleFindDtoTest extends AbstractReflectorTestCase
     {
         $reflection = $this->service->reflect(SimpleFindDto::class);
 
-        static::assertArrayHasKey('entity', $reflection);
-        static::assertInstanceOf(Property::class, $property = $reflection['entity']);
+        static::assertArrayHasKey('entity', $reflection->fields);
+        static::assertInstanceOf(Property::class, $property = $reflection->fields['entity']);
         static::assertNull($property->bag);
         static::assertEquals('entity', $property->name);
         static::assertEquals('object', $property->type->type);

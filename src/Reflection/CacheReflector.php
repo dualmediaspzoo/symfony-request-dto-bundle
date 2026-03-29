@@ -6,6 +6,7 @@ namespace DualMedia\DtoRequestBundle\Reflection;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
+use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 
@@ -20,11 +21,11 @@ class CacheReflector
     /**
      * @param class-string<AbstractDto> $class
      *
-     * @return array<string, Property|Dto>|null if class not found in cache
+     * @return MainDto|null if class not found in cache
      */
     public function get(
         string $class
-    ): array|null {
+    ): MainDto|null {
         $item = $this->cache->getItem($class);
 
         if (!$item->isHit()) {

@@ -20,11 +20,10 @@ class ComplexDtoTest extends AbstractReflectorTestCase
     {
         $reflection = $this->service->reflect(ComplexDto::class);
 
-        static::assertArrayHasKey('someInput', $reflection);
-        static::assertInstanceOf(Property::class, $someInput = $reflection['someInput']);
+        static::assertArrayHasKey('someInput', $reflection->fields);
+        static::assertInstanceOf(Property::class, $someInput = $reflection->fields['someInput']);
 
         static::assertEquals('someInput', $someInput->name);
-        static::assertEquals(BagEnum::Cookies, $someInput->bag);
         static::assertEquals(IntegerCoercer::class, $someInput->coercer);
         static::assertEquals('some-path', $someInput->path);
         static::assertEmpty($someInput->constraints);

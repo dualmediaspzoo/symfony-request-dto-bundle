@@ -22,7 +22,7 @@ class PropertyFactory
     /**
      * @param list<Constraint> $constraints
      * @param array<string, Property|Dynamic|Literal> $virtual
-     * @param array<string, mixed> $meta
+     * @param list<object> $meta
      */
     public function create(
         string $name,

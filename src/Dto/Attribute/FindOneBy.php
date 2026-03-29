@@ -8,6 +8,6 @@ namespace DualMedia\DtoRequestBundle\Dto\Attribute;
  * Marker property for input. Expected on singular objects/entities.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-readonly class FindOneBy
+readonly class FindOneBy extends FindBy
 {
 }

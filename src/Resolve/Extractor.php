@@ -36,7 +36,7 @@ class Extractor
         $metadata = $this->cacheReflector->get($dto::class) ?? [];
         $pathPrefix = [] !== $prefix ? implode('.', $prefix).'.' : '';
 
-        foreach ($metadata as $name => $meta) {
+        foreach ($metadata->fields as $name => $meta) {
             if ($meta instanceof Dto) {
                 assert(null !== $meta->type->fqcn && is_subclass_of($meta->type->fqcn, AbstractDto::class));
 

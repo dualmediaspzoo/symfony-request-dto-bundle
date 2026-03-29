@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Bag as BagAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Path as PathAttribute;
-use DualMedia\DtoRequestBundle\Dto\Attribute\Type as TypeAttribute;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
+use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
 use DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory;
@@ -28,12 +28,10 @@ class Reflector
 
     /**
      * @param class-string<AbstractDto> $class
-     *
-     * @return array<string, Property|Dto>
      */
     public function reflect(
         string $class
-    ): array {
+    ): MainDto {
         $reflection = new \ReflectionClass($class);
         $results = [];
 
@@ -51,28 +49,14 @@ class Reflector
             $collectionType = $this->metaReflector->collection($reflectionType);
 
             // for collections, a Type attribute may override the element type
-            $typeAttribute = $collectionType
-                ? array_find($attributes, static fn ($m) => $m instanceof TypeAttribute)
-                : null;
+            $typeAttribute = null === $collectionType
+                ? null
+                : $this->metaReflector->type($attributes);
 
-            $bag = array_find(
-                $attributes,
-                static fn ($m) => $m instanceof BagAttribute
-            )?->bag;
+            $bag = array_find($attributes, static fn ($m) => $m instanceof BagAttribute)?->bag;
+            $path = array_find($attributes, static fn ($m) => $m instanceof PathAttribute)?->path;
 
-            $path = array_find(
-                $attributes,
-                static fn ($m) => $m instanceof PathAttribute
-            )?->path;
-
-            $constraints = [];
-
-            foreach ($attributes as $attribute) {
-                if ($attribute instanceof Constraint) {
-                    $constraints[] = $attribute;
-                }
-            }
-
+            $constraints = array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint));
             $typeMetadata = $this->typeFactory->type($reflectionType, $collectionType, $typeAttribute);
 
             if (!$reflectionType->isBuiltin()
@@ -95,10 +79,20 @@ class Reflector
                 $bag,
                 $path,
                 $constraints,
-                $this->virtualReflector->reflect($attributes)
+                $this->virtualReflector->reflect($attributes),
+                $this->metaReflector->meta($attributes)
             );
         }
 
-        return $results;
+        // main dto constraints
+        $attributes = array_map(
+            static fn (\ReflectionAttribute $a) => $a->newInstance(),
+            $reflection->getAttributes()
+        );
+
+        return new MainDto(
+            $results,
+            array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint))
+        );
     }
 }
