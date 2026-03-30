@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Reflection;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
-use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
-use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 
 class CacheReflector

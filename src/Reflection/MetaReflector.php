@@ -21,7 +21,7 @@ class MetaReflector
     ): string|null {
         return match (true) {
             $type->isBuiltin() && 'array' === $type->getName() => 'array',
-            !$type->isBuiltin() && is_subclass_of($type->getName(), Collection::class) => Collection::class,
+            !$type->isBuiltin() && is_a($type->getName(), Collection::class, true) => Collection::class,
             default => null,
         };
     }

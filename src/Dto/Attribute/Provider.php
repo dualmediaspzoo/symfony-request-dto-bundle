@@ -14,6 +14,7 @@ readonly class Provider
 {
     /**
      * @template T of object
+     *
      * @param \Closure(ProviderInterface<T>): (T|list<T>) $closure
      */
     public function __construct(

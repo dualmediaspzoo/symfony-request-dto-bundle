@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Resolve;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
-use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use Symfony\Component\Validator\Constraints\Type;
@@ -56,6 +57,7 @@ class Extractor
                         $dto,
                         $name,
                         $childFqcn,
+                        $meta->type->collection,
                         $accessor,
                         $childBag,
                         $childSegments,
@@ -89,6 +91,7 @@ class Extractor
                     $dto,
                     $name,
                     $meta->type->fqcn,
+                    $meta->type->collection,
                     $accessor,
                     $meta->bag ?? $defaultBag,
                     [...$prefix, $meta->getRealPath()],
@@ -122,6 +125,34 @@ class Extractor
         }
 
         return $anyVisited;
+    }
+
+    /**
+     * Builds a validation path from segments, using bracket syntax for numeric indices.
+     *
+     * e.g. ['children', '0', 'intField'] → 'children[0].intField'
+     * e.g. ['parent', 'child', 'intField'] → 'parent.child.intField'
+     *
+     * @param list<string> $segments
+     */
+    public static function buildValidationPath(
+        array $segments
+    ): string {
+        if ([] === $segments) {
+            return '';
+        }
+
+        $path = $segments[0];
+
+        for ($i = 1; $i < count($segments); ++$i) {
+            if (ctype_digit($segments[$i])) {
+                $path .= '['.$segments[$i].']';
+            } else {
+                $path .= '.'.$segments[$i];
+            }
+        }
+
+        return $path;
     }
 
     /**
@@ -162,11 +193,18 @@ class Extractor
         AbstractDto $dto,
         string $name,
         string $fqcn,
+        string|null $collectionType,
         BagAccessor $accessor,
         BagEnum $childBag,
         array $childSegments,
         array &$pending
     ): bool {
+        $children = Collection::class === $collectionType
+            ? new ArrayCollection()
+            : [];
+
+        $dto->{$name} = $children;
+
         $raw = $accessor->get($childBag, $childSegments);
 
         if (null === $raw) {
@@ -186,8 +224,6 @@ class Extractor
             return true;
         }
 
-        $children = [];
-
         foreach ($raw as $index => $entry) {
             $child = new $fqcn();
             $child->setParentDto($dto);
@@ -206,33 +242,5 @@ class Extractor
         $dto->{$name} = $children;
 
         return true;
-    }
-
-    /**
-     * Builds a validation path from segments, using bracket syntax for numeric indices.
-     *
-     * e.g. ['children', '0', 'intField'] → 'children[0].intField'
-     * e.g. ['parent', 'child', 'intField'] → 'parent.child.intField'
-     *
-     * @param list<string> $segments
-     */
-    public static function buildValidationPath(
-        array $segments
-    ): string {
-        if ([] === $segments) {
-            return '';
-        }
-
-        $path = $segments[0];
-
-        for ($i = 1; $i < count($segments); ++$i) {
-            if (ctype_digit($segments[$i])) {
-                $path .= '['.$segments[$i].']';
-            } else {
-                $path .= '.'.$segments[$i];
-            }
-        }
-
-        return $path;
     }
 }

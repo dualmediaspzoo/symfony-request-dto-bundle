@@ -12,6 +12,5 @@ readonly class Literal
     public function __construct(
         public mixed $value
     ) {
-
     }
 }

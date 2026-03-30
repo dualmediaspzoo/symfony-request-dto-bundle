@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraint;
 readonly class Result
 {
     /**
-     * @param mixed $value
      * @param list<Constraint> $constraints
      */
     public function __construct(

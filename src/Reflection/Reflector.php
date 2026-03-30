@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Reflection;
 
-use Doctrine\Common\Collections\Collection;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Bag as BagAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Path as PathAttribute;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
-use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
 use DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory;
 use Symfony\Component\Validator\Constraint;

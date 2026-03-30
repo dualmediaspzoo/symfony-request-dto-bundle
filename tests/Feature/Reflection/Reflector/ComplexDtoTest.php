@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Tests\Feature\Reflection\Reflector;
 
 use DualMedia\DtoRequestBundle\Coercer\IntegerCoercer;
-use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Tests\Feature\Reflection\AbstractReflectorTestCase;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ComplexDto;
