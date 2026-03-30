@@ -32,11 +32,12 @@ class Extractor
         BagEnum $defaultBag,
         array $prefix = [],
         array &$pending = []
-    ): void {
+    ): bool {
         if (null === ($metadata = $this->cacheReflector->get($dto::class))) {
-            return;
+            return false;
         }
 
+        $anyVisited = false;
         $pathPrefix = [] !== $prefix ? implode('.', $prefix).'.' : '';
 
         foreach ($metadata->fields as $name => $meta) {
@@ -47,13 +48,20 @@ class Extractor
                 $child->setParentDto($dto);
                 $dto->{$name} = $child;
 
-                $this->extract(
+                $childPath = $meta->getRealPath();
+                $childPrefix = [...$prefix, $childPath];
+
+                $visited = $this->extract(
                     $child,
                     $request,
                     $meta->bag ?? $defaultBag,
-                    [...$prefix, $meta->getRealPath()],
+                    $childPrefix,
                     $pending
                 );
+
+                if ($visited) {
+                    $dto->visit($name);
+                }
 
                 continue;
             }
@@ -65,6 +73,7 @@ class Extractor
             }
 
             $dto->visit($name);
+            $anyVisited = true;
 
             $pending[] = new PendingValue(
                 $dto,
@@ -74,5 +83,7 @@ class Extractor
                 $pathPrefix.$meta->getRealPath()
             );
         }
+
+        return $anyVisited;
     }
 }
