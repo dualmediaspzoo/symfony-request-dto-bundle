@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\DtoBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -10,18 +11,8 @@ return static function (ContainerConfigurator $configurator) {
         ->defaults()
         ->private();
 
-    $services->set(\DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ComplexDto::class)
+    $services->instanceof(AbstractDto::class)
         ->tag(DtoBundle::DTO_TAG);
 
-    $services->set(\DualMedia\DtoRequestBundle\Tests\Fixture\Dto\SimpleFindDto::class)
-        ->tag(DtoBundle::DTO_TAG);
-
-    $services->set(\DualMedia\DtoRequestBundle\Tests\Fixture\Dto\VerySimpleDto::class)
-        ->tag(DtoBundle::DTO_TAG);
-
-    $services->set(\DualMedia\DtoRequestBundle\Tests\Fixture\Dto\MiniDto::class)
-        ->tag(DtoBundle::DTO_TAG);
-
-    $services->set(\DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ParentMiniDto::class)
-        ->tag(DtoBundle::DTO_TAG);
+    $services->load('DualMedia\\DtoRequestBundle\\Tests\\Fixture\\Dto\\', '../tests/Fixture/Dto/');
 };
