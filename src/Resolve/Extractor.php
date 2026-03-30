@@ -33,7 +33,10 @@ class Extractor
         array $prefix = [],
         array &$pending = []
     ): void {
-        $metadata = $this->cacheReflector->get($dto::class) ?? [];
+        if (null === ($metadata = $this->cacheReflector->get($dto::class))) {
+            return;
+        }
+
         $pathPrefix = [] !== $prefix ? implode('.', $prefix).'.' : '';
 
         foreach ($metadata->fields as $name => $meta) {

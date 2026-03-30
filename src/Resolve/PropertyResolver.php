@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PropertyResolver
 {
-    private const MISSING = '__dto_missing__';
+    private const string MISSING = '__dto_missing__';
 
     public function __construct(
         private readonly Registry $coercerRegistry

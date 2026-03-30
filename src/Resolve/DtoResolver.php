@@ -71,6 +71,16 @@ class DtoResolver
             $dto->addConstraintViolation($violation);
         }
 
+        // phase 4: validate the main object
+        $violations = $this->validator->startContext()
+            ->validate($dto)
+            ->getViolations();
+
+        // todo: fix violation paths
+        foreach ($violations as $violation) {
+            $dto->addConstraintViolation($violation);
+        }
+
         return $dto;
     }
 }

@@ -6,8 +6,6 @@ namespace DualMedia\DtoRequestBundle\Type;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
-use DualMedia\DtoRequestBundle\Reflection\Reflector;
-use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 class DtoCacheWarmer implements CacheWarmerInterface
