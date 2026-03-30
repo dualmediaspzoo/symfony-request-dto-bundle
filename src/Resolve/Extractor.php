@@ -7,9 +7,10 @@ namespace DualMedia\DtoRequestBundle\Resolve;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
+use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Type;
 
 class Extractor
 {
@@ -28,7 +29,7 @@ class Extractor
      */
     public function extract(
         AbstractDto $dto,
-        Request $request,
+        BagAccessor $accessor,
         BagEnum $defaultBag,
         array $prefix = [],
         array &$pending = []
@@ -38,35 +39,71 @@ class Extractor
         }
 
         $anyVisited = false;
-        $pathPrefix = [] !== $prefix ? implode('.', $prefix).'.' : '';
 
         foreach ($metadata->fields as $name => $meta) {
             if ($meta instanceof Dto) {
                 assert(null !== $meta->type->fqcn && is_subclass_of($meta->type->fqcn, AbstractDto::class));
 
-                $child = new ($meta->type->fqcn)();
-                $child->setParentDto($dto);
-                $dto->{$name} = $child;
-
+                $childBag = $meta->bag ?? $defaultBag;
                 $childPath = $meta->getRealPath();
-                $childPrefix = [...$prefix, $childPath];
+                $childSegments = [...$prefix, $childPath];
 
-                $visited = $this->extract(
-                    $child,
-                    $request,
-                    $meta->bag ?? $defaultBag,
-                    $childPrefix,
-                    $pending
-                );
+                if ($meta->type->isCollection()) {
+                    /** @var class-string<AbstractDto> $childFqcn */
+                    $childFqcn = $meta->type->fqcn;
+
+                    $visited = $this->extractCollection(
+                        $dto,
+                        $name,
+                        $childFqcn,
+                        $accessor,
+                        $childBag,
+                        $childSegments,
+                        $pending
+                    );
+                } else {
+                    $visited = $this->extractSingleDto(
+                        $dto,
+                        $name,
+                        $meta,
+                        $accessor,
+                        $childBag,
+                        $childSegments,
+                        $pending
+                    );
+                }
 
                 if ($visited) {
                     $dto->visit($name);
+                    $anyVisited = true;
                 }
 
                 continue;
             }
 
-            $result = $this->propertyResolver->resolve($meta, $request, $defaultBag, $prefix);
+            // check if this is a DTO collection (array of DTOs comes through as Property)
+            if ($meta->type->isCollection()
+                && null !== $meta->type->fqcn
+                && is_subclass_of($meta->type->fqcn, AbstractDto::class)) {
+                $visited = $this->extractCollection(
+                    $dto,
+                    $name,
+                    $meta->type->fqcn,
+                    $accessor,
+                    $meta->bag ?? $defaultBag,
+                    [...$prefix, $meta->getRealPath()],
+                    $pending
+                );
+
+                if ($visited) {
+                    $dto->visit($name);
+                    $anyVisited = true;
+                }
+
+                continue;
+            }
+
+            $result = $this->propertyResolver->resolve($meta, $accessor, $defaultBag, $prefix);
 
             if (null === $result) {
                 continue;
@@ -80,10 +117,122 @@ class Extractor
                 $name,
                 $result->value,
                 $result->constraints,
-                $pathPrefix.$meta->getRealPath()
+                self::buildValidationPath([...$prefix, $meta->getRealPath()])
             );
         }
 
         return $anyVisited;
+    }
+
+    /**
+     * @param list<string> $childSegments
+     * @param list<PendingValue> $pending
+     */
+    private function extractSingleDto(
+        AbstractDto $dto,
+        string $name,
+        Dto $meta,
+        BagAccessor $accessor,
+        BagEnum $childBag,
+        array $childSegments,
+        array &$pending
+    ): bool {
+        /** @var class-string<AbstractDto> $fqcn */
+        $fqcn = $meta->type->fqcn;
+
+        $child = new $fqcn();
+        $child->setParentDto($dto);
+        $dto->{$name} = $child;
+
+        return $this->extract(
+            $child,
+            $accessor,
+            $childBag,
+            $childSegments,
+            $pending
+        );
+    }
+
+    /**
+     * @param class-string<AbstractDto> $fqcn
+     * @param list<string> $childSegments
+     * @param list<PendingValue> $pending
+     */
+    private function extractCollection(
+        AbstractDto $dto,
+        string $name,
+        string $fqcn,
+        BagAccessor $accessor,
+        BagEnum $childBag,
+        array $childSegments,
+        array &$pending
+    ): bool {
+        $raw = $accessor->get($childBag, $childSegments);
+
+        if (null === $raw) {
+            return false;
+        }
+
+        // type mismatch: expected array but got something else
+        if (!is_array($raw)) {
+            $pending[] = new PendingValue(
+                $dto,
+                $name,
+                $raw,
+                [new Type(type: 'array')],
+                self::buildValidationPath($childSegments)
+            );
+
+            return true;
+        }
+
+        $children = [];
+
+        foreach ($raw as $index => $entry) {
+            $child = new $fqcn();
+            $child->setParentDto($dto);
+
+            $this->extract(
+                $child,
+                $accessor,
+                $childBag,
+                [...$childSegments, (string)$index],
+                $pending
+            );
+
+            $children[] = $child;
+        }
+
+        $dto->{$name} = $children;
+
+        return true;
+    }
+
+    /**
+     * Builds a validation path from segments, using bracket syntax for numeric indices.
+     *
+     * e.g. ['children', '0', 'intField'] → 'children[0].intField'
+     * e.g. ['parent', 'child', 'intField'] → 'parent.child.intField'
+     *
+     * @param list<string> $segments
+     */
+    public static function buildValidationPath(
+        array $segments
+    ): string {
+        if ([] === $segments) {
+            return '';
+        }
+
+        $path = $segments[0];
+
+        for ($i = 1; $i < count($segments); ++$i) {
+            if (ctype_digit($segments[$i])) {
+                $path .= '['.$segments[$i].']';
+            } else {
+                $path .= '.'.$segments[$i];
+            }
+        }
+
+        return $path;
     }
 }

@@ -21,7 +21,8 @@
     "symfony/event-dispatcher": "^6.4|^7.3",
     "symfony/property-info": "^6.4|^7.3",
     "symfony/validator": "^6.4|^7.3",
-    "symfony/property-access": "^6.4|^7.3"
+    "symfony/property-access": "^6.4|^7.3",
+    "doctrine/collections": "^2.6"
   },
   "require-dev": {
     "ext-simplexml": "*",

@@ -9,6 +9,7 @@ use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Metadata\Model\Type as TypeModel;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static function (TypeModel $p): bool {
@@ -33,9 +34,11 @@ class FloatCoercer implements CoercerInterface
             }
         }
 
+        $typeConstraint = new Type(type: 'float');
+
         return new Result(
             $property->type->isCollection() ? $value : $value[0],
-            [new Type(type: 'float')]
+            $property->type->isCollection() ? [new All([$typeConstraint])] : [$typeConstraint]
         );
     }
 }

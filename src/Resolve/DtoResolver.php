@@ -35,7 +35,8 @@ class DtoResolver
         $pending = [];
 
         // phase 1: recursively extract and coerce all values across the tree
-        $this->extractor->extract($dto, $request, $defaultBag, [], $pending);
+        $accessor = new BagAccessor($request);
+        $this->extractor->extract($dto, $accessor, $defaultBag, [], $pending);
 
         // phase 2: validate all type constraints in one pass
         $context = $this->validator->startContext();
