@@ -11,6 +11,7 @@ use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
+use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraints\Type;
 
 class Extractor
@@ -120,39 +121,11 @@ class Extractor
                 $name,
                 $result->value,
                 $result->constraints,
-                self::buildValidationPath([...$prefix, $meta->getRealPath()])
+                Util::buildValidationPath([...$prefix, $meta->getRealPath()])
             );
         }
 
         return $anyVisited;
-    }
-
-    /**
-     * Builds a validation path from segments, using bracket syntax for numeric indices.
-     *
-     * e.g. ['children', '0', 'intField'] → 'children[0].intField'
-     * e.g. ['parent', 'child', 'intField'] → 'parent.child.intField'
-     *
-     * @param list<string> $segments
-     */
-    public static function buildValidationPath(
-        array $segments
-    ): string {
-        if ([] === $segments) {
-            return '';
-        }
-
-        $path = $segments[0];
-
-        for ($i = 1; $i < count($segments); ++$i) {
-            if (ctype_digit($segments[$i])) {
-                $path .= '['.$segments[$i].']';
-            } else {
-                $path .= '.'.$segments[$i];
-            }
-        }
-
-        return $path;
     }
 
     /**
@@ -218,7 +191,7 @@ class Extractor
                 $name,
                 $raw,
                 [new Type(type: 'array')],
-                self::buildValidationPath($childSegments)
+                Util::buildValidationPath($childSegments)
             );
 
             return true;
