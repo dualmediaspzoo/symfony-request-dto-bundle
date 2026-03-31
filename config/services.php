@@ -6,6 +6,7 @@ use DualMedia\DtoRequestBundle\DtoBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return static function (ContainerConfigurator $configurator) {
@@ -57,9 +58,22 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)
         ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
 
-    $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
+    // field handlers (priority determines evaluation order, highest first)
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\CollectionDtoHandler::class)
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
+        ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 20]);
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\SingleDtoHandler::class)
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
+        ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 10]);
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\ScalarPropertyHandler::class)
         ->arg('$propertyResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class))
-        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class));
+        ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 0]);
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
+        ->arg('$handlers', tagged_iterator(DtoBundle::FIELD_HANDLER_TAG));
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
         ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))

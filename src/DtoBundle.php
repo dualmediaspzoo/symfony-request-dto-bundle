@@ -15,6 +15,8 @@ class DtoBundle extends AbstractBundle
 
     public const string DTO_TAG = 'dm.dto_bundle.dto';
 
+    public const string FIELD_HANDLER_TAG = 'dm.dto_bundle.field_handler';
+
     public const string DTO_LIST_PARAMETER = 'dm.dto_bundle.dto_class_list';
 
     protected string $extensionAlias = 'dm_dto';
