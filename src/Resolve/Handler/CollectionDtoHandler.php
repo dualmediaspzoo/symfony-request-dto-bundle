@@ -12,7 +12,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
 use DualMedia\DtoRequestBundle\Resolve\Extractor;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
-use DualMedia\DtoRequestBundle\Resolve\TypeInfoHelper;
+use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -27,7 +27,7 @@ class CollectionDtoHandler implements FieldHandlerInterface
     public function supports(
         Property|Dto $meta
     ): bool {
-        $className = TypeInfoHelper::getCollectionValueClassName($meta->type);
+        $className = TypeInfoUtils::getCollectionValueClassName($meta->type);
 
         return null !== $className && is_subclass_of($className, AbstractDto::class);
     }
@@ -43,11 +43,11 @@ class CollectionDtoHandler implements FieldHandlerInterface
         array &$pending
     ): bool {
         /** @var class-string<AbstractDto> $fqcn */
-        $fqcn = TypeInfoHelper::getCollectionValueClassName($meta->type);
+        $fqcn = TypeInfoUtils::getCollectionValueClassName($meta->type);
         $childBag = $meta->bag ?? $defaultBag;
         $childSegments = [...$prefix, $meta->getRealPath()];
 
-        $children = TypeInfoHelper::isDoctrineCollection($meta->type)
+        $children = TypeInfoUtils::isDoctrineCollection($meta->type)
             ? new ArrayCollection()
             : [];
 

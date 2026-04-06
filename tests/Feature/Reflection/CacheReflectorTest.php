@@ -9,7 +9,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
-use DualMedia\DtoRequestBundle\Resolve\TypeInfoHelper;
+use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ComplexDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\VerySimpleDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
@@ -46,7 +46,7 @@ class CacheReflectorTest extends KernelTestCase
         static::assertEquals('some-path', $someInput->path);
         static::assertEquals(IntegerCoercer::class, $someInput->coercer);
         static::assertTrue($someInput->type->isIdentifiedBy(TypeIdentifier::INT));
-        static::assertFalse(TypeInfoHelper::isCollection($someInput->type));
+        static::assertFalse(TypeInfoUtils::isCollection($someInput->type));
     }
 
     public function testDtoMetadata(): void
@@ -56,8 +56,8 @@ class CacheReflectorTest extends KernelTestCase
         static::assertArrayHasKey('verySimpleDto', $result->fields);
         static::assertInstanceOf(Dto::class, $verySimpleDto = $result->fields['verySimpleDto']);
         static::assertEquals('verySimpleDto', $verySimpleDto->name);
-        static::assertEquals(VerySimpleDto::class, TypeInfoHelper::getClassName($verySimpleDto->type));
-        static::assertFalse(TypeInfoHelper::isCollection($verySimpleDto->type));
+        static::assertEquals(VerySimpleDto::class, TypeInfoUtils::getClassName($verySimpleDto->type));
+        static::assertFalse(TypeInfoUtils::isCollection($verySimpleDto->type));
         static::assertNotEmpty($verySimpleDto->constraints);
     }
 
@@ -70,7 +70,7 @@ class CacheReflectorTest extends KernelTestCase
         static::assertInstanceOf(Dto::class, $listOfDto = $result->fields['listOfDto']);
         static::assertEquals('listOfDto', $listOfDto->name);
         static::assertInstanceOf(CollectionType::class, $listOfDto->type);
-        static::assertEquals(VerySimpleDto::class, TypeInfoHelper::getCollectionValueClassName($listOfDto->type));
+        static::assertEquals(VerySimpleDto::class, TypeInfoUtils::getCollectionValueClassName($listOfDto->type));
     }
 
     public function testUnknownClassReturnsNull(): void

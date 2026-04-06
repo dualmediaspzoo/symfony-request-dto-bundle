@@ -10,7 +10,7 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\Path as PathAttribute;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
-use DualMedia\DtoRequestBundle\Resolve\TypeInfoHelper;
+use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\TypeResolver\TypeResolver;
 use Symfony\Component\Validator\Constraint;
@@ -47,8 +47,8 @@ class Reflector
             $path = array_find($attributes, static fn ($m) => $m instanceof PathAttribute)?->path;
             $constraints = array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint));
 
-            $className = TypeInfoHelper::getClassName($type)
-                ?? TypeInfoHelper::getCollectionValueClassName($type);
+            $className = TypeInfoUtils::getClassName($type)
+                ?? TypeInfoUtils::getCollectionValueClassName($type);
 
             if (null !== $className && is_subclass_of($className, AbstractDto::class)) {
                 $results[$name] = new Dto(

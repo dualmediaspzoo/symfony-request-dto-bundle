@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Coercer;
 
 use DualMedia\DtoRequestBundle\Coercer\Attribute\Supports;
-use DualMedia\DtoRequestBundle\Resolve\TypeInfoHelper;
+use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\TypeInfo\Type;
 
 class SupportValidator
@@ -32,7 +32,7 @@ class SupportValidator
             }
         }
 
-        $checkType = TypeInfoHelper::getCollectionValueType($type) ?? TypeInfoHelper::unwrap($type);
+        $checkType = TypeInfoUtils::getCollectionValueType($type) ?? $type;
 
         return array_find_key(
             $this->cache,

@@ -8,7 +8,7 @@ use DualMedia\DtoRequestBundle\Coercer\Attribute\Supports;
 use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Resolve\TypeInfoHelper;
+use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\TypeInfo\Type as TypeInfo;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\Validator\Constraints\All;
@@ -34,7 +34,7 @@ class StringCoercer implements CoercerInterface
             }
         }
 
-        $isCollection = TypeInfoHelper::isCollection($property->type);
+        $isCollection = TypeInfoUtils::isCollection($property->type);
         $typeConstraint = new Type(type: 'string');
 
         return new Result(
