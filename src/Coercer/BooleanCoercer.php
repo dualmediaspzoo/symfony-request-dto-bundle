@@ -8,10 +8,8 @@ use DualMedia\DtoRequestBundle\Coercer\Attribute\Supports;
 use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\TypeInfo\Type as TypeInfo;
 use Symfony\Component\TypeInfo\TypeIdentifier;
-use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static function (TypeInfo $type): bool {
@@ -24,26 +22,25 @@ class BooleanCoercer implements CoercerInterface
         Property $property,
         mixed $value
     ): Result {
-        if (!is_array($value)) {
-            $value = [$value];
-        }
+        return CoercionUtils::coerce(
+            $property,
+            $value,
+            static function (mixed $val): mixed {
+                if ('null' === $val) {
+                    return null;
+                }
 
-        foreach ($value as $index => $val) {
-            if ('null' === $val) {
-                $value[$index] = null;
-            } elseif (in_array((string)$val, ['0', '1'], true)) {
-                $value[$index] = (bool)((int)$val);
-            } elseif (in_array((string)$val, ['true', 'false'], true)) {
-                $value[$index] = 'true' == $val;
-            }
-        }
+                if (in_array((string)$val, ['0', '1'], true)) {
+                    return (bool)((int)$val);
+                }
 
-        $isCollection = TypeInfoUtils::isCollection($property->type);
-        $typeConstraint = new Type(type: 'bool');
+                if (in_array((string)$val, ['true', 'false'], true)) {
+                    return 'true' == $val;
+                }
 
-        return new Result(
-            $isCollection ? $value : $value[0],
-            $isCollection ? [new All([$typeConstraint])] : [$typeConstraint]
+                return $val;
+            },
+            new Type(type: 'bool')
         );
     }
 }

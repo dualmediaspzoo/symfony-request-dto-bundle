@@ -8,10 +8,8 @@ use DualMedia\DtoRequestBundle\Coercer\Attribute\Supports;
 use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\TypeInfo\Type as TypeInfo;
 use Symfony\Component\TypeInfo\TypeIdentifier;
-use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static function (TypeInfo $type): bool {
@@ -24,24 +22,21 @@ class FloatCoercer implements CoercerInterface
         Property $property,
         mixed $value
     ): Result {
-        if (!is_array($value)) {
-            $value = [$value];
-        }
+        return CoercionUtils::coerce(
+            $property,
+            $value,
+            static function (mixed $val): mixed {
+                if ('null' === $val) {
+                    return null;
+                }
 
-        foreach ($value as $index => $val) {
-            if ('null' === $val) {
-                $value[$index] = null;
-            } elseif (is_numeric($val)) {
-                $value[$index] = (float)$val;
-            }
-        }
+                if (is_numeric($val)) {
+                    return (float)$val;
+                }
 
-        $isCollection = TypeInfoUtils::isCollection($property->type);
-        $typeConstraint = new Type(type: 'float');
-
-        return new Result(
-            $isCollection ? $value : $value[0],
-            $isCollection ? [new All([$typeConstraint])] : [$typeConstraint]
+                return $val;
+            },
+            new Type(type: 'float')
         );
     }
 }
