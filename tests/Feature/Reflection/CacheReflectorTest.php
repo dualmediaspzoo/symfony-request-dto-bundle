@@ -9,10 +9,13 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
+use DualMedia\DtoRequestBundle\Resolve\TypeInfoHelper;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ComplexDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\VerySimpleDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\TypeInfo\Type\CollectionType;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 
 #[Group('feature')]
 #[Group('reflection')]
@@ -42,8 +45,8 @@ class CacheReflectorTest extends KernelTestCase
         static::assertEquals('someInput', $someInput->name);
         static::assertEquals('some-path', $someInput->path);
         static::assertEquals(IntegerCoercer::class, $someInput->coercer);
-        static::assertEquals('int', $someInput->type->type);
-        static::assertFalse($someInput->type->isCollection());
+        static::assertTrue($someInput->type->isIdentifiedBy(TypeIdentifier::INT));
+        static::assertFalse(TypeInfoHelper::isCollection($someInput->type));
     }
 
     public function testDtoMetadata(): void
@@ -53,9 +56,8 @@ class CacheReflectorTest extends KernelTestCase
         static::assertArrayHasKey('verySimpleDto', $result->fields);
         static::assertInstanceOf(Dto::class, $verySimpleDto = $result->fields['verySimpleDto']);
         static::assertEquals('verySimpleDto', $verySimpleDto->name);
-        static::assertEquals('object', $verySimpleDto->type->type);
-        static::assertEquals(VerySimpleDto::class, $verySimpleDto->type->fqcn);
-        static::assertFalse($verySimpleDto->type->isCollection());
+        static::assertEquals(VerySimpleDto::class, TypeInfoHelper::getClassName($verySimpleDto->type));
+        static::assertFalse(TypeInfoHelper::isCollection($verySimpleDto->type));
         static::assertNotEmpty($verySimpleDto->constraints);
     }
 
@@ -64,11 +66,11 @@ class CacheReflectorTest extends KernelTestCase
         $result = $this->service->get(ComplexDto::class);
 
         static::assertArrayHasKey('listOfDto', $result->fields);
-        static::assertInstanceOf(Property::class, $listOfDto = $result->fields['listOfDto']);
+        // listOfDto is a DTO collection so it becomes a Dto metadata entry
+        static::assertInstanceOf(Dto::class, $listOfDto = $result->fields['listOfDto']);
         static::assertEquals('listOfDto', $listOfDto->name);
-        static::assertTrue($listOfDto->type->isCollection());
-        static::assertEquals('array', $listOfDto->type->collection);
-        static::assertEquals(VerySimpleDto::class, $listOfDto->type->fqcn);
+        static::assertInstanceOf(CollectionType::class, $listOfDto->type);
+        static::assertEquals(VerySimpleDto::class, TypeInfoHelper::getCollectionValueClassName($listOfDto->type));
     }
 
     public function testUnknownClassReturnsNull(): void

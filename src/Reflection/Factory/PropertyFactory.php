@@ -9,7 +9,7 @@ use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
 use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Metadata\Model\Type;
+use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraint;
 
 class PropertyFactory

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Coercer\Attribute;
 
-use DualMedia\DtoRequestBundle\Metadata\Model\Type;
+use Symfony\Component\TypeInfo\Type;
 
 /**
  * Needed on coercers to mark support for types.

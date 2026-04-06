@@ -9,13 +9,12 @@ use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
 use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
-use DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory;
+use Symfony\Component\TypeInfo\Type;
 
 class VirtualReflector
 {
     public function __construct(
-        private readonly PropertyFactory $propertyFactory,
-        private readonly TypeFactory $typeFactory
+        private readonly PropertyFactory $propertyFactory
     ) {
     }
 
@@ -46,9 +45,13 @@ class VirtualReflector
                 $constraints = [$constraints];
             }
 
+            $type = null !== $attribute->fqcn
+                ? Type::object($attribute->fqcn)
+                : Type::builtin($attribute->type ?? 'int');
+
             $fields[$attribute->target] = $this->propertyFactory->create(
                 $attribute->target,
-                $this->typeFactory->typeFromAttribute($attribute->type) ?? $this->typeFactory->default(),
+                $type,
                 $attribute->bag,
                 $attribute->input,
                 $constraints

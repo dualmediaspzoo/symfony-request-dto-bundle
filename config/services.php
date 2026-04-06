@@ -36,23 +36,20 @@ return static function (ContainerConfigurator $configurator) {
     // reflection services
     $services->set(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class);
 
-    $services->set(\DualMedia\DtoRequestBundle\Reflection\TypeReflector::class);
-
-    $services->set(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class);
+    $services->set('dm.dto_bundle.type_resolver', \Symfony\Component\TypeInfo\TypeResolver\TypeResolver::class)
+        ->factory([\Symfony\Component\TypeInfo\TypeResolver\TypeResolver::class, 'create']);
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class)
         ->arg('$validator', new Reference(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class)
-        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
-        ->arg('$typeFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class));
+        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\Reflector::class)
-        ->arg('$propertyReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\TypeReflector::class))
         ->arg('$virtualReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class))
         ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
-        ->arg('$typeFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\TypeFactory::class))
-        ->arg('$metaReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class));
+        ->arg('$metaReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class))
+        ->arg('$typeResolver', new Reference('dm.dto_bundle.type_resolver'));
 
     // resolve services
     $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Tests\Fixture\Dto;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
-use DualMedia\DtoRequestBundle\Dto\Attribute\ObjectType;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Path;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,6 +19,5 @@ class ComplexDto extends AbstractDto
     /**
      * @var list<VerySimpleDto>
      */
-    #[ObjectType(VerySimpleDto::class)]
     public array $listOfDto = [];
 }

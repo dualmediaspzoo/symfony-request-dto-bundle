@@ -8,12 +8,14 @@ use DualMedia\DtoRequestBundle\Coercer\Attribute\Supports;
 use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Metadata\Model\Type as TypeModel;
+use DualMedia\DtoRequestBundle\Resolve\TypeInfoHelper;
+use Symfony\Component\TypeInfo\Type as TypeInfo;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;
 
-#[Supports(static function (TypeModel $p): bool {
-    return 'string' === $p->type;
+#[Supports(static function (TypeInfo $type): bool {
+    return $type->isIdentifiedBy(TypeIdentifier::STRING);
 })]
 class StringCoercer implements CoercerInterface
 {
@@ -32,11 +34,12 @@ class StringCoercer implements CoercerInterface
             }
         }
 
+        $isCollection = TypeInfoHelper::isCollection($property->type);
         $typeConstraint = new Type(type: 'string');
 
         return new Result(
-            $property->type->isCollection() ? $value : $value[0],
-            $property->type->isCollection() ? [new All([$typeConstraint])] : [$typeConstraint]
+            $isCollection ? $value : $value[0],
+            $isCollection ? [new All([$typeConstraint])] : [$typeConstraint]
         );
     }
 }

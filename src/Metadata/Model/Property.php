@@ -7,6 +7,7 @@ namespace DualMedia\DtoRequestBundle\Metadata\Model;
 use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
 use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
+use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraint;
 
 readonly class Property

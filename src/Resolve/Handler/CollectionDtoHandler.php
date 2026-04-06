@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Resolve\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
@@ -13,6 +12,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
 use DualMedia\DtoRequestBundle\Resolve\Extractor;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
+use DualMedia\DtoRequestBundle\Resolve\TypeInfoHelper;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -27,9 +27,9 @@ class CollectionDtoHandler implements FieldHandlerInterface
     public function supports(
         Property|Dto $meta
     ): bool {
-        return $meta->type->isCollection()
-            && null !== $meta->type->fqcn
-            && is_subclass_of($meta->type->fqcn, AbstractDto::class);
+        $className = TypeInfoHelper::getCollectionValueClassName($meta->type);
+
+        return null !== $className && is_subclass_of($className, AbstractDto::class);
     }
 
     #[\Override]
@@ -43,11 +43,11 @@ class CollectionDtoHandler implements FieldHandlerInterface
         array &$pending
     ): bool {
         /** @var class-string<AbstractDto> $fqcn */
-        $fqcn = $meta->type->fqcn;
+        $fqcn = TypeInfoHelper::getCollectionValueClassName($meta->type);
         $childBag = $meta->bag ?? $defaultBag;
         $childSegments = [...$prefix, $meta->getRealPath()];
 
-        $children = Collection::class === $meta->type->collection
+        $children = TypeInfoHelper::isDoctrineCollection($meta->type)
             ? new ArrayCollection()
             : [];
 

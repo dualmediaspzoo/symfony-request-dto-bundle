@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Metadata\Model;
 
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
+use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraint;
 
 readonly class Dto
