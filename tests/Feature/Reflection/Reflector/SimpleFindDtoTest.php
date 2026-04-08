@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Tests\Feature\Reflection\Reflector;
 
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use DualMedia\DtoRequestBundle\Tests\Feature\Reflection\AbstractReflectorTestCase;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\SimpleFindDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Entity\SimpleEntity;
+use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('feature')]

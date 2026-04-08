@@ -10,7 +10,6 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
 use DualMedia\DtoRequestBundle\Resolve\Extractor;
-use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 
 class SingleDtoHandler implements FieldHandlerInterface

@@ -11,7 +11,6 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
-use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\TypeResolver\TypeResolver;
 use Symfony\Component\Validator\Constraint;
 

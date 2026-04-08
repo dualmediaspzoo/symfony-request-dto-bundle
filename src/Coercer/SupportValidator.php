@@ -23,20 +23,26 @@ class SupportValidator
     public function supports(
         Type $type
     ): string|null {
-        if (empty($this->cache)) {
-            foreach ($this->registry->iterator() as $id => $coercer) {
-                $attribute = (new \ReflectionClass($coercer)->getAttributes(Supports::class)[0] ?? null)?->newInstance();
-                assert(null !== $attribute);
-                /** @var Supports $attribute */
-                $this->cache[$id] = $attribute->target;
-            }
-        }
-
+        $this->init();
         $checkType = TypeInfoUtils::getCollectionValueType($type) ?? $type;
 
         return array_find_key(
             $this->cache,
             fn ($closure) => call_user_func($closure, $checkType)
         );
+    }
+
+    private function init(): void
+    {
+        if (!empty($this->cache)) {
+            return;
+        }
+
+        foreach ($this->registry->iterator() as $id => $coercer) {
+            $attribute = (new \ReflectionClass($coercer)->getAttributes(Supports::class)[0] ?? null)?->newInstance();
+            assert(null !== $attribute);
+            /** @var Supports $attribute */
+            $this->cache[$id] = $attribute->target;
+        }
     }
 }
