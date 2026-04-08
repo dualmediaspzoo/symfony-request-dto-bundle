@@ -94,7 +94,7 @@ class DateTimeDtoTest extends KernelTestCase
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
         static::assertArrayHasKey('formattedDate', $violations);
         static::assertCount(1, $violations['formattedDate']);
-        static::assertEquals('This value is not a valid datetime.', $violations['formattedDate'][0]->getMessage());
+        static::assertEquals('This value is not valid.', $violations['formattedDate'][0]->getMessage());
     }
 
     public function testDateCollection(): void

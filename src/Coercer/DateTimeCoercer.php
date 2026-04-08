@@ -27,8 +27,6 @@ class DateTimeCoercer implements CoercerInterface
     public function coerce(
         Property $property
     ): Result {
-        $inner = $this->stringCoercer->coerce($property);
-
         /** @var Format|null $format */
         $format = array_find($property->meta, static fn ($m) => $m instanceof Format);
 
@@ -52,7 +50,7 @@ class DateTimeCoercer implements CoercerInterface
                 }
             },
             new Type(type: \DateTimeImmutable::class, message: 'This value is not valid.'),
-            $inner
+            $this->stringCoercer->coerce($property)
         );
     }
 }
