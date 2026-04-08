@@ -38,38 +38,37 @@ class DtoResolver
         $accessor = new BagAccessor($request);
         $this->extractor->extract($dto, $accessor, $defaultBag, [], $pending);
 
-        // phase 2: validate all type constraints in one pass
-        $context = $this->validator->startContext();
-
-        foreach ($pending as $entry) {
-            if (empty($entry->constraints)) {
-                continue;
-            }
-
-            $context->atPath($entry->validationPath)
-                ->validate($entry->value, $entry->constraints);
-        }
-
-        $violations = $context->getViolations();
-
+        // phase 2: validate type constraints in sequenced phases per property
         $violated = [];
 
-        for ($i = 0; $i < $violations->count(); ++$i) {
-            $violation = $violations->get($i);
-            $violated[$violation->getPropertyPath()] = true;
+        foreach ($pending as $entry) {
+            foreach ($entry->phases as [$phaseValue, $phaseConstraints]) {
+                $context = $this->validator->startContext();
+
+                $context->atPath($entry->validationPath)
+                    ->validate($phaseValue, $phaseConstraints);
+
+                $phaseViolations = $context->getViolations();
+
+                if ($phaseViolations->count() > 0) {
+                    $violated[$entry->validationPath] = true;
+
+                    foreach ($phaseViolations as $violation) {
+                        $dto->addConstraintViolation($violation);
+                    }
+
+                    break;
+                }
+            }
         }
 
-        // phase 3: set valid values and add violations to their respective DTOs
+        // phase 3: set valid values
         foreach ($pending as $entry) {
-            if (!$entry->assignable || isset($violated[$entry->validationPath])) {
+            if (isset($violated[$entry->validationPath])) {
                 continue;
             }
 
             $entry->dto->{$entry->name} = $entry->value;
-        }
-
-        foreach ($violations as $violation) {
-            $dto->addConstraintViolation($violation);
         }
 
         // phase 4: validate the main object

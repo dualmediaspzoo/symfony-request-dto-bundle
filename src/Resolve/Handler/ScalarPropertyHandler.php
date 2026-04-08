@@ -46,24 +46,26 @@ class ScalarPropertyHandler implements FieldHandlerInterface
         }
 
         $validationPath = Util::buildValidationPath([...$prefix, $meta->getRealPath()]);
+
+        // collect phases innermost-first (inner validates before outer)
+        $phases = [];
         $current = $result;
-        $assignable = true;
 
         while (null !== $current) {
             if (!empty($current->constraints)) {
-                $pending[] = new PendingValue(
-                    $dto,
-                    $name,
-                    $current->value,
-                    $current->constraints,
-                    $validationPath,
-                    $assignable
-                );
+                array_unshift($phases, [$current->value, $current->constraints]);
             }
 
-            $assignable = false;
             $current = $current->inner;
         }
+
+        $pending[] = new PendingValue(
+            $dto,
+            $name,
+            $result->value,
+            $phases,
+            $validationPath
+        );
 
         return true;
     }

@@ -64,7 +64,7 @@ class CollectionDtoHandler implements FieldHandlerInterface
                 $dto,
                 $name,
                 $raw,
-                [new Type(type: 'array')],
+                [[$raw, [new Type(type: 'array')]]],
                 Util::buildValidationPath($childSegments)
             );
 
