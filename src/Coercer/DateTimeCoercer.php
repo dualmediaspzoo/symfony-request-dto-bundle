@@ -9,7 +9,10 @@ use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Format;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\TypeInfo\Type as TypeInfo;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static function (TypeInfo $type): bool {
@@ -18,39 +21,54 @@ use Symfony\Component\Validator\Constraints\Type;
 })]
 class DateTimeCoercer implements CoercerInterface
 {
+    public function __construct(
+        private readonly StringCoercer $stringCoercer
+    ) {
+    }
+
     #[\Override]
     public function coerce(
         Property $property,
         mixed $value
     ): Result {
+        $inner = $this->stringCoercer->coerce($property, $value);
+
         /** @var Format|null $format */
         $format = array_find($property->meta, static fn ($m) => $m instanceof Format);
 
-        return CoercionUtils::coerce(
-            $property,
-            $value,
-            static function (mixed $val) use ($format): mixed {
-                if ('null' === $val) {
-                    return null;
-                }
+        if (null !== $format) {
+            $inner = new Result(
+                $inner->value,
+                [...$inner->constraints, new DateTime(format: $format->format)]
+            );
+        }
 
-                if (!is_string($val)) {
-                    return $val;
-                }
+        $isCollection = TypeInfoUtils::isCollection($property->type);
+        $values = is_array($inner->value) ? $inner->value : [$inner->value];
 
-                if (null !== $format) {
-                    $result = \DateTimeImmutable::createFromFormat($format->format, $val);
+        foreach ($values as $index => $val) {
+            if (!is_string($val)) {
+                continue;
+            }
 
-                    return false !== $result ? $result : $val;
-                }
-
+            if (null !== $format) {
+                $result = \DateTimeImmutable::createFromFormat($format->format, $val);
+                $values[$index] = false !== $result ? $result : $val;
+            } else {
                 try {
-                    return new \DateTimeImmutable($val);
+                    $values[$index] = new \DateTimeImmutable($val);
                 } catch (\Exception) {
-                    return $val;
+                    // leave as-is, Type constraint will catch it
                 }
-            },
-            new Type(type: \DateTimeImmutable::class)
+            }
+        }
+
+        $typeConstraint = new Type(type: \DateTimeImmutable::class);
+
+        return new Result(
+            $isCollection ? $values : $values[0],
+            $isCollection ? [new All([$typeConstraint])] : [$typeConstraint],
+            $inner
         );
     }
 }

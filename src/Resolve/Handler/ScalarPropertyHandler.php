@@ -45,13 +45,25 @@ class ScalarPropertyHandler implements FieldHandlerInterface
             return false;
         }
 
-        $pending[] = new PendingValue(
-            $dto,
-            $name,
-            $result->value,
-            $result->constraints,
-            Util::buildValidationPath([...$prefix, $meta->getRealPath()])
-        );
+        $validationPath = Util::buildValidationPath([...$prefix, $meta->getRealPath()]);
+        $current = $result;
+        $assignable = true;
+
+        while (null !== $current) {
+            if (!empty($current->constraints)) {
+                $pending[] = new PendingValue(
+                    $dto,
+                    $name,
+                    $current->value,
+                    $current->constraints,
+                    $validationPath,
+                    $assignable
+                );
+            }
+
+            $assignable = false;
+            $current = $current->inner;
+        }
 
         return true;
     }

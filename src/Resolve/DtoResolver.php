@@ -61,7 +61,7 @@ class DtoResolver
 
         // phase 3: set valid values and add violations to their respective DTOs
         foreach ($pending as $entry) {
-            if (isset($violated[$entry->validationPath])) {
+            if (!$entry->assignable || isset($violated[$entry->validationPath])) {
                 continue;
             }
 

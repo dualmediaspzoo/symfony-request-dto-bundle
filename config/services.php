@@ -28,6 +28,7 @@ return static function (ContainerConfigurator $configurator) {
         ->tag(DtoBundle::COERCER_TAG);
 
     $services->set(\DualMedia\DtoRequestBundle\Coercer\DateTimeCoercer::class)
+        ->arg('$stringCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class))
         ->tag(DtoBundle::COERCER_TAG);
 
     $services->set(\DualMedia\DtoRequestBundle\Coercer\Registry::class)

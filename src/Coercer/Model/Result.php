@@ -13,7 +13,8 @@ readonly class Result
      */
     public function __construct(
         public mixed $value,
-        public array $constraints = []
+        public array $constraints = [],
+        public self|null $inner = null
     ) {
     }
 }

@@ -93,6 +93,7 @@ class DateTimeDtoTest extends KernelTestCase
 
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
         static::assertArrayHasKey('formattedDate', $violations);
+        print_r($violations);
     }
 
     public function testDateCollection(): void

@@ -17,7 +17,8 @@ readonly class PendingValue
         public string $name,
         public mixed $value,
         public array $constraints,
-        public string $validationPath
+        public string $validationPath,
+        public bool $assignable = true
     ) {
     }
 }
