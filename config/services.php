@@ -27,6 +27,9 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class)
         ->tag(DtoBundle::COERCER_TAG);
 
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\DateTimeCoercer::class)
+        ->tag(DtoBundle::COERCER_TAG);
+
     $services->set(\DualMedia\DtoRequestBundle\Coercer\Registry::class)
         ->arg('$locator', tagged_locator(DtoBundle::COERCER_TAG));
 

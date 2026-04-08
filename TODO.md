@@ -2,11 +2,11 @@
 
 ## Metadata
 
-- [ ] `DtoMetadata` — top-level model wrapping the property tree for a DTO class
-- [ ] `PropertyMetadata` builder — fluent builder that outputs a sealed `Property`
-- [ ] `FieldMetadata` — per-field model for Find attribute fields (path, type, constraints)
-- [ ] `MetadataRegistry` — serves cached metadata by FQCN, falls back to runtime reflection
-- [ ] Cache warmer — iterates `dm.dto_bundle.dto` tagged classes, extracts metadata,
+- [x] `DtoMetadata` — top-level model wrapping the property tree for a DTO class
+- [x] `PropertyMetadata` builder — fluent builder that outputs a sealed `Property`
+- [x] `FieldMetadata` — per-field model for Find attribute fields (path, type, constraints)
+- [x] `MetadataRegistry` — serves cached metadata by FQCN, falls back to runtime reflection
+- [x] Cache warmer — iterates `dm.dto_bundle.dto` tagged classes, extracts metadata,
   serializes the model tree via `PhpFilesAdapter`
 - [ ] `requiresRuntimeResolve` detection — try/catch serialization of constraints at warm-up,
   flag properties that fail
@@ -18,7 +18,7 @@
 - [ ] `CoercerService` — O(1) coercer lookup by type/FQCN from pre-built map,
   no `supports()` scan at runtime
 - [ ] `EnumCoercer` — backed enum coercion with label processing and `FromKey` support
-- [ ] `DateTimeImmutableCoercer` — date parsing with configurable format
+- [x] `DateTimeImmutableCoercer` — date parsing with configurable format
 - [ ] `UploadedFileCoercer` — validates uploaded file instances
 - [ ] Coercer warm-up — resolve `#[Supports]` closures against property metadata at cache
   warm-up, store coercer key in `PropertyMetadata`
@@ -32,9 +32,9 @@
 
 ## Validation
 
-- [ ] Batch validation pass — single `$validator->startContext()` collecting constraints
+- [x] Batch validation pass — single `$validator->startContext()` collecting constraints
   from all coercion results + property metadata
-- [ ] Pre-check phase — validate preconditions (e.g. "is collection actually an array?")
+- [x] Pre-check phase — validate preconditions (e.g. "is collection actually an array?")
   before coercion runs
 - [ ] `WhenVisited` constraint + validator — conditional validation based on visited state
 - [ ] `MappedToPath` constraint + validator — attach constraints to specific property path
@@ -67,8 +67,8 @@
 - [ ] `FindOneBy` — single entity lookup with fields, constraints, types
 - [ ] `FindBy` — collection entity lookup with limit/offset
 - [ ] `FindComplex` — custom complex loader reference
-- [ ] `Type` — explicit type override
-- [ ] `Format` — datetime format specifier
+- [ ] `Type` — explicit type override -- no longer needed, using symfony's TypeInfo
+- [x] `Format` — datetime format specifier
 - [ ] `FromKey` — enum label key mapping
 - [ ] `AsDoctrineReference` — treat as Doctrine entity reference
 - [ ] `ProvideValidationGroups` — custom validation group provider
