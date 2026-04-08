@@ -31,6 +31,11 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$stringCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class))
         ->tag(DtoBundle::COERCER_TAG);
 
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\EnumCoercer::class)
+        ->arg('$stringCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class))
+        ->arg('$integerCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\IntegerCoercer::class))
+        ->tag(DtoBundle::COERCER_TAG);
+
     $services->set(\DualMedia\DtoRequestBundle\Coercer\Registry::class)
         ->arg('$locator', tagged_locator(DtoBundle::COERCER_TAG));
 
