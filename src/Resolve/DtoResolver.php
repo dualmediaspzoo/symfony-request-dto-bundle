@@ -38,15 +38,20 @@ class DtoResolver
         $accessor = new BagAccessor($request);
         $this->extractor->extract($dto, $accessor, $defaultBag, [], $pending);
 
-        // phase 2: validate type constraints in sequenced phases per property
+        // phase 2: coerce and validate in sequenced phases per property
         $violated = [];
+        $finalValues = [];
 
-        foreach ($pending as $entry) {
-            foreach ($entry->phases as [$phaseValue, $phaseConstraints]) {
+        foreach ($pending as $i => $entry) {
+            $value = $entry->value;
+
+            foreach ($entry->phases as [$coerce, $phaseConstraints]) {
+                $value = $coerce($value);
+
                 $context = $this->validator->startContext();
 
                 $context->atPath($entry->validationPath)
-                    ->validate($phaseValue, $phaseConstraints);
+                    ->validate($value, $phaseConstraints);
 
                 $phaseViolations = $context->getViolations();
 
@@ -60,15 +65,19 @@ class DtoResolver
                     break;
                 }
             }
+
+            if (!isset($violated[$entry->validationPath])) {
+                $finalValues[$i] = $value;
+            }
         }
 
         // phase 3: set valid values
-        foreach ($pending as $entry) {
+        foreach ($pending as $i => $entry) {
             if (isset($violated[$entry->validationPath])) {
                 continue;
             }
 
-            $entry->dto->{$entry->name} = $entry->value;
+            $entry->dto->{$entry->name} = $finalValues[$i];
         }
 
         // phase 4: validate the main object

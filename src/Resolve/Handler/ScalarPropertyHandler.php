@@ -39,9 +39,9 @@ class ScalarPropertyHandler implements FieldHandlerInterface
     ): bool {
         assert($meta instanceof Property);
 
-        $result = $this->propertyResolver->resolve($meta, $accessor, $defaultBag, $prefix);
+        $resolved = $this->propertyResolver->resolve($meta, $accessor, $defaultBag, $prefix);
 
-        if (null === $result) {
+        if (null === $resolved) {
             return false;
         }
 
@@ -49,11 +49,11 @@ class ScalarPropertyHandler implements FieldHandlerInterface
 
         // collect phases innermost-first (inner validates before outer)
         $phases = [];
-        $current = $result;
+        $current = $resolved->coercion;
 
         while (null !== $current) {
             if (!empty($current->constraints)) {
-                array_unshift($phases, [$current->value, $current->constraints]);
+                array_unshift($phases, [$current->coerce, $current->constraints]);
             }
 
             $current = $current->inner;
@@ -62,7 +62,7 @@ class ScalarPropertyHandler implements FieldHandlerInterface
         $pending[] = new PendingValue(
             $dto,
             $name,
-            $result->value,
+            $resolved->raw,
             $phases,
             $validationPath
         );

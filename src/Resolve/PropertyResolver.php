@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Resolve;
 
-use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Coercer\Registry;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\Resolve\Model\ResolvedValue;
 
 class PropertyResolver
 {
@@ -17,7 +17,7 @@ class PropertyResolver
     }
 
     /**
-     * Extracts a raw value from the request and coerces it.
+     * Extracts a raw value from the request and builds its coercion pipeline.
      *
      * Returns null when the input was not found in the request bag.
      *
@@ -28,7 +28,7 @@ class PropertyResolver
         BagAccessor $accessor,
         BagEnum $defaultBag,
         array $prefix = []
-    ): Result|null {
+    ): ResolvedValue|null {
         $bag = $property->bag ?? $defaultBag;
         $segments = [...$prefix, $property->getRealPath()];
 
@@ -39,10 +39,13 @@ class PropertyResolver
         $raw = $accessor->get($bag, $segments);
 
         if (null === $property->coercer) {
-            return new Result($raw);
+            return new ResolvedValue($raw);
         }
 
-        return $this->coercerRegistry->get($property->coercer)
-            ->coerce($property, $raw);
+        return new ResolvedValue(
+            $raw,
+            $this->coercerRegistry->get($property->coercer)
+                ->coerce($property)
+        );
     }
 }

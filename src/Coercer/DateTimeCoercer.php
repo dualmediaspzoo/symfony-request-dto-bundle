@@ -28,45 +28,47 @@ class DateTimeCoercer implements CoercerInterface
 
     #[\Override]
     public function coerce(
-        Property $property,
-        mixed $value
+        Property $property
     ): Result {
-        $inner = $this->stringCoercer->coerce($property, $value);
+        $inner = $this->stringCoercer->coerce($property);
 
         /** @var Format|null $format */
         $format = array_find($property->meta, static fn ($m) => $m instanceof Format);
 
         if (null !== $format) {
             $inner = new Result(
-                $inner->value,
-                [...$inner->constraints, new DateTime(format: $format->format)]
+                $inner->coerce,
+                [...$inner->constraints, new DateTime(format: $format->format)],
+                $inner->inner
             );
         }
 
         $isCollection = TypeInfoUtils::isCollection($property->type);
-        $values = is_array($inner->value) ? $inner->value : [$inner->value];
-
-        foreach ($values as $index => $val) {
-            if (!is_string($val)) {
-                continue;
-            }
-
-            if (null !== $format) {
-                $result = \DateTimeImmutable::createFromFormat($format->format, $val);
-                $values[$index] = false !== $result ? $result : $val;
-            } else {
-                try {
-                    $values[$index] = new \DateTimeImmutable($val);
-                } catch (\Exception) {
-                    // leave as-is, Type constraint will catch it
-                }
-            }
-        }
-
         $typeConstraint = new Type(type: \DateTimeImmutable::class);
 
         return new Result(
-            $isCollection ? $values : $values[0],
+            static function (mixed $value) use ($format, $isCollection): mixed {
+                $values = is_array($value) ? $value : [$value];
+
+                foreach ($values as $index => $val) {
+                    if (!is_string($val)) {
+                        continue;
+                    }
+
+                    if (null !== $format) {
+                        $result = \DateTimeImmutable::createFromFormat($format->format, $val);
+                        $values[$index] = false !== $result ? $result : $val;
+                    } else {
+                        try {
+                            $values[$index] = new \DateTimeImmutable($val);
+                        } catch (\Exception) {
+                            // leave as-is, Type constraint will catch it
+                        }
+                    }
+                }
+
+                return $isCollection ? $values : $values[0];
+            },
             $isCollection ? [new All([$typeConstraint])] : [$typeConstraint],
             $inner
         );

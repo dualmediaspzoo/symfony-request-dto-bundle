@@ -10,13 +10,12 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 interface CoercerInterface
 {
     /**
-     * Transforms a raw value into the target type.
+     * Builds a coercion pipeline for the given property.
      *
-     * Returns the coerced value and any constraints
-     * to be validated in the batch validation pass.
+     * Returns a Result chain describing transformations
+     * and constraints to apply during resolution.
      */
     public function coerce(
-        Property $property,
-        mixed $value
+        Property $property
     ): Result;
 }

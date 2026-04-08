@@ -19,12 +19,10 @@ class StringCoercer implements CoercerInterface
 {
     #[\Override]
     public function coerce(
-        Property $property,
-        mixed $value
+        Property $property
     ): Result {
         return CoercionUtils::coerce(
             $property,
-            $value,
             static fn (mixed $val): mixed => 'null' === $val ? null : $val,
             new Type(type: 'string')
         );

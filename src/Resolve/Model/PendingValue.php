@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
 readonly class PendingValue
 {
     /**
-     * @param list<array{mixed, list<Constraint>}> $phases validation phases, evaluated in order; stops on first failure
+     * @param list<array{\Closure(mixed): mixed, list<Constraint>}> $phases coercion+validation phases, evaluated in order; stops on first failure
      */
     public function __construct(
         public AbstractDto $dto,

@@ -19,12 +19,10 @@ class FloatCoercer implements CoercerInterface
 {
     #[\Override]
     public function coerce(
-        Property $property,
-        mixed $value
+        Property $property
     ): Result {
         return CoercionUtils::coerce(
             $property,
-            $value,
             static function (mixed $val): mixed {
                 if ('null' === $val) {
                     return null;
