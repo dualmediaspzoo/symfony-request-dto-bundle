@@ -21,7 +21,8 @@ final class CoercionUtils
     public static function coerce(
         Property $property,
         \Closure $coerce,
-        Constraint|array $constraints
+        Constraint|array $constraints,
+        Result|null $inner = null
     ): Result {
         $isCollection = TypeInfoUtils::isCollection($property->type);
         $constraintList = is_array($constraints) ? $constraints : [$constraints];
@@ -36,7 +37,8 @@ final class CoercionUtils
 
                 return $isCollection ? $values : $values[0];
             },
-            $isCollection ? [new All($constraintList)] : $constraintList
+            $isCollection ? [new All($constraintList)] : $constraintList,
+            $inner
         );
     }
 }
