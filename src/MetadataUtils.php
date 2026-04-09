@@ -30,10 +30,23 @@ class MetadataUtils
      *
      * @param class-string<T> $class
      * @param list<object> $meta
+     */
+    public static function exists(
+        string $class,
+        array $meta
+    ): bool {
+        return null !== self::single($class, $meta);
+    }
+
+    /**
+     * @template T of object
+     *
+     * @param class-string<T> $class
+     * @param list<object> $meta
      *
      * @return list<T>
      */
-    public function list(
+    public static function list(
         string $class,
         array $meta
     ): array {

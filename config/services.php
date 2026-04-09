@@ -42,6 +42,9 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class)
         ->arg('$registry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
 
+    $services->set(\DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry::class)
+        ->arg('$registry', new Reference('doctrine'));
+
     // reflection services
     $services->set(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class);
 
