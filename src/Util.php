@@ -4,6 +4,10 @@ namespace DualMedia\DtoRequestBundle;
 
 class Util
 {
+    private function __construct()
+    {
+    }
+
     /**
      * Builds a validation path from segments, using bracket syntax for numeric indices.
      *

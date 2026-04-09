@@ -15,9 +15,9 @@
 
 ## Coercion
 
-- [ ] `CoercerService` — O(1) coercer lookup by type/FQCN from pre-built map,
+- [x] `CoercerService` — O(1) coercer lookup by type/FQCN from pre-built map,
   no `supports()` scan at runtime
-- [ ] `EnumCoercer` — backed enum coercion with label processing and `FromKey` support
+- [x] `EnumCoercer` — backed enum coercion with label processing and `FromKey` support
 - [x] `DateTimeImmutableCoercer` — date parsing with configurable format
 - [ ] `UploadedFileCoercer` — validates uploaded file instances
 - [ ] Coercer warm-up — resolve `#[Supports]` closures against property metadata at cache
@@ -36,7 +36,7 @@
   from all coercion results + property metadata
 - [x] Pre-check phase — validate preconditions (e.g. "is collection actually an array?")
   before coercion runs
-- [ ] `WhenVisited` constraint + validator — conditional validation based on visited state
+- [x] `WhenVisited` constraint + validator — conditional validation based on visited state
 - [ ] `MappedToPath` constraint + validator — attach constraints to specific property path
 - [ ] `ArrayAll` constraint + validator
 - [ ] `ObjectCollection` constraint + validator
@@ -44,13 +44,13 @@
 
 ## Resolution
 
-- [ ] `DtoResolverService` — walks cached metadata tree, delegates to extraction,
+- [x] `DtoResolverService` — walks cached metadata tree, delegates to extraction,
   coercion, validation, entity loading
-- [ ] `RequestDataExtractor` — reads values from request bags (query, body, headers, files),
+- [x] `RequestDataExtractor` — reads values from request bags (query, body, headers, files),
   replaces the old `safeGetPath` logic
-- [ ] `PropertyResolver` — handles regular scalar/object property resolution
+- [x] `PropertyResolver` — handles regular scalar/object property resolution
 - [ ] `FindResolver` — handles `FindOneBy`/`FindBy` entity loading
-- [ ] `NestedDtoResolver` — handles recursive DTO-in-DTO resolution, collects coercion
+- [x] `NestedDtoResolver` — handles recursive DTO-in-DTO resolution, collects coercion
   results up the tree
 
 ## Entity Loading
@@ -64,13 +64,13 @@
 
 ## Attributes
 
-- [ ] `FindOneBy` — single entity lookup with fields, constraints, types
-- [ ] `FindBy` — collection entity lookup with limit/offset
+- [x] `FindOneBy` — single entity lookup with fields, constraints, types
+- [x] `FindBy` — collection entity lookup with limit/offset
 - [ ] `FindComplex` — custom complex loader reference
-- [ ] `Type` — explicit type override -- no longer needed, using symfony's TypeInfo
+- [x] `Type` — explicit type override -- no longer needed, using symfony's TypeInfo
 - [x] `Format` — datetime format specifier
-- [ ] `FromKey` — enum label key mapping
-- [ ] `AsDoctrineReference` — treat as Doctrine entity reference
+- [x] `FromKey` — enum label key mapping
+- [x] `AsDoctrineReference` — treat as Doctrine entity reference
 - [ ] `ProvideValidationGroups` — custom validation group provider
 - [ ] `Http/OnNull` — HTTP action when property is null
 - [ ] `EntityProvider` — marks custom entity providers
