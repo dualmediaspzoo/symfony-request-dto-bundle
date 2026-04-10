@@ -10,24 +10,29 @@ class DynamicParameterRegistry
 {
     /**
      * @param array<string, string> $map
-     * @param ServiceLocator<callable(string): mixed> $locator
+     * @param array<string, string> $methods
+     * @param ServiceLocator<object> $locator
      */
     public function __construct(
         private readonly array $map,
+        private readonly array $methods,
         private readonly ServiceLocator $locator
     ) {
     }
 
     /**
-     * @return callable(string): mixed
+     * @return mixed
      *
      * @throws \RuntimeException
      */
     public function get(
         string $parameter
-    ): callable {
+    ): mixed {
         $index = $this->map[$parameter] ?? throw new \RuntimeException(sprintf('Unknown parameter %s fetch attempted', $parameter));
+        $method = $this->methods[$parameter];
 
-        return $this->locator->get($index);
+        $service = $this->locator->get($index);
+
+        return $service->$method($parameter);
     }
 }

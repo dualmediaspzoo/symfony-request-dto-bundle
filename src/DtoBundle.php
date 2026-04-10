@@ -29,7 +29,11 @@ class DtoBundle extends AbstractBundle
         ContainerBuilder $container
     ): void {
         $container->registerAttributeForAutoconfiguration(AsDynamicProvider::class, static function (ChildDefinition $definition, AsDynamicProvider $attribute, \Reflector $reflector): void {
-            $definition->addTag(self::DYNAMIC_PARAMETER_TAG, ['parameters' => (array)$attribute->parameter]);
+            assert($reflector instanceof \ReflectionMethod);
+            $definition->addTag(self::DYNAMIC_PARAMETER_TAG, [
+                'parameters' => (array)$attribute->parameter,
+                'method' => $reflector->getName(),
+            ]);
         });
 
         $container->addCompilerPass(new DetectionCompilerPass());

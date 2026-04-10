@@ -14,6 +14,6 @@ return static function (ContainerConfigurator $configurator) {
     $services->instanceof(AbstractDto::class)
         ->tag(DtoBundle::DTO_TAG);
 
-    $services->load('DualMedia\\DtoRequestBundle\\Tests\\Fixture\\Dto\\', '../tests/Fixture/Dto/');
-    $services->load('DualMedia\\DtoRequestBundle\\Tests\\Fixture\\Service\\', '../tests/Fixture/Service/');
+    $services->load('DualMedia\\DtoRequestBundle\\Tests\\Fixture\\Dto\\', '../tests/Fixture/Dto/')->autoconfigure();
+    $services->load('DualMedia\\DtoRequestBundle\\Tests\\Fixture\\Service\\', '../tests/Fixture/Service/')->autoconfigure();
 };
