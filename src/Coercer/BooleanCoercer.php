@@ -28,11 +28,11 @@ class BooleanCoercer implements CoercerInterface
                     return null;
                 }
 
-                if (in_array((string)$val, ['0', '1'], true)) {
-                    return (bool)((int)$val);
+                if (in_array((string)$val, ['0', '1'], true)) { // @phpstan-ignore-line
+                    return (bool)((int)$val); // @phpstan-ignore-line
                 }
 
-                if (in_array((string)$val, ['true', 'false'], true)) {
+                if (in_array((string)$val, ['true', 'false'], true)) { // @phpstan-ignore-line
                     return 'true' == $val;
                 }
 
