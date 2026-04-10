@@ -9,6 +9,7 @@ use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
+use DualMedia\DtoRequestBundle\Resolve\Model\PendingEntityValue;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 
 interface FieldHandlerInterface
@@ -19,7 +20,7 @@ interface FieldHandlerInterface
 
     /**
      * @param list<string> $prefix
-     * @param list<PendingValue> $pending
+     * @param list<PendingValue|PendingEntityValue> $pending
      */
     public function handle(
         AbstractDto $dto,

@@ -19,12 +19,13 @@ use Symfony\Component\Validator\Constraint;
 readonly class Field
 {
     /**
+     * @param Type|\Closure(): Type $type
      * @param list<Constraint>|Constraint $constraints
      */
     public function __construct(
         public string $target,
         public string|Dynamic|Literal $input,
-        public Type $type = new BuiltinType(TypeIdentifier::STRING),
+        public Type|\Closure $type = new BuiltinType(TypeIdentifier::STRING),
         public array|Constraint $constraints = [],
         public BagEnum|null $bag = null
     ) {

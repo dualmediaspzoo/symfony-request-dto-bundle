@@ -6,6 +6,7 @@ namespace DualMedia\DtoRequestBundle\Resolve;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
+use DualMedia\DtoRequestBundle\Resolve\Model\PendingEntityValue;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,7 +32,7 @@ class DtoResolver
         BagEnum $defaultBag = BagEnum::Request
     ): AbstractDto {
         $dto = new $class();
-        /** @var list<PendingValue> $pending */
+        /** @var list<PendingValue|PendingEntityValue> $pending */
         $pending = [];
 
         // phase 1: recursively extract and coerce all values across the tree
@@ -43,6 +44,50 @@ class DtoResolver
         $finalValues = [];
 
         foreach ($pending as $i => $entry) {
+            if ($entry instanceof PendingEntityValue) {
+                $criteria = [];
+                $entryViolated = false;
+
+                foreach ($entry->fields as $target => $fieldPending) {
+                    $value = $fieldPending->value;
+
+                    foreach ($fieldPending->phases as [$coerce, $phaseConstraints]) {
+                        $value = $coerce($value);
+
+                        $context = $this->validator->startContext();
+
+                        $context->atPath($fieldPending->validationPath)
+                            ->validate($value, $phaseConstraints);
+
+                        $phaseViolations = $context->getViolations();
+
+                        if ($phaseViolations->count() > 0) {
+                            $entryViolated = true;
+
+                            foreach ($phaseViolations as $violation) {
+                                $entry->dto->addConstraintViolation($violation);
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if ($entryViolated) {
+                        break;
+                    }
+
+                    $criteria[$target] = $value;
+                }
+
+                if (!$entryViolated) {
+                    $finalValues[$i] = ($entry->load)($criteria);
+                } else {
+                    $violated[$entry->validationPath] = true;
+                }
+
+                continue;
+            }
+
             $value = $entry->value;
 
             foreach ($entry->phases as [$coerce, $phaseConstraints]) {

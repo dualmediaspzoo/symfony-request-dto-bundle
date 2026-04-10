@@ -8,6 +8,7 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
 use DualMedia\DtoRequestBundle\Resolve\Handler\FieldHandlerInterface;
+use DualMedia\DtoRequestBundle\Resolve\Model\PendingEntityValue;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 
 class Extractor
@@ -26,7 +27,7 @@ class Extractor
      * into PendingValue entries without validating.
      *
      * @param list<string> $prefix path segments from parent DTOs
-     * @param list<PendingValue> $pending collected entries (mutated)
+     * @param list<PendingValue|PendingEntityValue> $pending collected entries (mutated)
      */
     public function extract(
         AbstractDto $dto,

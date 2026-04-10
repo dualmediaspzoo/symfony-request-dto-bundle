@@ -44,9 +44,15 @@ class VirtualReflector
                 $constraints = [$constraints];
             }
 
+            $type = $attribute->type;
+
+            if (is_callable($type)) {
+                $type = $type();
+            }
+
             $fields[$attribute->target] = $this->propertyFactory->create(
                 $attribute->target,
-                $attribute->type,
+                $type,
                 $attribute->bag,
                 $attribute->input,
                 $constraints
