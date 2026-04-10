@@ -11,9 +11,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class AbstractDto implements DtoInterface
 {
-    /**
-     * @phpstan-ignore-next-line
-     */
     private ConstraintViolationListInterface $_constraintList;
 
     /**
