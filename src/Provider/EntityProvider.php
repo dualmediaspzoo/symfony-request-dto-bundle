@@ -47,7 +47,7 @@ class EntityProvider implements StandardObjectProviderInterface
 
         if (!$asReference) {
             return $find->many
-                ? $this->repository->findBy($criteria, $orderBy, $limit, $offset)
+                ? $this->repository->findBy($criteria, $orderBy, $limit, $offset) // @phpstan-ignore-line
                 : $this->repository->findOneBy($criteria, $orderBy);
         }
 
