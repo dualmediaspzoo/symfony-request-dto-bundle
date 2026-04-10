@@ -43,7 +43,12 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$registry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry::class)
-        ->arg('$registry', new Reference('doctrine'));
+        ->arg('$registry', new Reference('doctrine'))
+        ->arg('$queryCreator', new Reference('dm.dto_bundle.query_creator'))
+        ->arg('$referenceHelper', new Reference('dm.dto_bundle.reference_helper'));
+
+    $services->set('dm.dto_bundle.query_creator', \DualMedia\DoctrineQueryCreator\QueryCreator::class);
+    $services->set('dm.dto_bundle.reference_helper', \DualMedia\DoctrineQueryCreator\ReferenceHelper::class);
 
     // reflection services
     $services->set(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class);

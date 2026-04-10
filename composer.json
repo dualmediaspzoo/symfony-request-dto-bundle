@@ -17,6 +17,7 @@
   ],
   "require": {
     "php": ">=8.5",
+    "dualmedia/doctrine-query-creator": "^1",
     "symfony/framework-bundle": "^7.4",
     "symfony/event-dispatcher": "^7.4",
     "symfony/validator": "^7.4",

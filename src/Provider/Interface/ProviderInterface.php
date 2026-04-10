@@ -18,7 +18,6 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Offset;
  * @phpstan-type MetaFindModel = FindBy|Limit|Offset|AsDoctrineReference
  * @phpstan-type FoundReturnType = T|list<T>|Collection<int, T>|null
  * @phpstan-type FindCriteria = array<string, mixed>
- *
  * @phpstan-type ProviderClosure = \Closure(FindCriteria, list<MetaFindModel>): FoundReturnType
  * @phpstan-type CustomProviderClosure = \Closure(ProviderInterface<T>, FindCriteria, list<MetaFindModel>): FoundReturnType
  */

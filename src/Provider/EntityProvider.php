@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Provider;
 
 use Doctrine\ORM\EntityRepository;
+use DualMedia\DoctrineQueryCreator\QueryCreator;
+use DualMedia\DoctrineQueryCreator\ReferenceHelper;
 use DualMedia\DtoRequestBundle\Metadata\Model\AsDoctrineReference;
 use DualMedia\DtoRequestBundle\Metadata\Model\FindBy;
 use DualMedia\DtoRequestBundle\Metadata\Model\Limit;
@@ -24,7 +26,9 @@ class EntityProvider implements StandardObjectProviderInterface
      */
     public function __construct(
         private readonly string $class,
-        private readonly EntityRepository $repository
+        private readonly EntityRepository $repository,
+        private readonly QueryCreator $queryCreator,
+        private readonly ReferenceHelper $referenceHelper
     ) {
     }
 
@@ -51,17 +55,18 @@ class EntityProvider implements StandardObjectProviderInterface
                 : $this->repository->findOneBy($criteria, $orderBy);
         }
 
-        throw new \LogicException('Not yet implemented');
+        $references = $this->referenceHelper->resolve(
+            $this->queryCreator->build(
+                $this->repository->createQueryBuilder('entity'),
+                'entity',
+                $criteria,
+                $orderBy,
+                $limit,
+                $offset
+            ),
+            $this->class
+        );
 
-        // resolve reference
-        //        return $this->helper->resolve(
-        //            $this->creator->buildQuery(
-        //                $this->repository->createQueryBuilder('entity'),
-        //                'entity',
-        //                $criteria,
-        //                $orderBy ?? []
-        //            ),
-        //            $this->fqcn
-        //        )[0] ?? null;
+        return $find->many ? $references[0] ?? null : $references;
     }
 }

@@ -9,10 +9,6 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\Field;
 use DualMedia\DtoRequestBundle\Dto\Attribute\FindBy;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Entity\SimpleEntity;
 use Symfony\Component\TypeInfo\Type;
-use Symfony\Component\TypeInfo\Type\BuiltinType;
-use Symfony\Component\TypeInfo\Type\CollectionType;
-use Symfony\Component\TypeInfo\Type\GenericType;
-use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SimpleFindByDto extends AbstractDto

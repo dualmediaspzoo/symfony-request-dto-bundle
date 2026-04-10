@@ -21,8 +21,6 @@ class DynamicParameterRegistry
     }
 
     /**
-     * @return mixed
-     *
      * @throws \RuntimeException
      */
     public function get(

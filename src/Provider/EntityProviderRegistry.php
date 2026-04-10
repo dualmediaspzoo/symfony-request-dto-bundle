@@ -6,6 +6,8 @@ namespace DualMedia\DtoRequestBundle\Provider;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DualMedia\DoctrineQueryCreator\QueryCreator;
+use DualMedia\DoctrineQueryCreator\ReferenceHelper;
 
 class EntityProviderRegistry
 {
@@ -15,7 +17,9 @@ class EntityProviderRegistry
     private array $providers = [];
 
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private readonly ManagerRegistry $registry,
+        private readonly QueryCreator $queryCreator,
+        private readonly ReferenceHelper $referenceHelper
     ) {
     }
 
@@ -29,7 +33,12 @@ class EntityProviderRegistry
             $repository = $this->registry->getRepository($class);
             assert($repository instanceof EntityRepository);
 
-            $this->providers[$class] = new EntityProvider($class, $repository);
+            $this->providers[$class] = new EntityProvider(
+                $class,
+                $repository,
+                $this->queryCreator,
+                $this->referenceHelper
+            );
         }
 
         return $this->providers[$class];

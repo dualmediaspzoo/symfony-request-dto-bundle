@@ -21,7 +21,6 @@ class WhenVisitedValidator extends ConstraintValidator
         }
 
         /** @var WhenVisited $constraint */
-
         $context = $this->context;
         $object = $context->getObject();
 
