@@ -12,6 +12,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\FindBy;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\MetadataUtils;
 use DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry;
+use DualMedia\DtoRequestBundle\Provider\Interface\ProviderInterface;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingEntityValue;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
@@ -19,6 +20,9 @@ use DualMedia\DtoRequestBundle\Resolve\PropertyResolver;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use DualMedia\DtoRequestBundle\Util;
 
+/**
+ * @phpstan-import-type MetaFindModel from ProviderInterface
+ */
 class EntityPropertyHandler implements FieldHandlerInterface
 {
     public function __construct(
@@ -112,7 +116,7 @@ class EntityPropertyHandler implements FieldHandlerInterface
         }
 
         $registry = $this->entityProviderRegistry;
-        /** @var list<\DualMedia\DtoRequestBundle\Metadata\Model\FindBy|\DualMedia\DtoRequestBundle\Metadata\Model\Limit|\DualMedia\DtoRequestBundle\Metadata\Model\Offset|\DualMedia\DtoRequestBundle\Metadata\Model\AsDoctrineReference> $metaList */
+        /** @var list<MetaFindModel> $metaList */
         $metaList = $meta->meta;
 
         $pending[] = new PendingEntityValue(
