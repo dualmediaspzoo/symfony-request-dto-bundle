@@ -6,11 +6,14 @@ namespace DualMedia\DtoRequestBundle\Resolve\Handler;
 
 use DualMedia\DtoRequestBundle\Coercer\Registry;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
+use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\FindBy;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\MetadataUtils;
+use DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry;
 use DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry;
 use DualMedia\DtoRequestBundle\Provider\Interface\ProviderInterface;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
@@ -28,7 +31,8 @@ class EntityPropertyHandler implements FieldHandlerInterface
     public function __construct(
         private readonly PropertyResolver $propertyResolver,
         private readonly EntityProviderRegistry $entityProviderRegistry,
-        private readonly Registry $coercerRegistry
+        private readonly Registry $coercerRegistry,
+        private readonly DynamicParameterRegistry $dynamicParameterRegistry
     ) {
     }
 
@@ -67,7 +71,22 @@ class EntityPropertyHandler implements FieldHandlerInterface
         $fields = [];
 
         foreach ($meta->virtual as $target => $virtualMeta) {
-            if (!$virtualMeta instanceof Property) {
+            if ($virtualMeta instanceof Dynamic
+                || $virtualMeta instanceof Literal) {
+                $value = $virtualMeta instanceof Dynamic
+                    ? $this->dynamicParameterRegistry->get($virtualMeta->name)
+                    : $virtualMeta->value;
+
+                $fields[$target] = new PendingValue(
+                    $dto,
+                    $name,
+                    $value,
+                    [],
+                    Util::buildValidationPath([...$prefix, $meta->getRealPath(), $target])
+                );
+
+                $dto->visit($name, $target);
+
                 continue;
             }
 

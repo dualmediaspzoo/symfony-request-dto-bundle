@@ -83,6 +83,7 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$propertyResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class))
         ->arg('$entityProviderRegistry', new Reference(\DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry::class))
         ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class))
+        ->arg('$dynamicParameterRegistry', new Reference(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class))
         ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 5]);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\ScalarPropertyHandler::class)

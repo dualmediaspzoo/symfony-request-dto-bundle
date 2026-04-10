@@ -14,8 +14,24 @@ class SimpleEntity
     #[ORM\Column(type: 'integer')]
     private int|null $id = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private string|null $name = null;
+
     public function getId(): int|null
     {
         return $this->id;
+    }
+
+    public function getName(): string|null
+    {
+        return $this->name;
+    }
+
+    public function setName(
+        string|null $name
+    ): self {
+        $this->name = $name;
+
+        return $this;
     }
 }

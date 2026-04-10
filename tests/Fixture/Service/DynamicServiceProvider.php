@@ -15,4 +15,11 @@ class DynamicServiceProvider
     ): PureEnum {
         return PureEnum::Alpha;
     }
+
+    #[AsDynamicProvider('fixedEntityName')]
+    public function provideEntityName(
+        string $name
+    ): string {
+        return 'dynamic-resolved';
+    }
 }

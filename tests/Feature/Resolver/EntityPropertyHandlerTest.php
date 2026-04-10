@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use DualMedia\DtoRequestBundle\Resolve\DtoResolver;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ConstrainedFindDto;
+use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\DynamicFieldFindDto;
+use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\LiteralFieldFindDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\SimpleFindByDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\SimpleFindDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Entity\SimpleEntity;
@@ -117,9 +119,69 @@ class EntityPropertyHandlerTest extends KernelTestCase
         static::assertNotEmpty($violations['entity.inputId'] ?? []);
     }
 
-    private function createEntity(): SimpleEntity
+    public function testLiteralFieldFindSuccess(): void
     {
+        $entity = $this->createEntity('literal-value');
+
+        $dto = $this->resolver->resolve(
+            LiteralFieldFindDto::class,
+            new Request()
+        );
+
+        static::assertTrue($dto->isValid());
+        static::assertInstanceOf(SimpleEntity::class, $dto->entity);
+        static::assertEquals($entity->getId(), $dto->entity->getId());
+    }
+
+    public function testLiteralFieldFindNotFound(): void
+    {
+        $this->createEntity('other-name');
+
+        $dto = $this->resolver->resolve(
+            LiteralFieldFindDto::class,
+            new Request()
+        );
+
+        static::assertTrue($dto->isValid());
+        static::assertNull($dto->entity);
+    }
+
+    public function testDynamicFieldFindSuccess(): void
+    {
+        $entity = $this->createEntity('dynamic-resolved');
+
+        $dto = $this->resolver->resolve(
+            DynamicFieldFindDto::class,
+            new Request()
+        );
+
+        static::assertTrue($dto->isValid());
+        static::assertInstanceOf(SimpleEntity::class, $dto->entity);
+        static::assertEquals($entity->getId(), $dto->entity->getId());
+    }
+
+    public function testDynamicFieldFindNotFound(): void
+    {
+        $this->createEntity('something-else');
+
+        $dto = $this->resolver->resolve(
+            DynamicFieldFindDto::class,
+            new Request()
+        );
+
+        static::assertTrue($dto->isValid());
+        static::assertNull($dto->entity);
+    }
+
+    private function createEntity(
+        string|null $name = null
+    ): SimpleEntity {
         $entity = new SimpleEntity();
+
+        if (null !== $name) {
+            $entity->setName($name);
+        }
+
         $this->em->persist($entity);
         $this->em->flush();
 
