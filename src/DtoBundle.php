@@ -3,7 +3,10 @@
 namespace DualMedia\DtoRequestBundle;
 
 use DualMedia\DtoRequestBundle\Dto\DependencyInjection\DetectionCompilerPass;
+use DualMedia\DtoRequestBundle\Provider\Attribute\AsDynamicProvider;
+use DualMedia\DtoRequestBundle\Provider\DependencyInjection\DynamicParameterCompilerPass;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -15,6 +18,7 @@ class DtoBundle extends AbstractBundle
     public const string DTO_TAG = 'dm.dto_bundle.dto';
     public const string FIELD_HANDLER_TAG = 'dm.dto_bundle.field_handler';
     public const string OBJECT_PROVIDER_TAG = 'dm_dto_bundle.object_provider';
+    public const string DYNAMIC_PARAMETER_TAG = 'dm_dto_bundle.dynamic_parameter_provider';
 
     public const string DTO_LIST_PARAMETER = 'dm.dto_bundle.dto_class_list';
 
@@ -24,7 +28,12 @@ class DtoBundle extends AbstractBundle
     public function build(
         ContainerBuilder $container
     ): void {
+        $container->registerAttributeForAutoconfiguration(AsDynamicProvider::class, static function (ChildDefinition $definition, AsDynamicProvider $attribute, \Reflector $reflector): void {
+            $definition->addTag(self::DYNAMIC_PARAMETER_TAG, ['parameters' => (array)$attribute->parameter]);
+        });
+
         $container->addCompilerPass(new DetectionCompilerPass());
+        $container->addCompilerPass(new DynamicParameterCompilerPass());
     }
 
     /**

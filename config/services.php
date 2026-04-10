@@ -63,6 +63,9 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$metaReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class))
         ->arg('$typeResolver', new Reference('dm.dto_bundle.type_resolver'));
 
+    $services->set(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class)
+        ->public();
+
     // resolve services
     $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)
         ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
