@@ -82,7 +82,7 @@ class EntityPropertyHandler implements FieldHandlerInterface
                     $name,
                     $value,
                     [],
-                    Util::buildValidationPath([...$prefix, $meta->getRealPath(), $target])
+                    Util::buildValidationPath([...$prefix, $target])
                 );
 
                 $dto->visit($name, $target);
@@ -117,7 +117,7 @@ class EntityPropertyHandler implements FieldHandlerInterface
                 $phases[] = [static fn (mixed $v): mixed => $v, $virtualMeta->constraints];
             }
 
-            $validationPath = Util::buildValidationPath([...$prefix, $meta->getRealPath(), $virtualMeta->getRealPath()]);
+            $validationPath = Util::buildValidationPath([...$prefix, $virtualMeta->getRealPath()]);
 
             $fields[$target] = new PendingValue(
                 $dto,

@@ -7,21 +7,15 @@ namespace DualMedia\DtoRequestBundle\Tests\Feature\Resolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use DualMedia\DtoRequestBundle\Resolve\DtoResolver;
-use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ConstrainedFindDto;
-use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\SimpleFindDto;
+use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ConstrainedFindByDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Entity\SimpleEntity;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Verifies that validation errors on entity virtual fields
- * use the INPUT field name (e.g. "inputId") rather than the
- * entity column name ("id") or a compound path ("entity.id").
- */
 #[Group('feature')]
 #[Group('resolver')]
-class EntityValidationPathTest extends KernelTestCase
+class ConstrainedFindByDtoTest extends KernelTestCase
 {
     private DtoResolver $resolver;
     private EntityManagerInterface $em;
@@ -47,71 +41,93 @@ class EntityValidationPathTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testConstraintViolationUsesInputPath(): void
+    public function testValidCollectionLoadsEntities(): void
+    {
+        $e1 = $this->createEntity();
+        $e2 = $this->createEntity();
+
+        $dto = $this->resolver->resolve(
+            ConstrainedFindByDto::class,
+            new Request(request: [
+                'inputIds' => [(string)$e1->getId(), (string)$e2->getId()],
+            ])
+        );
+
+        static::assertTrue($dto->isValid());
+        static::assertCount(2, $dto->entities);
+    }
+
+    public function testNegativeIdViolationPointsToElement(): void
     {
         $dto = $this->resolver->resolve(
-            ConstrainedFindDto::class,
+            ConstrainedFindByDto::class,
             new Request(request: [
-                'inputId' => '-5',
+                'inputIds' => ['1', '2', '-3'],
+            ])
+        );
+
+        static::assertFalse($dto->isValid());
+        static::assertSame([], $dto->entities);
+
+        $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
+        // Violation on the third element should include the index
+        static::assertArrayHasKey('inputIds[2]', $violations);
+        // No violation on valid elements
+        static::assertArrayNotHasKey('inputIds[0]', $violations);
+        static::assertArrayNotHasKey('inputIds[1]', $violations);
+    }
+
+    public function testTypeViolationOnElement(): void
+    {
+        $dto = $this->resolver->resolve(
+            ConstrainedFindByDto::class,
+            new Request(request: [
+                'inputIds' => ['1', 'abc'],
             ])
         );
 
         static::assertFalse($dto->isValid());
 
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
-
-        // The violation path should reference the user-facing input name only
-        static::assertArrayHasKey('inputId', $violations);
-        // Must NOT use entity column name or be prefixed by DTO property
-        static::assertArrayNotHasKey('entity.id', $violations);
-        // Must NOT be bare column name
-        static::assertArrayNotHasKey('id', $violations);
+        static::assertArrayHasKey('inputIds[1]', $violations);
+        static::assertArrayNotHasKey('inputIds[0]', $violations);
     }
 
-    public function testMissingRequiredFieldViolationUsesInputPath(): void
+    public function testAllElementsInvalid(): void
     {
         $dto = $this->resolver->resolve(
-            ConstrainedFindDto::class,
-            new Request(request: [])
-        );
-
-        static::assertFalse($dto->isValid());
-
-        $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
-        static::assertArrayHasKey('inputId', $violations);
-        static::assertArrayNotHasKey('entity.id', $violations);
-    }
-
-    public function testTypeCoercionViolationUsesInputPath(): void
-    {
-        $dto = $this->resolver->resolve(
-            ConstrainedFindDto::class,
+            ConstrainedFindByDto::class,
             new Request(request: [
-                'inputId' => 'not-a-number',
+                'inputIds' => ['-1', '-2'],
             ])
         );
 
         static::assertFalse($dto->isValid());
 
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
-        static::assertArrayHasKey('inputId', $violations);
-        static::assertArrayNotHasKey('entity.id', $violations);
+        static::assertArrayHasKey('inputIds[0]', $violations);
+        static::assertArrayHasKey('inputIds[1]', $violations);
     }
 
-    public function testSuccessfulResolutionHasNoViolations(): void
+    public function testEmptyCollectionPassesValidation(): void
+    {
+        $dto = $this->resolver->resolve(
+            ConstrainedFindByDto::class,
+            new Request(request: [
+                'inputIds' => [],
+            ])
+        );
+
+        static::assertTrue($dto->isValid());
+        static::assertSame([], $dto->entities);
+    }
+
+    private function createEntity(): SimpleEntity
     {
         $entity = new SimpleEntity();
         $this->em->persist($entity);
         $this->em->flush();
 
-        $dto = $this->resolver->resolve(
-            SimpleFindDto::class,
-            new Request(request: [
-                'inputId' => (string)$entity->getId(),
-            ])
-        );
-
-        static::assertTrue($dto->isValid());
-        static::assertInstanceOf(SimpleEntity::class, $dto->entity);
+        return $entity;
     }
 }

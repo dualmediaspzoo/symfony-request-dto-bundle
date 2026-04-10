@@ -102,7 +102,7 @@ class EntityPropertyHandlerTest extends KernelTestCase
         static::assertNull($dto->entity);
 
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
-        static::assertNotEmpty($violations['entity.inputId'] ?? []);
+        static::assertNotEmpty($violations['inputId'] ?? []);
     }
 
     public function testMissingInputValidatesNull(): void
@@ -116,7 +116,7 @@ class EntityPropertyHandlerTest extends KernelTestCase
         static::assertNull($dto->entity);
 
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
-        static::assertNotEmpty($violations['entity.inputId'] ?? []);
+        static::assertNotEmpty($violations['inputId'] ?? []);
     }
 
     public function testLiteralFieldFindSuccess(): void

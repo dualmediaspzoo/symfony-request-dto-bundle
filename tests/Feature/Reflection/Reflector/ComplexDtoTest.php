@@ -27,7 +27,5 @@ class ComplexDtoTest extends AbstractReflectorTestCase
         static::assertEquals('some-path', $someInput->path);
         static::assertEmpty($someInput->constraints);
         static::assertEmpty($someInput->virtual);
-
-        print_r($reflection);
     }
 }
