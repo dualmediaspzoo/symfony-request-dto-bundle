@@ -7,6 +7,7 @@ namespace DualMedia\DtoRequestBundle\Dto\Attribute;
 use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
 use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
+use DualMedia\DtoRequestBundle\Type\TypeUtils;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\BuiltinType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
@@ -21,6 +22,8 @@ readonly class Field
     /**
      * @param Type|\Closure(): Type $type
      * @param list<Constraint>|Constraint $constraints
+     *
+     * @see TypeUtils for repeatable type closures
      */
     public function __construct(
         public string $target,
