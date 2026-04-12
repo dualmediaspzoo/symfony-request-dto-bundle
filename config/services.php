@@ -113,9 +113,13 @@ return static function (ContainerConfigurator $configurator) {
         ->tag('controller.argument_value_resolver', ['priority' => 50]);
 
     // cache and warmers
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolveHelper::class)
+        ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class));
+
     $services->set(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class)
         ->arg('$cache', new Reference('dm.dto_bundle.file_cache'))
-        ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class));
+        ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class))
+        ->arg('$runtimeHelper', new Reference(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolveHelper::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Type\DtoCacheWarmer::class)
         ->tag('kernel.cache_warmer')

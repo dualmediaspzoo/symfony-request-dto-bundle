@@ -19,7 +19,9 @@ readonly class MainDto
     public function __construct(
         public array $fields,
         public array $constraints = [],
-        public array $meta = []
+        public array $meta = [],
+        public bool $requiresRuntimeResolve = false,
+        public bool $childRequiresRuntimeResolve = false
     ) {
     }
 }

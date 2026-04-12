@@ -28,7 +28,8 @@ class DtoResolver
      */
     public function resolve(
         string $class,
-        Request $request
+        Request $request,
+        BagEnum $defaultBag = BagEnum::Request
     ): AbstractDto {
         $dto = new $class();
         /** @var list<PendingValue|PendingEntityValue> $pending */
@@ -36,7 +37,7 @@ class DtoResolver
 
         // phase 1: recursively extract and coerce all values across the tree
         $accessor = new BagAccessor($request);
-        $this->extractor->extract($dto, $accessor, BagEnum::Request, [], $pending);
+        $this->extractor->extract($dto, $accessor, $defaultBag, [], $pending);
 
         // phase 2: coerce and validate in sequenced phases per property
         $violated = [];

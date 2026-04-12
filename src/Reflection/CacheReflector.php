@@ -12,7 +12,8 @@ class CacheReflector
 {
     public function __construct(
         private readonly PhpFilesAdapter $cache,
-        private readonly Reflector $reflector
+        private readonly Reflector $reflector,
+        private readonly RuntimeResolveHelper $runtimeHelper
     ) {
     }
 
@@ -34,9 +35,7 @@ class CacheReflector
         $value = $item->get();
         assert($value instanceof MainDto, 'Items loaded from this instance of cache must be instances of MainDto');
 
-        // load any runtime needed logic
-
-        return $value;
+        return $this->runtimeHelper->restoreRuntimeConstraints($class, $value);
     }
 
     /**
@@ -46,7 +45,7 @@ class CacheReflector
         string $class
     ): bool {
         $cacheItem = $this->cache->getItem($class);
-        $cacheItem->set($this->reflector->reflect($class));
+        $cacheItem->set($this->runtimeHelper->prepareForCache($this->reflector->reflect($class)));
         $this->cache->save($cacheItem);
 
         return true;

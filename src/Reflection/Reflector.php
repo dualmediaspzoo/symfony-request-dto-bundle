@@ -6,7 +6,10 @@ namespace DualMedia\DtoRequestBundle\Reflection;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Bag as BagAttribute;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Field;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Path as PathAttribute;
+use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
+use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
@@ -81,5 +84,87 @@ class Reflector
             $results,
             array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint))
         );
+    }
+
+    /**
+     * @param class-string<AbstractDto> $class
+     *
+     * @return list<Constraint>
+     */
+    public function reflectClassConstraints(
+        string $class
+    ): array {
+        $reflection = new \ReflectionClass($class);
+
+        $attributes = array_map(
+            static fn (\ReflectionAttribute $a) => $a->newInstance(),
+            $reflection->getAttributes()
+        );
+
+        return array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint));
+    }
+
+    /**
+     * @param class-string<AbstractDto> $class
+     *
+     * @return list<Constraint>
+     */
+    public function reflectPropertyConstraints(
+        string $class,
+        string $propertyName
+    ): array {
+        $reflection = new \ReflectionClass($class);
+        $property = $reflection->getProperty($propertyName);
+
+        $attributes = array_map(
+            static fn (\ReflectionAttribute $a) => $a->newInstance(),
+            $property->getAttributes()
+        );
+
+        return array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint));
+    }
+
+    /**
+     * @param class-string<AbstractDto> $class
+     *
+     * @return list<Constraint>
+     */
+    public function reflectVirtualConstraints(
+        string $class,
+        string $propertyName,
+        string $targetName
+    ): array {
+        $reflection = new \ReflectionClass($class);
+        $property = $reflection->getProperty($propertyName);
+
+        $attributes = array_map(
+            static fn (\ReflectionAttribute $a) => $a->newInstance(),
+            $property->getAttributes()
+        );
+
+        foreach ($attributes as $attribute) {
+            if (!$attribute instanceof Field) {
+                continue;
+            }
+
+            if ($attribute->input instanceof Literal
+                || $attribute->input instanceof Dynamic) {
+                continue;
+            }
+
+            if ($attribute->target !== $targetName) {
+                continue;
+            }
+
+            $constraints = $attribute->constraints;
+
+            if (!is_array($constraints)) {
+                $constraints = [$constraints];
+            }
+
+            return $constraints;
+        }
+
+        return [];
     }
 }

@@ -25,7 +25,8 @@ readonly class Property
         public string|null $coercer = null,
         public array $constraints = [],
         public array $virtual = [],
-        public array $meta = []
+        public array $meta = [],
+        public bool $requiresRuntimeResolve = false
     ) {
     }
 

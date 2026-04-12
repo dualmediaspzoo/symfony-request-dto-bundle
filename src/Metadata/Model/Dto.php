@@ -20,7 +20,8 @@ readonly class Dto
         public BagEnum|null $bag = null,
         public string|null $path = null,
         public array $constraints = [],
-        public array $meta = []
+        public array $meta = [],
+        public bool $requiresRuntimeResolve = false
     ) {
     }
 
