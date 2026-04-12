@@ -8,7 +8,7 @@
 - [x] `MetadataRegistry` — serves cached metadata by FQCN, falls back to runtime reflection
 - [x] Cache warmer — iterates `dm.dto_bundle.dto` tagged classes, extracts metadata,
   serializes the model tree via `PhpFilesAdapter`
-- [ ] `requiresRuntimeResolve` detection — try/catch serialization of constraints at warm-up,
+- [x] `requiresRuntimeResolve` detection — try/catch serialization of constraints at warm-up,
   flag properties that fail
 - [x] `Property` — readonly metadata model
 - [x] `BagEnum` — request bag enum
