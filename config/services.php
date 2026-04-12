@@ -27,6 +27,9 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class)
         ->tag(DtoBundle::COERCER_TAG);
 
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\UploadedFileCoercer::class)
+        ->tag(DtoBundle::COERCER_TAG);
+
     $services->set(\DualMedia\DtoRequestBundle\Coercer\DateTimeCoercer::class)
         ->arg('$stringCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class))
         ->tag(DtoBundle::COERCER_TAG);
@@ -103,6 +106,11 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
         ->arg('$validator', new Reference('validator'))
         ->public();
+
+    $services->set(\DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver::class)
+        ->arg('$dtoResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class))
+        ->arg('$eventDispatcher', new Reference('event_dispatcher'))
+        ->tag('controller.argument_value_resolver', ['priority' => 50]);
 
     // cache and warmers
     $services->set(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class)

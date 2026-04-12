@@ -24,13 +24,19 @@ class CacheReflector
     public function get(
         string $class
     ): MainDto|null {
+        assert(is_subclass_of($class, AbstractDto::class), 'Items passed to CacheReflector must be instances of AbstractDto');
         $item = $this->cache->getItem($class);
 
         if (!$item->isHit()) {
             return null;
         }
 
-        return $item->get();
+        $value = $item->get();
+        assert($value instanceof MainDto, 'Items loaded from this instance of cache must be instances of MainDto');
+
+        // load any runtime needed logic
+
+        return $value;
     }
 
     /**

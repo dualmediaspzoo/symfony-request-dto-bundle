@@ -1,25 +1,19 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Parameter \#1 \$values of function Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\service_locator expects array\<Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\InlineServiceConfigurator\|Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ReferenceConfigurator\>, array\<string, Symfony\\Component\\DependencyInjection\\Reference\> given\.$#'
-			identifier: argument.type
+			message: '#^Function Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\service_locator not found\.$#'
+			identifier: function.notFound
 			count: 1
 			path: src/Provider/DependencyInjection/DynamicParameterCompilerPass.php
 
 		-
-			message: '#^Property DualMedia\\DtoRequestBundle\\Provider\\EntityProvider\:\:\$class is never read, only written\.$#'
-			identifier: property.onlyWritten
+			message: '#^Used function Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\service_locator not found\.$#'
+			identifier: function.notFound
 			count: 1
-			path: src/Provider/EntityProvider.php
+			path: src/Provider/DependencyInjection/DynamicParameterCompilerPass.php
 
 		-
-			message: '#^Method DualMedia\\DtoRequestBundle\\Reflection\\CacheReflector\:\:get\(\) should return DualMedia\\DtoRequestBundle\\Metadata\\Model\\MainDto\|null but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Reflection/CacheReflector.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between array\{\} and non\-empty\-array\<string, DualMedia\\DtoRequestBundle\\Resolve\\Model\\PendingValue\> will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
+			message: '#^Variable \$fields in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
 			count: 1
 			path: src/Resolve/Handler/EntityPropertyHandler.php

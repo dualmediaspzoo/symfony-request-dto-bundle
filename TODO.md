@@ -19,8 +19,8 @@
   no `supports()` scan at runtime
 - [x] `EnumCoercer` — backed enum coercion with label processing and `FromKey` support
 - [x] `DateTimeImmutableCoercer` — date parsing with configurable format
-- [ ] `UploadedFileCoercer` — validates uploaded file instances
-- [ ] Coercer warm-up — resolve `#[Supports]` closures against property metadata at cache
+- [x] `UploadedFileCoercer` — validates uploaded file instances
+- [x] Coercer warm-up — resolve `#[Supports]` closures against property metadata at cache
   warm-up, store coercer key in `PropertyMetadata`
 - [x] `CoercerInterface` — pure transform returning value + constraints, no validator
 - [x] `Result` model — holds coerced value + constraints for batch validation
@@ -55,11 +55,11 @@
 
 ## Entity Loading
 
-- [ ] `EntityProviderService` — registry of entity providers keyed by FQCN
+- [x] `EntityProviderService` — registry of entity providers keyed by FQCN
 - [ ] `TargetProviderService` — Doctrine repository auto-wiring
 - [ ] `ComplexLoaderService` — custom loader implementations for non-standard lookups
-- [ ] `QueryCreator` — ORM query building for Find attributes
-- [ ] `ReferenceHelper` — Doctrine association/reference handling
+- [x] `QueryCreator` — ORM query building for Find attributes - done from dualmedia/query-creator
+- [x] `ReferenceHelper` — Doctrine association/reference handling - same as above
 - [ ] Label processors — `DefaultProcessor`, `PascalCaseProcessor`, `LabelProcessorService`
 
 ## Attributes
@@ -81,14 +81,14 @@
 
 ## Events
 
-- [ ] `DtoResolvedEvent` — dispatched after successful resolution
+- [x] `DtoResolvedEvent` — dispatched after successful resolution
 - [ ] `DtoInvalidEvent` — dispatched after validation failure, allows custom response
 - [ ] `DtoActionEvent` — dispatched when DTO has HTTP action attributes
 - [ ] `DtoSubscriber` — listens to controller arguments, dispatches action/invalid events
 
 ## HTTP Integration
 
-- [ ] `DtoValueResolver` — Symfony `ValueResolverInterface` entry point
+- [x] `DtoValueResolver` — Symfony `ValueResolverInterface` entry point
 - [ ] `ActionValidatorService` — validates HTTP action attributes
 - [ ] `OnNullActionValidator` — handles null property HTTP actions
 

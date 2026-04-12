@@ -130,7 +130,7 @@ class EntityPropertyHandler implements FieldHandlerInterface
             $dto->visit($name, $target);
         }
 
-        if ([] === $fields) {
+        if (empty($fields)) {
             return false;
         }
 

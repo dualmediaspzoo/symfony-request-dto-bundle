@@ -30,6 +30,8 @@ class AbstractDto implements DtoInterface
 
     private AbstractDto|null $_parentDto = null;
 
+    private bool $optional = false;
+
     public function __construct()
     {
         $this->_constraintList = new ConstraintViolationList();
@@ -124,14 +126,26 @@ class AbstractDto implements DtoInterface
         return $this->getParentDto()?->getHighestParentDto() ?? $this;
     }
 
+    public function isOptional(): bool
+    {
+        return $this->optional;
+    }
+
+    /**
+     * @internal
+     */
+    public function setOptional(
+        bool $optional
+    ): void {
+        $this->optional = $optional;
+    }
+
     /**
      * @internal
      */
     public function setParentDto(
         AbstractDto|null $parentDto
-    ): AbstractDto {
+    ): void {
         $this->_parentDto = $parentDto;
-
-        return $this;
     }
 }
