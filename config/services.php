@@ -71,7 +71,8 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
         ->arg('$metaReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class))
         ->arg('$typeResolver', new Reference('dm.dto_bundle.type_resolver'))
-        ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG));
+        ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG))
+        ->arg('$objectProviderLocator', tagged_locator(DtoBundle::OBJECT_PROVIDER_TAG));
 
     $services->set(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class)
         ->public();
@@ -99,6 +100,7 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$entityProviderRegistry', new Reference(\DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry::class))
         ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class))
         ->arg('$dynamicParameterRegistry', new Reference(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class))
+        ->arg('$objectProviderLocator', tagged_locator(DtoBundle::OBJECT_PROVIDER_TAG))
         ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 5]);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\ScalarPropertyHandler::class)

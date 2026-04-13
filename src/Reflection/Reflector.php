@@ -13,8 +13,10 @@ use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\ValidateWithGroups;
+use DualMedia\DtoRequestBundle\Metadata\Model\WithObjectProvider;
 use DualMedia\DtoRequestBundle\MetadataUtils;
 use DualMedia\DtoRequestBundle\Provider\Interface\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Provider\Interface\ProviderInterface;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -25,13 +27,15 @@ class Reflector
 {
     /**
      * @param ServiceLocator<GroupProviderInterface> $groupProviderLocator
+     * @param ServiceLocator<ProviderInterface<object>> $objectProviderLocator
      */
     public function __construct(
         private readonly VirtualReflector $virtualReflector,
         private readonly PropertyFactory $propertyFactory,
         private readonly MetaReflector $metaReflector,
         private readonly TypeResolver $typeResolver,
-        private readonly ServiceLocator $groupProviderLocator
+        private readonly ServiceLocator $groupProviderLocator,
+        private readonly ServiceLocator $objectProviderLocator
     ) {
     }
 
@@ -72,6 +76,8 @@ class Reflector
                 continue;
             }
 
+            $propertyMeta = $this->metaReflector->meta($attributes);
+
             $results[$name] = $this->propertyFactory->create(
                 $name,
                 $type,
@@ -79,7 +85,8 @@ class Reflector
                 $path,
                 $constraints,
                 $this->virtualReflector->reflect($attributes),
-                $this->metaReflector->meta($attributes)
+                $propertyMeta,
+                $this->resolveObjectProviderServiceId($class, $name, $propertyMeta)
             );
         }
 
@@ -200,6 +207,50 @@ class Reflector
 
     /**
      * @param class-string<AbstractDto> $class
+     *
+     * @return list<object>
+     */
+    public function reflectPropertyMeta(
+        string $class,
+        string $propertyName
+    ): array {
+        $reflection = new \ReflectionClass($class);
+        $property = $reflection->getProperty($propertyName);
+
+        $attributes = array_map(
+            static fn (\ReflectionAttribute $a) => $a->newInstance(),
+            $property->getAttributes()
+        );
+
+        return $this->metaReflector->meta($attributes);
+    }
+
+    /**
+     * @param class-string<AbstractDto> $class
+     * @param list<object> $meta
+     */
+    private function resolveObjectProviderServiceId(
+        string $class,
+        string $propertyName,
+        array $meta
+    ): string|null {
+        $wop = MetadataUtils::single(WithObjectProvider::class, $meta);
+
+        if (null === $wop) {
+            return null;
+        }
+
+        return ReflectionUtils::resolveAndValidateServiceId(
+            $wop->closure,
+            $this->objectProviderLocator,
+            '#[WithObjectProvider]',
+            sprintf('%s::%s', $class, $propertyName),
+            'an object provider'
+        );
+    }
+
+    /**
+     * @param class-string<AbstractDto> $class
      * @param list<object> $meta
      */
     private function resolveValidationGroupsServiceId(
@@ -212,24 +263,12 @@ class Reflector
             return null;
         }
 
-        try {
-            $serviceId = ReflectionUtils::resolveServiceId($vwg->closure);
-        } catch (\LogicException $e) {
-            throw new \LogicException(sprintf(
-                'Invalid #[ValidateWithGroups] closure on %s: %s',
-                $class,
-                $e->getMessage()
-            ), previous: $e);
-        }
-
-        if (!$this->groupProviderLocator->has($serviceId)) {
-            throw new \LogicException(sprintf(
-                '#[ValidateWithGroups] on %s references service "%s" which is not tagged as a group provider.',
-                $class,
-                $serviceId
-            ));
-        }
-
-        return $serviceId;
+        return ReflectionUtils::resolveAndValidateServiceId(
+            $vwg->closure,
+            $this->groupProviderLocator,
+            '#[ValidateWithGroups]',
+            $class,
+            'a group provider'
+        );
     }
 }

@@ -12,6 +12,7 @@ use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\FindBy;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\Metadata\Model\WithObjectProvider;
 use DualMedia\DtoRequestBundle\MetadataUtils;
 use DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry;
 use DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry;
@@ -22,17 +23,22 @@ use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use DualMedia\DtoRequestBundle\Resolve\PropertyResolver;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use DualMedia\DtoRequestBundle\Util;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
  * @phpstan-import-type MetaFindModel from ProviderInterface
  */
 class EntityPropertyHandler implements FieldHandlerInterface
 {
+    /**
+     * @param ServiceLocator<ProviderInterface<object>> $objectProviderLocator
+     */
     public function __construct(
         private readonly PropertyResolver $propertyResolver,
         private readonly EntityProviderRegistry $entityProviderRegistry,
         private readonly Registry $coercerRegistry,
-        private readonly DynamicParameterRegistry $dynamicParameterRegistry
+        private readonly DynamicParameterRegistry $dynamicParameterRegistry,
+        private readonly ServiceLocator $objectProviderLocator
     ) {
     }
 
@@ -134,17 +140,29 @@ class EntityPropertyHandler implements FieldHandlerInterface
             return false;
         }
 
-        $registry = $this->entityProviderRegistry;
         /** @var list<MetaFindModel> $metaList */
         $metaList = $meta->meta;
+
+        if (null !== $meta->objectProviderServiceId) {
+            $wop = MetadataUtils::single(WithObjectProvider::class, $meta->meta);
+            assert(null !== $wop);
+
+            $provider = $this->objectProviderLocator->get($meta->objectProviderServiceId);
+            $closure = $wop->closure;
+            $loader = static function (array $criteria) use ($closure, $provider, $metaList): mixed {
+                return $closure($provider, $criteria, $metaList);
+            };
+        } else {
+            $loader = function (array $criteria) use ($entityClass, $metaList): mixed {
+                return $this->entityProviderRegistry->get($entityClass)->find($criteria, $metaList);
+            };
+        }
 
         $pending[] = new PendingEntityValue(
             $dto,
             $name,
             $fields,
-            static function (array $criteria) use ($registry, $entityClass, $metaList): mixed {
-                return $registry->get($entityClass)->find($criteria, $metaList);
-            },
+            $loader,
             Util::buildValidationPath([...$prefix, $meta->getRealPath()])
         );
 

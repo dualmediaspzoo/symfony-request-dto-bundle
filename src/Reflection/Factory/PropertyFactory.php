@@ -31,17 +31,19 @@ class PropertyFactory
         string|null $path = null,
         array $constraints = [],
         array $virtual = [],
-        array $meta = []
+        array $meta = [],
+        string|null $objectProviderServiceId = null
     ): Property {
         return new Property(
-            $name,
-            $type,
-            $bag,
-            $path,
-            $this->validator->supports($type),
-            $constraints,
-            $virtual,
-            $meta
+            name: $name,
+            type: $type,
+            bag: $bag,
+            path: $path,
+            coercer: $this->validator->supports($type),
+            constraints: $constraints,
+            virtual: $virtual,
+            meta: $meta,
+            objectProviderServiceId: $objectProviderServiceId
         );
     }
 }

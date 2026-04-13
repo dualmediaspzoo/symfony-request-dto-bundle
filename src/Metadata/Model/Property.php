@@ -26,6 +26,7 @@ readonly class Property
         public array $constraints = [],
         public array $virtual = [],
         public array $meta = [],
+        public string|null $objectProviderServiceId = null,
         public bool $requiresRuntimeResolve = false
     ) {
     }

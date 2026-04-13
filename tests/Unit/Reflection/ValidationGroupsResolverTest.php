@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 #[CoversClass(ReflectionUtils::class)]
 #[Group('unit')]
@@ -59,5 +60,34 @@ class ValidationGroupsResolverTest extends TestCase
 
         $this->expectException(\LogicException::class);
         ReflectionUtils::resolveServiceId($closure);
+    }
+
+    public function testValidateWrapsInvalidClosureMessage(): void
+    {
+        $closure = static fn () => null;
+        $locator = new ServiceLocator([]);
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Invalid #[X] closure on Some\\Class: ');
+        ReflectionUtils::resolveAndValidateServiceId($closure, $locator, '#[X]', 'Some\\Class', 'a tag');
+    }
+
+    public function testValidateThrowsWhenServiceMissingFromLocator(): void
+    {
+        $closure = static fn (\stdClass $p) => null;
+        $locator = new ServiceLocator([]);
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('#[X] on Some\\Class references service "stdClass" which is not tagged as a tag.');
+        ReflectionUtils::resolveAndValidateServiceId($closure, $locator, '#[X]', 'Some\\Class', 'a tag');
+    }
+
+    public function testValidateReturnsServiceIdWhenPresent(): void
+    {
+        $closure = static fn (\stdClass $p) => null;
+        $locator = new ServiceLocator([\stdClass::class => static fn () => new \stdClass()]);
+
+        $id = ReflectionUtils::resolveAndValidateServiceId($closure, $locator, '#[X]', 'Some\\Class', 'a tag');
+        static::assertSame(\stdClass::class, $id);
     }
 }

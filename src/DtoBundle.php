@@ -6,6 +6,7 @@ use DualMedia\DtoRequestBundle\Dto\DependencyInjection\DetectionCompilerPass;
 use DualMedia\DtoRequestBundle\Provider\Attribute\AsDynamicProvider;
 use DualMedia\DtoRequestBundle\Provider\DependencyInjection\DynamicParameterCompilerPass;
 use DualMedia\DtoRequestBundle\Provider\Interface\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Provider\Interface\ProviderInterface;
 use DualMedia\DtoRequestBundle\Resolve\Interface\LabelProcessorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -45,6 +46,9 @@ class DtoBundle extends AbstractBundle
 
         $container->registerForAutoconfiguration(GroupProviderInterface::class)
             ->addTag(self::GROUP_PROVIDER_TAG);
+
+        $container->registerForAutoconfiguration(ProviderInterface::class)
+            ->addTag(self::OBJECT_PROVIDER_TAG);
 
         $container->addCompilerPass(new DetectionCompilerPass());
         $container->addCompilerPass(new DynamicParameterCompilerPass());

@@ -44,7 +44,9 @@ class RuntimeResolveHelper
                 continue;
             }
 
-            $propertyNeedsResolve = !CacheUtils::isSerializable($field->constraints);
+            $propertyConstraintsNeedsResolve = !CacheUtils::isSerializable($field->constraints);
+            $propertyMetaNeedsResolve = !CacheUtils::isSerializable($field->meta);
+            $propertyNeedsResolve = $propertyConstraintsNeedsResolve || $propertyMetaNeedsResolve;
             $virtualChanged = false;
             $virtual = $field->virtual;
 
@@ -77,9 +79,10 @@ class RuntimeResolveHelper
                     bag: $field->bag,
                     path: $field->path,
                     coercer: $field->coercer,
-                    constraints: $propertyNeedsResolve ? [] : $field->constraints,
+                    constraints: $propertyConstraintsNeedsResolve ? [] : $field->constraints,
                     virtual: $virtual,
-                    meta: $field->meta,
+                    meta: $propertyMetaNeedsResolve ? [] : $field->meta,
+                    objectProviderServiceId: $field->objectProviderServiceId,
                     requiresRuntimeResolve: $propertyNeedsResolve
                 );
 
@@ -203,7 +206,10 @@ class RuntimeResolveHelper
                 ? $this->reflector->reflectPropertyConstraints($class, $name)
                 : $field->constraints,
             virtual: $virtual,
-            meta: $field->meta
+            meta: $propertyNeedsRestore
+                ? $this->reflector->reflectPropertyMeta($class, $name)
+                : $field->meta,
+            objectProviderServiceId: $field->objectProviderServiceId
         );
     }
 }

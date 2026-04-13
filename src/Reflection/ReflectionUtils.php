@@ -6,6 +6,7 @@ namespace DualMedia\DtoRequestBundle\Reflection;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class ReflectionUtils
 {
@@ -14,7 +15,7 @@ final class ReflectionUtils
     }
 
     /**
-     * Resolves the service id that should be fetched from the group-provider locator
+     * Resolves the service id that should be fetched from a service locator
      * for the first parameter of the given closure.
      *
      * Priority:
@@ -31,7 +32,7 @@ final class ReflectionUtils
 
         if ([] === $parameters) {
             throw new \LogicException(sprintf(
-                'Closure declared at %s:%d for ValidateWithGroups must have at least one parameter.',
+                'Closure declared at %s:%d must have at least one parameter.',
                 $reflection->getFileName() ?: '<unknown>',
                 $reflection->getStartLine()
             ));
@@ -55,10 +56,51 @@ final class ReflectionUtils
         }
 
         throw new \LogicException(sprintf(
-            'Cannot resolve group provider service id for closure declared at %s:%d: '
+            'Cannot resolve service id for closure declared at %s:%d: '
             .'first parameter must have a non-builtin class type hint or a #[Autowire(service: ...)] attribute.',
             $reflection->getFileName() ?: '<unknown>',
             $reflection->getStartLine()
         ));
+    }
+
+    /**
+     * Resolves the service id from the closure and asserts the id is present in the given locator.
+     *
+     * @param ServiceLocator<object> $locator
+     * @param string $attributeLabel human-readable attribute name (e.g. "#[ValidateWithGroups]")
+     * @param string $contextLabel human-readable location (e.g. class name, "Class::property")
+     * @param string $tagDescription what the missing service should have been (e.g. "a group provider")
+     *
+     * @throws \LogicException
+     */
+    public static function resolveAndValidateServiceId(
+        \Closure $closure,
+        ServiceLocator $locator,
+        string $attributeLabel,
+        string $contextLabel,
+        string $tagDescription
+    ): string {
+        try {
+            $serviceId = self::resolveServiceId($closure);
+        } catch (\LogicException $e) {
+            throw new \LogicException(sprintf(
+                'Invalid %s closure on %s: %s',
+                $attributeLabel,
+                $contextLabel,
+                $e->getMessage()
+            ), previous: $e);
+        }
+
+        if (!$locator->has($serviceId)) {
+            throw new \LogicException(sprintf(
+                '%s on %s references service "%s" which is not tagged as %s.',
+                $attributeLabel,
+                $contextLabel,
+                $serviceId,
+                $tagDescription
+            ));
+        }
+
+        return $serviceId;
     }
 }
