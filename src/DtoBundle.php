@@ -5,6 +5,7 @@ namespace DualMedia\DtoRequestBundle;
 use DualMedia\DtoRequestBundle\Dto\DependencyInjection\DetectionCompilerPass;
 use DualMedia\DtoRequestBundle\Provider\Attribute\AsDynamicProvider;
 use DualMedia\DtoRequestBundle\Provider\DependencyInjection\DynamicParameterCompilerPass;
+use DualMedia\DtoRequestBundle\Resolve\Interface\LabelProcessorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,6 +19,7 @@ class DtoBundle extends AbstractBundle
     public const string DTO_TAG = 'dm.dto_bundle.dto';
     public const string FIELD_HANDLER_TAG = 'dm.dto_bundle.field_handler';
     public const string OBJECT_PROVIDER_TAG = 'dm_dto_bundle.object_provider';
+    public const string LABEL_PROCESSOR_TAG = 'dm_dto_bundle.label_processor';
     public const string DYNAMIC_PARAMETER_TAG = 'dm_dto_bundle.dynamic_parameter_provider';
 
     public const string DTO_LIST_PARAMETER = 'dm.dto_bundle.dto_class_list';
@@ -35,6 +37,9 @@ class DtoBundle extends AbstractBundle
                 'method' => $reflector->getName(),
             ]);
         });
+
+        $container->registerForAutoconfiguration(LabelProcessorInterface::class)
+            ->addTag(self::LABEL_PROCESSOR_TAG);
 
         $container->addCompilerPass(new DetectionCompilerPass());
         $container->addCompilerPass(new DynamicParameterCompilerPass());

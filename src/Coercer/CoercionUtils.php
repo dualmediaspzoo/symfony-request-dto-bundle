@@ -17,15 +17,21 @@ final class CoercionUtils
      *
      * @param \Closure(mixed): mixed $coerce transforms a single element
      * @param Constraint|list<Constraint> $constraints
+     * @param Constraint|list<Constraint> $additionalConstraints
      */
     public static function coerce(
         Property $property,
         \Closure $coerce,
         Constraint|array $constraints,
-        Result|null $inner = null
+        Result|null $inner = null,
+        Constraint|array $additionalConstraints = []
     ): Result {
         $isCollection = TypeInfoUtils::isCollection($property->type);
-        $constraintList = is_array($constraints) ? $constraints : [$constraints];
+        /** @var list<Constraint> $constraintList */
+        $constraintList = [
+            ...(array)$constraints,
+            ...(array)$additionalConstraints,
+        ];
 
         return new Result(
             static function (mixed $value) use ($isCollection, $coerce): mixed {

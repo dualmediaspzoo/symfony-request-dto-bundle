@@ -10,6 +10,7 @@ use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Format;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use Symfony\Component\TypeInfo\Type as TypeInfo;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static function (TypeInfo $type): bool {
@@ -25,7 +26,8 @@ class DateTimeCoercer implements CoercerInterface
 
     #[\Override]
     public function coerce(
-        Property $property
+        Property $property,
+        Constraint|array $constraints = []
     ): Result {
         /** @var Format|null $format */
         $format = array_find($property->meta, static fn ($m) => $m instanceof Format);
@@ -50,7 +52,8 @@ class DateTimeCoercer implements CoercerInterface
                 }
             },
             new Type(type: \DateTimeImmutable::class, message: 'This value is not valid.'),
-            $this->stringCoercer->coerce($property)
+            $this->stringCoercer->coerce($property),
+            additionalConstraints: $constraints
         );
     }
 }

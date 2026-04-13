@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Dto\Attribute;
 
 /**
- * Allow only expected enum values.
+ * To be used together with {@link FromKey}.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-readonly class AllowEnum
+readonly class WithLabelProcessor
 {
-    /**
-     * @param non-empty-list<\BackedEnum> $allowed
-     */
     public function __construct(
-        public array $allowed
+        public string $serviceId
     ) {
     }
 }

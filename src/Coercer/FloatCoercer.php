@@ -10,6 +10,7 @@ use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use Symfony\Component\TypeInfo\Type as TypeInfo;
 use Symfony\Component\TypeInfo\TypeIdentifier;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static function (TypeInfo $type): bool {
@@ -19,7 +20,8 @@ class FloatCoercer implements CoercerInterface
 {
     #[\Override]
     public function coerce(
-        Property $property
+        Property $property,
+        Constraint|array $constraints = []
     ): Result {
         return CoercionUtils::coerce(
             $property,
@@ -34,7 +36,8 @@ class FloatCoercer implements CoercerInterface
 
                 return $val;
             },
-            new Type(type: 'float')
+            new Type(type: 'float'),
+            additionalConstraints: $constraints
         );
     }
 }

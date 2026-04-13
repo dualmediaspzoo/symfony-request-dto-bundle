@@ -7,13 +7,20 @@ namespace DualMedia\DtoRequestBundle\Coercer;
 use DualMedia\DtoRequestBundle\Coercer\Attribute\Supports;
 use DualMedia\DtoRequestBundle\Coercer\Interface\CoercerInterface;
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
+use DualMedia\DtoRequestBundle\Metadata\Model\AllowedEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\FromKey;
+use DualMedia\DtoRequestBundle\Metadata\Model\LabelProcessor;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\MetadataUtils;
+use DualMedia\DtoRequestBundle\Resolve\Interface\LabelProcessorInterface;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\TypeInfo\Type as TypeInfo;
 use Symfony\Component\TypeInfo\Type\BackedEnumType;
 use Symfony\Component\TypeInfo\Type\EnumType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static function (TypeInfo $type): bool {
@@ -21,37 +28,62 @@ use Symfony\Component\Validator\Constraints\Type;
 })]
 class EnumCoercer implements CoercerInterface
 {
+    /**
+     * @param ServiceLocator<LabelProcessorInterface> $labelProcessorLocator
+     */
     public function __construct(
         private readonly StringCoercer $stringCoercer,
-        private readonly IntegerCoercer $integerCoercer
+        private readonly IntegerCoercer $integerCoercer,
+        private readonly ServiceLocator $labelProcessorLocator
     ) {
     }
 
     #[\Override]
     public function coerce(
-        Property $property
+        Property $property,
+        Constraint|array $constraints = []
     ): Result {
-        $fromKey = null !== array_find($property->meta, static fn ($m) => $m instanceof FromKey);
-
         /** @var class-string<\UnitEnum> $enumClass */
         $enumClass = TypeInfoUtils::getClassName($property->type)
             ?? TypeInfoUtils::getCollectionValueClassName($property->type);
 
-        if ($fromKey) {
+        $allowed = MetadataUtils::single(AllowedEnum::class, $property->meta)->allowed ?? $enumClass::cases();
+
+        if (MetadataUtils::exists(FromKey::class, $property->meta)) {
+            $labelProcessorModel = MetadataUtils::single(LabelProcessor::class, $property->meta);
+
+            $denormalize = static fn (string $v) => $v;
+            $normalize = static fn (string $v) => $v;
+
+            if (null !== $labelProcessorModel) {
+                $processor = $this->labelProcessorLocator->get($labelProcessorModel->serviceId);
+
+                $denormalize = $processor->denormalize(...);
+                $normalize = $processor->normalize(...);
+            }
+
+            /** @var array<string, \UnitEnum> $existing */
+            $existing = [];
+
+            foreach ($allowed as $case) {
+                $existing[$normalize($case->name)] = $case;
+            }
+
             return CoercionUtils::coerce(
                 $property,
-                static function (mixed $val) use ($enumClass): mixed {
+                static function (mixed $val) use ($existing, &$denormalize): mixed {
                     if (!is_string($val)) {
                         return $val;
                     }
 
-                    return array_find(
-                        $enumClass::cases(),
-                        static fn (\UnitEnum $case) => $case->name === $val
-                    ) ?? $val;
+                    return $existing[$denormalize($val)] ?? $val;
                 },
                 new Type(type: $enumClass),
-                $this->stringCoercer->coerce($property)
+                $this->stringCoercer->coerce($property, new Choice(choices: array_map(
+                    static fn (string $s) => $denormalize($s),
+                    array_keys($existing)
+                ))),
+                additionalConstraints: $constraints
             );
         }
 
@@ -72,25 +104,33 @@ class EnumCoercer implements CoercerInterface
             return CoercionUtils::coerce(
                 $property,
                 static fn (mixed $val): mixed => $val,
-                new Type(type: $enumClass)
+                new Type(type: $enumClass),
+                additionalConstraints: $constraints
             );
         }
 
-        /** @var class-string<\BackedEnum> $enumClass */
+        /** @var list<\BackedEnum> $allowed */
+
+        $existing = [];
+
+        foreach ($allowed as $case) {
+            $existing[$case->value] = $case;
+        }
 
         return CoercionUtils::coerce(
             $property,
-            static function (mixed $val) use ($enumClass): mixed {
+            static function (mixed $val) use ($existing): mixed {
                 if (!is_int($val) && !is_string($val)) {
                     return $val;
                 }
 
-                return $enumClass::tryFrom($val) ?? $val;
+                return $existing[$val] ?? $val;
             },
             new Type(type: $enumClass),
             TypeIdentifier::INT === $backingTypeId
-                ? $this->integerCoercer->coerce($property)
-                : $this->stringCoercer->coerce($property)
+                ? $this->integerCoercer->coerce($property, new Choice(choices: array_keys($existing)))
+                : $this->stringCoercer->coerce($property, new Choice(choices: array_keys($existing))),
+            additionalConstraints: $constraints
         );
     }
 }

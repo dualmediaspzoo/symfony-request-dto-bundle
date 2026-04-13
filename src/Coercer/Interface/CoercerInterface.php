@@ -6,6 +6,7 @@ namespace DualMedia\DtoRequestBundle\Coercer\Interface;
 
 use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use Symfony\Component\Validator\Constraint;
 
 interface CoercerInterface
 {
@@ -14,8 +15,11 @@ interface CoercerInterface
      *
      * Returns a Result chain describing transformations
      * and constraints to apply during resolution.
+     *
+     * @param Constraint|list<Constraint> $constraints additional constraints to be added
      */
     public function coerce(
-        Property $property
+        Property $property,
+        Constraint|array $constraints = []
     ): Result;
 }

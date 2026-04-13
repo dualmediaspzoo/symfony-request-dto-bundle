@@ -10,6 +10,7 @@ use DualMedia\DtoRequestBundle\Coercer\Model\Result;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use Symfony\Component\TypeInfo\Type as TypeInfo;
 use Symfony\Component\TypeInfo\TypeIdentifier;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Type;
 
 #[Supports(static function (TypeInfo $type): bool {
@@ -19,7 +20,8 @@ class BooleanCoercer implements CoercerInterface
 {
     #[\Override]
     public function coerce(
-        Property $property
+        Property $property,
+        Constraint|array $constraints = []
     ): Result {
         return CoercionUtils::coerce(
             $property,
@@ -38,7 +40,8 @@ class BooleanCoercer implements CoercerInterface
 
                 return $val;
             },
-            new Type(type: 'bool')
+            new Type(type: 'bool'),
+            additionalConstraints: $constraints
         );
     }
 }

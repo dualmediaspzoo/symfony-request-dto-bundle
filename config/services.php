@@ -37,6 +37,7 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Coercer\EnumCoercer::class)
         ->arg('$stringCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class))
         ->arg('$integerCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\IntegerCoercer::class))
+        ->arg('$labelProcessorLocator', tagged_locator(DtoBundle::LABEL_PROCESSOR_TAG))
         ->tag(DtoBundle::COERCER_TAG);
 
     $services->set(\DualMedia\DtoRequestBundle\Coercer\Registry::class)
@@ -77,6 +78,9 @@ return static function (ContainerConfigurator $configurator) {
     // resolve services
     $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)
         ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Label\PascalCaseProcessor::class)
+        ->tag(DtoBundle::LABEL_PROCESSOR_TAG);
 
     // field handlers (priority determines evaluation order, highest first)
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\CollectionDtoHandler::class)
