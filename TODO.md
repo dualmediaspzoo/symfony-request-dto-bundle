@@ -40,7 +40,7 @@
 - [x] `MappedToPath` constraint + validator — attach constraints to specific property path
 - [ ] `ArrayAll` constraint + validator
 - [ ] `ObjectCollection` constraint + validator
-- [ ] Validation group support — `GroupProviderService` for dynamic groups
+- [x] Validation group support — `GroupProviderService` for dynamic groups
 
 ## Resolution
 
@@ -49,15 +49,15 @@
 - [x] `RequestDataExtractor` — reads values from request bags (query, body, headers, files),
   replaces the old `safeGetPath` logic
 - [x] `PropertyResolver` — handles regular scalar/object property resolution
-- [ ] `FindResolver` — handles `FindOneBy`/`FindBy` entity loading
+- [x] `FindResolver` — handles `FindOneBy`/`FindBy` entity loading
 - [x] `NestedDtoResolver` — handles recursive DTO-in-DTO resolution, collects coercion
   results up the tree
 
 ## Entity Loading
 
 - [x] `EntityProviderService` — registry of entity providers keyed by FQCN
-- [ ] `TargetProviderService` — Doctrine repository auto-wiring
-- [ ] `ComplexLoaderService` — custom loader implementations for non-standard lookups
+- [x] `TargetProviderService` — Doctrine repository auto-wiring
+- [x] `ComplexLoaderService` — custom loader implementations for non-standard lookups
 - [x] `QueryCreator` — ORM query building for Find attributes - done from dualmedia/query-creator
 - [x] `ReferenceHelper` — Doctrine association/reference handling - same as above
 - [x] Label processors — `DefaultProcessor`, `PascalCaseProcessor`, `LabelProcessorService`
@@ -66,12 +66,12 @@
 
 - [x] `FindOneBy` — single entity lookup with fields, constraints, types
 - [x] `FindBy` — collection entity lookup with limit/offset
-- [ ] `FindComplex` — custom complex loader reference
+- [x] `FindComplex` — custom complex loader reference
 - [x] `Type` — explicit type override -- no longer needed, using symfony's TypeInfo
 - [x] `Format` — datetime format specifier
 - [x] `FromKey` — enum label key mapping
 - [x] `AsDoctrineReference` — treat as Doctrine entity reference
-- [ ] `ProvideValidationGroups` — custom validation group provider
+- [x] `ProvideValidationGroups` — custom validation group provider
 - [ ] `Http/OnNull` — HTTP action when property is null
 - [ ] `EntityProvider` — marks custom entity providers
 - [x] `AllowInvalid` — allows DTO resolution to proceed despite validation failures
