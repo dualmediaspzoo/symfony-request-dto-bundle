@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Coercer;
 
 use DualMedia\DtoRequestBundle\Coercer\EnumCoercer;
-use DualMedia\DtoRequestBundle\Coercer\IntegerCoercer;
-use DualMedia\DtoRequestBundle\Coercer\StringCoercer;
 use DualMedia\DtoRequestBundle\Metadata\Model\FromKey;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Enum\IntBackedEnum;
@@ -15,6 +13,7 @@ use DualMedia\DtoRequestBundle\Tests\Fixture\Enum\StringBackedEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Pkly\ServiceMockHelperTrait;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraints\Type as TypeConstraint;
 
@@ -23,11 +22,13 @@ use Symfony\Component\Validator\Constraints\Type as TypeConstraint;
 #[Group('coercer')]
 class EnumCoercerTest extends TestCase
 {
+    use ServiceMockHelperTrait;
+
     private EnumCoercer $coercer;
 
     protected function setUp(): void
     {
-        $this->coercer = new EnumCoercer(new StringCoercer(), new IntegerCoercer());
+        $this->coercer = $this->createRealMockedServiceInstance(EnumCoercer::class);
     }
 
     public function testStringBackedEnumCoercion(): void

@@ -52,13 +52,11 @@ class EnumCoercer implements CoercerInterface
         if (MetadataUtils::exists(FromKey::class, $property->meta)) {
             $labelProcessorModel = MetadataUtils::single(LabelProcessor::class, $property->meta);
 
-            $denormalize = static fn (string $v) => $v;
             $normalize = static fn (string $v) => $v;
 
             if (null !== $labelProcessorModel) {
                 $processor = $this->labelProcessorLocator->get($labelProcessorModel->serviceId);
 
-                $denormalize = $processor->denormalize(...);
                 $normalize = $processor->normalize(...);
             }
 
@@ -71,18 +69,15 @@ class EnumCoercer implements CoercerInterface
 
             return CoercionUtils::coerce(
                 $property,
-                static function (mixed $val) use ($existing, &$denormalize): mixed {
+                static function (mixed $val) use ($existing): mixed {
                     if (!is_string($val)) {
                         return $val;
                     }
 
-                    return $existing[$denormalize($val)] ?? $val;
+                    return $existing[$val] ?? $val;
                 },
                 new Type(type: $enumClass),
-                $this->stringCoercer->coerce($property, new Choice(choices: array_map(
-                    static fn (string $s) => $denormalize($s),
-                    array_keys($existing)
-                ))),
+                $this->stringCoercer->coerce($property, new Choice(choices: array_keys($existing))),
                 additionalConstraints: $constraints
             );
         }

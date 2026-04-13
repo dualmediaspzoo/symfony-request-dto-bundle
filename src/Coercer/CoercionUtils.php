@@ -29,8 +29,8 @@ final class CoercionUtils
         $isCollection = TypeInfoUtils::isCollection($property->type);
         /** @var list<Constraint> $constraintList */
         $constraintList = [
-            ...(array)$constraints,
-            ...(array)$additionalConstraints,
+            ...(is_array($constraints) ? $constraints : [$constraints]),
+            ...(is_array($additionalConstraints) ? $additionalConstraints : [$additionalConstraints]),
         ];
 
         return new Result(
