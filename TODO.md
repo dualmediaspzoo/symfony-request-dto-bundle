@@ -37,7 +37,7 @@
 - [x] Pre-check phase — validate preconditions (e.g. "is collection actually an array?")
   before coercion runs
 - [x] `WhenVisited` constraint + validator — conditional validation based on visited state
-- [ ] `MappedToPath` constraint + validator — attach constraints to specific property path
+- [x] `MappedToPath` constraint + validator — attach constraints to specific property path
 - [ ] `ArrayAll` constraint + validator
 - [ ] `ObjectCollection` constraint + validator
 - [ ] Validation group support — `GroupProviderService` for dynamic groups
@@ -74,7 +74,7 @@
 - [ ] `ProvideValidationGroups` — custom validation group provider
 - [ ] `Http/OnNull` — HTTP action when property is null
 - [ ] `EntityProvider` — marks custom entity providers
-- [ ] `AllowInvalid` — allows DTO resolution to proceed despite validation failures
+- [x] `AllowInvalid` — allows DTO resolution to proceed despite validation failures
 - [x] `AllowEnum` — allowed enum case filtering
 - [x] `Bag` — request bag assignment
 - [x] `Path` — custom request path override

@@ -9,7 +9,7 @@ A Symfony bundle that automatically resolves controller argument DTOs from HTTP 
 ## Commands
 
 ```bash
-composer test              # Run PHPUnit test suite
+vendor/bin/phpunit             # Run PHPUnit test suite
 composer lint              # Run PHP-CS-Fixer (applies fixes)
 composer baseline          # Regenerate PHPStan baseline
 vendor/bin/phpunit --filter=TestClassName  # Run a single test class
