@@ -82,8 +82,27 @@ class Reflector
 
         return new MainDto(
             $results,
-            array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint))
+            array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint)),
+            $this->metaReflector->meta($attributes)
         );
+    }
+
+    /**
+     * @param class-string<AbstractDto> $class
+     *
+     * @return list<object>
+     */
+    public function reflectClassMeta(
+        string $class
+    ): array {
+        $reflection = new \ReflectionClass($class);
+
+        $attributes = array_map(
+            static fn (\ReflectionAttribute $a) => $a->newInstance(),
+            $reflection->getAttributes()
+        );
+
+        return $this->metaReflector->meta($attributes);
     }
 
     /**

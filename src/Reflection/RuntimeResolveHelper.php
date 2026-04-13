@@ -19,14 +19,15 @@ class RuntimeResolveHelper
     public function prepareForCache(
         MainDto $mainDto
     ): MainDto {
-        $classNeedsResolve = !CacheUtils::constraintsAreSerializable($mainDto->constraints);
+        $classNeedsResolve = !CacheUtils::isSerializable($mainDto->constraints)
+            || !CacheUtils::isSerializable($mainDto->meta);
         $anyChildFlagged = false;
         $fields = $mainDto->fields;
         $fieldsChanged = false;
 
         foreach ($fields as $name => $field) {
             if ($field instanceof Dto) {
-                if (!CacheUtils::constraintsAreSerializable($field->constraints)) {
+                if (!CacheUtils::isSerializable($field->constraints)) {
                     $fields[$name] = new Dto(
                         name: $field->name,
                         type: $field->type,
@@ -43,7 +44,7 @@ class RuntimeResolveHelper
                 continue;
             }
 
-            $propertyNeedsResolve = !CacheUtils::constraintsAreSerializable($field->constraints);
+            $propertyNeedsResolve = !CacheUtils::isSerializable($field->constraints);
             $virtualChanged = false;
             $virtual = $field->virtual;
 
@@ -52,7 +53,7 @@ class RuntimeResolveHelper
                     continue;
                 }
 
-                if (!CacheUtils::constraintsAreSerializable($vField->constraints)) {
+                if (!CacheUtils::isSerializable($vField->constraints)) {
                     $virtual[$vName] = new Property(
                         name: $vField->name,
                         type: $vField->type,
@@ -97,7 +98,7 @@ class RuntimeResolveHelper
         return new MainDto(
             fields: $fieldsChanged ? $fields : $mainDto->fields,
             constraints: $classNeedsResolve ? [] : $mainDto->constraints,
-            meta: $mainDto->meta,
+            meta: $classNeedsResolve ? [] : $mainDto->meta,
             requiresRuntimeResolve: $classNeedsResolve,
             childRequiresRuntimeResolve: $anyChildFlagged
         );
@@ -115,9 +116,11 @@ class RuntimeResolveHelper
         }
 
         $classConstraints = $mainDto->constraints;
+        $classMeta = $mainDto->meta;
 
         if ($mainDto->requiresRuntimeResolve) {
             $classConstraints = $this->reflector->reflectClassConstraints($class);
+            $classMeta = $this->reflector->reflectClassMeta($class);
         }
 
         $fields = $mainDto->fields;
@@ -135,7 +138,7 @@ class RuntimeResolveHelper
         return new MainDto(
             fields: $fields,
             constraints: $classConstraints,
-            meta: $mainDto->meta
+            meta: $classMeta
         );
     }
 

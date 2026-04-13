@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Reflection;
 
-use Symfony\Component\Validator\Constraint;
-
 final class CacheUtils
 {
     private function __construct()
@@ -13,17 +11,17 @@ final class CacheUtils
     }
 
     /**
-     * @param list<Constraint> $constraints
+     * @param list<mixed> $items
      */
-    public static function constraintsAreSerializable(
-        array $constraints
+    public static function isSerializable(
+        array $items
     ): bool {
-        if ([] === $constraints) {
+        if (empty($items)) {
             return true;
         }
 
         try {
-            serialize($constraints);
+            serialize($items);
 
             return true;
         } catch (\Throwable) {

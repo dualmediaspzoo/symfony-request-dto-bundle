@@ -60,7 +60,7 @@
 - [ ] `ComplexLoaderService` — custom loader implementations for non-standard lookups
 - [x] `QueryCreator` — ORM query building for Find attributes - done from dualmedia/query-creator
 - [x] `ReferenceHelper` — Doctrine association/reference handling - same as above
-- [ ] Label processors — `DefaultProcessor`, `PascalCaseProcessor`, `LabelProcessorService`
+- [x] Label processors — `DefaultProcessor`, `PascalCaseProcessor`, `LabelProcessorService`
 
 ## Attributes
 

@@ -12,6 +12,7 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\FromKey as FromKeyAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Limit as LimitAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Offset as OffsetAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\OrderBy as OrderByAttribute;
+use DualMedia\DtoRequestBundle\Dto\Attribute\ValidateWithGroups as ValidateWithGroupsAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\WithAllowedEnum;
 use DualMedia\DtoRequestBundle\Dto\Attribute\WithLabelProcessor as WithLabelProcessorAttribute;
 use DualMedia\DtoRequestBundle\Metadata\Model\AllowedEnum;
@@ -23,6 +24,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\LabelProcessor;
 use DualMedia\DtoRequestBundle\Metadata\Model\Limit;
 use DualMedia\DtoRequestBundle\Metadata\Model\Offset;
 use DualMedia\DtoRequestBundle\Metadata\Model\OrderBy;
+use DualMedia\DtoRequestBundle\Metadata\Model\ValidateWithGroups;
 
 class MetaReflector
 {
@@ -47,6 +49,7 @@ class MetaReflector
                 $attribute instanceof OrderByAttribute => new OrderBy($attribute->field, $attribute->order->value),
                 $attribute instanceof WithLabelProcessorAttribute => new LabelProcessor($attribute->serviceId),
                 $attribute instanceof WithAllowedEnum => new AllowedEnum((array)$attribute->allowed), // @phpstan-ignore-line
+                $attribute instanceof ValidateWithGroupsAttribute => new ValidateWithGroups($attribute->closure),
                 default => null,
             };
 
