@@ -6,16 +6,26 @@ namespace DualMedia\DtoRequestBundle\Resolve;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
+use DualMedia\DtoRequestBundle\Metadata\Model\ValidateWithGroups;
+use DualMedia\DtoRequestBundle\MetadataUtils;
+use DualMedia\DtoRequestBundle\Provider\Interface\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingEntityValue;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DtoResolver
 {
+    /**
+     * @param ServiceLocator<GroupProviderInterface> $groupProviderLocator
+     */
     public function __construct(
         private readonly Extractor $extractor,
-        private readonly ValidatorInterface $validator
+        private readonly CacheReflector $cacheReflector,
+        private readonly ValidatorInterface $validator,
+        private readonly ServiceLocator $groupProviderLocator
     ) {
     }
 
@@ -32,12 +42,18 @@ class DtoResolver
         BagEnum $defaultBag = BagEnum::Request
     ): AbstractDto {
         $dto = new $class();
+        $mainDto = $this->cacheReflector->get($class);
+
+        if (null === $mainDto) {
+            return $dto;
+        }
+
         /** @var list<PendingValue|PendingEntityValue> $pending */
         $pending = [];
 
         // phase 1: recursively extract and coerce all values across the tree
         $accessor = new BagAccessor($request);
-        $this->extractor->extract($dto, $accessor, $defaultBag, [], $pending);
+        $this->extractor->extract($mainDto, $dto, $accessor, $defaultBag, [], $pending);
 
         // phase 2: coerce and validate in sequenced phases per property
         $violated = [];
@@ -126,8 +142,18 @@ class DtoResolver
         }
 
         // phase 4: validate the main object
+        $groups = null;
+
+        if (null !== $mainDto->validationGroupsServiceId) {
+            $vwg = MetadataUtils::single(ValidateWithGroups::class, $mainDto->meta);
+            assert(null !== $vwg);
+
+            $provider = $this->groupProviderLocator->get($mainDto->validationGroupsServiceId);
+            $groups = ($vwg->closure)($provider, $dto);
+        }
+
         $violations = $this->validator->startContext()
-            ->validate($dto)
+            ->validate($dto, null, $groups)
             ->getViolations();
 
         // todo: fix violation paths

@@ -12,18 +12,26 @@ use DualMedia\DtoRequestBundle\Dto\Model\Dynamic;
 use DualMedia\DtoRequestBundle\Dto\Model\Literal;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
+use DualMedia\DtoRequestBundle\Metadata\Model\ValidateWithGroups;
+use DualMedia\DtoRequestBundle\MetadataUtils;
+use DualMedia\DtoRequestBundle\Provider\Interface\GroupProviderInterface;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\TypeInfo\TypeResolver\TypeResolver;
 use Symfony\Component\Validator\Constraint;
 
 class Reflector
 {
+    /**
+     * @param ServiceLocator<GroupProviderInterface> $groupProviderLocator
+     */
     public function __construct(
         private readonly VirtualReflector $virtualReflector,
         private readonly PropertyFactory $propertyFactory,
         private readonly MetaReflector $metaReflector,
-        private readonly TypeResolver $typeResolver
+        private readonly TypeResolver $typeResolver,
+        private readonly ServiceLocator $groupProviderLocator
     ) {
     }
 
@@ -80,10 +88,13 @@ class Reflector
             $reflection->getAttributes()
         );
 
+        $meta = $this->metaReflector->meta($attributes);
+
         return new MainDto(
             $results,
             array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint)),
-            $this->metaReflector->meta($attributes)
+            $meta,
+            $this->resolveValidationGroupsServiceId($class, $meta)
         );
     }
 
@@ -185,5 +196,40 @@ class Reflector
         }
 
         return [];
+    }
+
+    /**
+     * @param class-string<AbstractDto> $class
+     * @param list<object> $meta
+     */
+    private function resolveValidationGroupsServiceId(
+        string $class,
+        array $meta
+    ): string|null {
+        $vwg = MetadataUtils::single(ValidateWithGroups::class, $meta);
+
+        if (null === $vwg) {
+            return null;
+        }
+
+        try {
+            $serviceId = ReflectionUtils::resolveServiceId($vwg->closure);
+        } catch (\LogicException $e) {
+            throw new \LogicException(sprintf(
+                'Invalid #[ValidateWithGroups] closure on %s: %s',
+                $class,
+                $e->getMessage()
+            ), previous: $e);
+        }
+
+        if (!$this->groupProviderLocator->has($serviceId)) {
+            throw new \LogicException(sprintf(
+                '#[ValidateWithGroups] on %s references service "%s" which is not tagged as a group provider.',
+                $class,
+                $serviceId
+            ));
+        }
+
+        return $serviceId;
     }
 }

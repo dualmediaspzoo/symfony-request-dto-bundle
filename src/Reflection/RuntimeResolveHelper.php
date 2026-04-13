@@ -99,6 +99,7 @@ class RuntimeResolveHelper
             fields: $fieldsChanged ? $fields : $mainDto->fields,
             constraints: $classNeedsResolve ? [] : $mainDto->constraints,
             meta: $classNeedsResolve ? [] : $mainDto->meta,
+            validationGroupsServiceId: $mainDto->validationGroupsServiceId,
             requiresRuntimeResolve: $classNeedsResolve,
             childRequiresRuntimeResolve: $anyChildFlagged
         );
@@ -138,7 +139,8 @@ class RuntimeResolveHelper
         return new MainDto(
             fields: $fields,
             constraints: $classConstraints,
-            meta: $classMeta
+            meta: $classMeta,
+            validationGroupsServiceId: $mainDto->validationGroupsServiceId
         );
     }
 

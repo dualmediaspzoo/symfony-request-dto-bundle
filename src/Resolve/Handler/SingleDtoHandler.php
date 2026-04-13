@@ -8,6 +8,7 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
 use DualMedia\DtoRequestBundle\Resolve\Extractor;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
@@ -15,7 +16,8 @@ use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 class SingleDtoHandler implements FieldHandlerInterface
 {
     public function __construct(
-        private readonly Extractor $extractor
+        private readonly Extractor $extractor,
+        private readonly CacheReflector $cacheReflector
     ) {
     }
 
@@ -41,11 +43,18 @@ class SingleDtoHandler implements FieldHandlerInterface
         /** @var class-string<AbstractDto> $fqcn */
         $fqcn = TypeInfoUtils::getClassName($meta->type);
 
+        $childMetadata = $this->cacheReflector->get($fqcn);
+
+        if (null === $childMetadata) {
+            return false;
+        }
+
         $child = new $fqcn();
         $child->setParentDto($dto);
         $dto->{$name} = $child;
 
         return $this->extractor->extract(
+            $childMetadata,
             $child,
             $accessor,
             $meta->bag ?? $defaultBag,

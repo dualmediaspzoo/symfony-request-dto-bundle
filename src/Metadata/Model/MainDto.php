@@ -20,6 +20,7 @@ readonly class MainDto
         public array $fields,
         public array $constraints = [],
         public array $meta = [],
+        public string|null $validationGroupsServiceId = null,
         public bool $requiresRuntimeResolve = false,
         public bool $childRequiresRuntimeResolve = false
     ) {

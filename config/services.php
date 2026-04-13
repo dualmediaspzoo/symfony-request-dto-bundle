@@ -70,7 +70,8 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$virtualReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class))
         ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
         ->arg('$metaReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class))
-        ->arg('$typeResolver', new Reference('dm.dto_bundle.type_resolver'));
+        ->arg('$typeResolver', new Reference('dm.dto_bundle.type_resolver'))
+        ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG));
 
     $services->set(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class)
         ->public();
@@ -85,10 +86,12 @@ return static function (ContainerConfigurator $configurator) {
     // field handlers (priority determines evaluation order, highest first)
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\CollectionDtoHandler::class)
         ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
         ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 20]);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\SingleDtoHandler::class)
         ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
         ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 10]);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\EntityPropertyHandler::class)
@@ -103,12 +106,13 @@ return static function (ContainerConfigurator $configurator) {
         ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 0]);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
-        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
         ->arg('$handlers', tagged_iterator(DtoBundle::FIELD_HANDLER_TAG));
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
         ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
         ->arg('$validator', new Reference('validator'))
+        ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG))
         ->public();
 
     $services->set(\DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver::class)

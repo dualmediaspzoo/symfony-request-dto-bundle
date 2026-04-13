@@ -6,7 +6,7 @@ namespace DualMedia\DtoRequestBundle\Resolve;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
-use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
+use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Resolve\Handler\FieldHandlerInterface;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingEntityValue;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
@@ -17,7 +17,6 @@ class Extractor
      * @param iterable<FieldHandlerInterface> $handlers
      */
     public function __construct(
-        private readonly CacheReflector $cacheReflector,
         private readonly iterable $handlers
     ) {
     }
@@ -30,16 +29,13 @@ class Extractor
      * @param list<PendingValue|PendingEntityValue> $pending collected entries (mutated)
      */
     public function extract(
+        MainDto $metadata,
         AbstractDto $dto,
         BagAccessor $accessor,
         BagEnum $defaultBag,
         array $prefix = [],
         array &$pending = []
     ): bool {
-        if (null === ($metadata = $this->cacheReflector->get($dto::class))) {
-            return false;
-        }
-
         $anyVisited = false;
 
         foreach ($metadata->fields as $name => $meta) {
