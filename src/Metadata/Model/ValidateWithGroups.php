@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Metadata\Model;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
-use Symfony\Component\Validator\Constraints\GroupSequence;
-use Symfony\Component\Validator\GroupProviderInterface;
+use DualMedia\DtoRequestBundle\Provider\Interface\GroupProviderInterface;
 
 /**
- * @phpstan-type ValidateWithGroupsClosure \Closure(GroupProviderInterface, AbstractDto): (string[]|string[][]|GroupSequence)
+ * @phpstan-import-type GroupReturnValue from GroupProviderInterface
+ * @phpstan-type ValidateWithGroupsClosure \Closure(GroupProviderInterface, AbstractDto): GroupReturnValue
  */
 readonly class ValidateWithGroups
 {
