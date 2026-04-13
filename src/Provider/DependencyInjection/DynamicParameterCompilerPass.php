@@ -6,11 +6,10 @@ namespace DualMedia\DtoRequestBundle\Provider\DependencyInjection;
 
 use DualMedia\DtoRequestBundle\DtoBundle;
 use DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry;
+use Symfony\Component\DependencyInjection\Argument\ServiceLocatorArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 
 class DynamicParameterCompilerPass implements CompilerPassInterface
 {
@@ -54,6 +53,6 @@ class DynamicParameterCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition(DynamicParameterRegistry::class);
         $definition->setArgument('$map', $map)
             ->setArgument('$methods', $methods)
-            ->setArgument('$locator', service_locator($referenceMap));
+            ->setArgument('$locator', new ServiceLocatorArgument($referenceMap));
     }
 }
