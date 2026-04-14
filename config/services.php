@@ -49,7 +49,8 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry::class)
         ->arg('$registry', new Reference('doctrine'))
         ->arg('$queryCreator', new Reference('dm.dto_bundle.query_creator'))
-        ->arg('$referenceHelper', new Reference('dm.dto_bundle.reference_helper'));
+        ->arg('$referenceHelper', new Reference('dm.dto_bundle.reference_helper'))
+        ->tag('kernel.reset', ['method' => 'reset']);
 
     $services->set('dm.dto_bundle.query_creator', \DualMedia\DoctrineQueryCreator\QueryCreator::class);
     $services->set('dm.dto_bundle.reference_helper', \DualMedia\DoctrineQueryCreator\ReferenceHelper::class);
@@ -110,11 +111,15 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
         ->arg('$handlers', tagged_iterator(DtoBundle::FIELD_HANDLER_TAG));
 
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class)
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class));
+
     $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
         ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
         ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
         ->arg('$validator', new Reference('validator'))
         ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG))
+        ->arg('$violationMapper', new Reference(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class))
         ->public();
 
     $services->set(\DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver::class)
@@ -129,7 +134,8 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class)
         ->arg('$cache', new Reference('dm.dto_bundle.file_cache'))
         ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class))
-        ->arg('$runtimeHelper', new Reference(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolveHelper::class));
+        ->arg('$runtimeHelper', new Reference(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolveHelper::class))
+        ->tag('kernel.reset', ['method' => 'reset']);
 
     $services->set(\DualMedia\DtoRequestBundle\Type\DtoCacheWarmer::class)
         ->tag('kernel.cache_warmer')

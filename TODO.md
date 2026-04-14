@@ -38,8 +38,6 @@
   before coercion runs
 - [x] `WhenVisited` constraint + validator — conditional validation based on visited state
 - [x] `MappedToPath` constraint + validator — attach constraints to specific property path
-- [ ] `ArrayAll` constraint + validator
-- [ ] `ObjectCollection` constraint + validator
 - [x] Validation group support — `GroupProviderService` for dynamic groups
 
 ## Resolution

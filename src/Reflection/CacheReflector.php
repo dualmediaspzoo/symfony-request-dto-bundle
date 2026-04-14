@@ -7,9 +7,15 @@ namespace DualMedia\DtoRequestBundle\Reflection;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
+use Symfony\Contracts\Service\ResetInterface;
 
-class CacheReflector
+class CacheReflector implements ResetInterface
 {
+    /**
+     * @var array<string, MainDto|null>
+     */
+    private array $memoized = [];
+
     public function __construct(
         private readonly PhpFilesAdapter $cache,
         private readonly Reflector $reflector,
@@ -25,17 +31,11 @@ class CacheReflector
     public function get(
         string $class
     ): MainDto|null {
-        assert(is_subclass_of($class, AbstractDto::class), 'Items passed to CacheReflector must be instances of AbstractDto');
-        $item = $this->cache->getItem($class);
-
-        if (!$item->isHit()) {
-            return null;
+        if (!array_key_exists($class, $this->memoized)) {
+            $this->memoized[$class] = $this->load($class);
         }
 
-        $value = $item->get();
-        assert($value instanceof MainDto, 'Items loaded from this instance of cache must be instances of MainDto');
-
-        return $this->runtimeHelper->restoreRuntimeConstraints($class, $value);
+        return $this->memoized[$class];
     }
 
     /**
@@ -49,5 +49,26 @@ class CacheReflector
         $this->cache->save($cacheItem);
 
         return true;
+    }
+
+    public function reset(): void
+    {
+        $this->memoized = [];
+    }
+
+    private function load(
+        string $class
+    ): MainDto|null {
+        assert(is_subclass_of($class, AbstractDto::class), 'Items passed to CacheReflector must be instances of AbstractDto');
+        $item = $this->cache->getItem($class);
+
+        if (!$item->isHit()) {
+            return null;
+        }
+
+        $value = $item->get();
+        assert($value instanceof MainDto, 'Items loaded from this instance of cache must be instances of MainDto');
+
+        return $this->runtimeHelper->restoreRuntimeConstraints($class, $value);
     }
 }

@@ -8,8 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DualMedia\DoctrineQueryCreator\QueryCreator;
 use DualMedia\DoctrineQueryCreator\ReferenceHelper;
+use Symfony\Contracts\Service\ResetInterface;
 
-class EntityProviderRegistry
+class EntityProviderRegistry implements ResetInterface
 {
     /**
      * @var array<class-string, EntityProvider>
@@ -42,5 +43,10 @@ class EntityProviderRegistry
         }
 
         return $this->providers[$class];
+    }
+
+    public function reset(): void
+    {
+        $this->providers = [];
     }
 }
