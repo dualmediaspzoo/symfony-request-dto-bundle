@@ -21,111 +21,235 @@ return [
 ];
 ```
 
+## Examples
+
+### Simple properties
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Bag;
+use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+// input:
+// [
+//     'name' => 'John',
+//     'age' => '25',
+//     'score' => '9.5',
+//     'active' => '1',
+//     'avatar' => <UploadedFile>,
+// ]
+
+class ProfileDto extends AbstractDto
+{
+    public string|null $name = null;
+
+    public int|null $age = null;
+
+    public float|null $score = null;
+
+    public bool|null $active = null;
+
+    #[Bag(BagEnum::Files)]
+    public UploadedFile|null $avatar = null;
+}
+```
+
+### Enums and dates
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+
+enum Status: string
+{
+    case Active = 'active';
+    case Inactive = 'inactive';
+    case Pending = 'pending';
+}
+
+// input:
+// [
+//     'status' => 'active',
+//     'createdAt' => '2025-01-15',
+// ]
+
+class SimpleFilterDto extends AbstractDto
+{
+    public Status|null $status = null;
+
+    public \DateTimeImmutable|null $createdAt = null;
+}
+```
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Format;
+use DualMedia\DtoRequestBundle\Dto\Attribute\FromKey;
+use DualMedia\DtoRequestBundle\Dto\Attribute\WithAllowedEnum;
+
+// input:
+// [
+//     'status' => 'Active',       <- matched by case name, not backed value
+//     'publishedAt' => '15/01/2025 14:30',
+// ]
+
+class AdvancedFilterDto extends AbstractDto
+{
+    #[FromKey]                                             // match by case name instead of backed value
+    #[WithAllowedEnum([Status::Active, Status::Pending])] // reject Status::Inactive
+    public Status|null $status = null;
+
+    #[Format('d/m/Y H:i')]
+    public \DateTimeImmutable|null $publishedAt = null;
+}
+```
+
+### Nested DTOs
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+
+// input:
+// [
+//     'name' => 'John',
+//     'filter' => [
+//         'status' => 'active',
+//         'createdAt' => '2025-01-15',
+//     ],
+// ]
+
+class SingleChildDto extends AbstractDto
+{
+    public string|null $name = null;
+
+    public SimpleFilterDto|null $filter = null;
+}
+```
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+
+// input:
+// [
+//     'name' => 'Batch update',
+//     'items' => [
+//         ['status' => 'active', 'createdAt' => '2025-01-15'],
+//         ['status' => 'inactive', 'createdAt' => '2025-02-20'],
+//     ],
+// ]
+
+class ListChildDto extends AbstractDto
+{
+    public string|null $name = null;
+
+    /** @var list<SimpleFilterDto> */
+    public array $items = [];
+}
+```
+
+### Loading entities
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Field;
+use DualMedia\DtoRequestBundle\Dto\Attribute\FindOneBy;
+
+// input:
+// [
+//     'userId' => '42',
+// ]
+
+class SimpleEntityDto extends AbstractDto
+{
+    #[FindOneBy]
+    #[Field('id', 'userId')]
+    public User|null $user = null;
+}
+```
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Field;
+use DualMedia\DtoRequestBundle\Dto\Attribute\FindOneBy;
+use Symfony\Component\TypeInfo\Type\BuiltinType;
+use Symfony\Component\TypeInfo\TypeIdentifier;
+use Symfony\Component\Validator\Constraints as Assert;
+
+// input:
+// [
+//     'userId' => '42',
+// ]
+//
+// violations when userId is missing or negative:
+//   path "userId" => NotNull / Positive
+
+class ConstrainedEntityDto extends AbstractDto
+{
+    #[FindOneBy]
+    #[Field('id', 'userId', new BuiltinType(TypeIdentifier::INT), [new Assert\NotNull(), new Assert\Positive()])]
+    public User|null $user = null;
+}
+```
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Field;
+use DualMedia\DtoRequestBundle\Dto\Attribute\FindOneBy;
+use DualMedia\DtoRequestBundle\Dto\Attribute\WithErrorPath;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+// input:
+// [
+//     'userId' => '42',
+// ]
+//
+// Field-level violations (missing/invalid userId):
+//   path "userId"
+//
+// Property-level violations (entity loaded but rejected by callback):
+//   path "userId" by default (first non-dynamic field input)
+//   path "user_error" if #[WithErrorPath] is used (see below)
+
+class AssertedEntityDto extends AbstractDto
+{
+    #[FindOneBy]
+    #[Field('id', 'userId')]
+    #[WithErrorPath('user_error')]     // violations on the property itself use this path
+    #[Assert\Callback(callback: static function (mixed $value, ExecutionContextInterface $context): void {
+        if (null !== $value && !$value->isActive()) {
+            $context->buildViolation('User is not active.')
+                ->addViolation();
+        }
+    })]
+    public User|null $user = null;
+}
+```
+
+### Root-level DTOs
+
+`#[AsRoot]` reads the child DTO's fields directly from the parent's request bag,
+without an extra nesting key.
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\AsRoot;
+
+// input (note: no "items" key, data is at the root):
+// [
+//     ['status' => 'active', 'createdAt' => '2025-01-15'],
+//     ['status' => 'inactive', 'createdAt' => '2025-02-20'],
+// ]
+
+class RootListDto extends AbstractDto
+{
+    /** @var list<SimpleFilterDto> */
+    #[AsRoot]
+    public array $items = [];
+}
+```
+
 ## Upgrades
 
 See [CHANGES.md](CHANGES.md)
 
-## Usage
-
-1. Create a DTO class for your request
-
-```php
-
-use \DualMedia\DtoRequestBundle\Attributes\Dto\Path;
-use \DualMedia\DtoRequestBundle\Model\AbstractDto;
-
-class MyDto extends AbstractDto
-{
-    public int|null $myVar = null;
-    
-    #[Path("custom_path")]
-    public string|null $myString = null;
-}
-
-```
-
-2. Add your dto as a controller argument
-
-```php
-
-class MyController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
-{
-    public function myAction(MyDto $dto): \Symfony\Component\HttpFoundation\Response
-    {
-        // your dto here is already validated!
-    }
-}
-```
-
-## Application wide handling of DTO issues
-
-If you wish to automatically return a 4XX response code when a dto has failed validation you may use something like the following:
-
-```yaml
-# config/services.yaml
-App\EventSubscriber\ErrorSubscriber:
-  decorates: exception_listener
-  arguments:
-    - '@App\EventSubscriber\ErrorSubscriber.inner'
-```
-
-```php
-class ErrorSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
-{
-    public function __construct(
-        private readonly ErrorListener $decorated
-    ) {
-    }
-
-    public static function getSubscribedEvents(){
-        return [
-            \Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent::class => 'onControllerArguments',
-        ];
-    }
-    
-    public function onControllerArguments(
-        ControllerArgumentsEvent $event
-    ): void {
-        $this->decorated->onControllerArguments($event);
-
-        $violationList = new ConstraintViolationList();
-
-        foreach ($event->getArguments() as $argument) {
-            if ($argument instanceof DtoInterface
-                && !$argument->isOptional()
-                && !$argument->isValid()) {
-                $violationList->addAll($argument->getConstraintViolationList());
-            }
-        }
-
-        if (0 !== $violationList->count()) {
-            throw new ValidatorException($violationList); // handle and display, or just do whatever really
-        }
-    }
-}
-```
-
-If you want to map a class-wide assert to a path without having to directly modify the constraint itself you may wrap it in MappedToPath
-
-```php
-
-use DualMedia\DtoRequestBundle\Model\AbstractDto;use DualMedia\DtoRequestBundle\Validator\MappedToPath;use Symfony\Component\Validator\Constraints as Assert;
-
-#[MappedToPath(
-    'property',
-    new Assert\Expression(
-        'this.property != null',
-        message: 'This property cannot be null'
-    )
-)]
-class MyDto extends AbstractDto
-{
-    public int|null $property = null;
-}
-
-```
-
-## Docs
-
-
-Currently no documentation is available, but will be added in the future. For the time being see [the DTO models for tests](tests/Fixtures/Model/Dto)
