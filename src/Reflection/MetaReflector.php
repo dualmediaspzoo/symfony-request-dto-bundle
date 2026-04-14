@@ -14,6 +14,7 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\Offset as OffsetAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\OrderBy as OrderByAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\ValidateWithGroups as ValidateWithGroupsAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\WithAllowedEnum;
+use DualMedia\DtoRequestBundle\Dto\Attribute\WithErrorPath as WithErrorPathAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\WithLabelProcessor as WithLabelProcessorAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\WithObjectProvider as WithObjectProviderAttribute;
 use DualMedia\DtoRequestBundle\Metadata\Model\AllowedEnum;
@@ -26,6 +27,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Limit;
 use DualMedia\DtoRequestBundle\Metadata\Model\Offset;
 use DualMedia\DtoRequestBundle\Metadata\Model\OrderBy;
 use DualMedia\DtoRequestBundle\Metadata\Model\ValidateWithGroups;
+use DualMedia\DtoRequestBundle\Metadata\Model\WithErrorPath;
 use DualMedia\DtoRequestBundle\Metadata\Model\WithObjectProvider;
 
 class MetaReflector
@@ -52,6 +54,7 @@ class MetaReflector
                 $attribute instanceof WithLabelProcessorAttribute => new LabelProcessor($attribute->serviceId),
                 $attribute instanceof WithAllowedEnum => new AllowedEnum((array)$attribute->allowed), // @phpstan-ignore-line
                 $attribute instanceof ValidateWithGroupsAttribute => new ValidateWithGroups($attribute->closure),
+                $attribute instanceof WithErrorPathAttribute => new WithErrorPath($attribute->path),
                 $attribute instanceof WithObjectProviderAttribute => new WithObjectProvider($attribute->closure),
                 default => null,
             };

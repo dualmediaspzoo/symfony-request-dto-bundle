@@ -105,7 +105,6 @@ class EnumCoercer implements CoercerInterface
         }
 
         /** @var list<\BackedEnum> $allowed */
-
         $existing = [];
 
         foreach ($allowed as $case) {

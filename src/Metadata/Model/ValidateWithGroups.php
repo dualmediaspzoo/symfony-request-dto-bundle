@@ -9,6 +9,7 @@ use DualMedia\DtoRequestBundle\Provider\Interface\GroupProviderInterface;
 
 /**
  * @phpstan-import-type GroupReturnValue from GroupProviderInterface
+ *
  * @phpstan-type ValidateWithGroupsClosure \Closure(GroupProviderInterface, AbstractDto): GroupReturnValue
  */
 readonly class ValidateWithGroups
