@@ -97,7 +97,10 @@ class ViolationMapper
             }
 
             if ($field instanceof Dto) {
-                $segments[] = $field->getRealPath();
+                if ('' !== $field->getRealPath()) {
+                    $segments[] = $field->getRealPath();
+                }
+
                 /** @var class-string<AbstractDto>|null $fqcn */
                 $fqcn = TypeInfoUtils::getClassName($field->type)
                     ?? TypeInfoUtils::getCollectionValueClassName($field->type);

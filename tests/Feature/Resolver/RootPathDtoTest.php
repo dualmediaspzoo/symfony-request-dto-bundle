@@ -61,7 +61,9 @@ class RootPathDtoTest extends KernelTestCase
         static::assertFalse($dto->isValid());
 
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
-        static::assertArrayHasKey('[1].intField', $violations);
+        // When the collection is at root (#[AsRoot]), the index becomes the first
+        // segment so the path is "1.intField" rather than "[1].intField"
+        static::assertArrayHasKey('1.intField', $violations);
     }
 
     public function testListAtRootPathEmpty(): void
