@@ -36,7 +36,7 @@ class UtilTest extends TestCase
         yield 'numeric index uses brackets' => [['children', '0', 'intField'], 'children[0].intField'];
         yield 'multiple numeric indices' => [['items', '0', 'sub', '1', 'val'], 'items[0].sub[1].val'];
         yield 'consecutive numeric indices' => [['data', '0', '1'], 'data[0][1]'];
-        yield 'root numeric' => [['0'], '0'];
+        yield 'root numeric' => [['0'], '[0]'];
         yield 'two segments with index' => [['list', '5'], 'list[5]'];
     }
 }

@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Tests\Feature\Resolver;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\SchemaTool;
 use DualMedia\DtoRequestBundle\Resolve\DtoResolver;
+use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\RootPathEntityDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\RootPathListDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\RootPathSingleDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\ScalarDto;
+use DualMedia\DtoRequestBundle\Tests\Fixture\Entity\SimpleEntity;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,9 +65,7 @@ class RootPathDtoTest extends KernelTestCase
         static::assertFalse($dto->isValid());
 
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
-        // When the collection is at root (#[AsRoot]), the index becomes the first
-        // segment so the path is "1.intField" rather than "[1].intField"
-        static::assertArrayHasKey('1.intField', $violations);
+        static::assertArrayHasKey('[1].intField', $violations);
     }
 
     public function testListAtRootPathEmpty(): void
@@ -104,5 +106,44 @@ class RootPathDtoTest extends KernelTestCase
 
         $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
         static::assertArrayHasKey('intField', $violations);
+    }
+
+    public function testAsRootEntityViolationPathRemapped(): void
+    {
+        $em = static::getService(EntityManagerInterface::class);
+
+        $schemaTool = new SchemaTool($em);
+        $schemaTool->createSchema(
+            $em->getMetadataFactory()->getAllMetadata()
+        );
+
+        try {
+            $entity = new SimpleEntity();
+            $em->persist($entity);
+            $em->flush();
+
+            $dto = $this->service->resolve(
+                RootPathEntityDto::class,
+                new Request(request: [
+                    'inputId' => (string)$entity->getId(),
+                ])
+            );
+
+            static::assertFalse($dto->isValid());
+            static::assertNotNull($dto->child);
+            static::assertInstanceOf(SimpleEntity::class, $dto->child->entity);
+
+            $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
+
+            // AsRoot skips the "child" segment, entity remaps to "inputId"
+            static::assertArrayHasKey('inputId', $violations);
+            static::assertArrayNotHasKey('child.inputId', $violations);
+            static::assertArrayNotHasKey('child.entity', $violations);
+            static::assertSame('Entity is not acceptable.', $violations['inputId'][0]->getMessage());
+        } finally {
+            $schemaTool->dropSchema(
+                $em->getMetadataFactory()->getAllMetadata()
+            );
+        }
     }
 }

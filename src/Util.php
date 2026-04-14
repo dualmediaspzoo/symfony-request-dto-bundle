@@ -23,7 +23,9 @@ class Util
             return '';
         }
 
-        $path = $segments[0];
+        $path = ctype_digit($segments[0])
+            ? '['.$segments[0].']'
+            : $segments[0];
 
         for ($i = 1; $i < count($segments); ++$i) {
             if (ctype_digit($segments[$i])) {
