@@ -109,7 +109,8 @@ return static function (ContainerConfigurator $configurator) {
         ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 0]);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
-        ->arg('$handlers', tagged_iterator(DtoBundle::FIELD_HANDLER_TAG));
+        ->arg('$handlers', tagged_iterator(DtoBundle::FIELD_HANDLER_TAG))
+        ->arg('$dispatcher', new Reference('event_dispatcher'));
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class)
         ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class));
@@ -145,4 +146,13 @@ return static function (ContainerConfigurator $configurator) {
     $services->set('dm.dto_bundle.file_cache', \Symfony\Component\Cache\Adapter\PhpFilesAdapter::class)
         ->arg('$namespace', 'dto_metadata')
         ->arg('$directory', '%kernel.cache_dir%/dm_dto_bundle');
+
+    // event subscribers
+    $services->set(\DualMedia\DtoRequestBundle\Dto\EventSubscriber\ControllerSubscriber::class)
+        ->arg('$dispatcher', new Reference('event_dispatcher'))
+        ->tag('kernel.event_subscriber');
+
+    $services->set(\DualMedia\DtoRequestBundle\Dto\EventSubscriber\ActionSubscriber::class)
+        ->arg('$dispatcher', new Reference('event_dispatcher'))
+        ->tag('kernel.event_subscriber');
 };

@@ -42,7 +42,8 @@ class CollectionDtoHandler implements FieldHandlerInterface
         BagAccessor $accessor,
         BagEnum $defaultBag,
         array $prefix,
-        array &$pending
+        array &$pending,
+        array &$seen = []
     ): bool {
         /** @var class-string<AbstractDto> $fqcn */
         $fqcn = TypeInfoUtils::getCollectionValueClassName($meta->type);
@@ -91,7 +92,8 @@ class CollectionDtoHandler implements FieldHandlerInterface
                 $accessor,
                 $childBag,
                 [...$childSegments, (string)$index],
-                $pending
+                $pending,
+                $seen
             );
 
             $children[] = $child;

@@ -21,6 +21,7 @@ interface FieldHandlerInterface
     /**
      * @param list<string> $prefix
      * @param list<PendingValue|PendingEntityValue> $pending
+     * @param array<string, true> $seen
      */
     public function handle(
         AbstractDto $dto,
@@ -29,6 +30,7 @@ interface FieldHandlerInterface
         BagAccessor $accessor,
         BagEnum $defaultBag,
         array $prefix,
-        array &$pending
+        array &$pending,
+        array &$seen = []
     ): bool;
 }

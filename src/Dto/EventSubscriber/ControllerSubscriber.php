@@ -14,8 +14,7 @@ class ControllerSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher
-    )
-    {
+    ) {
     }
 
     #[\Override]
@@ -45,19 +44,7 @@ class ControllerSubscriber implements EventSubscriberInterface
         $invalid = [];
 
         foreach ($arguments as $argument) {
-            $valid = $argument->isValid();
-
-            if ($valid && null !== ($action = $argument->getHttpAction())) {
-                $output = $this->dispatcher->dispatch(new DtoActionEvent($action, $argument, $request, $requestType));
-
-                if (null !== ($response = $output->getResponse())) {
-                    $event->setController(static fn () => $response);
-
-                    return;
-                }
-            }
-
-            if ($valid || $argument->isOptional()) {
+            if ($argument->isValid() || $argument->isOptional()) {
                 continue;
             }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Reflection;
 
+use DualMedia\DtoRequestBundle\Dto\Attribute\Action as ActionAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\AsDoctrineReference as AsDoctrineReferenceAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\FindBy as FindByAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\FindOneBy as FindOneByAttribute;
@@ -17,6 +18,7 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\WithAllowedEnum;
 use DualMedia\DtoRequestBundle\Dto\Attribute\WithErrorPath as WithErrorPathAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\WithLabelProcessor as WithLabelProcessorAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\WithObjectProvider as WithObjectProviderAttribute;
+use DualMedia\DtoRequestBundle\Metadata\Model\Action;
 use DualMedia\DtoRequestBundle\Metadata\Model\AllowedEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\AsDoctrineReference;
 use DualMedia\DtoRequestBundle\Metadata\Model\FindBy;
@@ -56,6 +58,7 @@ class MetaReflector
                 $attribute instanceof ValidateWithGroupsAttribute => new ValidateWithGroups($attribute->closure),
                 $attribute instanceof WithErrorPathAttribute => new WithErrorPath($attribute->path),
                 $attribute instanceof WithObjectProviderAttribute => new WithObjectProvider($attribute->closure),
+                $attribute instanceof ActionAttribute => new Action($attribute->when, $attribute->statusCode, $attribute->message, $attribute->headers),
                 default => null,
             };
 

@@ -36,7 +36,8 @@ class SingleDtoHandler implements FieldHandlerInterface
         BagAccessor $accessor,
         BagEnum $defaultBag,
         array $prefix,
-        array &$pending
+        array &$pending,
+        array &$seen = []
     ): bool {
         assert($meta instanceof Dto);
 
@@ -63,7 +64,8 @@ class SingleDtoHandler implements FieldHandlerInterface
             $accessor,
             $meta->bag ?? $defaultBag,
             $childPrefix,
-            $pending
+            $pending,
+            $seen
         );
     }
 }

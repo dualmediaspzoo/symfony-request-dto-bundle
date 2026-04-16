@@ -37,4 +37,17 @@ class Util
 
         return $path;
     }
+
+    /**
+     * Builds a path with numeric indices replaced by [], suitable for deduplication across collections.
+     *
+     * e.g. ['children', '0', 'intField'] → 'children[].intField'
+     *
+     * @param list<string> $segments
+     */
+    public static function buildNonUniquePropertyPath(
+        array $segments
+    ): string {
+        return (string)preg_replace('/\[\d+]/', '[]', self::buildValidationPath($segments));
+    }
 }
