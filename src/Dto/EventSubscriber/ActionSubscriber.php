@@ -64,7 +64,7 @@ class ActionSubscriber implements EventSubscriberInterface
     public function onResolved(
         ResolvedEvent $event
     ): void {
-        if ([] === $this->trackedPaths) {
+        if (empty($this->trackedPaths)) {
             return;
         }
 
@@ -75,7 +75,7 @@ class ActionSubscriber implements EventSubscriberInterface
     public function onControllerArguments(
         ControllerArgumentsEvent $event
     ): void {
-        if ([] === $this->triggered) {
+        if (empty($this->triggered)) {
             return;
         }
 
@@ -122,17 +122,24 @@ class ActionSubscriber implements EventSubscriberInterface
             // strip leading collection marker if present (e.g. "[].field" → "field")
             $remainder = ltrim($remainder, '[].');
 
-            // the property name is the first segment
-            $dotPos = strpos($remainder, '.');
-            $propertyName = false !== $dotPos ? substr($remainder, 0, $dotPos) : $remainder;
+            // the property name is the first segment (before '.' or '[]')
+            if (false !== ($bracketPos = strpos($remainder, '['))) {
+                $propertyName = substr($remainder, 0, $bracketPos);
+                $hasMore = true;
+            } elseif (false !== ($dotPos = strpos($remainder, '.'))) {
+                $propertyName = substr($remainder, 0, $dotPos);
+                $hasMore = true;
+            } else {
+                $propertyName = $remainder;
+                $hasMore = false;
+            }
 
             if ('' === $propertyName || !property_exists($dto, $propertyName)) {
                 continue;
             }
 
-            // only evaluate leaf properties (no further path segments beyond collection markers)
-            if (false !== $dotPos) {
-                // this path goes deeper — recurse into nested DTOs/collections
+            // this path goes deeper — recurse into nested DTOs/collections
+            if ($hasMore) {
                 $child = $dto->{$propertyName};
 
                 if ($child instanceof AbstractDto) {

@@ -8,11 +8,17 @@ use DualMedia\DtoRequestBundle\Dto\Enum\ActionCondition;
 
 class ActionConditionUtils
 {
-    public const \Closure NULL = static fn (mixed $v): bool => null === $v;
+    public const \Closure NULL = static function (mixed $v): bool {
+        return null === $v;
+    };
 
-    public const \Closure EMPTY = static fn (mixed $v): bool => empty($v);
+    public const \Closure EMPTY = static function (mixed $v): bool {
+        return empty($v);
+    };
 
-    public const \Closure FALSE = static fn (mixed $v): bool => false === $v;
+    public const \Closure FALSE = static function (mixed $v): bool {
+        return false === $v;
+    };
 
     private function __construct()
     {
