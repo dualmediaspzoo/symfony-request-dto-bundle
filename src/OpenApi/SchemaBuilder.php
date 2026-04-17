@@ -27,25 +27,7 @@ class SchemaBuilder
     ): array {
         $out = [];
 
-        foreach ($dto->fields as $field) {
-            $in = match ($field->bag) {
-                BagEnum::Query => 'query',
-                BagEnum::Headers => 'header',
-                BagEnum::Cookies => 'cookie',
-                BagEnum::Attributes => 'path',
-                default => null,
-            };
-
-            if (null === $in) {
-                continue;
-            }
-
-            if ('path' === $in && !str_contains($routePath, '{'.$field->path.'}')) {
-                continue;
-            }
-
-            $out[] = $this->buildParameter($field, $in);
-        }
+        $this->collectParameters($dto->fields, $routePath, $out);
 
         return $out;
     }
@@ -111,6 +93,40 @@ class SchemaBuilder
         }
 
         return $out;
+    }
+
+    /**
+     * Parameter-position bags (query/header/path/cookie) cannot carry nested paths.
+     * When a nested DTO lands in one of those bags, its leaf children become
+     * individual top-level parameters keyed only by their own path.
+     *
+     * @param list<DescribedField> $fields
+     * @param list<OA\Parameter> $out
+     */
+    private function collectParameters(
+        array $fields,
+        string $routePath,
+        array &$out
+    ): void {
+        foreach ($fields as $field) {
+            $in = $field->bag->parameterLocation();
+
+            if (null === $in) {
+                continue;
+            }
+
+            if ('object' === $field->oaType) {
+                $this->collectParameters($field->children, $routePath, $out);
+
+                continue;
+            }
+
+            if ('path' === $in && !str_contains($routePath, '{'.$field->path.'}')) {
+                continue;
+            }
+
+            $out[] = $this->buildParameter($field, $in);
+        }
     }
 
     /**

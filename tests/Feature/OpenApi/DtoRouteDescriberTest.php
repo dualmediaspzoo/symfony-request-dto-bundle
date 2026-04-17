@@ -141,6 +141,44 @@ class DtoRouteDescriberTest extends KernelTestCase
         static::assertSame(SampleRequestDto::class, SampleRequestDto::class);
     }
 
+    public function testHeaderChildDtoFlattensToTopLevelParameters(): void
+    {
+        $api = new OA\OpenApi(['_context' => new \OpenApi\Context()]);
+
+        $this->describer->describe(
+            $api,
+            new Route('/headers', methods: ['GET']),
+            new \ReflectionMethod(DtoFixtureController::class, 'headers')
+        );
+
+        $path = null;
+
+        foreach ($api->paths as $candidate) {
+            if ('/headers' === $candidate->path) {
+                $path = $candidate;
+
+                break;
+            }
+        }
+
+        static::assertInstanceOf(OA\PathItem::class, $path);
+        static::assertInstanceOf(OA\Get::class, $path->get);
+
+        static::assertIsArray($path->get->parameters);
+        $names = [];
+
+        foreach ($path->get->parameters as $parameter) {
+            static::assertSame('header', $parameter->in);
+            static::assertInstanceOf(OA\Schema::class, $parameter->schema);
+            static::assertSame('string', $parameter->schema->type);
+            $names[] = (string)$parameter->name;
+        }
+
+        static::assertContains('X-Main', $names);
+        static::assertContains('X-Other', $names);
+        static::assertNotContains('headers.X-Main', $names);
+    }
+
     private function findParameter(
         OA\Operation $operation,
         string $name

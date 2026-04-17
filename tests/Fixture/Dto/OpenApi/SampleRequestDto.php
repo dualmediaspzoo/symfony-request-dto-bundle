@@ -26,5 +26,6 @@ class SampleRequestDto extends AbstractDto
 
     public StringBackedEnum|null $status = null;
 
+    #[Bag(BagEnum::Files)]
     public UploadedFile|null $avatar = null;
 }
