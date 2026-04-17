@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\DtoBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -13,6 +14,9 @@ return static function (ContainerConfigurator $configurator) {
     $services = $configurator->services()
         ->defaults()
         ->private();
+
+    $services->instanceof(AbstractDto::class)
+        ->tag(DtoBundle::DTO_TAG);
 
     // coercion services
     $services->set(\DualMedia\DtoRequestBundle\Coercer\BooleanCoercer::class)

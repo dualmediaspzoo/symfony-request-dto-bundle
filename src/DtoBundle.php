@@ -71,7 +71,11 @@ class DtoBundle extends AbstractBundle
         $loader->load('services.php');
 
         if (true === $builder->getParameter('kernel.debug')) {
-            $loader->load('services_dev.php');
+            $loader->load('services.dev.php');
+        }
+
+        if ('test' === $builder->getParameter('kernel.environment')) {
+            $loader->load('services.test.php');
         }
 
         if (interface_exists(\Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface::class)) {
