@@ -50,4 +50,10 @@ class Util
     ): string {
         return (string)preg_replace('/\[\d+]/', '[]', self::buildValidationPath($segments));
     }
+
+    public static function escapeCharactersForCache(
+        string $text
+    ): string {
+        return strtr($text, '{}()/\@:', '<>_-,.?\'');
+    }
 }

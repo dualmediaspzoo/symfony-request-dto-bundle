@@ -7,6 +7,7 @@ namespace DualMedia\DtoRequestBundle\Reflection;
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Reflection\Interface\RuntimeResolveInterface;
+use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 
 class CacheReflector
@@ -27,7 +28,7 @@ class CacheReflector
         string $class
     ): MainDto|null {
         assert(is_subclass_of($class, AbstractDto::class), 'Items passed to CacheReflector must be instances of AbstractDto');
-        $item = $this->cache->getItem($class);
+        $item = $this->cache->getItem(Util::escapeCharactersForCache($class));
 
         if (!$item->isHit()) {
             return null;
@@ -45,7 +46,7 @@ class CacheReflector
     public function save(
         string $class
     ): bool {
-        $cacheItem = $this->cache->getItem($class);
+        $cacheItem = $this->cache->getItem(Util::escapeCharactersForCache($class));
         $cacheItem->set($this->runtimeHelper->prepareForCache($this->reflector->reflect($class)));
         $this->cache->save($cacheItem);
 
