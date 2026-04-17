@@ -3,6 +3,7 @@
 namespace DualMedia\DtoRequestBundle;
 
 use DualMedia\DtoRequestBundle\Dto\DependencyInjection\DetectionCompilerPass;
+use DualMedia\DtoRequestBundle\Dto\Interface\DtoInterface;
 use DualMedia\DtoRequestBundle\Provider\Attribute\AsDynamicProvider;
 use DualMedia\DtoRequestBundle\Provider\DependencyInjection\DynamicParameterCompilerPass;
 use DualMedia\DtoRequestBundle\Provider\Interface\GroupProviderInterface;
@@ -49,6 +50,9 @@ class DtoBundle extends AbstractBundle
 
         $container->registerForAutoconfiguration(ProviderInterface::class)
             ->addTag(self::OBJECT_PROVIDER_TAG);
+
+        $container->registerForAutoconfiguration(DtoInterface::class)
+            ->addTag(self::DTO_TAG);
 
         $container->addCompilerPass(new DetectionCompilerPass());
         $container->addCompilerPass(new DynamicParameterCompilerPass());
