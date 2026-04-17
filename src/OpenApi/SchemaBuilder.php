@@ -10,8 +10,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Format;
 use DualMedia\DtoRequestBundle\MetadataUtils;
 use DualMedia\DtoRequestBundle\OpenApi\Model\DescribedDto;
 use DualMedia\DtoRequestBundle\OpenApi\Model\DescribedField;
-use OpenApi\Annotations as OA;
-use OpenApi\Context;
+use OpenApi\Attributes as OA;
 use OpenApi\Generator;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,25 +18,23 @@ class SchemaBuilder
 {
     private const string FILE_EXAMPLE_BASE64 = 'data:image/jpeg;base64,aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ==';
 
-    private const array PARAMETER_BAG_MAP = [
-        'query' => 'query',
-        'headers' => 'header',
-        'cookies' => 'cookie',
-        'attributes' => 'path',
-    ];
-
     /**
      * @return list<OA\Parameter>
      */
     public function buildParameters(
         DescribedDto $dto,
-        string $routePath,
-        Context $context
+        string $routePath
     ): array {
         $out = [];
 
         foreach ($dto->fields as $field) {
-            $in = self::PARAMETER_BAG_MAP[$field->bag->value] ?? null;
+            $in = match ($field->bag) {
+                BagEnum::Query => 'query',
+                BagEnum::Headers => 'header',
+                BagEnum::Cookies => 'cookie',
+                BagEnum::Attributes => 'path',
+                default => null,
+            };
 
             if (null === $in) {
                 continue;
@@ -47,15 +44,14 @@ class SchemaBuilder
                 continue;
             }
 
-            $out[] = $this->buildParameter($field, $in, $context);
+            $out[] = $this->buildParameter($field, $in);
         }
 
         return $out;
     }
 
     public function buildRequestBody(
-        DescribedDto $dto,
-        Context $context
+        DescribedDto $dto
     ): OA\RequestBody|null {
         $bodyFields = array_values(array_filter(
             $dto->fields,
@@ -66,31 +62,27 @@ class SchemaBuilder
             return null;
         }
 
-        $schema = new OA\Schema([
-            'type' => 'object',
-            'properties' => $this->buildPropertyList($bodyFields, $context),
-            'required' => $this->requiredNames($bodyFields),
-            '_context' => $context,
-        ]);
+        $schema = new OA\Schema(
+            required: $this->requiredNames($bodyFields),
+            properties: $this->buildPropertyList($bodyFields),
+            type: 'object',
+        );
 
-        return new OA\RequestBody([
-            'content' => [
-                new OA\MediaType([
-                    'mediaType' => 'application/json',
-                    'schema' => $schema,
-                    '_context' => $context,
-                ]),
+        return new OA\RequestBody(
+            content: [
+                new OA\MediaType(
+                    mediaType: 'application/json',
+                    schema: $schema,
+                ),
             ],
-            '_context' => $context,
-        ]);
+        );
     }
 
     /**
      * @return list<OA\Response>
      */
     public function buildResponses(
-        DescribedDto $dto,
-        Context $context
+        DescribedDto $dto
     ): array {
         // TODO: this metadata-specific logic (Action → Response) should eventually
         // move out of the describer into dedicated per-metadata handlers. Inlined
@@ -112,43 +104,42 @@ class SchemaBuilder
             }
 
             $seen[$action->statusCode] = true;
-            $out[] = new OA\Response([
-                'response' => (string)$action->statusCode,
-                'description' => $action->message ?? 'No description set',
-                '_context' => $context,
-            ]);
+            $out[] = new OA\Response(
+                response: (string)$action->statusCode,
+                description: $action->message ?? 'No description set',
+            );
         }
 
         return $out;
     }
 
+    /**
+     * @param 'query'|'header'|'path'|'cookie' $in
+     */
     private function buildParameter(
         DescribedField $field,
-        string $in,
-        Context $context
+        string $in
     ): OA\Parameter {
-        $schema = new OA\Schema([
-            'type' => $field->isCollection ? 'array' : $field->oaType,
-            '_context' => $context,
-        ]);
-
         if ($field->isCollection) {
-            $schema->items = new OA\Items([
-                'type' => $field->oaType,
-                '_context' => $context,
-            ]);
-            $this->applyConstraints($schema->items, $field);
+            $items = new OA\Items(type: $field->oaType);
+            $this->applyConstraints($items, $field);
+
+            $schema = new OA\Schema(
+                type: 'array',
+                items: $items,
+            );
         } else {
+            $schema = new OA\Schema(type: $field->oaType);
             $this->applyConstraints($schema, $field);
         }
 
-        return new OA\Parameter([
-            'name' => $field->path.('query' === $in && $field->isCollection ? '[]' : ''),
-            'in' => $in,
-            'required' => $field->required || 'path' === $in,
-            'schema' => $schema,
-            '_context' => $context,
-        ]);
+        return new OA\Parameter(
+            name: $field->path.('query' === $in && $field->isCollection ? '[]' : ''),
+            description: null,
+            in: $in,
+            required: $field->required || 'path' === $in,
+            schema: $schema,
+        );
     }
 
     /**
@@ -157,61 +148,61 @@ class SchemaBuilder
      * @return list<OA\Property>
      */
     private function buildPropertyList(
-        array $fields,
-        Context $context
+        array $fields
     ): array {
         $out = [];
 
         foreach ($fields as $field) {
-            $out[] = $this->buildProperty($field, $context);
+            $out[] = $this->buildProperty($field);
         }
 
         return $out;
     }
 
     private function buildProperty(
-        DescribedField $field,
-        Context $context
+        DescribedField $field
     ): OA\Property {
-        $property = new OA\Property([
-            'property' => $field->path,
-            '_context' => $context,
-        ]);
-
         if ('object' === $field->oaType) {
             if ($field->isCollection) {
-                $property->type = 'array';
-                $property->items = new OA\Items([
-                    'type' => 'object',
-                    'properties' => $this->buildPropertyList($field->children, $context),
-                    'required' => $this->requiredNames($field->children),
-                    '_context' => $context,
-                ]);
-            } else {
-                $property->type = 'object';
-                $property->properties = $this->buildPropertyList($field->children, $context);
-                $property->required = $this->requiredNames($field->children);
+                return new OA\Property(
+                    property: $field->path,
+                    type: 'array',
+                    items: new OA\Items(
+                        required: $this->requiredNames($field->children),
+                        properties: $this->buildPropertyList($field->children),
+                        type: 'object',
+                    ),
+                );
             }
 
-            return $property;
+            return new OA\Property(
+                property: $field->path,
+                required: $this->requiredNames($field->children),
+                properties: $this->buildPropertyList($field->children),
+                type: 'object',
+            );
         }
 
         if ($field->isCollection) {
-            $property->type = 'array';
-            $property->items = new OA\Items([
-                'type' => $field->oaType,
-                '_context' => $context,
-            ]);
-            $this->applyConstraints($property->items, $field);
+            $items = new OA\Items(type: $field->oaType);
+            $this->applyConstraints($items, $field);
+
+            $property = new OA\Property(
+                property: $field->path,
+                type: 'array',
+                items: $items,
+            );
         } else {
-            $property->type = $field->oaType;
+            $property = new OA\Property(
+                property: $field->path,
+                type: $field->oaType,
+            );
             $this->applyConstraints($property, $field);
         }
 
         if (BagEnum::Files === $field->bag) {
-            $suffix = 'This field is a file and can be passed as a http upload by using the same path, '
+            $property->description = 'This field is a file and can be passed as a http upload by using the same path, '
                 .'or by encoding as base64 in the body';
-            $property->description = $suffix;
             $property->example = $field->isCollection ? [self::FILE_EXAMPLE_BASE64] : self::FILE_EXAMPLE_BASE64;
         }
 
@@ -239,7 +230,6 @@ class SchemaBuilder
 
     /**
      * Map validator constraints + carried metadata onto an OpenAPI schema node.
-     * Based on the old DtoOADescriber::applySchemaConstraints().
      */
     private function applyConstraints(
         OA\Schema|OA\Property|OA\Items $schema,

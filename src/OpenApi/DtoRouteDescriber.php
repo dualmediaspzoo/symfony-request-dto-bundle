@@ -8,7 +8,6 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util as OAUtil;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use OpenApi\Annotations as OA;
-use OpenApi\Context;
 use Symfony\Component\Routing\Route;
 
 class DtoRouteDescriber implements RouteDescriberInterface
@@ -36,7 +35,6 @@ class DtoRouteDescriber implements RouteDescriberInterface
 
         foreach ($methods as $method) {
             $operation = OAUtil::getOperation($path, $method);
-            $context = $this->buildContext($path, $reflectionMethod);
 
             foreach ($dtoClasses as $class) {
                 $described = $this->collector->collect($class);
@@ -47,10 +45,10 @@ class DtoRouteDescriber implements RouteDescriberInterface
 
                 $operation->parameters = [
                     ...$this->existingParameters($operation->parameters),
-                    ...$this->builder->buildParameters($described, $route->getPath(), $context),
+                    ...$this->builder->buildParameters($described, $route->getPath()),
                 ];
 
-                $body = $this->builder->buildRequestBody($described, $context);
+                $body = $this->builder->buildRequestBody($described);
 
                 if (null !== $body && !$this->hasRequestBody($operation->requestBody)) {
                     $operation->requestBody = $body;
@@ -58,7 +56,7 @@ class DtoRouteDescriber implements RouteDescriberInterface
 
                 $existingResponses = $this->existingResponses($operation->responses);
 
-                foreach ($this->builder->buildResponses($described, $context) as $response) {
+                foreach ($this->builder->buildResponses($described) as $response) {
                     if ($this->hasStatus($existingResponses, (string)$response->response)) {
                         continue;
                     }
@@ -176,22 +174,5 @@ class DtoRouteDescriber implements RouteDescriberInterface
         mixed $value
     ): bool {
         return $value instanceof OA\RequestBody;
-    }
-
-    private function buildContext(
-        OA\PathItem $path,
-        \ReflectionMethod $method
-    ): Context {
-        $context = OAUtil::createContext(['nested' => $path], $path->_context);
-        $context->namespace = $method->getDeclaringClass()->getNamespaceName();
-        $context->class = $method->getDeclaringClass()->getShortName();
-        $context->method = $method->name;
-        $file = $method->getFileName();
-
-        if (false !== $file) {
-            $context->filename = $file;
-        }
-
-        return $context;
     }
 }
