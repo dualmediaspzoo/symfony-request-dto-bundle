@@ -100,14 +100,14 @@
 
 ## Profiling
 
-- [ ] `AbstractWrapper` — base profiling decorator
-- [ ] Resolver profiler — wraps `DtoResolverService`
-- [ ] Entity provider profiler — wraps `EntityProviderService`
-- [ ] Type validation profiler — wraps batch validation
+- [x] `AbstractWrapper` — base profiling decorator
+- [x] Resolver profiler — wraps `DtoResolverService`
+- [x] Entity provider profiler — wraps `EntityProviderService`
+- [x] Type validation profiler — wraps batch validation
 
 ## Nelmio Integration
 
-- [ ] `DtoOADescriber` — OpenAPI schema generation from cached metadata
+- [x] `DtoOADescriber` — re-implemented as `DtoRouteDescriber` + `FieldCollector` + `SchemaBuilder` under `src/OpenApi/`
 
 ## DTO Base
 

@@ -9,7 +9,6 @@ use DualMedia\DtoRequestBundle\Profiler\ProfilingExtractor;
 use DualMedia\DtoRequestBundle\Profiler\ProfilingMainDtoMemoizer;
 use DualMedia\DtoRequestBundle\Profiler\ProfilingRuntimeResolve;
 use DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface;
-use DualMedia\DtoRequestBundle\Reflection\Interface\RuntimeResolveInterface;
 use DualMedia\DtoRequestBundle\Reflection\MainDtoMemoizer;
 use DualMedia\DtoRequestBundle\Reflection\RuntimeResolve;
 use DualMedia\DtoRequestBundle\Resolve\DtoResolver;
