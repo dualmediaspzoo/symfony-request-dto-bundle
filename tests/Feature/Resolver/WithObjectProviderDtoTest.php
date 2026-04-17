@@ -69,7 +69,7 @@ class WithObjectProviderDtoTest extends KernelTestCase
     public function testCachedMetadataPreservesServiceIdAfterClosureStrip(): void
     {
         $reflector = static::getService(\DualMedia\DtoRequestBundle\Reflection\Reflector::class);
-        $helper = static::getService(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolveHelper::class);
+        $helper = static::getService(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolve::class);
 
         $prepared = $helper->prepareForCache($reflector->reflect(WithObjectProviderDto::class));
 

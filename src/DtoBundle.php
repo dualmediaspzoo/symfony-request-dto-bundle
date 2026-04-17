@@ -69,5 +69,9 @@ class DtoBundle extends AbstractBundle
         );
 
         $loader->load('services.php');
+
+        if (true === $builder->getParameter('kernel.debug')) {
+            $loader->load('services_dev.php');
+        }
     }
 }

@@ -87,13 +87,13 @@ return static function (ContainerConfigurator $configurator) {
 
     // field handlers (priority determines evaluation order, highest first)
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\CollectionDtoHandler::class)
-        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
-        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class))
+        ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class))
         ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 20]);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\SingleDtoHandler::class)
-        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
-        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class))
+        ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class))
         ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 10]);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\EntityPropertyHandler::class)
@@ -111,32 +111,40 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
         ->arg('$handlers', tagged_iterator(DtoBundle::FIELD_HANDLER_TAG))
         ->arg('$dispatcher', new Reference('event_dispatcher'));
+    $services->alias(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class, \DualMedia\DtoRequestBundle\Resolve\Extractor::class);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class)
-        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class));
+        ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
-        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Extractor::class))
-        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class))
+        ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class))
         ->arg('$validator', new Reference('validator'))
         ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG))
         ->arg('$violationMapper', new Reference(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class))
         ->public();
+    $services->alias(\DualMedia\DtoRequestBundle\Resolve\Interface\DtoResolverInterface::class, \DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
+        ->public();
 
     $services->set(\DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver::class)
-        ->arg('$dtoResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class))
+        ->arg('$dtoResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\DtoResolverInterface::class))
         ->arg('$eventDispatcher', new Reference('event_dispatcher'))
         ->tag('controller.argument_value_resolver', ['priority' => 50]);
 
     // cache and warmers
-    $services->set(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolveHelper::class)
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolve::class)
         ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class));
+    $services->alias(\DualMedia\DtoRequestBundle\Reflection\Interface\RuntimeResolveInterface::class, \DualMedia\DtoRequestBundle\Reflection\RuntimeResolve::class);
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class)
         ->arg('$cache', new Reference('dm.dto_bundle.file_cache'))
         ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class))
-        ->arg('$runtimeHelper', new Reference(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolveHelper::class))
+        ->arg('$runtimeHelper', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\RuntimeResolveInterface::class));
+
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\MainDtoMemoizer::class)
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
         ->tag('kernel.reset', ['method' => 'reset']);
+    $services->alias(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class, \DualMedia\DtoRequestBundle\Reflection\MainDtoMemoizer::class);
 
     $services->set(\DualMedia\DtoRequestBundle\Type\DtoCacheWarmer::class)
         ->tag('kernel.cache_warmer')

@@ -13,7 +13,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Metadata\Model\WithErrorPath;
 use DualMedia\DtoRequestBundle\MetadataUtils;
-use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
+use DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 class ViolationMapper
 {
     public function __construct(
-        private readonly CacheReflector $cacheReflector
+        private readonly MainDtoMemoizerInterface $memoizer
     ) {
     }
 
@@ -104,7 +104,7 @@ class ViolationMapper
                 /** @var class-string<AbstractDto>|null $fqcn */
                 $fqcn = TypeInfoUtils::getClassName($field->type)
                     ?? TypeInfoUtils::getCollectionValueClassName($field->type);
-                $childMeta = null !== $fqcn ? $this->cacheReflector->get($fqcn) : null;
+                $childMeta = null !== $fqcn ? $this->memoizer->get($fqcn) : null;
                 $currentFields = null !== $childMeta ? $childMeta->fields : [];
 
                 continue;

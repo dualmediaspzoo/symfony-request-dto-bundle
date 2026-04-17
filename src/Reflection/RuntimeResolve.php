@@ -8,14 +8,16 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
+use DualMedia\DtoRequestBundle\Reflection\Interface\RuntimeResolveInterface;
 
-class RuntimeResolveHelper
+class RuntimeResolve implements RuntimeResolveInterface
 {
     public function __construct(
         private readonly Reflector $reflector
     ) {
     }
 
+    #[\Override]
     public function prepareForCache(
         MainDto $mainDto
     ): MainDto {
@@ -111,6 +113,7 @@ class RuntimeResolveHelper
     /**
      * @param class-string<AbstractDto> $class
      */
+    #[\Override]
     public function restoreRuntimeConstraints(
         string $class,
         MainDto $mainDto

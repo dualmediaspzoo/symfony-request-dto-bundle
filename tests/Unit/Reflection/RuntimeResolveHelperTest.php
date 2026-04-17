@@ -9,7 +9,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
 use DualMedia\DtoRequestBundle\Reflection\Reflector;
-use DualMedia\DtoRequestBundle\Reflection\RuntimeResolveHelper;
+use DualMedia\DtoRequestBundle\Reflection\RuntimeResolve;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Constraint\UnserializableConstraint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -18,18 +18,18 @@ use Pkly\ServiceMockHelperTrait;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraints\NotNull;
 
-#[CoversClass(RuntimeResolveHelper::class)]
+#[CoversClass(RuntimeResolve::class)]
 #[Group('unit')]
 #[Group('reflection')]
 class RuntimeResolveHelperTest extends TestCase
 {
     use ServiceMockHelperTrait;
 
-    private RuntimeResolveHelper $helper;
+    private RuntimeResolve $helper;
 
     protected function setUp(): void
     {
-        $this->helper = $this->createRealMockedServiceInstance(RuntimeResolveHelper::class);
+        $this->helper = $this->createRealMockedServiceInstance(RuntimeResolve::class);
     }
 
     public function testSerializableConstraintsNotFlagged(): void

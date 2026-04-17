@@ -9,12 +9,13 @@ use DualMedia\DtoRequestBundle\Dto\Event\PropertyMetaEvent;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\MainDto;
 use DualMedia\DtoRequestBundle\Resolve\Handler\FieldHandlerInterface;
+use DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingEntityValue;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Extractor
+class Extractor implements ExtractorInterface
 {
     /**
      * @param iterable<FieldHandlerInterface> $handlers
@@ -33,6 +34,7 @@ class Extractor
      * @param list<PendingValue|PendingEntityValue> $pending collected entries (mutated)
      * @param array<string, true> $seen normalized paths already dispatched (mutated)
      */
+    #[\Override]
     public function extract(
         MainDto $metadata,
         AbstractDto $dto,

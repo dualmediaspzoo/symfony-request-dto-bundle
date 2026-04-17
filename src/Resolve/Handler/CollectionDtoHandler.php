@@ -9,9 +9,9 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
+use DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
-use DualMedia\DtoRequestBundle\Resolve\Extractor;
+use DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use DualMedia\DtoRequestBundle\Util;
@@ -20,8 +20,8 @@ use Symfony\Component\Validator\Constraints\Type;
 class CollectionDtoHandler implements FieldHandlerInterface
 {
     public function __construct(
-        private readonly Extractor $extractor,
-        private readonly CacheReflector $cacheReflector
+        private readonly ExtractorInterface $extractor,
+        private readonly MainDtoMemoizerInterface $memoizer
     ) {
     }
 
@@ -76,7 +76,7 @@ class CollectionDtoHandler implements FieldHandlerInterface
             return true;
         }
 
-        $childMetadata = $this->cacheReflector->get($fqcn);
+        $childMetadata = $this->memoizer->get($fqcn);
 
         if (null === $childMetadata) {
             return false;

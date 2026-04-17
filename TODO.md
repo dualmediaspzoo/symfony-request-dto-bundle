@@ -96,7 +96,7 @@
 - [x] `services_dev.php` — profiler decorator wiring
 - [x] `services_test.php` — test service overrides
 - [x] `DtoBundle` — update `build()` for new compiler passes and tags
-- [ ] Compiler passes — review and update for new service structure
+- [x] Compiler passes — review and update for new service structure
 
 ## Profiling
 

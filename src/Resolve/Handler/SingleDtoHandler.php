@@ -8,16 +8,16 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\Property;
-use DualMedia\DtoRequestBundle\Reflection\CacheReflector;
+use DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface;
 use DualMedia\DtoRequestBundle\Resolve\BagAccessor;
-use DualMedia\DtoRequestBundle\Resolve\Extractor;
+use DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 
 class SingleDtoHandler implements FieldHandlerInterface
 {
     public function __construct(
-        private readonly Extractor $extractor,
-        private readonly CacheReflector $cacheReflector
+        private readonly ExtractorInterface $extractor,
+        private readonly MainDtoMemoizerInterface $memoizer
     ) {
     }
 
@@ -44,7 +44,7 @@ class SingleDtoHandler implements FieldHandlerInterface
         /** @var class-string<AbstractDto> $fqcn */
         $fqcn = TypeInfoUtils::getClassName($meta->type);
 
-        $childMetadata = $this->cacheReflector->get($fqcn);
+        $childMetadata = $this->memoizer->get($fqcn);
 
         if (null === $childMetadata) {
             return false;
