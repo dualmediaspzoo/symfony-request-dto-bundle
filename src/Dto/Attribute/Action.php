@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Dto\Attribute;
 
 use DualMedia\DtoRequestBundle\Dto\Enum\ActionCondition;
+use Symfony\Component\HttpFoundation\Response;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 readonly class Action
@@ -14,7 +15,7 @@ readonly class Action
      */
     public function __construct(
         public ActionCondition|\Closure $when,
-        public int $statusCode = 404,
+        public int $statusCode = Response::HTTP_NOT_FOUND,
         public string|null $message = null,
         public array $headers = [],
     ) {

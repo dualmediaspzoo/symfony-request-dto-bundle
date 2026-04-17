@@ -70,8 +70,8 @@
 - [x] `FromKey` — enum label key mapping
 - [x] `AsDoctrineReference` — treat as Doctrine entity reference
 - [x] `ProvideValidationGroups` — custom validation group provider
-- [ ] `Http/OnNull` — HTTP action when property is null
-- [ ] `EntityProvider` — marks custom entity providers
+- [x] `Http/OnNull` — HTTP action when property is null
+- [ ] `EntityProvider` — marks custom entity providers (skipping for the time being)
 - [x] `AllowInvalid` — allows DTO resolution to proceed despite validation failures
 - [x] `AllowEnum` — allowed enum case filtering
 - [x] `Bag` — request bag assignment
@@ -80,22 +80,22 @@
 ## Events
 
 - [x] `DtoResolvedEvent` — dispatched after successful resolution
-- [ ] `DtoInvalidEvent` — dispatched after validation failure, allows custom response
-- [ ] `DtoActionEvent` — dispatched when DTO has HTTP action attributes
-- [ ] `DtoSubscriber` — listens to controller arguments, dispatches action/invalid events
+- [x] `DtoInvalidEvent` — dispatched after validation failure, allows custom response
+- [x] `DtoActionEvent` — dispatched when DTO has HTTP action attributes
+- [x] `DtoSubscriber` — listens to controller arguments, dispatches action/invalid events
 
 ## HTTP Integration
 
 - [x] `DtoValueResolver` — Symfony `ValueResolverInterface` entry point
-- [ ] `ActionValidatorService` — validates HTTP action attributes
-- [ ] `OnNullActionValidator` — handles null property HTTP actions
+- [x] `ActionValidatorService` — validates HTTP action attributes
+- [x] `OnNullActionValidator` — handles null property HTTP actions
 
 ## DependencyInjection
 
-- [ ] `services.php` — main service definitions with new architecture
-- [ ] `services_dev.php` — profiler decorator wiring
-- [ ] `services_test.php` — test service overrides
-- [ ] `DtoBundle` — update `build()` for new compiler passes and tags
+- [x] `services.php` — main service definitions with new architecture
+- [x] `services_dev.php` — profiler decorator wiring
+- [x] `services_test.php` — test service overrides
+- [x] `DtoBundle` — update `build()` for new compiler passes and tags
 - [ ] Compiler passes — review and update for new service structure
 
 ## Profiling

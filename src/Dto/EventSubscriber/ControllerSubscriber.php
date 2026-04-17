@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Dto\EventSubscriber;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
-use DualMedia\DtoRequestBundle\Dto\Event\DtoInvalidEvent;
+use DualMedia\DtoRequestBundle\Dto\Event\InvalidEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
@@ -55,7 +55,7 @@ class ControllerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $output = $this->dispatcher->dispatch(new DtoInvalidEvent($invalid, $request, $requestType));
+        $output = $this->dispatcher->dispatch(new InvalidEvent($invalid, $request, $requestType));
 
         if (null !== ($response = $output->getResponse())) {
             $event->setController(static fn () => $response);

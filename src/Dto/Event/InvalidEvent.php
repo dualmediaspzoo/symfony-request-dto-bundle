@@ -8,7 +8,7 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class DtoInvalidEvent extends Event
+class InvalidEvent extends Event
 {
     use ResponseAwareTrait;
 

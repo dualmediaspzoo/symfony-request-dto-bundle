@@ -89,8 +89,7 @@ class ActionSubscriber implements EventSubscriberInterface
 
             if (null !== ($response = $output->getResponse())) {
                 $event->setController(static fn (): Response => $response);
-
-                return;
+                break;
             }
         }
 
