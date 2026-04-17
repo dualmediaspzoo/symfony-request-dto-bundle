@@ -135,11 +135,12 @@ class ProfilingDtoResolver extends DtoResolver
     #[\Override]
     protected function finalValidatePhase(
         AbstractDto $dto,
-        MainDto $mainDto
+        MainDto $mainDto,
+        Request $request
     ): void {
         $this->phase4ViolationStart = $dto->getConstraintViolationList()->count();
         $event = $this->stopwatch->start('dto.resolve.phase4_final_validate', self::CATEGORY);
-        parent::finalValidatePhase($dto, $mainDto);
+        parent::finalValidatePhase($dto, $mainDto, $request);
         $this->phase4Ms = (float)$event->stop()->getDuration();
     }
 }

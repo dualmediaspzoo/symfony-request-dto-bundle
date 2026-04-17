@@ -59,7 +59,7 @@ class DtoResolver implements DtoResolverInterface
 
         $this->assignPhase($pending, $violated, $finalValues);
 
-        $this->finalValidatePhase($dto, $mainDto);
+        $this->finalValidatePhase($dto, $mainDto, $request);
 
         return $dto;
     }
@@ -220,7 +220,8 @@ class DtoResolver implements DtoResolverInterface
      */
     protected function finalValidatePhase(
         AbstractDto $dto,
-        MainDto $mainDto
+        MainDto $mainDto,
+        Request $request
     ): void {
         $groups = null;
 
@@ -229,7 +230,7 @@ class DtoResolver implements DtoResolverInterface
             assert(null !== $vwg);
 
             $provider = $this->groupProviderLocator->get($mainDto->validationGroupsServiceId);
-            $groups = ($vwg->closure)($provider, $dto);
+            $groups = ($vwg->closure)($provider, $dto, $request);
         }
 
         $violations = $this->validator->startContext()
