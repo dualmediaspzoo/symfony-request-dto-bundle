@@ -27,7 +27,7 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->set(DtoDataCollector::class)
         ->tag('data_collector', [
-            'template' => '@DtoRequest/profiler/dto.html.twig',
+            'template' => '@Dto/profiler/dto.html.twig',
             'id' => 'dm_dto',
             'priority' => 255,
         ]);
