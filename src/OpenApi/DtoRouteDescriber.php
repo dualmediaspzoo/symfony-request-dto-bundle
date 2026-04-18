@@ -8,6 +8,7 @@ use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util as OAUtil;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use Symfony\Component\Routing\Route;
 
 class DtoRouteDescriber implements RouteDescriberInterface
@@ -32,6 +33,7 @@ class DtoRouteDescriber implements RouteDescriberInterface
 
         $path = OAUtil::getPath($api, $route->getPath());
         $methods = $this->resolveMethods($route);
+        $nestedContext = OAUtil::createContext(['nested' => $path], $path->_context);
 
         foreach ($methods as $method) {
             $operation = OAUtil::getOperation($path, $method);
@@ -43,14 +45,21 @@ class DtoRouteDescriber implements RouteDescriberInterface
                     continue;
                 }
 
+                $newParameters = $this->builder->buildParameters($described, $route->getPath());
+
+                foreach ($newParameters as $param) {
+                    $this->applyContext($param, $nestedContext);
+                }
+
                 $operation->parameters = [
                     ...$this->existingParameters($operation->parameters),
-                    ...$this->builder->buildParameters($described, $route->getPath()),
+                    ...$newParameters,
                 ];
 
                 $body = $this->builder->buildRequestBody($described);
 
                 if (null !== $body && !$this->hasRequestBody($operation->requestBody)) {
+                    $this->applyContext($body, $nestedContext);
                     $operation->requestBody = $body;
                 }
 
@@ -61,10 +70,34 @@ class DtoRouteDescriber implements RouteDescriberInterface
                         continue;
                     }
 
+                    $this->applyContext($response, $nestedContext);
                     $existingResponses[] = $response;
                 }
 
                 $operation->responses = $existingResponses;
+            }
+        }
+    }
+
+    private function applyContext(
+        OA\AbstractAnnotation $annotation,
+        Context $context
+    ): void {
+        $annotation->_context = $context;
+
+        foreach ($annotation as $value) {
+            if (is_array($value)) {
+                foreach ($value as $item) {
+                    if ($item instanceof OA\AbstractAnnotation) {
+                        $this->applyContext($item, $context);
+                    }
+                }
+
+                continue;
+            }
+
+            if ($value instanceof OA\AbstractAnnotation) {
+                $this->applyContext($value, $context);
             }
         }
     }

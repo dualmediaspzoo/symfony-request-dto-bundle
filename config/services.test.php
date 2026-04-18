@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use DualMedia\DtoRequestBundle\Dto\AbstractDto;
-use DualMedia\DtoRequestBundle\DtoBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $configurator) {
