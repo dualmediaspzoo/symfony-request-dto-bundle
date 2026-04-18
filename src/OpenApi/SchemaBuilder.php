@@ -166,7 +166,17 @@ class SchemaBuilder
     private function buildProperty(
         DescribedField $field
     ): OA\Property {
-        $description = $field->description ?? Generator::UNDEFINED;
+        $description = $field->description;
+
+        if (BagEnum::Files === $field->bag) {
+            $fileNote = 'This field is a file and can be passed as a http upload by using the same path, '
+                .'or by encoding as base64 in the body';
+            $description = null !== $description && '' !== $description
+                ? $description.'<br>'.$fileNote
+                : $fileNote;
+        }
+
+        $description ??= Generator::UNDEFINED;
 
         if ('object' === $field->oaType) {
             if ($field->isCollection) {
@@ -211,11 +221,6 @@ class SchemaBuilder
         }
 
         if (BagEnum::Files === $field->bag) {
-            $fileNote = 'This field is a file and can be passed as a http upload by using the same path, '
-                .'or by encoding as base64 in the body';
-            $property->description = is_string($property->description) && '' !== $property->description
-                ? $property->description.'<br>'.$fileNote
-                : $fileNote;
             $property->example = $field->isCollection ? [self::FILE_EXAMPLE_BASE64] : self::FILE_EXAMPLE_BASE64;
         }
 

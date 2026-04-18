@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use Symfony\Component\Routing\Route;
 
-class DtoRouteDescriber implements RouteDescriberInterface
+class RouteDescriber implements RouteDescriberInterface
 {
     public function __construct(
         private readonly FieldCollector $collector,
@@ -85,7 +85,11 @@ class DtoRouteDescriber implements RouteDescriberInterface
     ): void {
         $annotation->_context = $context;
 
-        foreach ($annotation as $value) {
+        foreach (get_object_vars($annotation) as $name => $value) {
+            if ('_context' === $name) {
+                continue;
+            }
+
             if (is_array($value)) {
                 foreach ($value as $item) {
                     if ($item instanceof OA\AbstractAnnotation) {

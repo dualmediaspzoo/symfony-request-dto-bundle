@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use DualMedia\DtoRequestBundle\DtoBundle;
-use DualMedia\DtoRequestBundle\OpenApi\DtoRouteDescriber;
 use DualMedia\DtoRequestBundle\OpenApi\FieldCollector;
+use DualMedia\DtoRequestBundle\OpenApi\RouteDescriber;
 use DualMedia\DtoRequestBundle\OpenApi\SchemaBuilder;
 use DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -23,7 +23,7 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->set(SchemaBuilder::class);
 
-    $services->set(DtoRouteDescriber::class)
+    $services->set(RouteDescriber::class)
         ->arg('$collector', new Reference(FieldCollector::class))
         ->arg('$builder', new Reference(SchemaBuilder::class))
         ->tag('nelmio_api_doc.route_describer')

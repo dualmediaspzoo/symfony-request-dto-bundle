@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Tests\Feature\OpenApi;
 
-use DualMedia\DtoRequestBundle\OpenApi\DtoRouteDescriber;
+use DualMedia\DtoRequestBundle\OpenApi\RouteDescriber;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Controller\DtoFixtureController;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\OpenApi\SampleRequestDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Enum\StringBackedEnum;
@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Route;
 #[Group('openapi')]
 class DtoRouteDescriberTest extends KernelTestCase
 {
-    private DtoRouteDescriber $describer;
+    private RouteDescriber $describer;
 
     private OA\OpenApi $api;
 
@@ -26,7 +26,7 @@ class DtoRouteDescriberTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        $this->describer = static::getService(DtoRouteDescriber::class);
+        $this->describer = static::getService(RouteDescriber::class);
         $this->api = new OA\OpenApi(['_context' => new \OpenApi\Context()]);
 
         $this->describer->describe(
