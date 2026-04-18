@@ -7,10 +7,6 @@ $finder = new PhpCsFixer\Finder()
     ->exclude('vendor')
     ->exclude('config/reference.php');
 
-// for the time being we ignore two files which fixer doesn't like
-$finder->exclude('src/Dto/Util/ActionConditionUtils.php')
-    ->exclude('src/Type/TypeUtils.php');
-
 return new PhpCsFixer\Config()
     ->setRiskyAllowed(true)
     ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
