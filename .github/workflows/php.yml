@@ -6,11 +6,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - symfony-version: 6.4.*
-            php-version: 8.5
-          - symfony-version: 6.4.*
-            php-version: 8.4
-          - symfony-version: 7.3.*
+          - symfony-version: 7.4.*
             php-version: 8.5
 
     runs-on: ubuntu-latest
@@ -47,7 +43,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - symfony-version: 7.3.*
+          - symfony-version: 7.4.*
             php-version: 8.5
 
     runs-on: ubuntu-latest
@@ -80,7 +76,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - symfony-version: 7.3.*
+          - symfony-version: 7.4.*
             php-version: 8.5
 
     runs-on: ubuntu-latest
@@ -115,11 +111,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - symfony-version: 6.4.*
-            php-version: 8.5
-          - symfony-version: 6.4.*
-            php-version: 8.4
-          - symfony-version: 7.3.*
+          - symfony-version: 7.4.*
             php-version: 8.5
 
     runs-on: ubuntu-latest
