@@ -58,7 +58,7 @@ class MetaReflector
                 $attribute instanceof ValidateWithGroupsAttribute => new ValidateWithGroups($attribute->closure),
                 $attribute instanceof WithErrorPathAttribute => new WithErrorPath($attribute->path),
                 $attribute instanceof WithObjectProviderAttribute => new WithObjectProvider($attribute->closure),
-                $attribute instanceof ActionAttribute => new Action($attribute->when, $attribute->statusCode, $attribute->message, $attribute->headers),
+                $attribute instanceof ActionAttribute => new Action($attribute->when, $attribute->statusCode, $attribute->message, $attribute->headers, $attribute->description),
                 default => null,
             };
 

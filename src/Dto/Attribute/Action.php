@@ -18,6 +18,7 @@ readonly class Action
         public int $statusCode = Response::HTTP_NOT_FOUND,
         public string|null $message = null,
         public array $headers = [],
+        public string|null $description = null,
     ) {
     }
 }

@@ -16,6 +16,7 @@ readonly class Action
         public int $statusCode,
         public string|null $message,
         public array $headers,
+        public string|null $description = null,
     ) {
     }
 }

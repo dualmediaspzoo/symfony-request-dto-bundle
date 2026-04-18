@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\OpenApi;
 
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
-use DualMedia\DtoRequestBundle\Metadata\Model\Action;
 use DualMedia\DtoRequestBundle\Metadata\Model\Format;
 use DualMedia\DtoRequestBundle\MetadataUtils;
 use DualMedia\DtoRequestBundle\OpenApi\Model\DescribedDto;
@@ -66,21 +65,10 @@ class SchemaBuilder
     public function buildResponses(
         DescribedDto $dto
     ): array {
-        // TODO: this metadata-specific logic (Action → Response) should eventually
-        // move out of the describer into dedicated per-metadata handlers. Inlined
-        // here for now because we don't care yet.
-        $actions = MetadataUtils::list(Action::class, $dto->meta);
-
-        foreach ($dto->fields as $field) {
-            foreach (MetadataUtils::list(Action::class, $field->meta) as $action) {
-                $actions[] = $action;
-            }
-        }
-
         $out = [];
         $seen = [];
 
-        foreach ($actions as $action) {
+        foreach ($dto->actions as $action) {
             if (isset($seen[$action->statusCode])) {
                 continue;
             }
@@ -88,7 +76,7 @@ class SchemaBuilder
             $seen[$action->statusCode] = true;
             $out[] = new OA\Response(
                 response: (string)$action->statusCode,
-                description: $action->message ?? 'No description set',
+                description: $action->description ?? $action->message ?? 'No description set',
             );
         }
 

@@ -6,6 +6,7 @@ namespace DualMedia\DtoRequestBundle\OpenApi;
 
 use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
+use DualMedia\DtoRequestBundle\Metadata\Model\Action;
 use DualMedia\DtoRequestBundle\Metadata\Model\AllowedEnum;
 use DualMedia\DtoRequestBundle\Metadata\Model\Dto;
 use DualMedia\DtoRequestBundle\Metadata\Model\FromKey;
@@ -46,12 +47,53 @@ class FieldCollector
         }
 
         $fields = $this->walkFields($mainDto->fields, $defaultBag);
+        $actions = [];
+        $this->collectActions($mainDto->fields, $actions, [$class => true]);
 
         return new DescribedDto(
             class: $class,
             fields: $fields,
             meta: $mainDto->meta,
+            actions: $actions,
         );
+    }
+
+    /**
+     * @param array<string, Property|Dto> $fields
+     * @param list<Action> $out
+     * @param array<class-string, true> $visited
+     */
+    private function collectActions(
+        array $fields,
+        array &$out,
+        array $visited
+    ): void {
+        foreach ($fields as $meta) {
+            if ($meta instanceof Dto) {
+                /** @var class-string<AbstractDto>|null $innerClass */
+                $innerClass = TypeInfoUtils::getClassName($meta->type)
+                    ?? TypeInfoUtils::getCollectionValueClassName($meta->type);
+
+                if (null !== $innerClass
+                    && is_subclass_of($innerClass, AbstractDto::class)
+                    && !isset($visited[$innerClass])
+                ) {
+                    $nested = $this->memoizer->get($innerClass);
+
+                    if (null !== $nested) {
+                        $this->collectActions($nested->fields, $out, [...$visited, $innerClass => true]);
+                    }
+                }
+
+                continue;
+            }
+
+            foreach ($meta->meta as $item) {
+                if ($item instanceof Action) {
+                    $out[] = $item;
+                }
+            }
+        }
     }
 
     /**
