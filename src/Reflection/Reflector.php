@@ -64,13 +64,16 @@ class Reflector
             $className = TypeInfoUtils::getClassName($type)
                 ?? TypeInfoUtils::getCollectionValueClassName($type);
 
+            $description = ReflectionUtils::extractShortDescription($property->getDocComment());
+
             if (null !== $className && is_subclass_of($className, AbstractDto::class)) {
                 $results[$name] = new Dto(
-                    $name,
-                    $type,
-                    $bag,
-                    $path,
-                    $constraints
+                    name: $name,
+                    type: $type,
+                    bag: $bag,
+                    path: $path,
+                    constraints: $constraints,
+                    description: $description
                 );
 
                 continue;
@@ -86,7 +89,8 @@ class Reflector
                 $constraints,
                 $this->virtualReflector->reflect($attributes),
                 $propertyMeta,
-                $this->resolveObjectProviderServiceId($class, $name, $propertyMeta)
+                $this->resolveObjectProviderServiceId($class, $name, $propertyMeta),
+                $description
             );
         }
 

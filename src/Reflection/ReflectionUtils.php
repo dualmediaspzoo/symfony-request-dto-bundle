@@ -103,4 +103,40 @@ final class ReflectionUtils
 
         return $serviceId;
     }
+
+    /**
+     * Extracts the short description (first paragraph) from a PHPDoc block.
+     */
+    public static function extractShortDescription(
+        string|false $docComment
+    ): string|null {
+        if (false === $docComment) {
+            return null;
+        }
+
+        $stripped = preg_replace('#^\s*/\*+|\*+/\s*$#', '', $docComment) ?? '';
+        $lines = preg_split('/\R/', $stripped) ?: [];
+
+        $summary = [];
+
+        foreach ($lines as $line) {
+            $line = trim(preg_replace('/^\s*\*\s?/', '', $line) ?? '');
+
+            if (str_starts_with($line, '@')) {
+                break;
+            }
+
+            if ('' === $line) {
+                if ([] !== $summary) {
+                    break;
+                }
+
+                continue;
+            }
+
+            $summary[] = $line;
+        }
+
+        return [] === $summary ? null : implode(' ', $summary);
+    }
 }

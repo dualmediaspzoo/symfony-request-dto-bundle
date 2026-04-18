@@ -32,7 +32,8 @@ class PropertyFactory
         array $constraints = [],
         array $virtual = [],
         array $meta = [],
-        string|null $objectProviderServiceId = null
+        string|null $objectProviderServiceId = null,
+        string|null $description = null
     ): Property {
         return new Property(
             name: $name,
@@ -43,7 +44,8 @@ class PropertyFactory
             constraints: $constraints,
             virtual: $virtual,
             meta: $meta,
-            objectProviderServiceId: $objectProviderServiceId
+            objectProviderServiceId: $objectProviderServiceId,
+            description: $description
         );
     }
 }

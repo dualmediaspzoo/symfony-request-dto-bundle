@@ -26,7 +26,8 @@ readonly class DescribedField
         public array $constraints = [],
         public array $children = [],
         public array $enumCases = [],
-        public array $meta = []
+        public array $meta = [],
+        public string|null $description = null
     ) {
     }
 }

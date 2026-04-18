@@ -106,6 +106,7 @@ class FieldCollector
             children: [],
             enumCases: $this->resolveEnumCases($property),
             meta: $property->meta,
+            description: $property->description,
         );
     }
 
@@ -142,6 +143,7 @@ class FieldCollector
             children: $children,
             enumCases: [],
             meta: $dto->meta,
+            description: $dto->description,
         );
     }
 

@@ -21,7 +21,8 @@ readonly class Dto
         public string|null $path = null,
         public array $constraints = [],
         public array $meta = [],
-        public bool $requiresRuntimeResolve = false
+        public bool $requiresRuntimeResolve = false,
+        public string|null $description = null
     ) {
     }
 

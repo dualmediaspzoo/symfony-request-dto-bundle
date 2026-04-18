@@ -151,7 +151,7 @@ class SchemaBuilder
 
         return new OA\Parameter(
             name: $field->path.('query' === $in && $field->isCollection ? '[]' : ''),
-            description: null,
+            description: $field->description ?? Generator::UNDEFINED,
             in: $in,
             required: $field->required || 'path' === $in,
             schema: $schema,
@@ -178,10 +178,13 @@ class SchemaBuilder
     private function buildProperty(
         DescribedField $field
     ): OA\Property {
+        $description = $field->description ?? Generator::UNDEFINED;
+
         if ('object' === $field->oaType) {
             if ($field->isCollection) {
                 return new OA\Property(
                     property: $field->path,
+                    description: $description,
                     type: 'array',
                     items: new OA\Items(
                         required: $this->requiredNames($field->children),
@@ -193,6 +196,7 @@ class SchemaBuilder
 
             return new OA\Property(
                 property: $field->path,
+                description: $description,
                 required: $this->requiredNames($field->children),
                 properties: $this->buildPropertyList($field->children),
                 type: 'object',
@@ -205,20 +209,25 @@ class SchemaBuilder
 
             $property = new OA\Property(
                 property: $field->path,
+                description: $description,
                 type: 'array',
                 items: $items,
             );
         } else {
             $property = new OA\Property(
                 property: $field->path,
+                description: $description,
                 type: $field->oaType,
             );
             $this->applyConstraints($property, $field);
         }
 
         if (BagEnum::Files === $field->bag) {
-            $property->description = 'This field is a file and can be passed as a http upload by using the same path, '
+            $fileNote = 'This field is a file and can be passed as a http upload by using the same path, '
                 .'or by encoding as base64 in the body';
+            $property->description = is_string($property->description) && '' !== $property->description
+                ? $property->description.'<br>'.$fileNote
+                : $fileNote;
             $property->example = $field->isCollection ? [self::FILE_EXAMPLE_BASE64] : self::FILE_EXAMPLE_BASE64;
         }
 
