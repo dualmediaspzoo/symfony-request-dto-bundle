@@ -105,7 +105,8 @@ final class ReflectionUtils
     }
 
     /**
-     * Extracts the short description (first paragraph) from a PHPDoc block.
+     * Extracts the descriptive text (everything before the first @tag) from a PHPDoc block.
+     * Paragraph breaks are preserved as double newlines.
      */
     public static function extractShortDescription(
         string|false $docComment
@@ -117,26 +118,20 @@ final class ReflectionUtils
         $stripped = preg_replace('#^\s*/\*+|\*+/\s*$#', '', $docComment) ?? '';
         $lines = preg_split('/\R/', $stripped) ?: [];
 
-        $summary = [];
+        $cleaned = [];
 
         foreach ($lines as $line) {
-            $line = trim(preg_replace('/^\s*\*\s?/', '', $line) ?? '');
+            $line = rtrim(preg_replace('/^\s*\*\s?/', '', $line) ?? '');
 
-            if (str_starts_with($line, '@')) {
+            if (str_starts_with(ltrim($line), '@')) {
                 break;
             }
 
-            if ('' === $line) {
-                if ([] !== $summary) {
-                    break;
-                }
-
-                continue;
-            }
-
-            $summary[] = $line;
+            $cleaned[] = $line;
         }
 
-        return [] === $summary ? null : implode(' ', $summary);
+        $text = trim(implode("\n", $cleaned));
+
+        return '' === $text ? null : $text;
     }
 }
