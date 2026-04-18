@@ -127,7 +127,7 @@ final class ReflectionUtils
                 break;
             }
 
-            $cleaned[] = $line;
+            $cleaned[] = '' === $line ? '' : $line.'  ';
         }
 
         $text = trim(implode("\n", $cleaned));
