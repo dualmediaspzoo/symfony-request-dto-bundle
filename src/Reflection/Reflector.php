@@ -100,12 +100,14 @@ class Reflector
         );
 
         $meta = $this->metaReflector->meta($attributes);
+        $classBag = array_find($attributes, static fn ($m) => $m instanceof BagAttribute)?->bag;
 
         return new MainDto(
-            $results,
-            array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint)),
-            $meta,
-            $this->resolveValidationGroupsServiceId($class, $meta)
+            fields: $results,
+            constraints: array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint)),
+            meta: $meta,
+            validationGroupsServiceId: $this->resolveValidationGroupsServiceId($class, $meta),
+            defaultBag: $classBag,
         );
     }
 

@@ -49,7 +49,7 @@ class DtoResolver implements DtoResolverInterface
         /** @var list<PendingValue|PendingEntityValue> $pending */
         $pending = [];
 
-        $this->extractPhase($mainDto, $dto, $request, $defaultBag, $pending);
+        $this->extractPhase($mainDto, $dto, $request, $mainDto->defaultBag ?? $defaultBag, $pending);
 
         $violated = [];
         $finalValues = [];

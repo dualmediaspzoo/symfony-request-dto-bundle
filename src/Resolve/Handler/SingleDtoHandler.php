@@ -62,7 +62,7 @@ class SingleDtoHandler implements FieldHandlerInterface
             $childMetadata,
             $child,
             $accessor,
-            $meta->bag ?? $defaultBag,
+            $childMetadata->defaultBag ?? $meta->bag ?? $defaultBag,
             $childPrefix,
             $pending,
             $seen

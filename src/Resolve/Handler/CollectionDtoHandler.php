@@ -82,6 +82,8 @@ class CollectionDtoHandler implements FieldHandlerInterface
             return false;
         }
 
+        $descendBag = $childMetadata->defaultBag ?? $childBag;
+
         foreach ($raw as $index => $entry) {
             $child = new $fqcn();
             $child->setParentDto($dto);
@@ -90,7 +92,7 @@ class CollectionDtoHandler implements FieldHandlerInterface
                 $childMetadata,
                 $child,
                 $accessor,
-                $childBag,
+                $descendBag,
                 [...$childSegments, (string)$index],
                 $pending,
                 $seen

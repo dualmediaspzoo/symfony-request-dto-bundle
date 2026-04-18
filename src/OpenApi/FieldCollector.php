@@ -46,7 +46,8 @@ class FieldCollector
             return null;
         }
 
-        $fields = $this->walkFields($mainDto->fields, $defaultBag);
+        $effectiveBag = $mainDto->defaultBag ?? $defaultBag;
+        $fields = $this->walkFields($mainDto->fields, $effectiveBag);
         $actions = [];
         $this->collectActions($mainDto->fields, $actions, [$class => true]);
 
@@ -169,7 +170,7 @@ class FieldCollector
             $nested = $this->memoizer->get($innerClass);
 
             if (null !== $nested) {
-                $children = $this->walkFields($nested->fields, $dto->bag ?? $defaultBag);
+                $children = $this->walkFields($nested->fields, $nested->defaultBag ?? $dto->bag ?? $defaultBag);
             }
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\Metadata\Model;
 
+use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -22,7 +23,8 @@ readonly class MainDto
         public array $meta = [],
         public string|null $validationGroupsServiceId = null,
         public bool $requiresRuntimeResolve = false,
-        public bool $childRequiresRuntimeResolve = false
+        public bool $childRequiresRuntimeResolve = false,
+        public BagEnum|null $defaultBag = null
     ) {
     }
 }
