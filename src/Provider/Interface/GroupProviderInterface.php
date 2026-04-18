@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\GroupSequence;
 /**
  * Marker interface to be used on instances that you want autoregistered with {@link ValidateWithGroups}.
  *
- * @phpstan-type GroupReturnValue string|GroupSequence|list<string|GroupSequence>
+ * @phpstan-type GroupReturnValue string|GroupSequence|list<string>|list<GroupSequence>
  */
 interface GroupProviderInterface
 {
