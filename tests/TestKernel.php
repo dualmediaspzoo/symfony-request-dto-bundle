@@ -4,6 +4,7 @@ namespace DualMedia\DtoRequestBundle\Tests;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use DualMedia\DtoRequestBundle\DtoBundle;
+use DualMedia\DtoRequestBundle\Tests\Fixture\Controller\RequestKernelController;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -11,6 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 class TestKernel extends Kernel
 {
@@ -42,6 +44,17 @@ class TestKernel extends Kernel
             'secret' => 'OpenSecret',
         ]);
 
+        $container->extension('framework', [
+            'router' => [
+                'utf8' => true,
+            ],
+        ]);
+
+        $container->services()
+            ->set(RequestKernelController::class)
+            ->public()
+            ->tag('controller.service_arguments');
+
         $container->extension('doctrine', [
             'dbal' => [
                 'driver' => 'pdo_sqlite',
@@ -62,5 +75,21 @@ class TestKernel extends Kernel
                 ],
             ],
         ]);
+    }
+
+    private function configureRoutes(
+        RoutingConfigurator $routes
+    ): void {
+        $routes->add('test_valid', '/valid')
+            ->controller([RequestKernelController::class, 'valid'])
+            ->methods(['GET']);
+
+        $routes->add('test_invalid', '/invalid')
+            ->controller([RequestKernelController::class, 'invalid'])
+            ->methods(['GET']);
+
+        $routes->add('test_action', '/action')
+            ->controller([RequestKernelController::class, 'action'])
+            ->methods(['GET']);
     }
 }
