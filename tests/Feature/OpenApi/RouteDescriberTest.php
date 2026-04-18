@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Route;
 
 #[Group('feature')]
 #[Group('openapi')]
-class DtoRouteDescriberTest extends KernelTestCase
+class RouteDescriberTest extends KernelTestCase
 {
     private RouteDescriber $describer;
 
@@ -141,6 +141,40 @@ class DtoRouteDescriberTest extends KernelTestCase
         static::assertSame(SampleRequestDto::class, SampleRequestDto::class);
     }
 
+    public function testResponsesBuiltFromAction(): void
+    {
+        $operation = $this->runDescriber('/actions', 'POST', 'actions', OA\Post::class);
+
+        static::assertIsArray($operation->responses);
+
+        $byStatus = [];
+
+        foreach ($operation->responses as $response) {
+            $byStatus[(string)$response->response] = $response;
+        }
+
+        static::assertArrayHasKey('404', $byStatus);
+        static::assertSame('Thing not found', $byStatus['404']->description);
+        static::assertArrayHasKey('403', $byStatus);
+        static::assertSame('Nested forbidden', $byStatus['403']->description);
+    }
+
+    public function testDescriptionFromDocBlockOnProperty(): void
+    {
+        $operation = $this->runDescriber('/actions', 'POST', 'actions', OA\Post::class);
+
+        static::assertInstanceOf(OA\RequestBody::class, $operation->requestBody);
+        static::assertIsArray($operation->requestBody->content);
+        $schema = $operation->requestBody->content[0]->schema;
+        static::assertInstanceOf(OA\Schema::class, $schema);
+
+        $thing = $this->findProperty($schema->properties, 'thing');
+        static::assertInstanceOf(OA\Property::class, $thing);
+        static::assertIsString($thing->description);
+        static::assertStringContainsString('Top-level thing description.', $thing->description);
+        static::assertStringContainsString('Continues here.', $thing->description);
+    }
+
     public function testHeaderChildDtoFlattensToTopLevelParameters(): void
     {
         $api = new OA\OpenApi(['_context' => new \OpenApi\Context()]);
@@ -177,6 +211,40 @@ class DtoRouteDescriberTest extends KernelTestCase
         static::assertContains('X-Main', $names);
         static::assertContains('X-Other', $names);
         static::assertNotContains('headers.X-Main', $names);
+    }
+
+    /**
+     * @param class-string<OA\Operation> $operationClass
+     */
+    private function runDescriber(
+        string $path,
+        string $method,
+        string $controllerMethod,
+        string $operationClass
+    ): OA\Operation {
+        $api = new OA\OpenApi(['_context' => new \OpenApi\Context()]);
+
+        $this->describer->describe(
+            $api,
+            new Route($path, methods: [$method]),
+            new \ReflectionMethod(DtoFixtureController::class, $controllerMethod)
+        );
+
+        $pathItem = null;
+
+        foreach ($api->paths as $candidate) {
+            if ($path === $candidate->path) {
+                $pathItem = $candidate;
+
+                break;
+            }
+        }
+
+        static::assertInstanceOf(OA\PathItem::class, $pathItem);
+        $operation = $pathItem->{strtolower($method)};
+        static::assertInstanceOf($operationClass, $operation);
+
+        return $operation;
     }
 
     private function findParameter(

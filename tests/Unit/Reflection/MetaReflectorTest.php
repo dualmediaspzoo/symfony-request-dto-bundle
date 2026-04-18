@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DualMedia\DtoRequestBundle\Tests\Unit\Reflection;
 
 use Doctrine\Common\Collections\Order;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Action as ActionAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\AsDoctrineReference as AsDoctrineReferenceAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\FindBy as FindByAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\FindOneBy as FindOneByAttribute;
@@ -13,6 +14,8 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\FromKey as FromKeyAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Limit as LimitAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Offset as OffsetAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\OrderBy as OrderByAttribute;
+use DualMedia\DtoRequestBundle\Dto\Enum\ActionCondition;
+use DualMedia\DtoRequestBundle\Metadata\Model\Action;
 use DualMedia\DtoRequestBundle\Metadata\Model\AsDoctrineReference;
 use DualMedia\DtoRequestBundle\Metadata\Model\FindBy;
 use DualMedia\DtoRequestBundle\Metadata\Model\Format;
@@ -109,6 +112,24 @@ class MetaReflectorTest extends TestCase
     public function testEmptyInput(): void
     {
         static::assertSame([], $this->reflector->meta([]));
+    }
+
+    public function testActionAttributePassesDescription(): void
+    {
+        $result = $this->reflector->meta([
+            new ActionAttribute(
+                when: ActionCondition::Null,
+                statusCode: 418,
+                message: 'msg',
+                description: 'desc'
+            ),
+        ]);
+
+        static::assertCount(1, $result);
+        static::assertInstanceOf(Action::class, $result[0]);
+        static::assertSame(418, $result[0]->statusCode);
+        static::assertSame('msg', $result[0]->message);
+        static::assertSame('desc', $result[0]->description);
     }
 
     public function testMultipleAttributes(): void
