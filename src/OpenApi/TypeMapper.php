@@ -30,42 +30,16 @@ final class TypeMapper
             return null !== $inner ? self::toOpenApi($inner) : 'string';
         }
 
-        if ($type->isIdentifiedBy(TypeIdentifier::INT)) {
-            return 'integer';
-        }
-
-        if ($type->isIdentifiedBy(TypeIdentifier::FLOAT)) {
-            return 'number';
-        }
-
-        if ($type->isIdentifiedBy(TypeIdentifier::BOOL)) {
-            return 'boolean';
-        }
-
-        if ($type->isIdentifiedBy(TypeIdentifier::STRING)) {
-            return 'string';
-        }
-
-        if ($type->isIdentifiedBy(\DateTimeInterface::class)
-            || $type->isIdentifiedBy(\DateTimeImmutable::class)) {
-            return 'string';
-        }
-
-        if ($type->isIdentifiedBy(UploadedFile::class)) {
-            return 'string';
-        }
-
-        if (self::isBackedEnum($type)) {
-            return self::enumBackingType($type);
-        }
-
-        $className = TypeInfoUtils::getClassName($type);
-
-        if (null !== $className && is_subclass_of($className, AbstractDto::class)) {
-            return 'object';
-        }
-
-        return 'object';
+        return match (true) {
+            $type->isIdentifiedBy(TypeIdentifier::INT) => 'integer',
+            $type->isIdentifiedBy(TypeIdentifier::FLOAT) => 'number',
+            $type->isIdentifiedBy(TypeIdentifier::BOOL) => 'boolean',
+            $type->isIdentifiedBy(TypeIdentifier::STRING),
+            $type->isIdentifiedBy(\DateTimeInterface::class),
+            $type->isIdentifiedBy(UploadedFile::class) => 'string',
+            self::isBackedEnum($type) => self::enumBackingType($type),
+            default => 'object',
+        };
     }
 
     public static function isUploadedFile(

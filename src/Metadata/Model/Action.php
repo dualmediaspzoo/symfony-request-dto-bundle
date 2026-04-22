@@ -9,6 +9,7 @@ use DualMedia\DtoRequestBundle\Dto\Enum\ActionCondition;
 readonly class Action
 {
     /**
+     * @param ActionCondition|\Closure(mixed): bool $when
      * @param array<string, string> $headers
      */
     public function __construct(
