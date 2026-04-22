@@ -58,9 +58,7 @@ class CollectionDtoHandler implements FieldHandlerInterface
 
         $dto->{$name} = $children;
 
-        $raw = $accessor->get($childBag, $childSegments);
-
-        if (null === $raw) {
+        if (null === ($raw = $accessor->get($childBag, $childSegments))) {
             return false;
         }
 

@@ -75,8 +75,7 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG))
         ->arg('$objectProviderLocator', tagged_locator(DtoBundle::OBJECT_PROVIDER_TAG));
 
-    $services->set(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class)
-        ->public();
+    $services->set(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class);
 
     // resolve services
     $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)
@@ -111,6 +110,7 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
         ->arg('$handlers', tagged_iterator(DtoBundle::FIELD_HANDLER_TAG))
         ->arg('$dispatcher', new Reference('event_dispatcher'));
+
     $services->alias(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class, \DualMedia\DtoRequestBundle\Resolve\Extractor::class);
 
     $services->set(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class)
@@ -121,10 +121,9 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class))
         ->arg('$validator', new Reference('validator'))
         ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG))
-        ->arg('$violationMapper', new Reference(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class))
-        ->public();
-    $services->alias(\DualMedia\DtoRequestBundle\Resolve\Interface\DtoResolverInterface::class, \DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
-        ->public();
+        ->arg('$violationMapper', new Reference(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class));
+
+    $services->alias(\DualMedia\DtoRequestBundle\Resolve\Interface\DtoResolverInterface::class, \DualMedia\DtoRequestBundle\Resolve\DtoResolver::class);
 
     $services->set(\DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver::class)
         ->arg('$dtoResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\DtoResolverInterface::class))

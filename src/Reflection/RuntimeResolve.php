@@ -134,9 +134,7 @@ class RuntimeResolve implements RuntimeResolveInterface
 
         if ($mainDto->childRequiresRuntimeResolve) {
             foreach ($fields as $name => $field) {
-                $restored = $this->restoreField($class, $name, $field);
-
-                if (null !== $restored) {
+                if (null !== ($restored = $this->restoreField($class, $name, $field))) {
                     $fields[$name] = $restored;
                 }
             }

@@ -38,15 +38,11 @@ class VirtualReflector
                 continue;
             }
 
-            $constraints = $attribute->constraints;
-
-            if (!is_array($constraints)) {
+            if (!is_array($constraints = $attribute->constraints)) {
                 $constraints = [$constraints];
             }
 
-            $type = $attribute->type;
-
-            if (is_callable($type)) {
+            if (is_callable($type = $attribute->type)) {
                 $type = $type();
             }
 
