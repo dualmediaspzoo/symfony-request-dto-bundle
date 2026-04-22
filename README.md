@@ -7,9 +7,25 @@ and related annoyances of using requests in your api.
 
 Bundle will automatically hook into [Doctrine ORM Bundle](https://github.com/doctrine/DoctrineBundle) and [Nelmio API Docs Bundle](https://github.com/nelmio/NelmioApiDocBundle) so no additional configuration should be needed.
 
+## Features
+
+- Automatic DTO resolution from controller arguments — no manual extraction, casting, or validation wiring
+- Type coercion for scalars, enums (backed or by case name), dates, and uploaded files
+- Doctrine entity loading directly from request fields (`#[FindOneBy]`, `#[FindBy]`)
+- Validator integration — Symfony constraints on properties and fields are enforced in a single pass
+- Nested DTOs, collections of DTOs, and `#[AsRoot]` for flat top-level payloads
+- Nelmio API Doc integration — parameters, request bodies, enum cases, formats, and PHPDoc descriptions are described automatically
+- Configurable request bags (query, body, headers, cookies, attributes, files) via `#[Bag]`
+- Configurable custom `#[Action]`s for fields, entities and more. Set custom responses via an easy to handle event.
+- Event hooks for resolved / invalid / action scenarios — return custom responses from listeners
+- Symfony profiler panel with per-request DTO resolution timings
+- Cached metadata via opcache-backed PHP files — near-zero reflection cost after warm-up
+
 ## Install
 
-Simply `composer require dualmedia/symfony-request-dto-bundle`, if applicable your Doctrine entity managers will be detected automatically and used as default providers for classes to be loaded with your requests if needed.
+```
+composer require dualmedia/symfony-request-dto-bundle
+```
 
 Then add the bundle to your `config/bundles.php` file like so
 
@@ -21,113 +37,44 @@ return [
 ];
 ```
 
+If applicable your Doctrine entity managers will be detected automatically and used as default providers for classes to be loaded with your requests if needed.
+
+## Quick start
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Bag;
+use DualMedia\DtoRequestBundle\Metadata\Enum\BagEnum;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+// input:
+// [
+//     'name' => 'John',
+//     'age' => '25',
+//     'score' => '9.5',
+//     'active' => '1',
+//     'avatar' => <UploadedFile>,
+// ]
+
+class ProfileDto extends AbstractDto
+{
+    public string|null $name = null;
+
+    public int|null $age = null;
+
+    public float|null $score = null;
+
+    public bool|null $active = null;
+
+    #[Bag(BagEnum::Files)]
+    public UploadedFile|null $avatar = null;
+}
+```
+
+## More examples
+
+See [EXAMPLES.md](EXAMPLES.md) for enums, dates, nested DTOs, entity loading, and root-level payloads.
+
 ## Upgrades
 
 See [CHANGES.md](CHANGES.md)
-
-## Usage
-
-1. Create a DTO class for your request
-
-```php
-
-use \DualMedia\DtoRequestBundle\Attributes\Dto\Path;
-use \DualMedia\DtoRequestBundle\Model\AbstractDto;
-
-class MyDto extends AbstractDto
-{
-    public int|null $myVar = null;
-    
-    #[Path("custom_path")]
-    public string|null $myString = null;
-}
-
-```
-
-2. Add your dto as a controller argument
-
-```php
-
-class MyController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
-{
-    public function myAction(MyDto $dto): \Symfony\Component\HttpFoundation\Response
-    {
-        // your dto here is already validated!
-    }
-}
-```
-
-## Application wide handling of DTO issues
-
-If you wish to automatically return a 4XX response code when a dto has failed validation you may use something like the following:
-
-```yaml
-# config/services.yaml
-App\EventSubscriber\ErrorSubscriber:
-  decorates: exception_listener
-  arguments:
-    - '@App\EventSubscriber\ErrorSubscriber.inner'
-```
-
-```php
-class ErrorSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
-{
-    public function __construct(
-        private readonly ErrorListener $decorated
-    ) {
-    }
-
-    public static function getSubscribedEvents(){
-        return [
-            \Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent::class => 'onControllerArguments',
-        ];
-    }
-    
-    public function onControllerArguments(
-        ControllerArgumentsEvent $event
-    ): void {
-        $this->decorated->onControllerArguments($event);
-
-        $violationList = new ConstraintViolationList();
-
-        foreach ($event->getArguments() as $argument) {
-            if ($argument instanceof DtoInterface
-                && !$argument->isOptional()
-                && !$argument->isValid()) {
-                $violationList->addAll($argument->getConstraintViolationList());
-            }
-        }
-
-        if (0 !== $violationList->count()) {
-            throw new ValidatorException($violationList); // handle and display, or just do whatever really
-        }
-    }
-}
-```
-
-If you want to map a class-wide assert to a path without having to directly modify the constraint itself you may wrap it in MappedToPath
-
-```php
-
-use \DualMedia\DtoRequestBundle\Constraint\MappedToPath;
-use \DualMedia\DtoRequestBundle\Model\AbstractDto;
-use Symfony\Component\Validator\Constraints as Assert;
-
-#[MappedToPath(
-    'property',
-    new Assert\Expression(
-        'this.property != null',
-        message: 'This property cannot be null'
-    )
-)]
-class MyDto extends AbstractDto
-{
-    public int|null $property = null;
-}
-
-```
-
-## Docs
-
-
-Currently no documentation is available, but will be added in the future. For the time being see [the DTO models for tests](tests/Fixtures/Model/Dto)

@@ -1,161 +1,165 @@
 <?php
 
-use Doctrine\Persistence\ManagerRegistry;
-use DualMedia\DtoRequestBundle\DtoBundle as Bundle;
-use DualMedia\DtoRequestBundle\EventSubscriber\DtoSubscriber;
-use DualMedia\DtoRequestBundle\Interface\Dynamic\ResolverServiceInterface;
-use DualMedia\DtoRequestBundle\Interface\Entity\ComplexLoaderServiceInterface;
-use DualMedia\DtoRequestBundle\Interface\Entity\LabelProcessorServiceInterface;
-use DualMedia\DtoRequestBundle\Interface\Entity\ProviderServiceInterface;
-use DualMedia\DtoRequestBundle\Interface\Entity\TargetProviderInterface;
-use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
-use DualMedia\DtoRequestBundle\Interface\Resolver\DtoTypeExtractorInterface;
-use DualMedia\DtoRequestBundle\Interface\Type\CoercionServiceInterface;
-use DualMedia\DtoRequestBundle\Interface\Validation\GroupServiceInterface;
-use DualMedia\DtoRequestBundle\Interface\Validation\TypeValidationInterface;
-use DualMedia\DtoRequestBundle\Service\Entity\ComplexLoaderService;
-use DualMedia\DtoRequestBundle\Service\Entity\EntityProviderService;
-use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\DefaultProcessor;
-use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessor\PascalCaseProcessor;
-use DualMedia\DtoRequestBundle\Service\Entity\LabelProcessorService;
-use DualMedia\DtoRequestBundle\Service\Entity\QueryCreator;
-use DualMedia\DtoRequestBundle\Service\Entity\ReferenceHelper;
-use DualMedia\DtoRequestBundle\Service\Entity\TargetProviderService;
-use DualMedia\DtoRequestBundle\Service\Http\ActionValidatorService;
-use DualMedia\DtoRequestBundle\Service\Http\OnNullActionValidator;
-use DualMedia\DtoRequestBundle\Service\Nelmio\DtoOADescriber;
-use DualMedia\DtoRequestBundle\Service\Resolver\DtoResolverService;
-use DualMedia\DtoRequestBundle\Service\Resolver\DtoTypeExtractorHelper;
-use DualMedia\DtoRequestBundle\Service\Resolver\DynamicResolverService;
-use DualMedia\DtoRequestBundle\Service\Type\Coercer\BoolCoercer;
-use DualMedia\DtoRequestBundle\Service\Type\Coercer\DateTimeImmutableCoercer;
-use DualMedia\DtoRequestBundle\Service\Type\Coercer\EnumCoercer;
-use DualMedia\DtoRequestBundle\Service\Type\Coercer\FloatCoercer;
-use DualMedia\DtoRequestBundle\Service\Type\Coercer\IntCoercer;
-use DualMedia\DtoRequestBundle\Service\Type\Coercer\StringCoercer;
-use DualMedia\DtoRequestBundle\Service\Type\Coercer\UploadedFileCoercer;
-use DualMedia\DtoRequestBundle\Service\Type\CoercerService;
-use DualMedia\DtoRequestBundle\Service\Validation\GroupProviderService;
-use DualMedia\DtoRequestBundle\Service\Validation\TypeValidationHelper;
-use DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver;
-use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
+declare(strict_types=1);
+
+use DualMedia\DtoRequestBundle\DtoBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return static function (ContainerConfigurator $configurator) {
     $services = $configurator->services()
         ->defaults()
         ->private();
 
-    $services->alias(TypeValidationInterface::class, TypeValidationHelper::class);
-    $services->set(TypeValidationHelper::class)
-        ->arg(0, new Reference(CoercionServiceInterface::class));
-
-    $services->alias(ProviderServiceInterface::class, EntityProviderService::class);
-    $services->set(EntityProviderService::class)
-        ->arg(0, []);
-
-    $services->alias(GroupServiceInterface::class, GroupProviderService::class);
-    $services->set(GroupProviderService::class)
-        ->arg(0, new TaggedIteratorArgument(Bundle::GROUP_PROVIDER_TAG));
-
-    $services->alias(TargetProviderInterface::class, TargetProviderService::class);
-    $services->set(TargetProviderService::class)
-        ->arg(0, new Reference(ManagerRegistry::class))
-        ->arg(1, new Reference(QueryCreator::class))
-        ->arg(2, new Reference(ReferenceHelper::class));
-
-    $services->set(QueryCreator::class);
-    $services->set(ReferenceHelper::class);
-
     // coercion services
-    $services->alias(CoercionServiceInterface::class, CoercerService::class);
-    $services->set(BoolCoercer::class)
-        ->arg(0, new Reference('validator'))
-        ->tag(Bundle::COERCER_TAG);
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\BooleanCoercer::class)
+        ->tag(DtoBundle::COERCER_TAG);
 
-    $services->set(FloatCoercer::class)
-        ->arg(0, new Reference('validator'))
-        ->tag(Bundle::COERCER_TAG);
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\FloatCoercer::class)
+        ->tag(DtoBundle::COERCER_TAG);
 
-    $services->set(IntCoercer::class)
-        ->arg(0, new Reference('validator'))
-        ->tag(Bundle::COERCER_TAG);
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\IntegerCoercer::class)
+        ->tag(DtoBundle::COERCER_TAG);
 
-    $services->set(StringCoercer::class)
-        ->arg(0, new Reference('validator'))
-        ->tag(Bundle::COERCER_TAG);
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class)
+        ->tag(DtoBundle::COERCER_TAG);
 
-    $services->set(EnumCoercer::class)
-        ->arg(0, new Reference('validator'))
-        ->arg(1, new Reference(LabelProcessorServiceInterface::class))
-        ->tag(Bundle::COERCER_TAG);
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\UploadedFileCoercer::class)
+        ->tag(DtoBundle::COERCER_TAG);
 
-    $services->set(DateTimeImmutableCoercer::class)
-        ->arg(0, \DateTimeInterface::ATOM) // todo: allow the bundle to configure a default date format
-        ->arg(1, new Reference('validator'))
-        ->tag(Bundle::COERCER_TAG);
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\DateTimeCoercer::class)
+        ->arg('$stringCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class))
+        ->tag(DtoBundle::COERCER_TAG);
 
-    $services->set(UploadedFileCoercer::class)
-        ->arg(0, new Reference('validator'))
-        ->tag(Bundle::COERCER_TAG);
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\EnumCoercer::class)
+        ->arg('$stringCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\StringCoercer::class))
+        ->arg('$integerCoercer', new Reference(\DualMedia\DtoRequestBundle\Coercer\IntegerCoercer::class))
+        ->arg('$labelProcessorLocator', tagged_locator(DtoBundle::LABEL_PROCESSOR_TAG))
+        ->tag(DtoBundle::COERCER_TAG);
 
-    $services->set(CoercerService::class)
-        ->arg(0, new TaggedIteratorArgument(Bundle::COERCER_TAG))
-        ->arg(1, new Reference('validator'));
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\Registry::class)
+        ->arg('$locator', tagged_locator(DtoBundle::COERCER_TAG));
 
-    $services->alias(ResolverServiceInterface::class, DynamicResolverService::class);
-    $services->set(DynamicResolverService::class)
-        ->arg(0, new TaggedIteratorArgument(Bundle::DYNAMIC_RESOLVER_TAG));
+    $services->set(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class)
+        ->arg('$registry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
 
-    $services->alias(LabelProcessorServiceInterface::class, LabelProcessorService::class);
-    $services->set(LabelProcessorService::class)
-        ->arg(0, []);
+    $services->set(\DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry::class)
+        ->arg('$registry', new Reference('doctrine'))
+        ->arg('$queryCreator', new Reference('dm.dto_bundle.query_creator'))
+        ->arg('$referenceHelper', new Reference('dm.dto_bundle.reference_helper'))
+        ->tag('kernel.reset', ['method' => 'reset']);
 
-    $services->set(DefaultProcessor::class)
-        ->tag(Bundle::LABEL_PROCESSOR_TAB);
+    $services->set('dm.dto_bundle.query_creator', \DualMedia\DoctrineQueryCreator\QueryCreator::class);
+    $services->set('dm.dto_bundle.reference_helper', \DualMedia\DoctrineQueryCreator\ReferenceHelper::class);
 
-    $services->set(PascalCaseProcessor::class)
-        ->tag(Bundle::LABEL_PROCESSOR_TAB);
+    // reflection services
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class);
 
-    $services->alias(ComplexLoaderServiceInterface::class, ComplexLoaderService::class);
-    $services->set(ComplexLoaderService::class)
-        ->arg(0, [])
-        ->arg(1, new Reference(ProviderServiceInterface::class));
+    $services->set('dm.dto_bundle.type_resolver', \Symfony\Component\TypeInfo\TypeResolver\TypeResolver::class)
+        ->factory([\Symfony\Component\TypeInfo\TypeResolver\TypeResolver::class, 'create']);
 
-    // HTTP Action validators
-    $services->set(OnNullActionValidator::class)
-        ->tag(Bundle::HTTP_ACTION_VALIDATOR_TAG);
-    $services->set(ActionValidatorService::class)
-        ->arg(0, new TaggedIteratorArgument(Bundle::HTTP_ACTION_VALIDATOR_TAG));
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class)
+        ->arg('$validator', new Reference(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class));
 
-    $services->alias(DtoTypeExtractorInterface::class, DtoTypeExtractorHelper::class);
-    $services->set(DtoTypeExtractorHelper::class)
-        ->arg(0, new Reference('property_info'));
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class)
+        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class));
 
-    $services->alias(DtoResolverInterface::class, DtoResolverService::class);
-    $services->set(DtoResolverService::class)
-        ->arg(0, new Reference(TypeValidationInterface::class))
-        ->arg(1, new Reference(DtoTypeExtractorInterface::class))
-        ->arg(2, new Reference(ProviderServiceInterface::class))
-        ->arg(3, new Reference(GroupServiceInterface::class))
-        ->arg(4, new Reference(ComplexLoaderServiceInterface::class))
-        ->arg(5, new Reference(ResolverServiceInterface::class))
-        ->arg(6, new Reference(ActionValidatorService::class))
-        ->arg(7, new Reference('validator'));
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\Reflector::class)
+        ->arg('$virtualReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class))
+        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
+        ->arg('$metaReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class))
+        ->arg('$typeResolver', new Reference('dm.dto_bundle.type_resolver'))
+        ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG))
+        ->arg('$objectProviderLocator', tagged_locator(DtoBundle::OBJECT_PROVIDER_TAG));
 
-    $services->set(DtoValueResolver::class)
-        ->arg(0, new Reference(DtoResolverInterface::class))
-        ->arg(1, new Reference('event_dispatcher'))
-        ->tag('controller.argument_value_resolver');
+    $services->set(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class);
 
-    $services->set(DtoOADescriber::class)
-        ->arg(0, new Reference(DtoTypeExtractorInterface::class))
-        ->arg(1, new Reference(LabelProcessorServiceInterface::class))
-        ->tag('nelmio_api_doc.route_describer');
+    // resolve services
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class)
+        ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class));
 
-    // Subscribers
-    $services->set(DtoSubscriber::class)
-        ->arg(0, new Reference('event_dispatcher'))
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Label\PascalCaseProcessor::class)
+        ->tag(DtoBundle::LABEL_PROCESSOR_TAG);
+
+    // field handlers (priority determines evaluation order, highest first)
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\CollectionDtoHandler::class)
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class))
+        ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class))
+        ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 20]);
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\SingleDtoHandler::class)
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class))
+        ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class))
+        ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 10]);
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\EntityPropertyHandler::class)
+        ->arg('$propertyResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class))
+        ->arg('$entityProviderRegistry', new Reference(\DualMedia\DtoRequestBundle\Provider\EntityProviderRegistry::class))
+        ->arg('$coercerRegistry', new Reference(\DualMedia\DtoRequestBundle\Coercer\Registry::class))
+        ->arg('$dynamicParameterRegistry', new Reference(\DualMedia\DtoRequestBundle\Provider\DynamicParameterRegistry::class))
+        ->arg('$objectProviderLocator', tagged_locator(DtoBundle::OBJECT_PROVIDER_TAG))
+        ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 5]);
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Handler\ScalarPropertyHandler::class)
+        ->arg('$propertyResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\PropertyResolver::class))
+        ->tag(DtoBundle::FIELD_HANDLER_TAG, ['priority' => 0]);
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\Extractor::class)
+        ->arg('$handlers', tagged_iterator(DtoBundle::FIELD_HANDLER_TAG))
+        ->arg('$dispatcher', new Reference('event_dispatcher'));
+
+    $services->alias(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class, \DualMedia\DtoRequestBundle\Resolve\Extractor::class);
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class)
+        ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class));
+
+    $services->set(\DualMedia\DtoRequestBundle\Resolve\DtoResolver::class)
+        ->arg('$extractor', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface::class))
+        ->arg('$memoizer', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class))
+        ->arg('$validator', new Reference('validator'))
+        ->arg('$groupProviderLocator', tagged_locator(DtoBundle::GROUP_PROVIDER_TAG))
+        ->arg('$violationMapper', new Reference(\DualMedia\DtoRequestBundle\Resolve\ViolationMapper::class));
+
+    $services->alias(\DualMedia\DtoRequestBundle\Resolve\Interface\DtoResolverInterface::class, \DualMedia\DtoRequestBundle\Resolve\DtoResolver::class);
+
+    $services->set(\DualMedia\DtoRequestBundle\ValueResolver\DtoValueResolver::class)
+        ->arg('$dtoResolver', new Reference(\DualMedia\DtoRequestBundle\Resolve\Interface\DtoResolverInterface::class))
+        ->arg('$eventDispatcher', new Reference('event_dispatcher'))
+        ->tag('controller.argument_value_resolver', ['priority' => 50]);
+
+    // cache and warmers
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\RuntimeResolve::class)
+        ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class));
+    $services->alias(\DualMedia\DtoRequestBundle\Reflection\Interface\RuntimeResolveInterface::class, \DualMedia\DtoRequestBundle\Reflection\RuntimeResolve::class);
+
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class)
+        ->arg('$cache', new Reference('dm.dto_bundle.file_cache'))
+        ->arg('$reflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\Reflector::class))
+        ->arg('$runtimeHelper', new Reference(\DualMedia\DtoRequestBundle\Reflection\Interface\RuntimeResolveInterface::class));
+
+    $services->set(\DualMedia\DtoRequestBundle\Reflection\MainDtoMemoizer::class)
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class))
+        ->tag('kernel.reset', ['method' => 'reset']);
+    $services->alias(\DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface::class, \DualMedia\DtoRequestBundle\Reflection\MainDtoMemoizer::class);
+
+    $services->set(\DualMedia\DtoRequestBundle\Type\DtoCacheWarmer::class)
+        ->tag('kernel.cache_warmer')
+        ->arg('$dtoClassList', '%'.DtoBundle::DTO_LIST_PARAMETER.'%')
+        ->arg('$cacheReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\CacheReflector::class));
+
+    $services->set('dm.dto_bundle.file_cache', \Symfony\Component\Cache\Adapter\PhpFilesAdapter::class)
+        ->arg('$namespace', 'dto_metadata')
+        ->arg('$directory', '%kernel.cache_dir%/dm_dto_bundle');
+
+    // event subscribers
+    $services->set(\DualMedia\DtoRequestBundle\Dto\EventSubscriber\ControllerSubscriber::class)
+        ->arg('$dispatcher', new Reference('event_dispatcher'))
+        ->tag('kernel.event_subscriber');
+
+    $services->set(\DualMedia\DtoRequestBundle\Dto\EventSubscriber\ActionSubscriber::class)
+        ->arg('$dispatcher', new Reference('event_dispatcher'))
         ->tag('kernel.event_subscriber');
 };

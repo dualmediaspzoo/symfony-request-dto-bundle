@@ -2,8 +2,8 @@
 
 namespace DualMedia\DtoRequestBundle\Tests\PHPUnit;
 
-use DualMedia\DtoRequestBundle\Tests\Traits\Unit\BoundCallableTrait;
-use DualMedia\DtoRequestBundle\Tests\Traits\Unit\KernelAccessTrait;
+use DualMedia\DtoRequestBundle\Tests\Trait\ConstraintValidationTrait;
+use DualMedia\DtoRequestBundle\Tests\Trait\KernelAccessTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as SymfonyTestCase;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -11,20 +11,18 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 class KernelTestCase extends SymfonyTestCase
 {
     use KernelAccessTrait;
-    use BoundCallableTrait;
+    use ConstraintValidationTrait;
 
     protected function tearDown(): void
     {
-        $this->assertBoundCallables();
-        parent::tearDown();
-
         restore_exception_handler();
+        parent::tearDown();
     }
 
     /**
      * @return array<string, list<ConstraintViolationInterface>>
      */
-    protected function getConstraintViolationsMappedToPropertyPaths(
+    protected static function getConstraintViolationsMappedToPropertyPaths(
         ConstraintViolationListInterface $list
     ): array {
         /** @var array<string, list<ConstraintViolationInterface>> $out */

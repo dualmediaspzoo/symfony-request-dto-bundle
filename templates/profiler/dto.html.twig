@@ -1,0 +1,215 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#AAA" d="M4 4h16v3H4zM4 10h16v3H4zM4 16h16v3H4z"/></svg></span>
+        <span class="sf-toolbar-value">{{ collector.resolverRows|length }}</span>
+        <span class="sf-toolbar-label">DTOs</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Resolver calls</b>
+            <span>{{ collector.resolverRows|length }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Total time</b>
+            <span>{{ collector.totalMs|number_format(2) }} ms</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Memoizer hit ratio</b>
+            <span>{{ (collector.hitRatio * 100)|number_format(1) }}%</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: '' }) }}
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#AAA" d="M4 4h16v3H4zM4 10h16v3H4zM4 16h16v3H4z"/></svg></span>
+        <strong>DTO</strong>
+        <span class="count">
+            <span>{{ collector.resolverRows|length }}</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>DTO resolution</h2>
+
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.resolverRows|length }}</span>
+            <span class="label">DTOs resolved</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.totalMs|number_format(2) }} <span class="unit">ms</span></span>
+            <span class="label">Total time</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ (collector.hitRatio * 100)|number_format(1) }}<span class="unit">%</span></span>
+            <span class="label">Memoizer hit ratio</span>
+        </div>
+    </div>
+
+    <h3>DtoResolver</h3>
+    {% if collector.resolverRows is empty %}
+        <div class="empty"><p>No DTOs were resolved during this request.</p></div>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Class</th>
+                    <th>Total ms</th>
+                    <th>Phase 1 (extract)</th>
+                    <th>Phase 2 (coerce+validate)</th>
+                    <th>Phase 3 (assign)</th>
+                    <th>Phase 4 (final validate)</th>
+                    <th>Violations</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i, row in collector.resolverRows %}
+                    <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td><code>{{ row.class }}</code></td>
+                        <td>{{ row.total_ms|number_format(2) }}</td>
+                        <td>{{ row.phase1_ms|number_format(2) }}</td>
+                        <td>{{ row.phase2_ms|number_format(2) }}</td>
+                        <td>{{ row.phase3_ms|number_format(2) }}</td>
+                        <td>{{ row.phase4_ms|number_format(2) }}</td>
+                        <td>
+                            {% if row.violations == 0 %}
+                                0
+                            {% else %}
+                                <details>
+                                    <summary>{{ row.violations }}</summary>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Path</th>
+                                                <th>Phase</th>
+                                                <th>Messages</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for f in row.phase2_failures %}
+                                                <tr>
+                                                    <td><code>{{ f.path }}</code></td>
+                                                    <td>2 (step {{ f.phase }})</td>
+                                                    <td>
+                                                        <ul>
+                                                            {% for m in f.messages %}<li>{{ m }}</li>{% endfor %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            {% for v in row.phase4_violations %}
+                                                <tr>
+                                                    <td><code>{{ v.path }}</code></td>
+                                                    <td>4</td>
+                                                    <td>
+                                                        {{ v.message }}
+                                                        {% if v.constraint %}<br><small><code>{{ v.constraint }}</code></small>{% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </details>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <h3>Extractor</h3>
+    {% if collector.extractorRows is empty %}
+        <div class="empty"><p>No extraction calls.</p></div>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Class</th>
+                    <th>Depth</th>
+                    <th>Fields walked</th>
+                    <th>Events dispatched</th>
+                    <th>ms</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i, row in collector.extractorRows %}
+                    <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td><code>{{ row.class }}</code></td>
+                        <td>{{ row.depth }}</td>
+                        <td>{{ row.fields_walked }}</td>
+                        <td>{{ row.events_dispatched }}</td>
+                        <td>{{ row.ms|number_format(2) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <h3>MainDtoMemoizer</h3>
+    {% if collector.memoizerRows is empty %}
+        <div class="empty"><p>No memoizer lookups.</p></div>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Lookups</th>
+                    <th>Hits</th>
+                    <th>Misses</th>
+                    <th>First-miss ms</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in collector.memoizerRows %}
+                    <tr>
+                        <td><code>{{ row.class }}</code></td>
+                        <td>{{ row.lookups }}</td>
+                        <td>{{ row.hits }}</td>
+                        <td>{{ row.misses }}</td>
+                        <td>{{ row.first_miss_ms|number_format(2) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <h3>RuntimeResolveHelper</h3>
+    {% if collector.runtimeHelperRows is empty %}
+        <div class="empty"><p>No runtime resolve calls.</p></div>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Class</th>
+                    <th>Fields touched</th>
+                    <th>Runtime-resolved fields</th>
+                    <th>ms</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in collector.runtimeHelperRows %}
+                    <tr>
+                        <td><code>{{ row.method }}</code></td>
+                        <td>{% if row.class %}<code>{{ row.class }}</code>{% else %}—{% endif %}</td>
+                        <td>{{ row.fields_touched }}</td>
+                        <td>{{ row.runtime_resolved_fields }}</td>
+                        <td>{{ row.ms|number_format(2) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

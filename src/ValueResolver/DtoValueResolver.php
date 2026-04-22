@@ -2,10 +2,10 @@
 
 namespace DualMedia\DtoRequestBundle\ValueResolver;
 
-use DualMedia\DtoRequestBundle\Attribute\Parameter\AllowInvalid;
-use DualMedia\DtoRequestBundle\Event\DtoResolvedEvent;
-use DualMedia\DtoRequestBundle\Interface\DtoInterface;
-use DualMedia\DtoRequestBundle\Interface\Resolver\DtoResolverInterface;
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Event\ResolvedEvent;
+use DualMedia\DtoRequestBundle\Parameter\Attribute\AllowInvalid;
+use DualMedia\DtoRequestBundle\Resolve\DtoResolver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
@@ -13,17 +13,14 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class DtoValueResolver implements ValueResolverInterface
 {
-    /**
-     * @param DtoResolverInterface<DtoInterface> $dtoResolver
-     */
     public function __construct(
-        private readonly DtoResolverInterface $dtoResolver,
+        private readonly DtoResolver $dtoResolver,
         private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
     /**
-     * @return iterable<DtoInterface>
+     * @return iterable<AbstractDto>
      */
     #[\Override]
     public function resolve(
@@ -32,13 +29,13 @@ class DtoValueResolver implements ValueResolverInterface
     ): iterable {
         $class = $argument->getType();
 
-        if (null === $class || !is_subclass_of($class, DtoInterface::class)) {
+        if (null === $class || !is_subclass_of($class, AbstractDto::class)) {
             return [];
         }
 
         $this->eventDispatcher->dispatch(
-            new DtoResolvedEvent(
-                $object = $this->dtoResolver->resolve($request, $class)
+            new ResolvedEvent(
+                $object = $this->dtoResolver->resolve($class, $request)
             )
         );
 

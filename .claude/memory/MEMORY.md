@@ -1,0 +1,2 @@
+- [Line length preference](feedback_line_length.md) — keep ~120 chars per line in docs/guidance files
+- [Named parameters](feedback_named_params.md) — always use named params, not array syntax
