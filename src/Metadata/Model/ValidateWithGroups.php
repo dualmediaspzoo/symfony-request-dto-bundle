@@ -9,9 +9,12 @@ use DualMedia\DtoRequestBundle\Provider\Interface\GroupProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
+ * @template TGroupProvider of GroupProviderInterface
+ * @template TDto of AbstractDto
+ *
  * @phpstan-import-type GroupReturnValue from GroupProviderInterface
  *
- * @phpstan-type ValidateWithGroupsClosure \Closure(GroupProviderInterface, AbstractDto, Request): GroupReturnValue
+ * @phpstan-type ValidateWithGroupsClosure \Closure(TGroupProvider, TDto, Request): GroupReturnValue
  */
 readonly class ValidateWithGroups
 {
