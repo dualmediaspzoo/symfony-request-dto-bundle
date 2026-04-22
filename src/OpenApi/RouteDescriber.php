@@ -25,9 +25,7 @@ class RouteDescriber implements RouteDescriberInterface
         Route $route,
         \ReflectionMethod $reflectionMethod
     ): void {
-        $dtoClasses = $this->findDtoArguments($reflectionMethod);
-
-        if (empty($dtoClasses)) {
+        if (empty($dtoClasses = $this->findDtoArguments($reflectionMethod))) {
             return;
         }
 
@@ -39,9 +37,7 @@ class RouteDescriber implements RouteDescriberInterface
             $operation = OAUtil::getOperation($path, $method);
 
             foreach ($dtoClasses as $class) {
-                $described = $this->collector->collect($class);
-
-                if (null === $described) {
+                if (null === ($described = $this->collector->collect($class))) {
                     continue;
                 }
 
@@ -51,11 +47,13 @@ class RouteDescriber implements RouteDescriberInterface
                     $this->applyContext($param, $nestedContext);
                 }
 
+                // add any parameters
                 $operation->parameters = [
                     ...$this->existingParameters($operation->parameters),
                     ...$newParameters,
                 ];
 
+                // build body
                 $body = $this->builder->buildRequestBody($described);
 
                 if (null !== $body && !$this->hasRequestBody($operation->requestBody)) {
@@ -63,6 +61,7 @@ class RouteDescriber implements RouteDescriberInterface
                     $operation->requestBody = $body;
                 }
 
+                // build responses
                 $existingResponses = $this->existingResponses($operation->responses);
 
                 foreach ($this->builder->buildResponses($described) as $response) {
@@ -90,18 +89,18 @@ class RouteDescriber implements RouteDescriberInterface
                 continue;
             }
 
-            if (is_array($value)) {
-                foreach ($value as $item) {
-                    if ($item instanceof OA\AbstractAnnotation) {
-                        $this->applyContext($item, $context);
-                    }
+            if (!is_array($value)) {
+                if ($value instanceof OA\AbstractAnnotation) {
+                    $this->applyContext($value, $context);
                 }
 
                 continue;
             }
 
-            if ($value instanceof OA\AbstractAnnotation) {
-                $this->applyContext($value, $context);
+            foreach ($value as $item) {
+                if ($item instanceof OA\AbstractAnnotation) {
+                    $this->applyContext($item, $context);
+                }
             }
         }
     }
@@ -156,13 +155,10 @@ class RouteDescriber implements RouteDescriberInterface
         array $responses,
         string $status
     ): bool {
-        foreach ($responses as $existing) {
-            if ((string)$existing->response === $status) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $responses,
+            static fn ($existing): bool => (string)$existing->response === $status
+        );
     }
 
     /**
@@ -175,15 +171,10 @@ class RouteDescriber implements RouteDescriberInterface
             return [];
         }
 
-        $out = [];
-
-        foreach ($value as $item) {
-            if ($item instanceof OA\Parameter) {
-                $out[] = $item;
-            }
-        }
-
-        return $out;
+        return array_values(array_filter(
+            $value,
+            static fn ($item): bool => $item instanceof OA\Parameter
+        ));
     }
 
     /**
@@ -196,15 +187,10 @@ class RouteDescriber implements RouteDescriberInterface
             return [];
         }
 
-        $out = [];
-
-        foreach ($value as $item) {
-            if ($item instanceof OA\Response) {
-                $out[] = $item;
-            }
-        }
-
-        return $out;
+        return array_values(array_filter(
+            $value,
+            static fn ($item): bool => $item instanceof OA\Response
+        ));
     }
 
     private function hasRequestBody(

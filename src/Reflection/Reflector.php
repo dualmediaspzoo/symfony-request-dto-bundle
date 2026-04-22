@@ -57,8 +57,8 @@ class Reflector
                 $property->getAttributes()
             );
 
-            $bag = array_find($attributes, static fn ($m) => $m instanceof BagAttribute)?->bag;
-            $path = array_find($attributes, static fn ($m) => $m instanceof PathAttribute)?->path;
+            $bag = MetadataUtils::single(BagAttribute::class, $attributes)?->bag;
+            $path = MetadataUtils::single(PathAttribute::class, $attributes)?->path;
             $constraints = array_values(array_filter($attributes, static fn ($o) => $o instanceof Constraint));
 
             $className = TypeInfoUtils::getClassName($type)
@@ -100,7 +100,7 @@ class Reflector
         );
 
         $meta = $this->metaReflector->meta($attributes);
-        $classBag = array_find($attributes, static fn ($m) => $m instanceof BagAttribute)?->bag;
+        $classBag = MetadataUtils::single(BagAttribute::class, $attributes)?->bag;
 
         return new MainDto(
             fields: $results,
@@ -201,11 +201,7 @@ class Reflector
 
             $constraints = $attribute->constraints;
 
-            if (!is_array($constraints)) {
-                $constraints = [$constraints];
-            }
-
-            return $constraints;
+            return is_array($constraints) ? $constraints : [$constraints];
         }
 
         return [];

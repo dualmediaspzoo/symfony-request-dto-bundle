@@ -36,7 +36,7 @@ class SchemaBuilder
     ): OA\RequestBody|null {
         $bodyFields = array_values(array_filter(
             $dto->fields,
-            static fn (DescribedField $f): bool => BagEnum::Request === $f->bag || BagEnum::Files === $f->bag
+            static fn (DescribedField $f): bool => $f->bag->isBodyField()
         ));
 
         if ([] === $bodyFields) {
@@ -154,13 +154,7 @@ class SchemaBuilder
     private function buildPropertyList(
         array $fields
     ): array {
-        $out = [];
-
-        foreach ($fields as $field) {
-            $out[] = $this->buildProperty($field);
-        }
-
-        return $out;
+        return array_map($this->buildProperty(...), $fields);
     }
 
     private function buildProperty(

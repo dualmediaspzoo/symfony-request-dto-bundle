@@ -87,8 +87,7 @@ final class TypeMapper
 
         $type->isSatisfiedBy(static function (Type $t) use (&$backed): bool {
             if ($t instanceof EnumType) {
-                $className = $t->getClassName();
-                $backed = is_subclass_of($className, \BackedEnum::class);
+                $backed = is_subclass_of($t->getClassName(), \BackedEnum::class);
 
                 return true;
             }
@@ -109,9 +108,7 @@ final class TypeMapper
 
         $type->isSatisfiedBy(static function (Type $t) use (&$className): bool {
             if ($t instanceof EnumType) {
-                $candidate = $t->getClassName();
-
-                if (is_subclass_of($candidate, \BackedEnum::class)) {
+                if (is_subclass_of($candidate = $t->getClassName(), \BackedEnum::class)) {
                     $className = $candidate;
 
                     return true;
@@ -133,8 +130,7 @@ final class TypeMapper
             return 'string';
         }
 
-        $reflection = new \ReflectionEnum($class);
-        $backingType = $reflection->getBackingType();
+        $backingType = new \ReflectionEnum($class)->getBackingType();
 
         if (null !== $backingType && 'int' === $backingType->getName()) {
             return 'integer';

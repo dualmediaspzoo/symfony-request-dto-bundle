@@ -19,6 +19,8 @@ use DualMedia\DtoRequestBundle\Reflection\Interface\MainDtoMemoizerInterface;
 use DualMedia\DtoRequestBundle\Resolve\Interface\LabelProcessorInterface;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -40,9 +42,7 @@ class FieldCollector
         string $class,
         BagEnum $defaultBag = BagEnum::Request
     ): DescribedDto|null {
-        $mainDto = $this->memoizer->get($class);
-
-        if (null === $mainDto) {
+        if (null === ($mainDto = $this->memoizer->get($class))) {
             return null;
         }
 
@@ -75,18 +75,15 @@ class FieldCollector
                 $innerClass = TypeInfoUtils::getClassName($meta->type)
                     ?? TypeInfoUtils::getCollectionValueClassName($meta->type);
 
-                if (null !== $innerClass
-                    && is_subclass_of($innerClass, AbstractDto::class)
-                    && !isset($visited[$innerClass])
+                if (null === $innerClass
+                    || !is_subclass_of($innerClass, AbstractDto::class)
+                    || isset($visited[$innerClass])
+                    || null === ($nested = $this->memoizer->get($innerClass))
                 ) {
-                    $nested = $this->memoizer->get($innerClass);
-
-                    if (null !== $nested) {
-                        $this->collectActions($nested->fields, $out, [...$visited, $innerClass => true]);
-                    }
+                    continue;
                 }
 
-                continue;
+                $this->collectActions($nested->fields, $out, [...$visited, $innerClass => true]);
             }
 
             foreach ($meta->meta as $item) {
@@ -212,7 +209,7 @@ class FieldCollector
 
     private function pickBag(
         BagEnum|null $bag,
-        \Symfony\Component\TypeInfo\Type $type,
+        Type $type,
         BagEnum $default
     ): BagEnum {
         if (null !== $bag) {
@@ -227,18 +224,15 @@ class FieldCollector
     }
 
     /**
-     * @param list<\Symfony\Component\Validator\Constraint> $constraints
+     * @param list<Constraint> $constraints
      */
     private function isRequired(
         array $constraints
     ): bool {
-        foreach ($constraints as $constraint) {
-            if ($constraint instanceof NotNull || $constraint instanceof NotBlank) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $constraints,
+            static fn ($constraint): bool => $constraint instanceof NotNull || $constraint instanceof NotBlank
+        );
     }
 
     /**
@@ -247,9 +241,7 @@ class FieldCollector
     private function resolveEnumCases(
         Property $property
     ): array {
-        $enumClass = TypeMapper::backedEnumClass($property->type);
-
-        if (null === $enumClass) {
+        if (null === ($enumClass = TypeMapper::backedEnumClass($property->type))) {
             return [];
         }
 
@@ -261,16 +253,12 @@ class FieldCollector
             static fn ($e) => $e instanceof \BackedEnum
         )) : $enumClass::cases();
 
-        $fromKey = MetadataUtils::single(FromKey::class, $property->meta);
-
-        if (null === $fromKey) {
+        if (!MetadataUtils::exists(FromKey::class, $property->meta)) {
             return array_map(static fn (\BackedEnum $e) => $e->value, $cases);
         }
 
-        $processor = $this->resolveLabelProcessor($property);
-
-        if (null === $processor) {
-            return array_map(static fn (\BackedEnum $e) => $e->name, $cases);
+        if (null === ($processor = $this->resolveLabelProcessor($property))) {
+            return array_map(static fn (\BackedEnum $e): string => $e->name, $cases);
         }
 
         return array_map(static fn (\BackedEnum $e): string => $processor->normalize($e->name), $cases);

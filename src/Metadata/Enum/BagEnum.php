@@ -29,4 +29,9 @@ enum BagEnum: string
             default => null,
         };
     }
+
+    public function isBodyField(): bool
+    {
+        return in_array($this, [self::Request, self::Files], true);
+    }
 }
