@@ -28,4 +28,11 @@ class SampleRequestDto extends AbstractDto
 
     #[Bag(BagEnum::Files)]
     public UploadedFile|null $avatar = null;
+
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 8, max: 64)]
+    #[Assert\Regex(pattern: '/[0-9!@#\$%^&*\(\),\.?":{}|<>_]+/', message: 'Minimum 1 digit or special glyph')]
+    #[Assert\Regex(pattern: '/[a-z]/', message: 'Minimum 1 lowercase character')]
+    #[Assert\Regex(pattern: '/[A-Z]/', message: 'Minimum 1 uppercase character')]
+    public string|null $password = null;
 }
