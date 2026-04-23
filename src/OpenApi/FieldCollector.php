@@ -232,7 +232,7 @@ class FieldCollector
         foreach ($constraints as $constraint) {
             $result = match (true) {
                 $constraint instanceof NotNull => true,
-                $constraint instanceof NotBlank => $constraint->allowNull,
+                $constraint instanceof NotBlank => !$constraint->allowNull,
                 default => null,
             };
 
