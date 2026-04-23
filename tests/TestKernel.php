@@ -62,7 +62,6 @@ class TestKernel extends Kernel
             ],
 
             'orm' => [
-                'auto_generate_proxy_classes' => true,
                 'auto_mapping' => true,
                 'mappings' => [
                     'DualMedia\\DtoRequestBundle\\Tests\\Fixture\\Entity\\' => [

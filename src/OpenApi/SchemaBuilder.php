@@ -300,9 +300,7 @@ class SchemaBuilder
             }
 
             if ($constraint instanceof Assert\Regex && null !== ($pattern = $constraint->getHtmlPattern())) {
-                $schema->pattern = Generator::UNDEFINED !== $schema->pattern
-                    ? sprintf('%s, %s', $schema->pattern, $pattern)
-                    : $pattern;
+                $schema->pattern = $pattern;
             }
         }
     }

@@ -8,6 +8,8 @@ jobs:
         include:
           - symfony-version: 7.4.*
             php-version: 8.5
+          - symfony-version: 8.0.*
+            php-version: 8.5
 
     runs-on: ubuntu-latest
     steps:
@@ -44,6 +46,8 @@ jobs:
       matrix:
         include:
           - symfony-version: 7.4.*
+            php-version: 8.5
+          - symfony-version: 8.0.*
             php-version: 8.5
 
     runs-on: ubuntu-latest
@@ -113,6 +117,8 @@ jobs:
       matrix:
         include:
           - symfony-version: 7.4.*
+            php-version: 8.5
+          - symfony-version: 8.0.*
             php-version: 8.5
 
     runs-on: ubuntu-latest
