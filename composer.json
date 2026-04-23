@@ -36,7 +36,7 @@
     "symfony/stopwatch": "^7.4||^8.0",
     "symfony/web-profiler-bundle": "^7.4||^8.0",
     "symfony/var-exporter": "^7.4||^8.0",
-    "doctrine/doctrine-bundle": "^2",
+    "doctrine/doctrine-bundle": "^3",
     "doctrine/orm": "^3",
     "phpstan/phpstan-strict-rules": "^2.0",
     "jetbrains/phpstorm-attributes": "^1.2",
