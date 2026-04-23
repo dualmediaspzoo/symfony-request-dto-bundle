@@ -229,10 +229,19 @@ class FieldCollector
     private function isRequired(
         array $constraints
     ): bool {
-        return array_any(
-            $constraints,
-            static fn ($constraint): bool => $constraint instanceof NotNull || $constraint instanceof NotBlank
-        );
+        foreach ($constraints as $constraint) {
+            $result = match (true) {
+                $constraint instanceof NotNull => true,
+                $constraint instanceof NotBlank => $constraint->allowNull,
+                default => null,
+            };
+
+            if ($result) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
