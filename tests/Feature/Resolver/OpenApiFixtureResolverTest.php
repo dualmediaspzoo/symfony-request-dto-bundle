@@ -42,6 +42,7 @@ class OpenApiFixtureResolverTest extends KernelTestCase
                     'count' => 5,
                 ],
                 'status' => 'foo',
+                'password' => 'Abcdef1!',
             ],
             attributes: ['id' => 42],
             files: ['avatar' => $file],

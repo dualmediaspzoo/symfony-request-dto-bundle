@@ -123,6 +123,20 @@ class RouteDescriberTest extends KernelTestCase
         static::assertStringStartsWith('data:image/jpeg;base64,', $avatar->example);
     }
 
+    public function testMultipleRegexConstraintsCombinedOnPattern(): void
+    {
+        $schema = $this->operation->requestBody->content[0]->schema;
+        $password = $this->findProperty($schema->properties, 'password');
+
+        static::assertInstanceOf(OA\Property::class, $password);
+        static::assertSame('string', $password->type);
+        static::assertIsString($password->pattern);
+        static::assertStringContainsString('[0-9!@#', $password->pattern);
+        static::assertStringContainsString('[a-z]', $password->pattern);
+        static::assertStringContainsString('[A-Z]', $password->pattern);
+        print_r($password->pattern);
+    }
+
     public function testNonDtoControllerProducesNoChanges(): void
     {
         $api = new OA\OpenApi(['_context' => new \OpenApi\Context()]);

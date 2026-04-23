@@ -260,6 +260,8 @@ class SchemaBuilder
             $schema->format = $format->format;
         }
 
+        $regexPatterns = [];
+
         foreach ($field->constraints as $constraint) {
             if ($constraint instanceof Assert\Length) {
                 if (null !== $constraint->min) {
@@ -300,8 +302,17 @@ class SchemaBuilder
             }
 
             if ($constraint instanceof Assert\Regex && null !== ($pattern = $constraint->getHtmlPattern())) {
-                $schema->pattern = $pattern;
+                $regexPatterns[] = $pattern;
             }
+        }
+
+        if (1 === count($regexPatterns)) {
+            $schema->pattern = $regexPatterns[0];
+        } elseif (count($regexPatterns) > 1) {
+            $schema->pattern = implode('', array_map(
+                static fn (string $p): string => '(?='.$p.')',
+                $regexPatterns
+            )).'.*';
         }
     }
 
