@@ -14,7 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @phpstan-import-type GroupReturnValue from GroupProviderInterface
  *
- * @phpstan-type ValidateWithGroupsClosure \Closure(TGroupProvider, TDto, Request): GroupReturnValue
+ * @phpstan-type ValidateWithGroupsClosureFull \Closure(TGroupProvider, TDto, Request): GroupReturnValue
+ * @phpstan-type ValidateWithGroupsClosureProviderDto \Closure(TGroupProvider, TDto): GroupReturnValue
+ * @phpstan-type ValidateWithGroupsClosureProviderOnly \Closure(TGroupProvider): GroupReturnValue
+ * @phpstan-type ValidateWithGroupsClosure ValidateWithGroupsClosureFull|ValidateWithGroupsClosureProviderDto|ValidateWithGroupsClosureProviderOnly
  */
 readonly class ValidateWithGroups
 {
