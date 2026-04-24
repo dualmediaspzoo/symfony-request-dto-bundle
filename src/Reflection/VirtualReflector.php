@@ -51,7 +51,8 @@ class VirtualReflector
                 $type,
                 $attribute->bag,
                 $attribute->input,
-                $constraints
+                $constraints,
+                description: $attribute->description
             );
         }
 
