@@ -30,7 +30,8 @@ readonly class Field
         public string|Dynamic|Literal $input,
         public Type|\Closure $type = new BuiltinType(TypeIdentifier::STRING),
         public array|Constraint $constraints = [],
-        public BagEnum|null $bag = null
+        public BagEnum|null $bag = null,
+        public string|null $description = null
     ) {
     }
 }
