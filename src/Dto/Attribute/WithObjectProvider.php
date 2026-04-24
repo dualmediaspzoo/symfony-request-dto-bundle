@@ -17,12 +17,17 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  *
  * @phpstan-import-type MetaFindModel from ProviderInterface
  * @phpstan-import-type FoundReturnType from ProviderInterface
+ *
+ * @phpstan-type CustomProviderClosureFull \Closure(TProvider, array<string, mixed>, list<MetaFindModel>): FoundReturnType
+ * @phpstan-type CustomProviderClosureCriteria \Closure(TProvider, array<string, mixed>): FoundReturnType
+ * @phpstan-type CustomProviderClosureProviderOnly \Closure(TProvider): FoundReturnType
+ * @phpstan-type CustomProviderClosure CustomProviderClosureFull|CustomProviderClosureCriteria|CustomProviderClosureProviderOnly
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 readonly class WithObjectProvider
 {
     /**
-     * @param \Closure(TProvider, array<string, mixed>, list<MetaFindModel>): FoundReturnType $closure
+     * @param CustomProviderClosure $closure
      */
     public function __construct(
         public \Closure $closure
