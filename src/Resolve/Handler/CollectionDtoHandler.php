@@ -48,9 +48,7 @@ class CollectionDtoHandler implements FieldHandlerInterface
         /** @var class-string<AbstractDto> $fqcn */
         $fqcn = TypeInfoUtils::getCollectionValueClassName($meta->type);
         $childBag = $meta->bag ?? $defaultBag;
-        $childSegments = '' !== ($realPath = $meta->getRealPath())
-            ? [...$prefix, $realPath]
-            : $prefix;
+        $childSegments = [...$prefix, ...$meta->getRealPathSegments()];
 
         $children = TypeInfoUtils::isDoctrineCollection($meta->type)
             ? new ArrayCollection()

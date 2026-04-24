@@ -30,7 +30,7 @@ class PropertyResolver
         array $prefix = []
     ): ResolvedValue|null {
         $bag = $property->bag ?? $defaultBag;
-        $segments = [...$prefix, $property->getRealPath()];
+        $segments = [...$prefix, ...$property->getRealPathSegments()];
 
         if (!$accessor->has($bag, $segments)) {
             return null;

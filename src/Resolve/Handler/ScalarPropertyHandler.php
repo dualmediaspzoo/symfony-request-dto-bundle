@@ -46,7 +46,7 @@ class ScalarPropertyHandler implements FieldHandlerInterface
             return false;
         }
 
-        $validationPath = Util::buildValidationPath([...$prefix, $meta->getRealPath()]);
+        $validationPath = Util::buildValidationPath([...$prefix, ...$meta->getRealPathSegments()]);
 
         // collect phases innermost-first (inner validates before outer)
         $phases = [];

@@ -54,9 +54,7 @@ class SingleDtoHandler implements FieldHandlerInterface
         $child->setParentDto($dto);
         $dto->{$name} = $child;
 
-        $childPrefix = '' !== ($realPath = $meta->getRealPath())
-            ? [...$prefix, $realPath]
-            : $prefix;
+        $childPrefix = [...$prefix, ...$meta->getRealPathSegments()];
 
         return $this->extractor->extract(
             $childMetadata,

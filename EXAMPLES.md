@@ -171,6 +171,48 @@ class AssertedEntityDto extends AbstractDto
 }
 ```
 
+## Dotted paths
+
+`#[Path(...)]` with dots walks the request array segment by segment, so a single
+flat property can reach arbitrarily deep into nested input. The OpenAPI schema
+is also emitted as nested `object` properties matching the path.
+
+```php
+use DualMedia\DtoRequestBundle\Dto\AbstractDto;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Path;
+
+// input:
+// [
+//     'inner' => [
+//         'child' => [
+//             'something' => [
+//                 'here' => 'field data',
+//             ],
+//         ],
+//     ],
+// ]
+//
+// OpenAPI request body:
+// properties:
+//   inner:
+//     type: object
+//     properties:
+//       child:
+//         type: object
+//         properties:
+//           something:
+//             type: object
+//             properties:
+//               here:
+//                 type: string
+
+class DeepDottedPathDto extends AbstractDto
+{
+    #[Path('inner.child.something.here')]
+    public string|null $here = null;
+}
+```
+
 ## Root-level DTOs
 
 `#[AsRoot]` reads the child DTO's fields directly from the parent's request bag,

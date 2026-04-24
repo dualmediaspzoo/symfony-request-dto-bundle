@@ -59,7 +59,7 @@ class Extractor implements ExtractorInterface
                     $anyVisited = true;
                 }
 
-                $normalizedPath = Util::buildNonUniquePropertyPath([...$prefix, $meta->getRealPath()]);
+                $normalizedPath = Util::buildNonUniquePropertyPath([...$prefix, ...$meta->getRealPathSegments()]);
 
                 if (!isset($seen[$normalizedPath])) {
                     $seen[$normalizedPath] = true;

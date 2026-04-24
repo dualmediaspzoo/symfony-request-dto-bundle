@@ -30,4 +30,18 @@ readonly class Dto
     {
         return $this->path ?? $this->name;
     }
+
+    /**
+     * @return list<string>
+     */
+    public function getRealPathSegments(): array
+    {
+        $path = $this->getRealPath();
+
+        if ('' === $path) {
+            return [];
+        }
+
+        return explode('.', $path);
+    }
 }
