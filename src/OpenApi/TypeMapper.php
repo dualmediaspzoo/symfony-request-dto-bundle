@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle\OpenApi;
 
-use DualMedia\DtoRequestBundle\Dto\AbstractDto;
 use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\TypeInfo\Type;

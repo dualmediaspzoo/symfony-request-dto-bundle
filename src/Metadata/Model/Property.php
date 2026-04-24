@@ -36,4 +36,21 @@ readonly class Property
     {
         return $this->path ?? $this->name;
     }
+
+    /**
+     * Splits the real path on `.` so dotted `Path('inner.description')`
+     * resolves as multiple request-bag segments.
+     *
+     * @return list<string>
+     */
+    public function getRealPathSegments(): array
+    {
+        $path = $this->getRealPath();
+
+        if ('' === $path) {
+            return [];
+        }
+
+        return explode('.', $path);
+    }
 }

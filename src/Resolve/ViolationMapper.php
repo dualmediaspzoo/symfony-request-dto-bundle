@@ -97,8 +97,8 @@ class ViolationMapper
             }
 
             if ($field instanceof Dto) {
-                if ('' !== $field->getRealPath()) {
-                    $segments[] = $field->getRealPath();
+                foreach ($field->getRealPathSegments() as $segment) {
+                    $segments[] = $segment;
                 }
 
                 /** @var class-string<AbstractDto>|null $fqcn */
@@ -110,7 +110,9 @@ class ViolationMapper
                 continue;
             }
 
-            $segments[] = $field->getRealPath();
+            foreach ($field->getRealPathSegments() as $segment) {
+                $segments[] = $segment;
+            }
 
             for ($j = $i + 1; $j < $len; ++$j) {
                 $segments[] = $elements[$j][0];

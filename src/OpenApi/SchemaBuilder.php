@@ -154,7 +154,75 @@ class SchemaBuilder
     private function buildPropertyList(
         array $fields
     ): array {
-        return array_map($this->buildProperty(...), $fields);
+        $out = [];
+        /** @var array<string, list<DescribedField>> $groups */
+        $groups = [];
+        /** @var array<string, true> $groupOrder */
+        $groupOrder = [];
+
+        foreach ($fields as $field) {
+            if (!str_contains($field->path, '.')) {
+                foreach ($this->flushGroups($groups, $groupOrder) as $flushed) {
+                    $out[] = $flushed;
+                }
+
+                $out[] = $this->buildProperty($field);
+
+                continue;
+            }
+
+            [$head, $tail] = explode('.', $field->path, 2);
+            $groups[$head][] = new DescribedField(
+                name: $field->name,
+                path: $tail,
+                bag: $field->bag,
+                oaType: $field->oaType,
+                isCollection: $field->isCollection,
+                required: $field->required,
+                nullable: $field->nullable,
+                constraints: $field->constraints,
+                children: $field->children,
+                enumCases: $field->enumCases,
+                meta: $field->meta,
+                description: $field->description,
+            );
+            $groupOrder[$head] = true;
+        }
+
+        foreach ($this->flushGroups($groups, $groupOrder) as $flushed) {
+            $out[] = $flushed;
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param array<string, list<DescribedField>> $groups
+     * @param array<string, true> $groupOrder
+     *
+     * @return list<OA\Property>
+     */
+    private function flushGroups(
+        array &$groups,
+        array &$groupOrder
+    ): array {
+        $out = [];
+
+        foreach ($groupOrder as $head => $_) {
+            $children = $groups[$head];
+            $nested = $this->buildPropertyList($children);
+            $out[] = new OA\Property(
+                property: $head,
+                required: $this->requiredNames($children),
+                properties: $nested,
+                type: 'object',
+            );
+        }
+
+        $groups = [];
+        $groupOrder = [];
+
+        return $out;
     }
 
     private function buildProperty(
@@ -230,11 +298,23 @@ class SchemaBuilder
         array $fields
     ): array {
         $out = [];
+        $seen = [];
 
         foreach ($fields as $field) {
-            if ($field->required) {
-                $out[] = $field->path;
+            if (!$field->required) {
+                continue;
             }
+
+            $head = str_contains($field->path, '.')
+                ? explode('.', $field->path, 2)[0]
+                : $field->path;
+
+            if (isset($seen[$head])) {
+                continue;
+            }
+
+            $seen[$head] = true;
+            $out[] = $head;
         }
 
         return $out;
