@@ -1,6 +1,7 @@
 includes:
   - phpstan-baseline.neon
   - vendor/phpstan/phpstan-strict-rules/rules.neon
+  - vendor/phpstan/phpstan-phpunit/extension.neon
 
 parameters:
   strictRules:
@@ -10,6 +11,65 @@ parameters:
     strictFunctionCalls: true
     dynamicCallOnStaticMethod: true
   reportUnmatchedIgnoredErrors: false
+  treatPhpDocTypesAsCertain: false
   level: 9
   paths:
     - src
+    - tests
+  ignoreErrors:
+    # Tests commonly access fields on nullable resolved DTOs / memoizer lookups;
+    # the nullability is guarded by preceding assertions that PHPStan can't trace.
+    - identifier: property.nonObject
+      path: tests/*
+    - identifier: method.nonObject
+      path: tests/*
+    - identifier: property.notFound
+      path: tests/*
+    # Defensive assertInstanceOf / assertSame on values whose native type already
+    # matches — redundant in PHPStan's view but intentional in tests.
+    - identifier: staticMethod.alreadyNarrowedType
+      path: tests/*
+    # PHPUnit's fluent mock chain returns `InvocationStubber` (interface) which
+    # doesn't declare `with()`; the concrete handler does.
+    -
+      message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber::with\(\)\.$#'
+      identifier: method.notFound
+      path: tests/*
+    # Test-only DI fakes use ServiceLocator([]) / ServiceLocator(callables) that
+    # PHPStan infers as <mixed>; widening the production signatures would be worse.
+    -
+      message: '#ServiceLocator<DualMedia\\DtoRequestBundle\\#'
+      identifier: argument.type
+      path: tests/*
+    -
+      message: '#ServiceLocator<object>, Symfony\\Component\\DependencyInjection\\ServiceLocator<mixed> given#'
+      identifier: argument.type
+      path: tests/*
+    - identifier: missingType.generics
+      path: tests/*
+    # Test closures accept mixed (coercer signature) but cast the values they feed in themselves.
+    - identifier: cast.int
+      path: tests/*
+    - identifier: cast.string
+      path: tests/*
+    # Tests that intentionally supply a non-existent class literal to prove
+    # reflection failure paths — the @var narrowing is the point of the test.
+    - identifier: varTag.nativeType
+      path: tests/*
+    # Intentionally typed as list<class-string<AbstractDto>> by the test fixture
+    # even though the literal strings don't class_exist.
+    -
+      message: "#dtoClassList of class DualMedia\\\\DtoRequestBundle\\\\Type\\\\DtoCacheWarmer constructor expects list<class-string<#"
+      identifier: argument.type
+      path: tests/Unit/Type/DtoCacheWarmerTest.php
+    # KernelAccessTrait returns a templated T from container->get() (object).
+    -
+      message: '#getService\(\) should return T but returns object#'
+      identifier: return.type
+      path: tests/Trait/KernelAccessTrait.php
+    # Doctrine entity id is assigned by the ORM; PHPStan can't see that.
+    - identifier: property.unusedType
+      path: tests/Fixture/Entity/*
+    # MicroKernelTrait invokes these via reflection.
+    - identifier: method.unused
+      path: tests/TestKernel.php

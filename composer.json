@@ -41,7 +41,8 @@
     "phpstan/phpstan-strict-rules": "^2.0",
     "jetbrains/phpstorm-attributes": "^1.2",
     "pkly/phpunit-service-create-trait": "^1.0",
-    "phpstan/phpdoc-parser": "^2.3"
+    "phpstan/phpdoc-parser": "^2.3",
+    "phpstan/phpstan-phpunit": "^2.0"
   },
   "conflict": {
     "nelmio/api-doc-bundle": "<5",

@@ -64,6 +64,7 @@ class EntityProviderRegistryTest extends TestCase
             ->willReturnCallback(static fn (string $class) => match ($class) {
                 \stdClass::class => $repo1,
                 \ArrayObject::class => $repo2,
+                default => throw new \LogicException('Unexpected class: '.$class),
             });
 
         $first = $this->registry->get(\stdClass::class);

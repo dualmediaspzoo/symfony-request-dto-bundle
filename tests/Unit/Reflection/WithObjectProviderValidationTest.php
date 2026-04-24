@@ -11,6 +11,7 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\WithObjectProvider;
 use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
 use DualMedia\DtoRequestBundle\Reflection\MetaReflector;
 use DualMedia\DtoRequestBundle\Reflection\Reflector;
+use DualMedia\DtoRequestBundle\Provider\Interface\ProviderInterface;
 use DualMedia\DtoRequestBundle\Reflection\VirtualReflector;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -59,7 +60,10 @@ class WithObjectProviderValidationTest extends TestCase
     }
 }
 
-class UnregisteredService
+/**
+ * @implements ProviderInterface<\stdClass>
+ */
+class UnregisteredService implements ProviderInterface
 {
 }
 
@@ -67,6 +71,6 @@ class WithObjectProviderUnregisteredFixture extends AbstractDto
 {
     #[FindOneBy]
     #[Field('id', 'inputId')]
-    #[WithObjectProvider(static function (UnregisteredService $svc, array $criteria, array $meta) { return null; })]
+    #[WithObjectProvider(static function (UnregisteredService $svc, array $criteria, array $meta): \stdClass|null { return null; })]
     public \stdClass|null $thing = null;
 }

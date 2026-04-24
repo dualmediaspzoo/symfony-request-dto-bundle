@@ -12,6 +12,8 @@ use DualMedia\DtoRequestBundle\Resolve\DtoResolver;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\DeepDottedPathDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\DottedPathDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
+use OpenApi\Annotations\MediaType;
+use OpenApi\Annotations\Schema;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -62,7 +64,12 @@ class DottedPathDtoTest extends KernelTestCase
         $body = $builder->buildRequestBody($described);
         static::assertNotNull($body);
 
-        $schema = $body->content[0]->schema;
+        $content = $body->content;
+        static::assertIsArray($content);
+        $media = $content[0];
+        static::assertInstanceOf(MediaType::class, $media);
+        $schema = $media->schema;
+        static::assertInstanceOf(Schema::class, $schema);
         $properties = $schema->properties;
 
         static::assertCount(1, $properties);
@@ -97,7 +104,12 @@ class DottedPathDtoTest extends KernelTestCase
         $body = $builder->buildRequestBody($described);
         static::assertNotNull($body);
 
-        $schema = $body->content[0]->schema;
+        $content = $body->content;
+        static::assertIsArray($content);
+        $media = $content[0];
+        static::assertInstanceOf(MediaType::class, $media);
+        $schema = $media->schema;
+        static::assertInstanceOf(Schema::class, $schema);
 
         // inner -> child -> something -> here
         static::assertCount(1, $schema->properties);

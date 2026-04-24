@@ -12,7 +12,7 @@ use DualMedia\DtoRequestBundle\Provider\Interface\ProviderInterface;
 class TestObjectProvider implements ProviderInterface
 {
     /**
-     * @var array<string, \stdClass>
+     * @var array<int|string, \stdClass>
      */
     public array $store = [];
 
