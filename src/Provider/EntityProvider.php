@@ -11,7 +11,6 @@ use DualMedia\DtoRequestBundle\Metadata\Model\AsDoctrineReference;
 use DualMedia\DtoRequestBundle\Metadata\Model\FindBy;
 use DualMedia\DtoRequestBundle\Metadata\Model\Limit;
 use DualMedia\DtoRequestBundle\Metadata\Model\Offset;
-use DualMedia\DtoRequestBundle\Metadata\Model\OrderBy;
 use DualMedia\DtoRequestBundle\MetadataUtils;
 use DualMedia\DtoRequestBundle\Provider\Interface\StandardObjectProviderInterface;
 
@@ -40,11 +39,7 @@ class EntityProvider implements StandardObjectProviderInterface
         $find = MetadataUtils::single(FindBy::class, $metadata);
         assert(null !== $find);
 
-        $orderBy = [];
-
-        foreach (MetadataUtils::list(OrderBy::class, $metadata) as $item) {
-            $orderBy[$item->field] = $item->order;
-        }
+        $orderBy = MetadataUtils::orderBy($metadata);
 
         $limit = MetadataUtils::single(Limit::class, $metadata)?->count;
         $offset = MetadataUtils::single(Offset::class, $metadata)?->count;

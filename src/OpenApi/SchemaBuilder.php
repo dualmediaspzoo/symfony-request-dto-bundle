@@ -154,20 +154,14 @@ class SchemaBuilder
     private function buildPropertyList(
         array $fields
     ): array {
-        $out = [];
+        // Collect every dotted field's tail-rewritten child by its head segment,
+        // so fields that share a prefix aggregate into a single nested object
+        // regardless of whether non-dotted siblings appear between them.
         /** @var array<string, list<DescribedField>> $groups */
         $groups = [];
-        /** @var array<string, true> $groupOrder */
-        $groupOrder = [];
 
         foreach ($fields as $field) {
             if (!str_contains($field->path, '.')) {
-                foreach ($this->flushGroups($groups, $groupOrder) as $flushed) {
-                    $out[] = $flushed;
-                }
-
-                $out[] = $this->buildProperty($field);
-
                 continue;
             }
 
@@ -186,41 +180,33 @@ class SchemaBuilder
                 meta: $field->meta,
                 description: $field->description,
             );
-            $groupOrder[$head] = true;
         }
 
-        foreach ($this->flushGroups($groups, $groupOrder) as $flushed) {
-            $out[] = $flushed;
-        }
-
-        return $out;
-    }
-
-    /**
-     * @param array<string, list<DescribedField>> $groups
-     * @param array<string, true> $groupOrder
-     *
-     * @return list<OA\Property>
-     */
-    private function flushGroups(
-        array &$groups,
-        array &$groupOrder
-    ): array {
         $out = [];
+        $emittedHeads = [];
 
-        foreach ($groupOrder as $head => $_) {
+        foreach ($fields as $field) {
+            if (!str_contains($field->path, '.')) {
+                $out[] = $this->buildProperty($field);
+
+                continue;
+            }
+
+            $head = explode('.', $field->path, 2)[0];
+
+            if (isset($emittedHeads[$head])) {
+                continue;
+            }
+
+            $emittedHeads[$head] = true;
             $children = $groups[$head];
-            $nested = $this->buildPropertyList($children);
             $out[] = new OA\Property(
                 property: $head,
                 required: $this->requiredNames($children),
-                properties: $nested,
+                properties: $this->buildPropertyList($children),
                 type: 'object',
             );
         }
-
-        $groups = [];
-        $groupOrder = [];
 
         return $out;
     }
