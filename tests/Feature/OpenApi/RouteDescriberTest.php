@@ -102,7 +102,7 @@ class RouteDescriberTest extends KernelTestCase
 
     public function testEnumFieldExposesCases(): void
     {
-        $schema = $this->operation->requestBody->content[0]->schema;
+        $schema = $this->getBodySchema();
         $status = $this->findProperty($schema->properties, 'status');
 
         static::assertInstanceOf(OA\Property::class, $status);
@@ -113,7 +113,7 @@ class RouteDescriberTest extends KernelTestCase
 
     public function testFileFieldCarriesBase64Example(): void
     {
-        $schema = $this->operation->requestBody->content[0]->schema;
+        $schema = $this->getBodySchema();
         $avatar = $this->findProperty($schema->properties, 'avatar');
 
         static::assertInstanceOf(OA\Property::class, $avatar);
@@ -125,7 +125,7 @@ class RouteDescriberTest extends KernelTestCase
 
     public function testMultipleRegexConstraintsCombinedOnPattern(): void
     {
-        $schema = $this->operation->requestBody->content[0]->schema;
+        $schema = $this->getBodySchema();
         $password = $this->findProperty($schema->properties, 'password');
 
         static::assertInstanceOf(OA\Property::class, $password);
@@ -278,6 +278,19 @@ class RouteDescriberTest extends KernelTestCase
         }
 
         return null;
+    }
+
+    private function getBodySchema(): OA\Schema
+    {
+        $body = $this->operation->requestBody;
+        static::assertInstanceOf(OA\RequestBody::class, $body);
+        static::assertIsArray($body->content);
+        $media = $body->content[0];
+        static::assertInstanceOf(OA\MediaType::class, $media);
+        $schema = $media->schema;
+        static::assertInstanceOf(OA\Schema::class, $schema);
+
+        return $schema;
     }
 
     /**
