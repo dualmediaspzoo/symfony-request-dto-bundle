@@ -106,7 +106,8 @@ class RuntimeResolve implements RuntimeResolveInterface
             meta: $classNeedsResolve ? [] : $mainDto->meta,
             validationGroupsServiceId: $mainDto->validationGroupsServiceId,
             requiresRuntimeResolve: $classNeedsResolve,
-            childRequiresRuntimeResolve: $anyChildFlagged
+            childRequiresRuntimeResolve: $anyChildFlagged,
+            defaultBag: $mainDto->defaultBag,
         );
     }
 
@@ -144,7 +145,8 @@ class RuntimeResolve implements RuntimeResolveInterface
             fields: $fields,
             constraints: $classConstraints,
             meta: $classMeta,
-            validationGroupsServiceId: $mainDto->validationGroupsServiceId
+            validationGroupsServiceId: $mainDto->validationGroupsServiceId,
+            defaultBag: $mainDto->defaultBag,
         );
     }
 
