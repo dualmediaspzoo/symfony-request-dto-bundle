@@ -90,11 +90,13 @@ class SchemaBuilder
      *
      * @param list<DescribedField> $fields
      * @param list<OA\Parameter> $out
+     * @param array<string, true> $seen tracks emitted `in:name` pairs to dedupe
      */
     private function collectParameters(
         array $fields,
         string $routePath,
-        array &$out
+        array &$out,
+        array &$seen = []
     ): void {
         foreach ($fields as $field) {
             $in = $field->bag->parameterLocation();
@@ -104,7 +106,7 @@ class SchemaBuilder
             }
 
             if ('object' === $field->oaType) {
-                $this->collectParameters($field->children, $routePath, $out);
+                $this->collectParameters($field->children, $routePath, $out, $seen);
 
                 continue;
             }
@@ -113,6 +115,13 @@ class SchemaBuilder
                 continue;
             }
 
+            $key = $in.':'.$field->path;
+
+            if (isset($seen[$key])) {
+                continue;
+            }
+
+            $seen[$key] = true;
             $out[] = $this->buildParameter($field, $in);
         }
     }
@@ -183,10 +192,18 @@ class SchemaBuilder
         }
 
         $out = [];
-        $emittedHeads = [];
+        // Dedupe by emitted property name — multiple DTO fields can legitimately
+        // share a top-level name (e.g. a FindBy field-id plus a Path alias to the
+        // same key), but Swagger rejects duplicates. First occurrence wins.
+        $seenNames = [];
 
         foreach ($fields as $field) {
             if (!str_contains($field->path, '.')) {
+                if (isset($seenNames[$field->path])) {
+                    continue;
+                }
+
+                $seenNames[$field->path] = true;
                 $out[] = $this->buildProperty($field);
 
                 continue;
@@ -194,11 +211,11 @@ class SchemaBuilder
 
             $head = explode('.', $field->path, 2)[0];
 
-            if (isset($emittedHeads[$head])) {
+            if (isset($seenNames[$head])) {
                 continue;
             }
 
-            $emittedHeads[$head] = true;
+            $seenNames[$head] = true;
             $children = $groups[$head];
             $out[] = new OA\Property(
                 property: $head,
