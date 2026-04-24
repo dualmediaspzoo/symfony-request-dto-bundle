@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DualMedia\DtoRequestBundle;
 
+use DualMedia\DtoRequestBundle\Metadata\Model\OrderBy;
+
 class MetadataUtils
 {
     private function __construct()
@@ -57,37 +59,23 @@ class MetadataUtils
             )
         );
     }
-}
 
-//    public function fixPropertyPath(
-//        PropertyPath $propertyPath,
-//        PropertyPathBuilder|null $builder = null,
-//        int $index = 0
-//    ): string {
-//        $builder ??= new PropertyPathBuilder($propertyPath);
-//        $jump = $this->isCollection() ? 2 : 1; // array index counts as a position in path
-//
-//        try {
-//            $next = $propertyPath->getElement($jump);
-//        } catch (OutOfBoundsException) {
-//            $next = null;
-//        }
-//
-//        if (null !== ($find = $this->getFindAttribute())) {
-//            $builder->replaceByProperty(
-//                $index,
-//                $find->getErrorPath() ?? $find->getFirstNonDynamicField() ?? $this->getName()
-//            );
-//        } elseif (null !== $this->getPath()) {
-//            $builder->replaceByProperty($index, $this->getPath());
-//        }
-//        $index += $jump;
-//
-//        // we want to exit if there's no next jump, we're hitting the index or the next element does not exist (custom path)
-//        if (null === $next || $index === $builder->getLength() || !isset($this[$next])) {
-//            return (string)$builder;
-//        }
-//
-//        // we need to jump to the next property, which is always here as the actual prop name
-//        return $this[$next]->fixPropertyPath($propertyPath, $builder, $index);
-//    }
+    /**
+     * Helper method for converting {@link OrderBy} metadata to Doctrine fields.
+     *
+     * @param list<object> $meta
+     *
+     * @return array<string, string>
+     */
+    public static function orderBy(
+        array $meta
+    ): array {
+        $orderBy = [];
+
+        foreach (MetadataUtils::list(OrderBy::class, $meta) as $item) {
+            $orderBy[$item->field] = $item->order;
+        }
+
+        return $orderBy;
+    }
+}

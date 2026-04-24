@@ -134,7 +134,6 @@ class RouteDescriberTest extends KernelTestCase
         static::assertStringContainsString('[0-9!@#', $password->pattern);
         static::assertStringContainsString('[a-z]', $password->pattern);
         static::assertStringContainsString('[A-Z]', $password->pattern);
-        print_r($password->pattern);
     }
 
     public function testNonDtoControllerProducesNoChanges(): void
