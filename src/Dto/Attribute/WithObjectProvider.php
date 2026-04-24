@@ -12,13 +12,17 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  *
  * Provider will be resolved by autowiring by FQCN or {@link Autowire} on argument.
  *
- * @phpstan-import-type CustomProviderClosure from ProviderInterface
+ * @template T of object
+ * @template TProvider of ProviderInterface<T>
+ *
+ * @phpstan-import-type MetaFindModel from ProviderInterface
+ * @phpstan-import-type FoundReturnType from ProviderInterface
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 readonly class WithObjectProvider
 {
     /**
-     * @param CustomProviderClosure $closure
+     * @param \Closure(TProvider, array<string, mixed>, list<MetaFindModel>): FoundReturnType $closure
      */
     public function __construct(
         public \Closure $closure
