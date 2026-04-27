@@ -135,12 +135,13 @@ class SchemaBuilder
     ): OA\Parameter {
         if ($field->isCollection) {
             $items = new OA\Items(type: $field->oaType);
-            $this->applyConstraints($items, $field);
+            $this->applyConstraints($items, $field, $this->itemConstraints($field->constraints));
 
             $schema = new OA\Schema(
                 type: 'array',
                 items: $items,
             );
+            $this->applyContainerArrayConstraints($schema, $field->constraints);
         } else {
             $schema = new OA\Schema(type: $field->oaType);
             $this->applyConstraints($schema, $field);
@@ -268,7 +269,7 @@ class SchemaBuilder
 
         if ($field->isCollection) {
             $items = new OA\Items(type: $field->oaType);
-            $this->applyConstraints($items, $field);
+            $this->applyConstraints($items, $field, $this->itemConstraints($field->constraints));
 
             $property = new OA\Property(
                 property: $field->path,
@@ -276,6 +277,7 @@ class SchemaBuilder
                 type: 'array',
                 items: $items,
             );
+            $this->applyContainerArrayConstraints($property, $field->constraints);
         } else {
             $property = new OA\Property(
                 property: $field->path,
@@ -325,10 +327,15 @@ class SchemaBuilder
 
     /**
      * Map validator constraints + carried metadata onto an OpenAPI schema node.
+     *
+     * @param list<\Symfony\Component\Validator\Constraint>|null $constraintsOverride if non-null,
+     *        used in place of `$field->constraints` (e.g. for items inside a collection where
+     *        Assert\All has been unwrapped and Assert\Count stripped)
      */
     private function applyConstraints(
         OA\Schema|OA\Property|OA\Items $schema,
-        DescribedField $field
+        DescribedField $field,
+        array|null $constraintsOverride = null
     ): void {
         if ([] !== $field->enumCases) {
             $schema->enum = $field->enumCases;
@@ -345,7 +352,7 @@ class SchemaBuilder
 
         $regexPatterns = [];
 
-        foreach ($field->constraints as $constraint) {
+        foreach ($constraintsOverride ?? $field->constraints as $constraint) {
             if ($constraint instanceof Assert\Length) {
                 if (null !== $constraint->min) {
                     $schema->minLength = $constraint->min;
@@ -397,6 +404,68 @@ class SchemaBuilder
                 $regexPatterns
             )).'.*';
         }
+    }
+
+    /**
+     * Apply container-only constraints (Assert\Count → minItems/maxItems) to
+     * the outer array schema. Item-level constraints are handled separately.
+     *
+     * @param list<\Symfony\Component\Validator\Constraint> $constraints
+     */
+    private function applyContainerArrayConstraints(
+        OA\Schema|OA\Property $schema,
+        array $constraints
+    ): void {
+        foreach ($constraints as $constraint) {
+            if (!$constraint instanceof Assert\Count) {
+                continue;
+            }
+
+            if (null !== $constraint->min) {
+                $schema->minItems = $constraint->min;
+            }
+
+            if (null !== $constraint->max) {
+                $schema->maxItems = $constraint->max;
+            }
+        }
+    }
+
+    /**
+     * Project a collection field's constraint list onto its element schema:
+     * drop array-container constraints (Assert\Count) and unwrap Assert\All
+     * so its inner constraints are applied to each item directly.
+     *
+     * @param list<\Symfony\Component\Validator\Constraint> $constraints
+     *
+     * @return list<\Symfony\Component\Validator\Constraint>
+     */
+    private function itemConstraints(
+        array $constraints
+    ): array {
+        $out = [];
+
+        foreach ($constraints as $constraint) {
+            if ($constraint instanceof Assert\Count) {
+                continue;
+            }
+
+            if ($constraint instanceof Assert\All) {
+                $inner = is_array($constraint->constraints)
+                    ? $constraint->constraints
+                    : [$constraint->constraints];
+
+                foreach ($inner as $innerConstraint) {
+                    $out[] = $innerConstraint;
+                }
+
+                continue;
+            }
+
+            $out[] = $constraint;
+        }
+
+        return $out;
     }
 
     private function toNumeric(
