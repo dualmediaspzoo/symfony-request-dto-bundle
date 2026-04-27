@@ -72,9 +72,9 @@ class CollectionConstraintsTest extends KernelTestCase
 
         // Both array fields carry Count(min: 1, max: 500); both must be required.
         static::assertArrayHasKey('directIds[]', $byName);
-        static::assertTrue($byName['directIds[]']->required, 'plain DTO array with Count(min>=1) must be required');
+        static::assertTrue($byName['directIds[]']->required);
 
         static::assertArrayHasKey('item_id[]', $byName);
-        static::assertTrue($byName['item_id[]']->required, 'virtual Field array with Count(min>=1) must be required');
+        static::assertTrue($byName['item_id[]']->required);
     }
 }
