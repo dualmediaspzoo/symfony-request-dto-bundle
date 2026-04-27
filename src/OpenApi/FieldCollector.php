@@ -147,15 +147,17 @@ class FieldCollector
             $oaType = 'string';
         }
 
+        $constraints = $this->filterDefaultGroupConstraints($property->constraints);
+
         return new DescribedField(
             name: $property->name,
             path: $property->getRealPath(),
             bag: $this->pickBag($property->bag, $type, $defaultBag),
             oaType: $oaType,
             isCollection: $isCollection,
-            required: $this->isRequired($property->constraints),
-            nullable: !$this->isRequired($property->constraints),
-            constraints: $property->constraints,
+            required: $this->isRequired($constraints),
+            nullable: !$this->isRequired($constraints),
+            constraints: $constraints,
             children: [],
             enumCases: $this->resolveEnumCases($property),
             meta: $property->meta,
@@ -184,15 +186,17 @@ class FieldCollector
             }
         }
 
+        $constraints = $this->filterDefaultGroupConstraints($dto->constraints);
+
         return new DescribedField(
             name: $dto->name,
             path: $dto->getRealPath(),
             bag: $dto->bag ?? $defaultBag,
             oaType: 'object',
             isCollection: $isCollection,
-            required: $this->isRequired($dto->constraints),
-            nullable: !$this->isRequired($dto->constraints),
-            constraints: $dto->constraints,
+            required: $this->isRequired($constraints),
+            nullable: !$this->isRequired($constraints),
+            constraints: $constraints,
             children: $children,
             enumCases: [],
             meta: $dto->meta,
@@ -238,6 +242,33 @@ class FieldCollector
         }
 
         return $default;
+    }
+
+    /**
+     * Keep only constraints whose validation groups apply to the documented
+     * "default" payload — i.e. either no groups configured or one of them is
+     * the standard `Default` group. Symfony defaults a Constraint's groups to
+     * `['Default']` at construction unless the user passed something explicit,
+     * so a constraint with `groups: ['admin']` (and no `Default`) is excluded.
+     *
+     * @param list<Constraint> $constraints
+     *
+     * @return list<Constraint>
+     */
+    private function filterDefaultGroupConstraints(
+        array $constraints
+    ): array {
+        $out = [];
+
+        foreach ($constraints as $constraint) {
+            $groups = $constraint->groups ?? [];
+
+            if ([] === $groups || in_array(Constraint::DEFAULT_GROUP, $groups, true)) {
+                $out[] = $constraint;
+            }
+        }
+
+        return $out;
     }
 
     /**
