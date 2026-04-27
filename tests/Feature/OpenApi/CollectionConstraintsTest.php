@@ -54,4 +54,27 @@ class CollectionConstraintsTest extends KernelTestCase
         static::assertSame('integer', $virtual->items->type);
         static::assertSame(0, $virtual->items->minimum);
     }
+
+    public function testCountWithMinAtLeastOneMakesFieldRequired(): void
+    {
+        $collector = static::getService(FieldCollector::class);
+        $builder = static::getService(SchemaBuilder::class);
+
+        $described = $collector->collect(CollectionConstraintsDto::class, BagEnum::Request);
+        static::assertNotNull($described);
+
+        $params = $builder->buildParameters($described, '/whatever');
+        $byName = [];
+
+        foreach ($params as $p) {
+            $byName[(string)$p->name] = $p;
+        }
+
+        // Both array fields carry Count(min: 1, max: 500); both must be required.
+        static::assertArrayHasKey('directIds[]', $byName);
+        static::assertTrue($byName['directIds[]']->required, 'plain DTO array with Count(min>=1) must be required');
+
+        static::assertArrayHasKey('item_id[]', $byName);
+        static::assertTrue($byName['item_id[]']->required, 'virtual Field array with Count(min>=1) must be required');
+    }
 }

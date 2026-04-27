@@ -21,6 +21,7 @@ use DualMedia\DtoRequestBundle\Type\TypeInfoUtils;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -249,6 +250,7 @@ class FieldCollector
             $result = match (true) {
                 $constraint instanceof NotNull => true,
                 $constraint instanceof NotBlank => !$constraint->allowNull,
+                $constraint instanceof Count => null !== $constraint->min && $constraint->min >= 1,
                 default => null,
             };
 
