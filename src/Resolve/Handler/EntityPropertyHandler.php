@@ -76,6 +76,10 @@ class EntityPropertyHandler implements FieldHandlerInterface
         assert(null !== $entityClass);
         /** @var class-string $entityClass */
         $fields = [];
+        // A `#[Bag]` on the FindBy parent property scopes its virtual fields'
+        // input bag (e.g. routing them to attributes); inherit it when the
+        // virtual itself didn't declare one.
+        $virtualDefaultBag = $meta->bag ?? $defaultBag;
 
         foreach ($meta->virtual as $target => $virtualMeta) {
             if ($virtualMeta instanceof Dynamic
@@ -97,7 +101,7 @@ class EntityPropertyHandler implements FieldHandlerInterface
                 continue;
             }
 
-            $resolved = $this->propertyResolver->resolve($virtualMeta, $accessor, $defaultBag, $prefix);
+            $resolved = $this->propertyResolver->resolve($virtualMeta, $accessor, $virtualDefaultBag, $prefix);
 
             if (null !== $resolved) {
                 $raw = $resolved->raw;

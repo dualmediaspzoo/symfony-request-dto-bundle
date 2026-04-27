@@ -65,7 +65,8 @@ return static function (ContainerConfigurator $configurator) {
         ->arg('$validator', new Reference(\DualMedia\DtoRequestBundle\Coercer\SupportValidator::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class)
-        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class));
+        ->arg('$propertyFactory', new Reference(\DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory::class))
+        ->arg('$metaReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\MetaReflector::class));
 
     $services->set(\DualMedia\DtoRequestBundle\Reflection\Reflector::class)
         ->arg('$virtualReflector', new Reference(\DualMedia\DtoRequestBundle\Reflection\VirtualReflector::class))

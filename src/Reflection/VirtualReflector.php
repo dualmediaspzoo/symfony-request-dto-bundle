@@ -13,7 +13,8 @@ use DualMedia\DtoRequestBundle\Reflection\Factory\PropertyFactory;
 class VirtualReflector
 {
     public function __construct(
-        private readonly PropertyFactory $propertyFactory
+        private readonly PropertyFactory $propertyFactory,
+        private readonly MetaReflector $metaReflector
     ) {
     }
 
@@ -52,6 +53,7 @@ class VirtualReflector
                 $attribute->bag,
                 $attribute->input,
                 $constraints,
+                meta: $this->metaReflector->meta($attribute->meta),
                 description: $attribute->description
             );
         }

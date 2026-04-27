@@ -50,7 +50,7 @@ class WithObjectProviderValidationTest extends TestCase
         );
 
         return new Reflector(
-            virtualReflector: new VirtualReflector(new PropertyFactory($supportValidator)),
+            virtualReflector: new VirtualReflector(new PropertyFactory($supportValidator), new MetaReflector()),
             propertyFactory: new PropertyFactory($supportValidator),
             metaReflector: new MetaReflector(),
             typeResolver: TypeResolver::create(),
