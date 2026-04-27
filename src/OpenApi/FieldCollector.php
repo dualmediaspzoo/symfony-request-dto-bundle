@@ -134,6 +134,18 @@ class FieldCollector
         $isCollection = TypeInfoUtils::isCollection($type);
         $oaType = TypeMapper::toOpenApi($type);
 
+        // FromKey switches the value space from the backing type to case names,
+        // so the schema must report `string` regardless of whether the enum is
+        // int-backed or non-backed.
+        $innerForEnumCheck = $isCollection
+            ? (TypeInfoUtils::getCollectionValueType($type) ?? $type)
+            : $type;
+
+        if (MetadataUtils::exists(FromKey::class, $property->meta)
+            && TypeMapper::isEnum($innerForEnumCheck)) {
+            $oaType = 'string';
+        }
+
         return new DescribedField(
             name: $property->name,
             path: $property->getRealPath(),
@@ -195,13 +207,17 @@ class FieldCollector
         BagEnum $defaultBag
     ): array {
         $out = [];
+        // A `#[Bag]` on the FindBy parent property scopes its virtual fields
+        // (e.g. routing them to path parameters); inherit it as the per-virtual
+        // default so an unqualified virtual doesn't fall back to the DTO bag.
+        $virtualDefaultBag = $property->bag ?? $defaultBag;
 
         foreach ($property->virtual as $virtual) {
             if (!$virtual instanceof Property) {
                 continue;
             }
 
-            $out[] = $this->describeProperty($virtual, $defaultBag);
+            $out[] = $this->describeProperty($virtual, $virtualDefaultBag);
         }
 
         return $out;

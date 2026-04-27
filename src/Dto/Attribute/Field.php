@@ -22,7 +22,9 @@ readonly class Field
     /**
      * @param Type|\Closure(): Type $type
      * @param list<Constraint>|Constraint $constraints
-     *
+     * @param list<object> $meta attribute instances forwarded to the virtual
+     *                          property's metadata (e.g. `new FromKey()`,
+     *                          `new Format('Y-m-d')`, `new WithAllowedEnum([...])`)
      * @see TypeUtils for repeatable type closures
      */
     public function __construct(
@@ -31,7 +33,8 @@ readonly class Field
         public Type|\Closure $type = new BuiltinType(TypeIdentifier::STRING),
         public array|Constraint $constraints = [],
         public BagEnum|null $bag = null,
-        public string|null $description = null
+        public string|null $description = null,
+        public array $meta = []
     ) {
     }
 }

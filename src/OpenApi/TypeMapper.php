@@ -71,6 +71,24 @@ final class TypeMapper
         return $backed;
     }
 
+    public static function isEnum(
+        Type $type
+    ): bool {
+        $isEnum = false;
+
+        $type->isSatisfiedBy(static function (Type $t) use (&$isEnum): bool {
+            if ($t instanceof EnumType) {
+                $isEnum = true;
+
+                return true;
+            }
+
+            return false;
+        });
+
+        return $isEnum;
+    }
+
     /**
      * @return class-string<\BackedEnum>|null
      */
