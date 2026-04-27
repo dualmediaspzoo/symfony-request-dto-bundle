@@ -43,11 +43,17 @@ class SchemaBuilder
             return null;
         }
 
-        $schema = new OA\Schema(
-            required: $this->requiredNames($bodyFields),
-            properties: $this->buildPropertyList($bodyFields),
-            type: 'object',
-        );
+        // A single `#[AsRoot]` (or `#[Path('')]`) field IS the body schema —
+        // do not wrap it in a parent object with an empty-string-named property.
+        if (1 === count($bodyFields) && '' === $bodyFields[0]->path) {
+            $schema = $this->buildRootBodySchema($bodyFields[0]);
+        } else {
+            $schema = new OA\Schema(
+                required: $this->requiredNames($bodyFields),
+                properties: $this->buildPropertyList($bodyFields),
+                type: 'object',
+            );
+        }
 
         return new OA\RequestBody(
             content: [
@@ -57,6 +63,52 @@ class SchemaBuilder
                 ),
             ],
         );
+    }
+
+    /**
+     * Promote an `#[AsRoot]` field's own schema to the body root. Object DTOs
+     * become an `object` schema with their children inlined; collections become
+     * an `array` schema whose items mirror those children (or the leaf type).
+     */
+    private function buildRootBodySchema(
+        DescribedField $field
+    ): OA\Schema {
+        $description = $field->description ?? Generator::UNDEFINED;
+
+        if ('object' === $field->oaType) {
+            if ($field->isCollection) {
+                return new OA\Schema(
+                    description: $description,
+                    type: 'array',
+                    items: new OA\Items(
+                        required: $this->requiredNames($field->children),
+                        properties: $this->buildPropertyList($field->children),
+                        type: 'object',
+                    ),
+                );
+            }
+
+            return new OA\Schema(
+                description: $description,
+                required: $this->requiredNames($field->children),
+                properties: $this->buildPropertyList($field->children),
+                type: 'object',
+            );
+        }
+
+        if ($field->isCollection) {
+            $items = new OA\Items(type: $field->oaType);
+            $this->applyConstraints($items, $field, $this->itemConstraints($field->constraints));
+            $schema = new OA\Schema(description: $description, type: 'array', items: $items);
+            $this->applyContainerArrayConstraints($schema, $field->constraints);
+
+            return $schema;
+        }
+
+        $schema = new OA\Schema(description: $description, type: $field->oaType);
+        $this->applyConstraints($schema, $field);
+
+        return $schema;
     }
 
     /**
