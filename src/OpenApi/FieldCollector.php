@@ -261,7 +261,7 @@ class FieldCollector
         $out = [];
 
         foreach ($constraints as $constraint) {
-            $groups = $constraint->groups ?? [];
+            $groups = $constraint->groups ?? [Constraint::DEFAULT_GROUP];
 
             if ([] === $groups || in_array(Constraint::DEFAULT_GROUP, $groups, true)) {
                 $out[] = $constraint;
