@@ -80,6 +80,7 @@ class EntityPropertyHandler implements FieldHandlerInterface
         // input bag (e.g. routing them to attributes); inherit it when the
         // virtual itself didn't declare one.
         $virtualDefaultBag = $meta->bag ?? $defaultBag;
+        $anyInputVisited = false;
 
         foreach ($meta->virtual as $target => $virtualMeta) {
             if ($virtualMeta instanceof Dynamic
@@ -96,8 +97,6 @@ class EntityPropertyHandler implements FieldHandlerInterface
                     Util::buildValidationPath([...$prefix, $target])
                 );
 
-                $dto->visit($name, $target);
-
                 continue;
             }
 
@@ -106,6 +105,8 @@ class EntityPropertyHandler implements FieldHandlerInterface
             if (null !== $resolved) {
                 $raw = $resolved->raw;
                 $coercion = $resolved->coercion;
+                $dto->visit($name, $target);
+                $anyInputVisited = true;
             } else {
                 $raw = TypeInfoUtils::isCollection($virtualMeta->type) ? [] : null;
                 $coercion = null !== $virtualMeta->coercer
@@ -137,8 +138,6 @@ class EntityPropertyHandler implements FieldHandlerInterface
                 $phases,
                 $validationPath
             );
-
-            $dto->visit($name, $target);
         }
 
         if (empty($fields)) {
@@ -171,6 +170,6 @@ class EntityPropertyHandler implements FieldHandlerInterface
             Util::buildValidationPath([...$prefix, ...$meta->getRealPathSegments()])
         );
 
-        return true;
+        return $anyInputVisited;
     }
 }
