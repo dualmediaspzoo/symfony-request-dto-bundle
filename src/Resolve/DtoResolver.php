@@ -15,6 +15,7 @@ use DualMedia\DtoRequestBundle\Resolve\Interface\DtoResolverInterface;
 use DualMedia\DtoRequestBundle\Resolve\Interface\ExtractorInterface;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingEntityValue;
 use DualMedia\DtoRequestBundle\Resolve\Model\PendingValue;
+use DualMedia\DtoRequestBundle\Util;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -230,7 +231,7 @@ class DtoResolver implements DtoResolverInterface
             assert(null !== $vwg);
 
             $provider = $this->groupProviderLocator->get($mainDto->validationGroupsServiceId);
-            $groups = ($vwg->closure)($provider, $dto, $request);
+            $groups = Util::mergeDefaultGroup(($vwg->closure)($provider, $dto, $request));
         }
 
         $violations = $this->validator->startContext()
