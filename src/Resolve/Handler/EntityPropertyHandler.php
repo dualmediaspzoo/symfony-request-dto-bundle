@@ -81,6 +81,8 @@ class EntityPropertyHandler implements FieldHandlerInterface
         // virtual itself didn't declare one.
         $virtualDefaultBag = $meta->bag ?? $defaultBag;
         $anyInputVisited = false;
+        $hasInputBoundVirtuals = false;
+        $missingInputBoundCount = 0;
 
         foreach ($meta->virtual as $target => $virtualMeta) {
             if ($virtualMeta instanceof Dynamic
@@ -100,6 +102,7 @@ class EntityPropertyHandler implements FieldHandlerInterface
                 continue;
             }
 
+            $hasInputBoundVirtuals = true;
             $resolved = $this->propertyResolver->resolve($virtualMeta, $accessor, $virtualDefaultBag, $prefix);
 
             if (null !== $resolved) {
@@ -108,6 +111,7 @@ class EntityPropertyHandler implements FieldHandlerInterface
                 $dto->visit($name, $target);
                 $anyInputVisited = true;
             } else {
+                ++$missingInputBoundCount;
                 $raw = TypeInfoUtils::isCollection($virtualMeta->type) ? [] : null;
                 $coercion = null !== $virtualMeta->coercer
                     ? $this->coercerRegistry->get($virtualMeta->coercer)->coerce($virtualMeta)
@@ -160,6 +164,21 @@ class EntityPropertyHandler implements FieldHandlerInterface
             $loader = function (array $criteria) use ($entityClass, $metaList): mixed {
                 return $this->entityProviderRegistry->get($entityClass)->find($criteria, $metaList);
             };
+        }
+
+        // If any input-bound virtual didn't receive its input, short-circuit the
+        // loader to the type-appropriate empty value. Running it with partial /
+        // null criteria would crash strict DB drivers (e.g. Doctrine on a `null`
+        // identifier) without telling the user anything useful. Constraints on
+        // the virtual still validate as before — explicit NotNull is what the
+        // user uses to surface a per-field violation; absent that, the entity
+        // simply stays at its default and a property-level constraint (e.g.
+        // NotNull on the property) reports the missing entity.
+        // DTOs whose criteria come entirely from Literal/Dynamic virtuals
+        // (no input-bound fields at all) load unconditionally.
+        if ($hasInputBoundVirtuals && $missingInputBoundCount > 0) {
+            $many = $find->many;
+            $loader = static fn (): array|null => $many ? [] : null;
         }
 
         $pending[] = new PendingEntityValue(
