@@ -129,7 +129,7 @@ class EntityProviderTest extends TestCase
             new AsDoctrineReference(),
         ]);
 
-        static::assertSame($references, $result);
+        static::assertSame($references[0], $result);
     }
 
     public function testFindByAsReferenceMany(): void
@@ -137,7 +137,7 @@ class EntityProviderTest extends TestCase
         $criteria = ['status' => 'active'];
         $qb = $this->createMock(QueryBuilder::class);
         $builtQb = $this->createMock(QueryBuilder::class);
-        $references = [[new \stdClass()]];
+        $references = [new \stdClass()];
 
         $this->getMockedService(EntityRepository::class)
             ->method('createQueryBuilder')
@@ -157,6 +157,6 @@ class EntityProviderTest extends TestCase
             new AsDoctrineReference(),
         ]);
 
-        static::assertSame($references[0], $result);
+        static::assertSame($references, $result);
     }
 }

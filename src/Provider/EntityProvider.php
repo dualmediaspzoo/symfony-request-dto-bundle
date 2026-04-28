@@ -62,6 +62,6 @@ class EntityProvider implements StandardObjectProviderInterface
             $this->class
         );
 
-        return $find->many ? $references[0] ?? null : $references;
+        return !$find->many ? $references[0] ?? null : $references;
     }
 }
