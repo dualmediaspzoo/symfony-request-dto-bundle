@@ -11,6 +11,7 @@ use DualMedia\DtoRequestBundle\Resolve\DtoResolver;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\Action\ParentWithChildActionDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\Action\ParentWithChildrenActionDto;
 use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\Action\SimpleActionDto;
+use DualMedia\DtoRequestBundle\Tests\Fixture\Dto\Action\ValidatedActionDto;
 use DualMedia\DtoRequestBundle\Tests\PHPUnit\KernelTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -128,6 +129,33 @@ class ActionDtoTest extends KernelTestCase
         );
 
         static::assertCount(0, $this->actionEvents);
+    }
+
+    public function testActionDoesNotFireWhenDtoFailsValidation(): void
+    {
+        $this->resolveAndDispatch(
+            ValidatedActionDto::class,
+            new Request(request: [])
+        );
+
+        // Validation must take priority — the NotBlank violation on `value`
+        // means the DTO is invalid; the 404 action must NOT be triggered so
+        // controllers can return a 422 (validation) response instead of the
+        // action's 404.
+        static::assertCount(0, $this->actionEvents);
+    }
+
+    public function testActionStillFiresOnNullWhenDtoIsValid(): void
+    {
+        // Without NotBlank in play, sending an empty string still satisfies
+        // (no violation) — but `value` ends up null in the DTO so the
+        // ActionCondition::Null check fires and we get the 404.
+        $this->resolveAndDispatch(
+            SimpleActionDto::class,
+            new Request(request: [])
+        );
+
+        static::assertCount(1, $this->actionEvents);
     }
 
     public function testCollectionAllChildrenNullTriggersForEach(): void

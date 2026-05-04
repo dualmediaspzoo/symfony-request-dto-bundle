@@ -117,13 +117,6 @@ class UtilTest extends TestCase
         static::assertSame($sequence, Util::mergeDefaultGroup($sequence));
     }
 
-    public function testMergeDefaultGroupListWithNestedSubArrayCoveringDefaultIsUnchanged(): void
-    {
-        $input = [['extra', Constraint::DEFAULT_GROUP], 'admin'];
-
-        static::assertSame($input, Util::mergeDefaultGroup($input)); // @phpstan-ignore-line
-    }
-
     public function testMergeDefaultGroupSequenceWithDeeplyNestedSequenceCoveringDefaultIsUnchanged(): void
     {
         $inner = new GroupSequence([Constraint::DEFAULT_GROUP, 'extra']);

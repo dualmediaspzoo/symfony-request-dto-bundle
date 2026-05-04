@@ -69,6 +69,16 @@ class ActionSubscriber implements EventSubscriberInterface
         }
 
         $dto = $event->getDto();
+
+        // Validation outranks actions: when the DTO has constraint violations,
+        // controllers should respond with the validation failure (typically
+        // 422) rather than the action's status. Skipping action evaluation
+        // also avoids spurious 404s for nulls that exist only because the
+        // input was missing or malformed in the first place.
+        if (!$dto->isValid()) {
+            return;
+        }
+
         $this->evaluateDto($dto, $dto, []);
     }
 
