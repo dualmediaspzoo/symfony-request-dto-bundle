@@ -299,27 +299,33 @@ class FieldCollector
     private function resolveEnumCases(
         Property $property
     ): array {
-        if (null === ($enumClass = TypeMapper::backedEnumClass($property->type))) {
+        if (null === ($enumClass = TypeMapper::enumClass($property->type))) {
+            return [];
+        }
+
+        $fromKey = MetadataUtils::exists(FromKey::class, $property->meta);
+
+        // Without FromKey the documented values are the backing values, which a
+        // non-backed enum simply doesn't have.
+        if (!$fromKey && !is_subclass_of($enumClass, \BackedEnum::class)) {
             return [];
         }
 
         $allowed = MetadataUtils::single(AllowedEnum::class, $property->meta);
 
-        /** @var list<\BackedEnum> $cases */
-        $cases = null !== $allowed ? array_values(array_filter(
-            $allowed->allowed,
-            static fn ($e) => $e instanceof \BackedEnum
-        )) : $enumClass::cases();
+        /** @var list<\UnitEnum> $cases */
+        $cases = null !== $allowed ? $allowed->allowed : $enumClass::cases();
 
-        if (!MetadataUtils::exists(FromKey::class, $property->meta)) {
+        if (!$fromKey) {
+            /** @var list<\BackedEnum> $cases */
             return array_map(static fn (\BackedEnum $e) => $e->value, $cases);
         }
 
         if (null === ($processor = $this->resolveLabelProcessor($property))) {
-            return array_map(static fn (\BackedEnum $e): string => $e->name, $cases);
+            return array_map(static fn (\UnitEnum $e): string => $e->name, $cases);
         }
 
-        return array_map(static fn (\BackedEnum $e): string => $processor->normalize($e->name), $cases);
+        return array_map(static fn (\UnitEnum $e): string => $processor->normalize($e->name), $cases);
     }
 
     private function resolveLabelProcessor(

@@ -64,6 +64,6 @@ class EnumChoicesTest extends KernelTestCase
         // FromKey on a pure (non-backed) enum → string schema with case names
         static::assertArrayHasKey('pureEnumByKey', $byName);
         static::assertSame('string', $byName['pureEnumByKey']->type);
-        static::assertNotEmpty($byName['pureEnumByKey']->enum);
+        static::assertSame(['Alpha', 'Beta'], $byName['pureEnumByKey']->enum);
     }
 }

@@ -90,6 +90,28 @@ final class TypeMapper
     }
 
     /**
+     * @return class-string<\UnitEnum>|null
+     */
+    public static function enumClass(
+        Type $type
+    ): string|null {
+        $className = null;
+
+        $type->isSatisfiedBy(static function (Type $t) use (&$className): bool {
+            if ($t instanceof EnumType) {
+                $className = $t->getClassName();
+
+                return true;
+            }
+
+            return false;
+        });
+
+        /** @var class-string<\UnitEnum>|null $className */
+        return $className;
+    }
+
+    /**
      * @return class-string<\BackedEnum>|null
      */
     public static function backedEnumClass(
