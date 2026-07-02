@@ -14,7 +14,9 @@ use DualMedia\DtoRequestBundle\Dto\Attribute\FromKey as FromKeyAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Limit as LimitAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\Offset as OffsetAttribute;
 use DualMedia\DtoRequestBundle\Dto\Attribute\OrderBy as OrderByAttribute;
+use DualMedia\DtoRequestBundle\Dto\Attribute\Time as TimeAttribute;
 use DualMedia\DtoRequestBundle\Dto\Enum\ActionCondition;
+use DualMedia\DtoRequestBundle\Dto\Enum\Time;
 use DualMedia\DtoRequestBundle\Metadata\Model\Action;
 use DualMedia\DtoRequestBundle\Metadata\Model\AsDoctrineReference;
 use DualMedia\DtoRequestBundle\Metadata\Model\FindBy;
@@ -23,6 +25,7 @@ use DualMedia\DtoRequestBundle\Metadata\Model\FromKey;
 use DualMedia\DtoRequestBundle\Metadata\Model\Limit;
 use DualMedia\DtoRequestBundle\Metadata\Model\Offset;
 use DualMedia\DtoRequestBundle\Metadata\Model\OrderBy;
+use DualMedia\DtoRequestBundle\Metadata\Model\Time as TimeMeta;
 use DualMedia\DtoRequestBundle\Reflection\MetaReflector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -62,6 +65,24 @@ class MetaReflectorTest extends TestCase
         static::assertCount(1, $result);
         static::assertInstanceOf(Format::class, $result[0]);
         static::assertSame('Y-m-d', $result[0]->format);
+    }
+
+    public function testTimeAttributeConvertsToIntervalModel(): void
+    {
+        // Conversion/validation is delegated to TimeUtils (covered in TimeUtilsTest);
+        // here we only assert the attribute is turned into a Time metadata model.
+        $result = $this->reflector->meta([new TimeAttribute(Time::EndOfDay)]);
+        static::assertCount(1, $result);
+        static::assertInstanceOf(TimeMeta::class, $result[0]);
+        static::assertSame('23:59:59', $result[0]->interval->format('%H:%I:%S'));
+    }
+
+    public function testTimeAttributeAcceptsCustomString(): void
+    {
+        $result = $this->reflector->meta([new TimeAttribute('06:30:00')]);
+        static::assertCount(1, $result);
+        static::assertInstanceOf(TimeMeta::class, $result[0]);
+        static::assertSame('06:30:00', $result[0]->interval->format('%H:%I:%S'));
     }
 
     public function testFromKeyAttribute(): void

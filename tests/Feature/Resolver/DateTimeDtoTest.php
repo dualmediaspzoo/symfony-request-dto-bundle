@@ -97,6 +97,20 @@ class DateTimeDtoTest extends KernelTestCase
         static::assertEquals('This value is not valid.', $violations['formattedDate'][0]->getMessage());
     }
 
+    public function testTimeAttributeNormalizesTimeOfDay(): void
+    {
+        $dto = $this->service->resolve(
+            DateTimeDto::class,
+            new Request(request: [
+                'endOfDay' => '2020-04-10',
+            ])
+        );
+
+        static::assertTrue($dto->isValid());
+        static::assertInstanceOf(\DateTimeImmutable::class, $dto->endOfDay);
+        static::assertSame('2020-04-10 23:59:59', $dto->endOfDay->format('Y-m-d H:i:s'));
+    }
+
     public function testDateCollection(): void
     {
         $dto = $this->service->resolve(
