@@ -53,6 +53,24 @@ class VerySimpleDtoTest extends KernelTestCase
         static::assertArrayHasKey('intField', $violations);
     }
 
+    public function testUncoercibleValueReportsOnlyTheCoercionViolation(): void
+    {
+        $dto = $this->resolver->resolve(
+            VerySimpleDto::class,
+            new Request(request: [
+                'intField' => 'not-a-number',
+                'stringField' => '',
+            ])
+        );
+
+        static::assertFalse($dto->isValid());
+
+        $violations = static::getConstraintViolationsMappedToPropertyPaths($dto->getConstraintViolationList());
+        static::assertCount(1, $violations['intField']);
+        static::assertNotSame('This value should not be null.', (string) $violations['intField'][0]->getMessage());
+        static::assertArrayHasKey('stringField', $violations);
+    }
+
     public function testIntFieldGreaterThanConstraint(): void
     {
         $dto = $this->resolver->resolve(

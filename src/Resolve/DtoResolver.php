@@ -238,10 +238,20 @@ class DtoResolver implements DtoResolverInterface
             ->validate($dto, null, $groups)
             ->getViolations();
 
+        $coercionPaths = [];
+
+        foreach ($dto->getConstraintViolationList() as $violation) {
+            $coercionPaths[$violation->getPropertyPath()] = true;
+        }
+
         foreach ($violations as $violation) {
-            $dto->addConstraintViolation(
-                $this->violationMapper->remap($violation, $mainDto)
-            );
+            $remapped = $this->violationMapper->remap($violation, $mainDto);
+
+            if (isset($coercionPaths[$remapped->getPropertyPath()])) {
+                continue; // the value never reached the property; its constraints would only repeat the failure
+            }
+
+            $dto->addConstraintViolation($remapped);
         }
     }
 }

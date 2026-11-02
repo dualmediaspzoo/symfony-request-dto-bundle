@@ -58,6 +58,9 @@ overwrites the time-of-day of a parsed date. It composes independently of
 `#[Format]`: present means "set this time", absent means "leave it untouched",
 and it works on plain ISO dates too.
 
+A date that parses only with a warning (`2026-02-30`, which PHP would roll over to
+`2026-03-02`) is rejected as invalid instead of being silently normalized.
+
 Pass a `Time` enum case for the common presets, or any valid `H:i:s` string.
 Invalid time strings are rejected at metadata warm-up, not at request time.
 

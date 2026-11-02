@@ -52,8 +52,10 @@ class DateTimeCoercer implements CoercerInterface
                     }
                 }
 
-                if (false === $result) {
-                    return $val;
+                $errors = \DateTimeImmutable::getLastErrors();
+
+                if (false === $result || (false !== $errors && 0 < $errors['warning_count'])) {
+                    return $val; // e.g. 30 February: PHP rolls it over to 2 March with only a warning
                 }
 
                 if (null !== $time) {

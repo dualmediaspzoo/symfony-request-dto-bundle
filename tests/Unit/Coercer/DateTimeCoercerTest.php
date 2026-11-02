@@ -121,6 +121,31 @@ class DateTimeCoercerTest extends TestCase
         static::assertSame('not-a-date', $coerced);
     }
 
+    public function testOverflowingDateWithFormatReturnsOriginal(): void
+    {
+        // createFromFormat() rolls 30 February over to 2 March and only reports a warning; that is not a valid input.
+        $result = $this->coercer->coerce($this->property([new Format('!Y-m-d')]));
+        $coerced = ($result->coerce)('2026-02-30');
+
+        static::assertSame('2026-02-30', $coerced);
+    }
+
+    public function testOverflowingDateWithoutFormatReturnsOriginal(): void
+    {
+        $result = $this->coercer->coerce($this->property());
+        $coerced = ($result->coerce)('2026-02-30 10:00:00');
+
+        static::assertSame('2026-02-30 10:00:00', $coerced);
+    }
+
+    public function testTrailingGarbageWithFormatReturnsOriginal(): void
+    {
+        $result = $this->coercer->coerce($this->property([new Format('Y-m-d')]));
+        $coerced = ($result->coerce)('2026-02-10junk');
+
+        static::assertSame('2026-02-10junk', $coerced);
+    }
+
     public function testInvalidStringWithoutFormatReturnsOriginal(): void
     {
         $result = $this->coercer->coerce($this->property());
